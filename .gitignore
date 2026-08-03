@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+data/generated/dictionary.building/
+node_modules/

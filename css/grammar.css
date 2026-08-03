@@ -1,0 +1,116 @@
+/* ---------- grammaire ---------- */
+         .gcard {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--r);
+            box-shadow: var(--shadow);
+            margin-bottom: 11px;
+            overflow: hidden;
+         }
+         .gcard summary {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            list-style: none;
+         }
+         .gcard summary::-webkit-details-marker {
+            display: none;
+         }
+         .gcard summary::after {
+            content: "＋";
+            margin-left: auto;
+            color: var(--gold);
+            font-size: 18px;
+         }
+         .gcard[open] summary::after {
+            content: "－";
+         }
+         .g-hz {
+            font-family: var(--serif);
+            font-size: 22px;
+            color: var(--lacquer);
+            flex: none;
+            width: 34px;
+            text-align: center;
+         }
+         .g-body {
+            padding: 0 16px 15px;
+            font-size: 14.5px;
+            color: var(--ink-soft);
+         }
+         .gx {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-top: 9px;
+            padding: 9px 12px;
+            border-left: 3px solid var(--gold);
+            background: var(--card-2);
+            border-radius: 0 9px 9px 0;
+         }
+         .gx-hz {
+            display: block;
+            font-family: var(--serif);
+            font-size: 18px;
+            color: var(--ink);
+         }
+         .gx-py {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-soft);
+         }
+         .gx-fr {
+            display: block;
+            font-size: 13px;
+            color: var(--ink-faint);
+            font-style: italic;
+         }
+         .qz {
+            margin-top: 14px;
+            border-top: 1.5px dashed var(--line);
+            padding-top: 10px;
+         }
+         .qz-t {
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: var(--gold);
+            font-weight: 600;
+         }
+         .qz-q {
+            margin: 11px 0 7px;
+            font-size: 14.5px;
+            color: var(--ink);
+         }
+         .qz-q .qhz {
+            font-family: var(--serif);
+            font-size: 17px;
+         }
+         .qz-opts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+         }
+         .qz-opts .chip.hz {
+            font-family: var(--serif);
+            font-size: 16px;
+         }
+         .qz-opts .chip.ok {
+            background: var(--jade);
+            border-color: var(--jade);
+            color: #fff;
+         }
+         .qz-opts .chip.ko {
+            background: var(--lacquer);
+            border-color: var(--lacquer);
+            color: #fff;
+         }
+         .qz-score {
+            margin-top: 9px;
+            font-size: 13px;
+            color: var(--ink-soft);
+            font-weight: 600;
+         }

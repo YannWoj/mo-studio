@@ -1,0 +1,9 @@
+{
+  "format": "mo-studio-hanzi-writer-data",
+  "package": "hanzi-writer-data",
+  "version": "2.0.1",
+  "characterFileCount": 9575,
+  "source": "https://github.com/chanind/hanzi-writer-data",
+  "derivedFrom": "Make Me a Hanzi",
+  "license": "Arphic Public License; see ARPHICPL.TXT"
+}

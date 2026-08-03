@@ -1,0 +1,60 @@
+/* ---------- animations & desktop ---------- */
+         @keyframes inkIn {
+            from {
+               filter: blur(7px);
+               opacity: 0;
+               transform: scale(1.04);
+            }
+            to {
+               filter: blur(0);
+               opacity: 1;
+               transform: none;
+            }
+         }
+         .ink-in {
+            animation: inkIn 0.45s ease-out both;
+         }
+         @media (prefers-reduced-motion: reduce) {
+            * {
+               animation: none !important;
+               transition: none !important;
+            }
+         }
+         @media (min-width: 900px) {
+            #view {
+               max-width: 820px;
+            }
+            .nav {
+               left: 50%;
+               right: auto;
+               transform: translateX(-50%);
+               width: 820px;
+               max-width: 96vw;
+               border: 1px solid var(--line);
+               border-bottom: none;
+               border-radius: 16px 16px 0 0;
+            }
+            #lib-list {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               gap: 0 26px;
+               align-items: start;
+            }
+            .flash {
+               min-height: 390px;
+            }
+            .opts {
+               grid-template-columns: repeat(4, 1fr);
+            }
+            #sheet {
+               align-items: center;
+            }
+            .sheet-card {
+               border-radius: 20px;
+               border-bottom: 1px solid var(--line);
+               max-height: 82dvh;
+            }
+            .hero-hz {
+               font-size: 66px;
+            }
+         }

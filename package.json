@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "prepare:hanzi-data": "node scripts/prepare-hanzi-data.mjs"
+  },
+  "dependencies": {
+    "hanzi-writer": "3.7.3",
+    "hanzi-writer-data": "2.0.1"
+  }
+}
