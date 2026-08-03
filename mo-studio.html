@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#DED2BA">
+<title>墨室 · Mò Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='18'%20fill='%239E2B25'/%3E%3Ctext%20x='50'%20y='70'%20font-size='56'%20text-anchor='middle'%20fill='%23EFE7D3'%20font-family='serif'%3E墨%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+<style>
+/* ============ Mò Studio v4 — encre, papier de riz, laque ============ */
+:root{
+  --paper:#DED2BA; --paper-2:#E7DDC9; --card:#EFE7D3; --card-2:#F4EDDD;
+  --ink:#17140F; --ink-soft:#4A4132; --ink-faint:#7A7061;
+  --line:#C9BCA0; --line-soft:#D8CCB0;
+  --lacquer:#9E2B25; --seal:#C0392B; --gold:#A8873A; --jade:#2E6B57;
+  --t1:#B0392F; --t2:#B5822A; --t3:#2E6B57; --t4:#2F5480; --t5:#7A7061;
+  --r:14px; --shadow:0 10px 30px rgba(23,20,15,.13);
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --disp:"EB Garamond",Georgia,serif;
+  --ui:"IBM Plex Sans",system-ui,sans-serif;
+}
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--ui); font-size:16px; line-height:1.5;
+  min-height:100dvh; padding-bottom:calc(86px + env(safe-area-inset-bottom));
+}
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; opacity:.5; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='2'/%3E%3CfeColorMatrix%20values='0%200%200%200%200.55%200%200%200%200%200.48%200%200%200%200%200.36%200%200%200%200.05%200'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url(%23n)'/%3E%3C/svg%3E");
+}
+button{ font-family:inherit; font-size:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; }
+input,select{ font-family:inherit; font-size:inherit; color:inherit; }
+h2,h3{ margin:0; font-weight:600; }
+p{ margin:.4em 0; }
+[hidden]{ display:none !important; }
+
+/* ---------- header & layout ---------- */
+.top{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px 10px; background:linear-gradient(var(--paper) 75%, transparent);
+}
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand-seal{
+  display:grid; place-items:center; width:40px; height:40px; border-radius:9px;
+  background:var(--lacquer); color:var(--card); font-family:var(--serif); font-size:24px; font-weight:600;
+  transform:rotate(-2.5deg); box-shadow:0 3px 10px rgba(158,43,37,.35);
+}
+.brand-name{ font-family:var(--disp); font-size:22px; font-weight:600; letter-spacing:.02em; }
+.seal-btn{
+  width:40px; height:40px; border-radius:9px; background:var(--card);
+  border:1.5px solid var(--lacquer); color:var(--lacquer);
+  font-family:var(--serif); font-size:20px; font-weight:600; transform:rotate(2deg); transition:transform .15s;
+}
+.seal-btn:active{ transform:rotate(2deg) scale(.93); }
+.seal-btn.add{ transform:rotate(-2deg); }
+#view{ max-width:560px; margin:0 auto; padding:4px 16px 24px; }
+.card{ background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); position:relative; }
+.pad{ padding:20px 18px; margin-bottom:16px; }
+.v-t{ font-family:var(--disp); font-size:24px; margin-bottom:6px; }
+.eyebrow{ font-size:11.5px; text-transform:uppercase; letter-spacing:.14em; color:var(--ink-faint); margin:16px 0 8px; font-weight:600; }
+.muted{ color:var(--ink-soft); font-size:14.5px; }
+
+/* ---------- hero, CTA, stats ---------- */
+.hero{ text-align:center; padding:12px 0 4px; }
+.hero-hz{ font-family:var(--serif); font-size:58px; font-weight:600; line-height:1.1; letter-spacing:.08em; }
+.hero-sub{ font-family:var(--disp); font-style:italic; color:var(--ink-soft); margin-top:2px; }
+.cta{
+  display:block; width:100%; text-align:left; margin:14px 0 10px;
+  background:var(--lacquer); color:#F6EFDD; border-radius:16px; padding:18px 20px;
+  box-shadow:0 8px 22px rgba(158,43,37,.32); transition:transform .12s, opacity .15s;
+}
+.cta:active{ transform:scale(.98); }
+.cta:disabled{ opacity:.6; pointer-events:none; }
+.cta b{ display:block; font-family:var(--disp); font-size:21px; letter-spacing:.01em; }
+.cta span{ display:block; font-size:13.5px; opacity:.92; margin-top:3px; }
+.cta .u-line{ display:block; font-size:12.5px; opacity:.78; margin-top:7px; font-style:italic; }
+.resume{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:var(--card); border:1.5px dashed var(--gold); border-radius:13px; padding:11px 14px; margin:12px 0 2px;
+}
+.resume span{ font-size:14px; color:var(--ink-soft); }
+.resume .btn{ margin:0; }
+.stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0 4px; }
+.stat{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 4px 8px; text-align:center; transition:transform .1s; }
+.stat b{ display:block; font-family:var(--disp); font-size:22px; line-height:1.15; }
+.stat span{ font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; }
+.stat:active{ transform:scale(.97); }
+
+/* ---------- séance libre (repliée) ---------- */
+details.free{ background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); margin:12px 0 16px; }
+details.free > summary{ list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:600; padding:15px 16px; }
+details.free > summary::-webkit-details-marker{ display:none; }
+details.free > summary::after{ content:"＋"; margin-left:auto; color:var(--gold); font-size:18px; }
+details.free[open] > summary::after{ content:"－"; }
+.free-hz{ font-family:var(--serif); font-size:21px; color:var(--lacquer); }
+.free-body{ padding:0 16px 16px; }
+
+/* ---------- chips, boutons, inputs ---------- */
+.chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip{ padding:7px 13px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); font-size:14px; color:var(--ink-soft); transition:all .15s; }
+.chip[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--card); }
+.hzchip{ font-family:var(--serif); font-size:19px; padding:6px 11px; }
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  padding:11px 18px; border-radius:12px; font-weight:600; font-size:15px;
+  background:var(--card-2); border:1px solid var(--line); color:var(--ink); transition:transform .1s;
+}
+.btn:active{ transform:scale(.97); }
+.btn.primary{ background:var(--ink); border-color:var(--ink); color:var(--card); }
+.btn.danger{ background:none; border-color:var(--lacquer); color:var(--lacquer); }
+.btn.ghost{ background:none; border-color:transparent; color:var(--ink-soft); }
+.btn.sm{ padding:7px 12px; font-size:13.5px; border-radius:10px; }
+.btn.wide{ width:100%; margin-top:8px; }
+.btn.big{ padding:14px 22px; font-size:16px; }
+.btn:disabled{ opacity:.45; pointer-events:none; }
+.ck{ display:flex; align-items:center; gap:9px; padding:7px 0; font-size:14.5px; color:var(--ink-soft); cursor:pointer; }
+.ck input{ width:17px; height:17px; accent-color:var(--lacquer); }
+.search{ width:100%; padding:11px 13px; border-radius:11px; border:1px solid var(--line); background:var(--card-2); outline:none; font-size:15px; }
+.search:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(168,135,58,.18); }
+.f-lab{ display:block; font-size:13px; color:var(--ink-faint); margin:10px 0; }
+.f-lab .search, .f-lab select, .f-lab input[type=range]{ margin-top:4px; }
+input[type=range]{ width:100%; accent-color:var(--lacquer); }
+.selects{ display:flex; gap:8px; margin-top:10px; }
+.selects .search{ flex:1; padding:9px 10px; font-size:14px; }
+.modes{ display:grid; gap:10px; margin-top:6px; }
+.mode{ display:flex; align-items:center; gap:14px; text-align:left; background:var(--card-2); border:1px solid var(--line); border-radius:13px; padding:13px 15px; transition:transform .1s, border-color .15s; }
+.mode:active{ transform:scale(.98); }
+.mode:not(:disabled):hover{ border-color:var(--gold); }
+.mode .m-hz{ font-family:var(--serif); font-size:26px; color:var(--lacquer); width:34px; text-align:center; }
+.mode b{ display:block; font-size:15.5px; }
+.mode span{ font-size:13px; color:var(--ink-faint); }
+
+/* ---------- tons ---------- */
+.tn.t1{ color:var(--t1); } .tn.t2{ color:var(--t2); } .tn.t3{ color:var(--t3); }
+.tn.t4{ color:var(--t4); } .tn.t5{ color:var(--t5); }
+
+/* ---------- séance ---------- */
+body.in-session .nav, body.in-session .top{ display:none; }
+body.in-session{ padding-bottom:28px; }
+.sess{ padding-top:10px; }
+.s-top{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.s-x{ width:34px; height:34px; border-radius:9px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); font-size:15px; flex:none; }
+.s-scope{ flex:1; font-size:13px; color:var(--ink-faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.s-count{ font-family:var(--disp); font-size:15px; color:var(--ink-soft); }
+.s-bar{ height:4px; border-radius:99px; background:var(--line-soft); overflow:hidden; margin-bottom:14px; }
+.s-bar i{ display:block; height:100%; background:linear-gradient(90deg,var(--lacquer),var(--seal)); border-radius:99px; transition:width .25s; }
+.flash{ padding:52px 20px 24px; text-align:center; min-height:330px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.fl-seal{ position:absolute; top:14px; right:14px; }
+.seal{
+  width:44px; height:44px; border-radius:10px; background:var(--seal); color:#F6EFDD;
+  font-family:var(--serif); font-size:21px; font-weight:600; transform:rotate(-2.5deg);
+  box-shadow:0 3px 9px rgba(192,57,43,.4); transition:transform .12s; flex:none;
+}
+.seal:active{ transform:rotate(-2.5deg) scale(.9); }
+.seal.lg{ width:56px; height:56px; font-size:26px; border-radius:13px; }
+.hanzi{ font-family:var(--serif); font-weight:600; line-height:1.15; cursor:pointer; font-size:clamp(52px, 18vw, 88px); letter-spacing:.04em; }
+.pinyin{ font-size:21px; margin-top:8px; letter-spacing:.03em; }
+.fr{ font-family:var(--disp); font-size:23px; margin-top:4px; }
+.fr-big{ font-family:var(--disp); font-size:30px; line-height:1.25; padding:8px 4px; }
+.hint{ margin-top:22px; font-size:12.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.12em; }
+.sep{ width:56px; height:1.5px; background:var(--gold); opacity:.6; margin:16px auto 10px; }
+.ex{ margin-top:14px; padding:11px 14px; border-left:3px solid var(--gold); background:var(--card-2); border-radius:0 10px 10px 0; text-align:left; cursor:pointer; max-width:100%; }
+.ex-hz{ font-family:var(--serif); font-size:19px; }
+.ex-py{ font-size:14px; margin-top:2px; }
+.ex-fr{ font-size:14px; color:var(--ink-soft); font-style:italic; margin-top:2px; }
+.note{ margin-top:12px; font-size:13.5px; color:var(--ink-soft); background:var(--card-2); border:1.5px dashed var(--gold); border-radius:10px; padding:8px 12px; max-width:100%; text-align:left; }
+.acts{ display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; justify-content:center; }
+.act{ padding:8px 13px; border-radius:999px; border:1px solid var(--line); background:var(--card-2); font-size:13.5px; color:var(--ink-soft); transition:all .15s; }
+.act.on{ background:var(--lacquer); border-color:var(--lacquer); color:var(--card); }
+.act.on.jade{ background:var(--jade); border-color:var(--jade); }
+.verdict{ font-weight:600; font-size:16px; margin-bottom:12px; padding:8px 16px; border-radius:999px; }
+.verdict.ok{ background:rgba(46,107,87,.14); color:var(--jade); }
+.verdict.ko{ background:rgba(158,43,37,.12); color:var(--lacquer); }
+.verdict span{ font-weight:400; font-size:14px; }
+.s-foot{ display:flex; gap:10px; margin-top:14px; }
+.s-foot .btn{ flex:1; }
+.s-foot .btn.ghost{ flex:0 0 auto; }
+.grades{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px; }
+.gr{ border-radius:12px; padding:10px 4px 8px; color:#F6EFDD; font-weight:600; font-size:14px; transition:transform .1s; }
+.gr:active{ transform:scale(.95); }
+.gr small{ display:block; font-weight:400; font-size:11px; opacity:.85; margin-top:1px; }
+.gr.again{ background:var(--lacquer); } .gr.hard{ background:var(--gold); }
+.gr.good{ background:var(--jade); } .gr.easy{ background:var(--ink); }
+.g-row{ display:flex; justify-content:space-between; margin-top:10px; }
+.w-lab{ font-size:12.5px; text-transform:uppercase; letter-spacing:.13em; color:var(--ink-faint); margin-bottom:10px; font-weight:600; }
+.w-in{ width:100%; max-width:340px; margin-top:18px; }
+.w-in .search{ text-align:center; font-size:18px; }
+.w-note{ margin-top:10px; font-size:13.5px; color:var(--ink-soft); min-height:1.2em; }
+.t-btns{ display:flex; gap:10px; margin-top:12px; }
+
+/* ---------- 米字格 ---------- */
+.mizi{
+  position:relative; width:min(300px,100%); aspect-ratio:1; margin:14px auto 4px;
+  border:2px solid var(--seal); border-radius:8px; overflow:hidden;
+  background:
+    linear-gradient(45deg, transparent calc(50% - .6px), rgba(168,135,58,.5) calc(50% - .6px), rgba(168,135,58,.5) calc(50% + .6px), transparent calc(50% + .6px)),
+    linear-gradient(-45deg, transparent calc(50% - .6px), rgba(168,135,58,.5) calc(50% - .6px), rgba(168,135,58,.5) calc(50% + .6px), transparent calc(50% + .6px)),
+    linear-gradient(90deg, transparent calc(50% - .6px), rgba(168,135,58,.5) calc(50% - .6px), rgba(168,135,58,.5) calc(50% + .6px), transparent calc(50% + .6px)),
+    linear-gradient(0deg, transparent calc(50% - .6px), rgba(168,135,58,.5) calc(50% - .6px), rgba(168,135,58,.5) calc(50% + .6px), transparent calc(50% + .6px)),
+    var(--card-2);
+  box-shadow:inset 0 0 0 1px rgba(158,43,37,.2);
+}
+.mizi > div, .mizi > canvas{ position:absolute; inset:0; margin:auto; }
+.ghost{ display:flex; align-items:center; justify-content:center; font-family:var(--serif); color:rgba(23,20,15,.15); user-select:none; pointer-events:none; line-height:1; }
+.mizi canvas{ width:100%; height:100%; touch-action:none; cursor:crosshair; }
+
+/* ---------- picker & bibliothèque ---------- */
+.picker{ display:flex; flex-wrap:wrap; gap:7px; margin:12px 0 6px; max-height:170px; overflow:auto; padding:2px; }
+.lib-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+#lib-list{ margin-top:4px; }
+.row{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:11px 6px; border-bottom:1px solid var(--line-soft); transition:background .12s; }
+.row:active{ background:var(--card-2); }
+.row-hz{ font-family:var(--serif); font-size:26px; flex:none; min-width:58px; }
+.row-mid{ flex:1; min-width:0; }
+.row-py{ display:block; font-size:14px; }
+.row-fr{ display:block; font-size:14px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.row-badges{ display:flex; gap:4px; flex:none; }
+.b{ font-style:normal; font-size:13px; padding:2px 7px; border-radius:999px; background:var(--card-2); border:1px solid var(--line); }
+.b.red{ color:var(--lacquer); } .b.gold{ color:var(--gold); } .b.jade{ color:var(--jade); }
+.b.u{ color:var(--ink-faint); font-size:11.5px; }
+.lib-foot{ margin-top:14px; text-align:center; }
+
+/* ---------- écoute ---------- */
+.listen-center{ text-align:center; padding:8px 0 4px; }
+.opts{ display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:14px; }
+.opt{ padding:14px 8px; border-radius:12px; border:1px solid var(--line); background:var(--card-2); font-size:20px; transition:all .15s; }
+.opt .o-hz{ display:block; font-family:var(--serif); font-size:26px; }
+.opt .o-fr{ display:block; font-size:12.5px; color:var(--ink-faint); margin-top:3px; }
+.opt.ok{ background:rgba(46,107,87,.15); border-color:var(--jade); }
+.opt.ko{ background:rgba(158,43,37,.12); border-color:var(--lacquer); }
+.drill-foot{ display:flex; gap:9px; justify-content:center; margin-top:12px; }
+
+/* ---------- grammaire ---------- */
+.gcard{ background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:11px; overflow:hidden; }
+.gcard summary{ display:flex; align-items:center; gap:12px; padding:15px 16px; cursor:pointer; font-weight:600; list-style:none; }
+.gcard summary::-webkit-details-marker{ display:none; }
+.gcard summary::after{ content:"＋"; margin-left:auto; color:var(--gold); font-size:18px; }
+.gcard[open] summary::after{ content:"－"; }
+.g-hz{ font-family:var(--serif); font-size:22px; color:var(--lacquer); flex:none; width:34px; text-align:center; }
+.g-body{ padding:0 16px 15px; font-size:14.5px; color:var(--ink-soft); }
+.gx{ display:block; width:100%; text-align:left; margin-top:9px; padding:9px 12px; border-left:3px solid var(--gold); background:var(--card-2); border-radius:0 9px 9px 0; }
+.gx-hz{ display:block; font-family:var(--serif); font-size:18px; color:var(--ink); }
+.gx-py{ display:block; font-size:13px; color:var(--ink-soft); }
+.gx-fr{ display:block; font-size:13px; color:var(--ink-faint); font-style:italic; }
+.qz{ margin-top:14px; border-top:1.5px dashed var(--line); padding-top:10px; }
+.qz-t{ font-size:11.5px; text-transform:uppercase; letter-spacing:.13em; color:var(--gold); font-weight:600; }
+.qz-q{ margin:11px 0 7px; font-size:14.5px; color:var(--ink); }
+.qz-q .qhz{ font-family:var(--serif); font-size:17px; }
+.qz-opts{ display:flex; flex-wrap:wrap; gap:7px; }
+.qz-opts .chip.hz{ font-family:var(--serif); font-size:16px; }
+.qz-opts .chip.ok{ background:var(--jade); border-color:var(--jade); color:#fff; }
+.qz-opts .chip.ko{ background:var(--lacquer); border-color:var(--lacquer); color:#fff; }
+.qz-score{ margin-top:9px; font-size:13px; color:var(--ink-soft); font-weight:600; }
+
+/* ---------- sheet, toast, nav ---------- */
+#sheet{ position:fixed; inset:0; z-index:50; background:rgba(23,20,15,.45); display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; }
+#sheet.open{ opacity:1; pointer-events:auto; }
+.sheet-card{
+  width:100%; max-width:560px; max-height:86dvh; overflow:auto; background:var(--paper-2);
+  border-radius:20px 20px 0 0; border:1px solid var(--line); border-bottom:none;
+  padding:22px 20px calc(22px + env(safe-area-inset-bottom));
+  transform:translateY(30px); transition:transform .22s;
+}
+#sheet.open .sheet-card{ transform:none; }
+.sh-t{ font-family:var(--disp); font-size:21px; margin-bottom:8px; }
+.sh-p{ font-size:14.5px; color:var(--ink-soft); }
+.sh-note{ font-size:13px; color:var(--ink-faint); margin-top:12px; }
+.sh-btns{ display:flex; gap:9px; margin-top:16px; flex-wrap:wrap; }
+.sh-btns .btn{ flex:1; }
+.delay-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.delay-grid .btn{ margin:0; }
+.dl-custom{ display:flex; gap:8px; margin-top:10px; }
+.dl-custom .search{ flex:1; }
+.pk-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 0; border-bottom:1px solid var(--line-soft); }
+.pk-info b{ display:block; font-size:15px; }
+.pk-info span{ font-size:12.5px; color:var(--ink-faint); }
+.pk-btns{ display:flex; gap:6px; }
+.pk-new{ display:flex; gap:8px; margin-top:14px; }
+.pk-new .search{ flex:1; }
+.cd-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.cd-hz{ font-family:var(--serif); font-size:52px; font-weight:600; line-height:1.15; cursor:pointer; }
+.cd-py{ font-size:19px; margin-top:2px; }
+.cd-fr{ font-family:var(--disp); font-size:20px; margin-top:4px; }
+.cd-cat{ display:inline-block; margin-top:8px; margin-right:6px; font-size:12.5px; padding:3px 10px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); }
+.cd-status{ margin-top:10px; font-size:13.5px; color:var(--ink-soft); }
+pre.fmt{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:13px; font-size:12.5px; overflow:auto; line-height:1.5; margin:10px 0 4px; }
+#toast{
+  position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom)); transform:translateX(-50%) translateY(16px);
+  background:var(--ink); color:var(--card); padding:11px 18px; border-radius:12px; font-size:14px;
+  opacity:0; pointer-events:none; transition:all .25s; z-index:60; max-width:88vw; text-align:center;
+}
+#toast.show{ opacity:1; transform:translateX(-50%); }
+.nav{
+  position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; justify-content:space-around;
+  background:color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter:blur(10px);
+  border-top:1px solid var(--line); padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+}
+.nav button{ display:flex; flex-direction:column; align-items:center; gap:2px; padding:4px 10px; border-radius:11px; color:var(--ink-faint); min-width:58px; }
+.nav .n-hz{ font-family:var(--serif); font-size:21px; line-height:1.2; }
+.nav .n-lab{ font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; }
+.nav button[aria-pressed="true"]{ color:var(--lacquer); }
+
+/* ---------- vides, résumé, erreurs ---------- */
+.empty{ text-align:center; padding:34px 20px; }
+.empty-hz{ font-family:var(--serif); font-size:74px; color:var(--line); line-height:1; }
+.empty-t{ font-family:var(--disp); font-size:22px; margin-top:10px; }
+.empty-p{ color:var(--ink-soft); font-size:14.5px; max-width:380px; margin:8px auto 0; }
+.empty-btns{ display:flex; flex-direction:column; gap:9px; margin-top:18px; align-items:center; }
+.empty-btns .btn{ width:min(300px,100%); }
+.summary{ text-align:center; padding:32px 22px; }
+.sum-hz{ font-family:var(--serif); font-size:74px; color:var(--lacquer); line-height:1; }
+.sum-t{ font-family:var(--disp); font-size:24px; margin:10px 0 14px; }
+.sum-rows{ max-width:310px; margin:0 auto 16px; }
+.sum-row{ display:flex; justify-content:space-between; padding:8px 4px; border-bottom:1px solid var(--line-soft); font-size:15px; }
+.sum-row b{ font-family:var(--disp); font-size:17px; }
+.err-list{ text-align:left; max-width:340px; margin:6px auto 16px; max-height:190px; overflow:auto; border:1px solid var(--line-soft); border-radius:11px; padding:4px 12px; background:var(--card-2); }
+.err-row{ display:flex; gap:10px; padding:7px 2px; border-bottom:1px solid var(--line-soft); font-size:13.5px; align-items:baseline; }
+.err-row:last-child{ border-bottom:none; }
+.err-row b{ font-family:var(--serif); font-size:19px; font-weight:600; flex:none; }
+.err-row span{ color:var(--ink-soft); }
+.sum-btns{ display:flex; flex-direction:column; gap:9px; align-items:center; }
+.sum-btns .btn{ width:min(300px,100%); margin:0; }
+
+/* ---------- animations & desktop ---------- */
+@keyframes inkIn{ from{ filter:blur(7px); opacity:0; transform:scale(1.04);} to{ filter:blur(0); opacity:1; transform:none;} }
+.ink-in{ animation:inkIn .45s ease-out both; }
+@media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+@media (min-width:900px){
+  #view{ max-width:820px; }
+  .nav{ left:50%; right:auto; transform:translateX(-50%); width:820px; max-width:96vw; border:1px solid var(--line); border-bottom:none; border-radius:16px 16px 0 0; }
+  #lib-list{ display:grid; grid-template-columns:1fr 1fr; gap:0 26px; align-items:start; }
+  .flash{ min-height:390px; }
+  .opts{ grid-template-columns:repeat(4,1fr); }
+  #sheet{ align-items:center; }
+  .sheet-card{ border-radius:20px; border-bottom:1px solid var(--line); max-height:82dvh; }
+  .hero-hz{ font-size:66px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="brand-seal">墨</span><span class="brand-name">Mò Studio</span></div>
+  <button class="seal-btn" id="btn-settings" aria-label="Réglages">设</button>
+</header>
+<main id="view"></main>
+<nav class="nav" aria-label="Navigation">
+  <button data-view="learn" aria-pressed="true"><span class="n-hz">学</span><span class="n-lab">Réviser</span></button>
+  <button data-view="lib" aria-pressed="false"><span class="n-hz">库</span><span class="n-lab">Cartes</span></button>
+  <button data-view="write" aria-pressed="false"><span class="n-hz">写</span><span class="n-lab">Écrire</span></button>
+  <button data-view="listen" aria-pressed="false"><span class="n-hz">听</span><span class="n-lab">Écouter</span></button>
+  <button data-view="grammar" aria-pressed="false"><span class="n-hz">法</span><span class="n-lab">Grammaire</span></button>
+</nav>
+<div id="sheet"><div class="sheet-card"></div></div>
+<div id="toast" role="status"></div>
+<input type="file" id="file-global" accept=".json,application/json" hidden>
+<script>
+"use strict";
+/* ================= utilitaires ================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+function shuffle(arr){
+  // mélange de Fisher-Yates
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+const flatten = s => String(s ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\u4e00-\u9fff]/g, "");
+const now = () => Date.now();
+const isDue = c => c.due != null && c.due <= now();
+const fmtDate = ts => new Date(ts).toLocaleString("fr-FR", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" });
+const unitSort = (a, b) => ((a.unit ?? 999) - (b.unit ?? 999)) || ((a.order ?? 9999) - (b.order ?? 9999)) || (a.created - b.created);
+
+/* ================= pinyin ================= */
+const TONE_MAP = { a:"āáǎà", e:"ēéěè", i:"īíǐì", o:"ōóǒò", u:"ūúǔù", "ü":"ǖǘǚǜ" };
+function numToAccent(str){
+  // convertit "ni3 hao3" en "nǐ hǎo" (v = ü, 5 = ton neutre)
+  return String(str || "").replace(/([a-zA-Züv]+)([1-5])/g, (m, syl, tone) => {
+    tone = +tone;
+    syl = syl.replace(/v/g, "ü").replace(/V/g, "Ü");
+    if (tone === 5) return syl;
+    const lower = syl.toLowerCase();
+    let idx = -1;
+    if (lower.includes("a")) idx = lower.indexOf("a");
+    else if (lower.includes("e")) idx = lower.indexOf("e");
+    else if (lower.includes("ou")) idx = lower.indexOf("o");
+    else { for (let i = lower.length - 1; i >= 0; i--){ if ("iouü".includes(lower[i])){ idx = i; break; } } }
+    if (idx < 0) return syl;
+    const acc = (TONE_MAP[lower[idx]] || "")[tone - 1];
+    return acc ? syl.slice(0, idx) + acc + syl.slice(idx + 1) : syl;
+  });
+}
+const TONE_CHARS = ["āēīōūǖ", "áéíóúǘ", "ǎěǐǒǔǚ", "àèìòùǜ"];
+function toneOf(syl){
+  const n = String(syl).normalize("NFC");
+  for (let t = 0; t < 4; t++){
+    for (const ch of TONE_CHARS[t]) if (n.includes(ch)) return t + 1;
+  }
+  return 5;
+}
+function colorPinyin(py){
+  if (!py) return "";
+  if (!db.settings.toneColors) return esc(py);
+  return String(py).split(/(\s+)/).map(part => {
+    if (!/[a-zA-Zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/.test(part)) return esc(part);
+    return '<span class="tn t' + toneOf(part) + '">' + esc(part) + '</span>';
+  }).join("");
+}
+
+/* ================= audio ================= */
+let voices = [];
+function refreshVoices(){
+  if (!("speechSynthesis" in window)) return;
+  voices = (speechSynthesis.getVoices() || []).filter(v => /^zh([-_]|$)/i.test(v.lang));
+}
+if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = refreshVoices;
+function speak(text){
+  if (!("speechSynthesis" in window) || !text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "zh-CN";
+  u.rate = db.settings.rate || 0.85;
+  const v = voices.find(v => v.voiceURI === db.settings.voice) || voices[0];
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+/* ================= répétition espacée (SRS) ================= */
+// intervalles par niveau : 10 min, 1 j, 3 j, 7 j, 14 j, 30 j, 60 j, 120 j
+const INTERVALS = [600e3, 86400e3, 3*86400e3, 7*86400e3, 14*86400e3, 30*86400e3, 60*86400e3, 120*86400e3];
+const MAXLVL = INTERVALS.length - 1;
+function fmtIv(ms){
+  if (ms < 3600e3) return Math.round(ms / 60e3) + " min";
+  if (ms < 47*3600e3) return "1 j";
+  return Math.round(ms / 86400e3) + " j";
+}
+function gradeIv(c){
+  // aperçu de l'intervalle pour chaque bouton, selon le niveau actuel de la carte
+  const lvl = c.lvl || 0;
+  return {
+    again: INTERVALS[0],
+    hard: INTERVALS[1],
+    good: INTERVALS[Math.min(MAXLVL, Math.max(2, lvl + 1))],
+    easy: INTERVALS[Math.min(MAXLVL, Math.max(3, lvl + 2))]
+  };
+}
+function applyGrade(c, g){
+  const iv = gradeIv(c);
+  if (g === "again") c.lvl = 0;
+  else if (g === "hard") c.lvl = 1;
+  else if (g === "good") c.lvl = Math.min(MAXLVL, Math.max(2, (c.lvl || 0) + 1));
+  else c.lvl = Math.min(MAXLVL, Math.max(3, (c.lvl || 0) + 2));
+  c.due = now() + iv[g];
+  if (g === "again" || g === "hard") c.acquired = false;
+  save();
+}
+
+/* ================= données ================= */
+const DB_KEY = "mo-studio-v1";
+const SESSION_KEY = "mo-studio-session";
+const BACKUP_KEY = "mo-studio-backup";
+const defaultSettings = () => ({
+  pinyin: "always",            // always | reveal | never
+  toneColors: true,
+  rate: 0.85,
+  voice: "",
+  direction: "zh2fr",          // zh2fr | fr2zh | mix
+  writeModes: { pinyin: true, fr: true, trace: true },
+  sessionSize: 20,             // taille max de « Continuer » (0 = tout)
+  newPerSession: 5,            // nouvelles cartes par séance
+  freeSize: 20,                // taille des séances libres (0 = tout)
+  listenLevel: 1               // 1 = 汉字+FR, 2 = 汉字, 3 = FR
+});
+function normalizeCard(c, keepId){
+  // nettoie une carte (import ou stockage) ; hz + fr obligatoires
+  if (!c || typeof c !== "object") return null;
+  const hz = String(c.hz || "").trim();
+  const fr = String(c.fr || "").trim();
+  if (!hz || !fr) return null;
+  let py = String(c.py || "").trim();
+  if (/[0-9]/.test(py)) py = numToAccent(py);
+  let exPy = String(c.exPy || "").trim();
+  if (/[0-9]/.test(exPy)) exPy = numToAccent(exPy);
+  return {
+    id: (keepId && c.id) ? String(c.id) : uid(),
+    hz, py, fr,
+    cat: String(c.cat || "").trim(),
+    exHz: String(c.exHz || "").trim(),
+    exPy,
+    exFr: String(c.exFr || "").trim(),
+    note: String(c.note || "").trim(),
+    unit: Number.isFinite(+c.unit) && c.unit !== "" && c.unit != null ? +c.unit : null,
+    order: Number.isFinite(+c.order) && c.order !== "" && c.order != null ? +c.order : null,
+    lvl: Number.isFinite(+c.lvl) ? Math.max(0, Math.min(MAXLVL, +c.lvl)) : 0,
+    fav: !!c.fav,
+    acquired: !!c.acquired,
+    due: (typeof c.due === "number") ? c.due : null,
+    created: (typeof c.created === "number") ? c.created : Date.now()
+  };
+}
+const cardKey = c => c.hz + "§" + String(c.py || "").toLowerCase().normalize("NFC").replace(/[^a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g, "");
+function load(){
+  let raw = null;
+  try{
+    raw = localStorage.getItem(DB_KEY);
+    if (raw){
+      const d = JSON.parse(raw);
+      const s = Object.assign(defaultSettings(), d.settings || {});
+      s.writeModes = Object.assign({ pinyin:true, fr:true, trace:true }, (d.settings && d.settings.writeModes) || {});
+      return {
+        cards: Array.isArray(d.cards) ? d.cards.map(c => normalizeCard(c, true)).filter(Boolean) : [],
+        packs: Array.isArray(d.packs) ? d.packs.filter(p => p && p.id && p.name && Array.isArray(p.cardIds)) : [],
+        units: (d.units && typeof d.units === "object" && !Array.isArray(d.units)) ? d.units : {},
+        settings: s
+      };
+    }
+  }catch(e){
+    // données corrompues : on les met de côté au lieu de les perdre
+    try{ if (raw) localStorage.setItem(BACKUP_KEY + "-corrupt", raw); }catch(e2){}
+  }
+  return { cards: [], packs: [], units: {}, settings: defaultSettings() };
+}
+let db = load();
+function save(){
+  try{ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+  catch(e){ toast("Impossible d'enregistrer (stockage plein ?)."); }
+}
+function makeBackup(){
+  try{ localStorage.setItem(BACKUP_KEY, JSON.stringify({ ts: Date.now(), cards: db.cards, packs: db.packs, units: db.units })); }catch(e){}
+}
+function getBackup(){
+  try{
+    const b = JSON.parse(localStorage.getItem(BACKUP_KEY));
+    if (b && Array.isArray(b.cards)) return b;
+  }catch(e){}
+  return null;
+}
+function unitName(u){
+  if (u == null) return "";
+  return db.units[String(u)] || ("Unité " + u);
+}
+
+/* -------- sauvegarde / reprise de séance -------- */
+function persistSession(){
+  try{
+    if (!session.active){ localStorage.removeItem(SESSION_KEY); return; }
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      ts: Date.now(), mode: session.mode, ids: session.cards.map(c => c.id),
+      index: session.index, states: session.states, live: session.live, scopeLabel: session.scopeLabel
+    }));
+  }catch(e){}
+}
+function clearSavedSession(){ try{ localStorage.removeItem(SESSION_KEY); }catch(e){} }
+function loadSavedSession(){
+  try{
+    const s = JSON.parse(localStorage.getItem(SESSION_KEY));
+    if (!s || !Array.isArray(s.ids) || Date.now() - s.ts > 24*3600e3) return null;
+    const cards = s.ids.map(id => db.cards.find(c => c.id === id)).filter(Boolean);
+    if (cards.length < 2) return null;
+    return { snap: s, cards };
+  }catch(e){ return null; }
+}
+function resumeSession(){
+  const r = loadSavedSession();
+  if (!r){ clearSavedSession(); renderLearn(); return; }
+  const st = Array.isArray(r.snap.states) ? r.snap.states : [];
+  session = {
+    active: true, mode: r.snap.mode || "cards", cards: r.cards,
+    index: Math.min(r.snap.index || 0, r.cards.length - 1),
+    states: r.cards.map((c, i) => st[i] || null),
+    live: r.snap.live || { marked: 0, acquired: 0 },
+    scopeLabel: r.snap.scopeLabel || "Séance"
+  };
+  renderSession();
+}
+
+/* ================= navigation ================= */
+let activeView = "learn";
+let session = { active: false };
+function setView(v){
+  activeView = v;
+  document.querySelectorAll(".nav button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === v)));
+  render();
+  window.scrollTo(0, 0);
+}
+function render(){
+  document.body.classList.toggle("in-session", activeView === "learn" && session.active);
+  if (activeView === "learn") renderLearn();
+  else if (activeView === "lib") renderLib();
+  else if (activeView === "write") renderWrite();
+  else if (activeView === "listen") renderListen();
+  else renderGrammar();
+}
+function refreshActive(){ render(); }
+
+/* ================= hub (Réviser) ================= */
+let hub = { flt: "all", pack: "", cat: "", includeAcquired: false, freeOpen: false };
+
+function scopeCards(){
+  let list = db.cards.slice();
+  if (hub.flt === "due") list = list.filter(isDue);
+  else if (hub.flt === "fav") list = list.filter(c => c.fav);
+  else if (hub.flt === "acq") list = list.filter(c => c.acquired);
+  if (hub.pack){
+    if (hub.pack.startsWith("unit:")){
+      const u = +hub.pack.slice(5);
+      list = list.filter(c => c.unit === u);
+    } else {
+      const p = db.packs.find(p => p.id === hub.pack);
+      const set = new Set(p ? p.cardIds : []);
+      list = list.filter(c => set.has(c.id));
+    }
+  }
+  if (hub.cat) list = list.filter(c => c.cat === hub.cat);
+  if (!hub.includeAcquired && hub.flt !== "acq") list = list.filter(c => !c.acquired);
+  return list;
+}
+function scopeLabel(){
+  const parts = [];
+  if (hub.flt === "due") parts.push("À revoir");
+  else if (hub.flt === "fav") parts.push("Favoris");
+  else if (hub.flt === "acq") parts.push("Acquises");
+  if (hub.pack){
+    if (hub.pack.startsWith("unit:")) parts.push(unitName(+hub.pack.slice(5)));
+    else { const p = db.packs.find(p => p.id === hub.pack); if (p) parts.push(p.name); }
+  }
+  if (hub.cat) parts.push(hub.cat);
+  return parts.join(" · ") || "Tout";
+}
+
+/* -------- file intelligente pour « Continuer » -------- */
+function smartQueue(){
+  const pool = db.cards.filter(c => !c.acquired);
+  const due = pool.filter(isDue).sort((a, b) => a.due - b.due);
+  const fresh = pool.filter(c => c.due == null).sort(unitSort);
+  const size = db.settings.sessionSize;       // 0 = tout
+  const newTake = Math.min(db.settings.newPerSession, fresh.length);
+  let dueTake = size > 0 ? Math.max(0, size - newTake) : due.length;
+  dueTake = Math.min(dueTake, due.length);
+  let q = due.slice(0, dueTake).concat(fresh.slice(0, newTake));
+  if (size > 0) q = q.slice(0, size);
+  const planned = pool.filter(c => c.due != null && c.due > now()).sort((a, b) => a.due - b.due);
+  return {
+    q: shuffle(q),
+    dueN: Math.min(due.length, dueTake),
+    dueTotal: due.length,
+    freshN: Math.min(newTake, Math.max(0, (size > 0 ? size : Infinity))),
+    freshUnit: fresh.length ? fresh[0].unit : null,
+    nextDue: planned.length ? planned[0].due : null
+  };
+}
+function startSmartSession(){
+  const sq = smartQueue();
+  if (!sq.q.length){ toast("Rien à réviser pour le moment."); return; }
+  startCardsWith(sq.q, "Ma révision", "cards");
+}
+function startCardsWith(cards, label, mode){
+  session = {
+    active: true, mode: mode || "cards", cards, index: 0,
+    states: new Array(cards.length).fill(null),
+    live: { marked: 0, acquired: 0 },
+    scopeLabel: label
+  };
+  document.body.classList.add("in-session");
+  renderSession();
+  window.scrollTo(0, 0);
+}
+function startFreeSession(mode){
+  let cards = shuffle(scopeCards());
+  if (!cards.length){ toast("Aucune carte dans cette sélection."); return; }
+  const size = db.settings.freeSize;
+  if (size > 0) cards = cards.slice(0, size);
+  startCardsWith(cards, scopeLabel(), mode);
+}
+
+/* -------- écrans du hub -------- */
+function emptyHtml(){
+  return '<section class="card pad empty">' +
+    '<div class="empty-hz">学</div>' +
+    '<h2 class="empty-t">Ta collection est vide</h2>' +
+    '<p class="empty-p">Importe un pack JSON (HSK 1, HSK 2…) ou crée ta première carte. Le format des fichiers est documenté juste en dessous.</p>' +
+    '<div class="empty-btns">' +
+      '<button class="btn primary" id="btn-e-import">Importer un pack JSON</button>' +
+      '<button class="btn" id="btn-e-add">Créer une carte</button>' +
+      '<button class="btn ghost" id="btn-e-format">Voir le format JSON</button>' +
+    '</div></section>';
+}
+function wireEmpty(){
+  if ($("btn-e-import")) $("btn-e-import").onclick = () => $("file-global").click();
+  if ($("btn-e-add")) $("btn-e-add").onclick = () => openCardForm(null);
+  if ($("btn-e-format")) $("btn-e-format").onclick = openFormatSheet;
+}
+
+function renderLearn(){
+  document.body.classList.toggle("in-session", session.active);
+  if (session.active){ renderSession(); return; }
+  if (session.summary){ renderSummary(); return; }
+  const root = $("view");
+  const heroTop = '<section class="hero"><div class="hero-hz ink-in">墨室</div><div class="hero-sub">Mò Studio — ton atelier de chinois</div></section>';
+  if (!db.cards.length){
+    root.innerHTML = heroTop + emptyHtml();
+    wireEmpty();
+    return;
+  }
+  // garde-fous sur les filtres
+  if (hub.pack && !hub.pack.startsWith("unit:") && !db.packs.some(p => p.id === hub.pack)) hub.pack = "";
+  if (hub.cat && !db.cards.some(c => c.cat === hub.cat)) hub.cat = "";
+
+  const total = db.cards.length;
+  const dueN = db.cards.filter(isDue).length;
+  const fav = db.cards.filter(c => c.fav).length;
+  const acq = db.cards.filter(c => c.acquired).length;
+  const sq = smartQueue();
+  const mins = Math.max(1, Math.round(sq.q.length * 25 / 60));
+  const resume = loadSavedSession();
+
+  // bouton principal
+  let cta;
+  if (sq.q.length){
+    const sub = sq.dueTotal + " à revoir · " + sq.freshN + " nouvelle" + (sq.freshN > 1 ? "s" : "");
+    const uline = (sq.freshN > 0 && sq.freshUnit != null) ? '<span class="u-line">Unité ' + sq.freshUnit + ' · ' + esc(unitName(sq.freshUnit)) + '</span>' : "";
+    cta = '<button class="cta ink-in" id="btn-continue"><b>Continuer ma révision</b><span>' + sq.q.length + ' carte' + (sq.q.length > 1 ? "s" : "") + ' · ~' + mins + ' min — ' + sub + '</span>' + uline + '</button>';
+  } else {
+    cta = '<button class="cta" disabled><b>Tout est à jour 完</b><span>' +
+      (sq.nextDue ? "Prochaine révision : " + fmtDate(sq.nextDue) : "Ajoute ou importe de nouvelles cartes") + '</span></button>';
+  }
+
+  const statBtn = (flt, val, lab) => '<button class="stat" data-flt="' + flt + '"><b>' + val + '</b><span>' + lab + '</span></button>';
+  const dirChip = (v, lab) => '<button class="chip" data-dir="' + v + '" aria-pressed="' + String(db.settings.direction === v) + '">' + lab + '</button>';
+  const fltChip = (v, lab) => '<button class="chip" data-hflt="' + v + '" aria-pressed="' + String(hub.flt === v) + '">' + lab + '</button>';
+  const sizeChip = (v, lab) => '<button class="chip" data-size="' + v + '" aria-pressed="' + String(db.settings.freeSize === v) + '">' + lab + '</button>';
+  const cats = Array.from(new Set(db.cards.map(c => c.cat).filter(Boolean))).sort((a,b)=>a.localeCompare(b,"fr"));
+  const unitIds = Array.from(new Set(db.cards.map(c => c.unit).filter(u => u != null))).sort((a,b)=>a-b);
+  const n = scopeCards().length;
+  const dis = n === 0 ? "disabled" : "";
+
+  root.innerHTML = heroTop +
+    (resume ? '<div class="resume"><span>Séance en cours · ' + (Math.min(resume.snap.index + 1, resume.cards.length)) + ' / ' + resume.cards.length + '</span><span style="display:flex;gap:6px"><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">✕</button></span></div>' : "") +
+    cta +
+    '<div class="stats">' +
+      statBtn("all", total, "Cartes") + statBtn("due", dueN, "À revoir") +
+      statBtn("fav", fav, "Favoris") + statBtn("acq", acq, "Acquises") +
+    '</div>' +
+    '<details class="free" id="free-panel"' + (hub.freeOpen ? " open" : "") + '>' +
+      '<summary><span class="free-hz">选</span>Séance libre & filtres</summary>' +
+      '<div class="free-body">' +
+        '<div class="eyebrow" style="margin-top:4px">Sens de révision</div>' +
+        '<div class="chips">' + dirChip("zh2fr", "中文 → FR") + dirChip("fr2zh", "FR → 中文") + dirChip("mix", "Mixte") + '</div>' +
+        '<div class="eyebrow">Sélection — ' + n + ' carte' + (n > 1 ? "s" : "") + '</div>' +
+        '<div class="chips">' + fltChip("all", "Tout") + fltChip("due", "À revoir") + fltChip("fav", "♥ Favoris") + fltChip("acq", "✓ Acquises") + '</div>' +
+        '<div class="selects">' +
+          '<select class="search" id="hub-pack"><option value="">Unité / pack : tous</option>' +
+            (unitIds.length ? '<optgroup label="Unités">' + unitIds.map(u => '<option value="unit:' + u + '"' + (hub.pack === "unit:" + u ? " selected" : "") + '>U' + u + ' · ' + esc(unitName(u)) + '</option>').join("") + '</optgroup>' : "") +
+            (db.packs.length ? '<optgroup label="Packs">' + db.packs.map(p => '<option value="' + p.id + '"' + (hub.pack === p.id ? " selected" : "") + '>' + esc(p.name) + '</option>').join("") + '</optgroup>' : "") +
+          '</select>' +
+          '<select class="search" id="hub-cat"><option value="">Catégorie : toutes</option>' +
+            cats.map(c => '<option value="' + esc(c) + '"' + (hub.cat === c ? " selected" : "") + '>' + esc(c) + '</option>').join("") +
+          '</select>' +
+        '</div>' +
+        '<label class="ck" style="margin-top:8px"><input type="checkbox" id="inc-acq"' + (hub.includeAcquired ? " checked" : "") + '> Inclure les cartes acquises</label>' +
+        '<div class="eyebrow">Taille de la séance</div>' +
+        '<div class="chips">' + sizeChip(10, "10") + sizeChip(20, "20") + sizeChip(50, "50") + sizeChip(0, "Tout") + '</div>' +
+        '<div class="eyebrow">Lancer</div>' +
+        '<div class="modes">' +
+          '<button class="mode" data-mode="cards" ' + dis + '><span class="m-hz">卡</span><span><b>Cartes</b><span>Retourne, note-toi : le planning se règle tout seul</span></span></button>' +
+          '<button class="mode" data-mode="written" ' + dis + '><span class="m-hz">笔</span><span><b>Écrit</b><span>Tape le pinyin ou le français, trace les 汉字</span></span></button>' +
+          '<button class="mode" data-mode="discover" ' + dis + '><span class="m-hz">览</span><span><b>Découverte</b><span>Tout est visible, parcours tranquillement</span></span></button>' +
+        '</div>' +
+        '<div class="lib-foot"><button class="btn ghost" id="btn-packs">Gérer les packs</button></div>' +
+      '</div>' +
+    '</details>';
+
+  if ($("btn-resume")) $("btn-resume").onclick = resumeSession;
+  if ($("btn-resume-x")) $("btn-resume-x").onclick = () => { clearSavedSession(); renderLearn(); };
+  if ($("btn-continue")) $("btn-continue").onclick = startSmartSession;
+  root.querySelectorAll("[data-flt]").forEach(b => b.onclick = () => {
+    hub.flt = b.dataset.flt;
+    if (hub.flt === "acq") hub.includeAcquired = true;
+    hub.freeOpen = true;
+    renderLearn();
+  });
+  const panel = $("free-panel");
+  panel.addEventListener("toggle", () => { hub.freeOpen = panel.open; });
+  root.querySelectorAll("[data-dir]").forEach(b => b.onclick = () => { db.settings.direction = b.dataset.dir; save(); renderLearn(); });
+  root.querySelectorAll("[data-hflt]").forEach(b => b.onclick = () => { hub.flt = b.dataset.hflt; if (hub.flt === "acq") hub.includeAcquired = true; renderLearn(); });
+  root.querySelectorAll("[data-size]").forEach(b => b.onclick = () => { db.settings.freeSize = +b.dataset.size; save(); renderLearn(); });
+  $("hub-pack").onchange = e => { hub.pack = e.target.value; renderLearn(); };
+  $("hub-cat").onchange = e => { hub.cat = e.target.value; renderLearn(); };
+  $("inc-acq").onchange = e => { hub.includeAcquired = e.target.checked; renderLearn(); };
+  root.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => startFreeSession(b.dataset.mode));
+  $("btn-packs").onclick = openPacksSheet;
+}
+
+/* ================= séance ================= */
+const currentCard = () => session.cards[session.index];
+function getState(i){
+  if (!session.states[i]) session.states[i] = { revealed:false, checked:false, ok:null, front:null, task:null, traceOk:false, traceReady:false, skipped:false, note:"", grade:null };
+  return session.states[i];
+}
+function frontOf(c, st){
+  // recto de la carte : zh ou fr, stable pendant toute la séance
+  if (st.front) return st.front;
+  const d = db.settings.direction;
+  st.front = d === "mix" ? (Math.random() < 0.5 ? "zh" : "fr") : (d === "fr2zh" ? "fr" : "zh");
+  return st.front;
+}
+function pickWriteTask(c){
+  // choisit une tâche écrite selon les réglages et le sens de révision
+  const wm = db.settings.writeModes;
+  const d = db.settings.direction;
+  const zhSide = d === "zh2fr" || d === "mix";
+  const frSide = d === "fr2zh" || d === "mix";
+  const canTrace = Array.from(c.hz).some(ch => /[\u4e00-\u9fff]/.test(ch)) && c.hz.length <= 3;
+  const opts = [];
+  if (wm.fr && zhSide) opts.push("fr");
+  if (wm.pinyin && zhSide && c.py) opts.push("py-read");
+  if (wm.pinyin && frSide && c.py) opts.push("py-prod");
+  if (wm.trace && frSide && canTrace) opts.push("trace");
+  if (!opts.length){
+    if (wm.fr) opts.push("fr");
+    if (wm.pinyin && c.py) opts.push("py-read");
+    if (wm.trace && canTrace) opts.push("trace");
+  }
+  if (!opts.length) opts.push("fr");
+  return opts[Math.floor(Math.random() * opts.length)];
+}
+
+function exampleHtml(c){
+  return '<div class="ex" data-say="' + esc(c.exHz) + '">' +
+    '<div class="ex-hz">' + esc(c.exHz) + '</div>' +
+    (c.exPy ? '<div class="ex-py">' + colorPinyin(c.exPy) + '</div>' : "") +
+    (c.exFr ? '<div class="ex-fr">' + esc(c.exFr) + '</div>' : "") +
+  '</div>';
+}
+function noteHtml(c){
+  return c.note ? '<div class="note">📌 ' + esc(c.note) + '</div>' : "";
+}
+function actionsHtml(c){
+  return '<div class="acts">' +
+    '<button class="act' + (c.fav ? " on" : "") + '" id="a-fav">♥ Favori</button>' +
+    '<button class="act" id="a-hard">⏱ Choisir la date</button>' +
+    '<button class="act' + (c.acquired ? " on jade" : "") + '" id="a-acq">✓ Acquise</button>' +
+  '</div>';
+}
+const inputHtml = ph => '<div class="w-in"><input id="w-input" class="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="' + esc(ph) + '"></div>';
+
+function writtenPromptHtml(c, st){
+  const t = st.task;
+  const pyLine = db.settings.pinyin === "always" && c.py ? '<div class="pinyin">' + colorPinyin(c.py) + '</div>' : "";
+  if (t === "fr")
+    return '<div class="w-lab">Traduis en français</div><div class="hanzi ink-in" data-say="' + esc(c.hz) + '">' + esc(c.hz) + '</div>' + pyLine + inputHtml("ta réponse en français");
+  if (t === "py-read")
+    return '<div class="w-lab">Écris le pinyin</div><div class="hanzi ink-in" data-say="' + esc(c.hz) + '">' + esc(c.hz) + '</div>' + inputHtml("ni3 hao3 ou nǐ hǎo");
+  if (t === "py-prod")
+    return '<div class="w-lab">Écris le pinyin</div><div class="fr-big ink-in">' + esc(c.fr) + '</div>' + inputHtml("ni3 hao3 ou nǐ hǎo");
+  return '<div class="w-lab">Trace en caractères chinois</div><div class="fr-big ink-in">' + esc(c.fr) + '</div>' + pyLine +
+    '<div class="mizi"><div id="s-writer"></div><div id="s-ghost" class="ghost" hidden>' + esc(c.hz) + '</div><canvas id="s-canvas" hidden></canvas></div>' +
+    '<div class="w-note" id="s-tracenote">Trace chaque caractère, trait par trait.</div>' +
+    '<div class="t-btns" id="t-btns" hidden><button class="btn" id="t-no">Raté</button><button class="btn primary" id="t-ok">Réussi</button></div>';
+}
+
+function gradesHtml(c){
+  const iv = gradeIv(c);
+  const b = (g, lab) => '<button class="gr ' + g + '" data-grade="' + g + '">' + lab + '<small>' + fmtIv(iv[g]) + '</small></button>';
+  return '<div class="grades">' + b("again", "Raté") + b("hard", "Difficile") + b("good", "Correct") + b("easy", "Facile") + '</div>' +
+    '<div class="g-row">' +
+      '<button class="btn sm ghost" id="s-prev"' + (session.index === 0 ? " disabled" : "") + '>← préc.</button>' +
+      '<button class="btn sm ghost" id="s-next">passer →</button>' +
+    '</div>';
+}
+function sessionFooterHtml(c, st){
+  const last = session.index >= session.cards.length - 1;
+  if (session.mode === "discover"){
+    return '<div class="s-foot">' +
+      '<button class="btn ghost" id="s-prev"' + (session.index === 0 ? " disabled" : "") + '>←</button>' +
+      '<button class="btn primary" id="s-next">' + (last ? "Terminer 完" : "Suivante →") + '</button></div>';
+  }
+  if (session.mode === "cards" && !st.revealed)
+    return '<div class="s-foot"><button class="btn primary big" id="s-flip">Retourner</button></div>';
+  if (session.mode === "written" && !st.checked)
+    return '<div class="s-foot"><button class="btn ghost" id="s-skip">Voir la réponse</button><button class="btn primary" id="s-check">Vérifier</button></div>';
+  // verso (cartes) ou réponse vérifiée (écrit) : boutons de notation SRS
+  return gradesHtml(c);
+}
+
+function renderSession(){
+  const c = currentCard();
+  if (!c){ endSession(); return; }
+  document.body.classList.add("in-session");
+  const st = getState(session.index);
+  if (session.mode === "discover") st.revealed = true;
+  if (session.mode === "written" && !st.task) st.task = pickWriteTask(c);
+  const front = session.mode === "cards" ? frontOf(c, st) : "zh";
+  const showPyBack = db.settings.pinyin !== "never";
+  const hideSay =
+    (session.mode === "cards" && front === "fr" && !st.revealed) ||
+    (session.mode === "written" && !st.checked && st.task === "py-prod");
+
+  let body = "";
+  if (session.mode === "written" && !st.checked){
+    body = writtenPromptHtml(c, st);
+  } else if (session.mode === "cards" && !st.revealed){
+    body = front === "zh"
+      ? '<div class="hanzi ink-in" data-say="' + esc(c.hz) + '">' + esc(c.hz) + '</div>' +
+        (db.settings.pinyin === "always" && c.py ? '<div class="pinyin">' + colorPinyin(c.py) + '</div>' : "") +
+        '<div class="hint">Appuie pour retourner</div>'
+      : '<div class="fr-big ink-in">' + esc(c.fr) + '</div><div class="hint">Appuie pour retourner</div>';
+  } else {
+    let verdict = "";
+    if (session.mode === "written" && st.checked){
+      const lab = st.ok ? "✓ Juste !" : (st.skipped ? "Réponse affichée" : "✗ Raté");
+      verdict = '<div class="verdict ' + (st.ok ? "ok" : "ko") + '">' + lab + (st.note ? ' <span>· ' + esc(st.note) + '</span>' : "") + '</div>';
+    }
+    body = verdict +
+      '<div class="hanzi ink-in" data-say="' + esc(c.hz) + '">' + esc(c.hz) + '</div>' +
+      (showPyBack && c.py ? '<div class="pinyin">' + colorPinyin(c.py) + '</div>' : "") +
+      '<div class="sep"></div><div class="fr">' + esc(c.fr) + '</div>' +
+      (c.exHz ? exampleHtml(c) : "") + noteHtml(c) + actionsHtml(c);
+  }
+
+  const modeName = { cards:"Cartes", written:"Écrit", discover:"Découverte" }[session.mode];
+  $("view").innerHTML =
+    '<section class="sess">' +
+      '<div class="s-top">' +
+        '<button class="s-x" id="s-exit" aria-label="Quitter">✕</button>' +
+        '<div class="s-scope">' + esc(session.scopeLabel) + ' · ' + modeName + '</div>' +
+        '<div class="s-count">' + (session.index + 1) + ' / ' + session.cards.length + '</div>' +
+      '</div>' +
+      '<div class="s-bar"><i style="width:' + (((session.index + 1) / session.cards.length) * 100).toFixed(1) + '%"></i></div>' +
+      '<div class="flash card" id="flash">' +
+        '<button class="seal fl-seal" data-say="' + esc(c.hz) + '"' + (hideSay ? ' style="visibility:hidden"' : "") + ' aria-label="Écouter">听</button>' +
+        body +
+      '</div>' +
+      sessionFooterHtml(c, st) +
+    '</section>';
+  wireSession(c, st);
+  persistSession();
+}
+
+function advance(){
+  if (session.index >= session.cards.length - 1) endSession();
+  else { session.index++; renderSession(); }
+}
+function wireSession(c, st){
+  $("s-exit").onclick = endSession;
+  const flip = () => {
+    st.revealed = true;
+    renderSession();
+    if (frontOf(c, st) === "fr") speak(c.hz);
+  };
+  if ($("s-flip")) $("s-flip").onclick = flip;
+  const fl = $("flash");
+  if (session.mode === "cards" && !st.revealed){
+    fl.style.cursor = "pointer";
+    fl.onclick = e => { if (e.target.closest("[data-say]") || e.target.closest("button")) return; flip(); };
+  }
+  if ($("s-next")) $("s-next").onclick = advance;
+  if ($("s-prev")) $("s-prev").onclick = () => { if (session.index > 0){ session.index--; renderSession(); } };
+  if ($("s-check")) $("s-check").onclick = checkWritten;
+  if ($("s-skip")) $("s-skip").onclick = () => {
+    st.checked = true; st.ok = false; st.skipped = true;
+    renderSession(); speak(c.hz);
+  };
+  document.querySelectorAll("[data-grade]").forEach(b => b.onclick = () => {
+    const g = b.dataset.grade;
+    st.grade = g;
+    applyGrade(c, g);
+    advance();
+  });
+  if ($("a-fav")) $("a-fav").onclick = () => { c.fav = !c.fav; save(); renderSession(); };
+  if ($("a-hard")) $("a-hard").onclick = () => openDelaySheet(c, marked => { if (marked) session.live.marked++; if (session.active) renderSession(); });
+  if ($("a-acq")) $("a-acq").onclick = () => {
+    c.acquired = !c.acquired;
+    if (c.acquired){ c.due = null; session.live.acquired++; }
+    save(); renderSession();
+  };
+  const wi = $("w-input");
+  if (wi){
+    if (st.task !== "fr"){
+      wi.addEventListener("input", () => {
+        // conversion ni3 -> nǐ à la volée
+        const v = numToAccent(wi.value);
+        if (v !== wi.value) wi.value = v;
+      });
+    }
+    setTimeout(() => wi.focus(), 60);
+  }
+  if (session.mode === "written" && !st.checked && st.task === "trace") setupSessionTrace(c, st);
+}
+
+/* -------- vérification du mode écrit -------- */
+function pyMatch(target, given){
+  const t = numToAccent(String(target || "")).toLowerCase();
+  const g = numToAccent(String(given || "")).toLowerCase();
+  const keep = s => s.normalize("NFC").replace(/[^a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/g, "");
+  if (keep(t) === keep(g) && keep(g)) return { ok:true, note:"" };
+  if (flatten(t) === flatten(g) && flatten(g)) return { ok:false, note:"Bonnes syllabes, mais vérifie les tons." };
+  return { ok:false, note:"" };
+}
+function normFr(s){
+  const base = String(s || "").toLowerCase()
+    .replace(/\(.*?\)/g, " ")
+    .replace(/[’']/g, " ")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const clean = x => x.replace(/[^a-z]+/g, "");
+  // retire les articles, mais garde le mot si tout disparaît (ex : « un »)
+  return clean(base.replace(/\b(le|la|les|l|un|une|des|du|de|d|au|aux)\b/g, " ")) || clean(base);
+}
+function frMatch(target, given){
+  const g = normFr(given);
+  if (!g) return false;
+  const segs = String(target || "").split(/[,;/·]/).map(normFr).filter(Boolean);
+  if (segs.includes(g)) return true;
+  return segs.some(seg => (g.length >= 4 && seg.includes(g)) || (seg.length >= 4 && g.includes(seg)));
+}
+function checkWritten(){
+  if (!session.active) return;
+  const c = currentCard();
+  const st = getState(session.index);
+  if (!c || !st || st.checked || session.mode !== "written") return;
+  let ok = false, note = "";
+  if (st.task === "trace"){
+    if (!st.traceOk && !st.traceReady){ toast("Termine ton tracé d'abord (ou « Voir la réponse »)."); return; }
+    ok = !!st.traceOk;
+  } else {
+    const given = ($("w-input") ? $("w-input").value : "").trim();
+    if (!given){ toast("Écris ta réponse d'abord."); return; }
+    if (st.task === "fr") ok = frMatch(c.fr, given);
+    else { const r = pyMatch(c.py, given); ok = r.ok; note = r.note; }
+  }
+  st.checked = true; st.ok = ok; st.note = note;
+  renderSession();
+  speak(c.hz);
+}
+
+/* -------- tracé pendant la séance -------- */
+function setupSessionTrace(c, st){
+  const target = $("s-writer");
+  if (!target) return;
+  const chars = Array.from(c.hz).filter(ch => /[\u4e00-\u9fff]/.test(ch));
+  if (!chars.length || typeof HanziWriter === "undefined"){ fallbackTrace(c, st); return; }
+  const size = Math.min(280, target.parentElement.clientWidth || 280);
+  target.style.width = size + "px";
+  target.style.height = size + "px";
+  const note = $("s-tracenote");
+  let i = 0;
+  st.traceOk = false; st.traceReady = false;
+  const runOne = () => {
+    if (!session.active || currentCard() !== c || getState(session.index).checked) return;
+    target.innerHTML = "";
+    if (note) note.textContent = chars.length > 1 ? "Caractère " + (i + 1) + " / " + chars.length : "Trace le caractère, trait par trait.";
+    const writer = HanziWriter.create(target, chars[i], {
+      width: size, height: size, padding: 10,
+      showCharacter: false, showOutline: true, showHintAfterMisses: 2,
+      strokeColor: "#17140F", outlineColor: "#CDBFA1", drawingColor: "#9E2B25",
+      onLoadCharDataError: () => { if (session.active && currentCard() === c && !getState(session.index).checked) fallbackTrace(c, st); }
+    });
+    writer.quiz({
+      onComplete: () => {
+        i++;
+        if (i < chars.length) setTimeout(runOne, 450);
+        else {
+          st.traceOk = true; st.traceReady = true;
+          if (note) note.textContent = "Tracé terminé — appuie sur Vérifier.";
+        }
+      }
+    });
+  };
+  runOne();
+}
+function fallbackTrace(c, st){
+  // repli si les données de traits ne chargent pas : tracé libre auto-évalué
+  const target = $("s-writer"), ghost = $("s-ghost"), canvas = $("s-canvas"), btns = $("t-btns"), note = $("s-tracenote");
+  if (!target || !ghost || !canvas) return;
+  target.hidden = true; ghost.hidden = false; canvas.hidden = false;
+  if (btns) btns.hidden = false;
+  if (note) note.textContent = "Tracé libre : recopie le modèle, puis évalue-toi.";
+  const box = ghost.parentElement;
+  const size = Math.min(280, box.clientWidth || 280);
+  canvas.width = size; canvas.height = size;
+  const len = Array.from(c.hz).length;
+  ghost.style.fontSize = (len >= 3 ? 80 : len === 2 ? 125 : 200) + "px";
+  paintPad(canvas);
+  st.traceReady = true;
+  if ($("t-ok")) $("t-ok").onclick = () => { st.traceOk = true; checkWritten(); };
+  if ($("t-no")) $("t-no").onclick = () => { st.traceOk = false; checkWritten(); };
+}
+function paintPad(canvas){
+  const ctx = canvas.getContext("2d");
+  ctx.lineWidth = 7; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.strokeStyle = "#17140F";
+  let drawing = false;
+  const pos = e => {
+    const r = canvas.getBoundingClientRect();
+    return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height];
+  };
+  canvas.onpointerdown = e => { drawing = true; canvas.setPointerCapture(e.pointerId); const p = pos(e); ctx.beginPath(); ctx.moveTo(p[0], p[1]); };
+  canvas.onpointermove = e => { if (!drawing) return; const p = pos(e); ctx.lineTo(p[0], p[1]); ctx.stroke(); };
+  canvas.onpointerup = canvas.onpointercancel = () => { drawing = false; };
+}
+
+/* -------- fin de séance -------- */
+function endSession(){
+  const sts = session.states.filter(Boolean);
+  const seen = sts.filter(s => s.revealed || s.checked || s.grade).length;
+  const checkedN = sts.filter(s => s.checked).length;
+  const right = sts.filter(s => s.checked && s.ok === true).length;
+  const gCount = g => sts.filter(s => s.grade === g).length;
+  const errIds = [];
+  session.states.forEach((s, i) => {
+    if (!s) return;
+    if (s.grade === "again" || (s.checked && s.ok === false)){
+      const id = session.cards[i] && session.cards[i].id;
+      if (id && !errIds.includes(id)) errIds.push(id);
+    }
+  });
+  session.summary = {
+    total: session.cards.length, seen, right, checked: checkedN,
+    again: gCount("again"), hard: gCount("hard"), good: gCount("good"), easy: gCount("easy"),
+    marked: session.live.marked, acquired: session.live.acquired,
+    errIds, mode: session.mode
+  };
+  session.active = false;
+  clearSavedSession();
+  document.body.classList.remove("in-session");
+  renderLearn();
+}
+function renderSummary(){
+  const s = session.summary;
+  const graded = s.again + s.hard + s.good + s.easy;
+  const errCards = s.errIds.map(id => db.cards.find(c => c.id === id)).filter(Boolean);
+  const errList = errCards.length
+    ? '<div class="eyebrow" style="text-align:center">À retravailler</div><div class="err-list">' +
+      errCards.map(c => '<div class="err-row"><b data-say="' + esc(c.hz) + '" style="cursor:pointer">' + esc(c.hz) + '</b><span>' + colorPinyin(c.py) + ' · ' + esc(c.fr) + '</span></div>').join("") +
+      '</div>'
+    : "";
+  $("view").innerHTML =
+    '<section class="card pad summary">' +
+      '<div class="sum-hz ink-in">完</div>' +
+      '<h2 class="sum-t">Séance terminée</h2>' +
+      '<div class="sum-rows">' +
+        '<div class="sum-row"><span>Cartes vues</span><b>' + s.seen + ' / ' + s.total + '</b></div>' +
+        (graded ? '<div class="sum-row"><span>Réussies (Correct + Facile)</span><b>' + (s.good + s.easy) + ' / ' + graded + '</b></div>' : "") +
+        (s.mode === "written" ? '<div class="sum-row"><span>Réponses écrites justes</span><b>' + s.right + ' / ' + s.checked + '</b></div>' : "") +
+        (s.again ? '<div class="sum-row"><span>Ratées (reviennent vite)</span><b>' + s.again + '</b></div>' : "") +
+        (s.marked ? '<div class="sum-row"><span>Programmées à la main ⏱</span><b>' + s.marked + '</b></div>' : "") +
+        (s.acquired ? '<div class="sum-row"><span>Passées en acquises ✓</span><b>' + s.acquired + '</b></div>' : "") +
+      '</div>' +
+      errList +
+      '<div class="sum-btns">' +
+        (errCards.length ? '<button class="btn primary big" id="btn-redo-err">Revoir mes ' + errCards.length + ' erreur' + (errCards.length > 1 ? "s" : "") + '</button>' : "") +
+        '<button class="btn' + (errCards.length ? " ghost" : " primary big") + '" id="btn-back-hub">Retour à l\'atelier</button>' +
+      '</div>' +
+    '</section>';
+  if ($("btn-redo-err")) $("btn-redo-err").onclick = () => {
+    const cards = shuffle(errCards);
+    session = { active:false };
+    startCardsWith(cards, "Mes erreurs", "cards");
+  };
+  $("btn-back-hub").onclick = () => { session = { active:false }; renderLearn(); };
+}
+
+/* -------- programmation ⏱ manuelle -------- */
+function delayTargets(){
+  const t = now();
+  const tonight = new Date(); tonight.setHours(20, 0, 0, 0);
+  if (tonight.getTime() <= t) tonight.setDate(tonight.getDate() + 1);
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); tomorrow.setHours(9, 0, 0, 0);
+  return [
+    ["10 minutes", t + 10 * 60e3],
+    ["1 heure", t + 3600e3],
+    ["3 heures", t + 3 * 3600e3],
+    ["Ce soir · 20 h", tonight.getTime()],
+    ["Demain · 9 h", tomorrow.getTime()],
+    ["3 jours", t + 3 * 86400e3],
+    ["1 semaine", t + 7 * 86400e3]
+  ];
+}
+function openDelaySheet(c, after){
+  const opts = delayTargets().map(o => '<button class="btn" data-d="' + o[1] + '">' + o[0] + '</button>').join("");
+  openSheet(
+    '<h3 class="sh-t">Revoir « ' + esc(c.hz) + ' » dans…</h3>' +
+    (c.due != null ? '<p class="sh-p">Actuellement programmée : ' + fmtDate(c.due) + '</p>' : "") +
+    '<div class="delay-grid">' + opts + '</div>' +
+    '<div class="dl-custom"><input type="datetime-local" id="dl-dt" class="search"><button class="btn" id="dl-ok">OK</button></div>' +
+    (c.due != null ? '<button class="btn ghost wide" id="dl-cancel">Annuler la programmation actuelle</button>' : "") +
+    '<button class="btn ghost wide" id="dl-close">Fermer</button>'
+  );
+  const setDue = ts => {
+    c.due = ts; c.acquired = false; save(); closeSheet();
+    toast("« " + c.hz + " » reviendra le " + fmtDate(ts) + ".");
+    if (after) after(true);
+  };
+  document.querySelectorAll("#sheet [data-d]").forEach(b => b.onclick = () => setDue(+b.dataset.d));
+  $("dl-ok").onclick = () => {
+    const v = $("dl-dt").value;
+    if (!v){ toast("Choisis une date et une heure."); return; }
+    const ts = new Date(v).getTime();
+    if (!ts || ts <= now()){ toast("Choisis un moment dans le futur."); return; }
+    setDue(ts);
+  };
+  if ($("dl-cancel")) $("dl-cancel").onclick = () => {
+    c.due = null; save(); closeSheet();
+    toast("Programmation annulée.");
+    if (after) after(false);
+  };
+  $("dl-close").onclick = closeSheet;
+}
+
+/* ================= bibliothèque (库) ================= */
+let lib = { q: "", flt: "all", cat: "", sort: "unit" };
+function libFiltered(){
+  let list = db.cards.slice();
+  const q = lib.q.trim();
+  if (q){
+    const fq = flatten(q);
+    list = list.filter(c =>
+      c.hz.includes(q) ||
+      (fq && (flatten(c.py).includes(fq) || flatten(c.fr).includes(fq) || flatten(c.cat).includes(fq)))
+    );
+  }
+  if (lib.flt === "fav") list = list.filter(c => c.fav);
+  else if (lib.flt === "due") list = list.filter(c => c.due != null);
+  else if (lib.flt === "acq") list = list.filter(c => c.acquired);
+  else if (lib.flt === "notacq") list = list.filter(c => !c.acquired);
+  if (lib.cat) list = list.filter(c => c.cat === lib.cat);
+  if (lib.sort === "unit") list.sort(unitSort);
+  else if (lib.sort === "old") list.sort((a, b) => a.created - b.created);
+  else if (lib.sort === "hz") list.sort((a, b) => a.hz.localeCompare(b.hz, "zh"));
+  else if (lib.sort === "py") list.sort((a, b) => flatten(a.py).localeCompare(flatten(b.py)));
+  else if (lib.sort === "fr") list.sort((a, b) => flatten(a.fr).localeCompare(flatten(b.fr)));
+  else list.sort((a, b) => b.created - a.created);
+  return list;
+}
+function rowHtml(c){
+  return '<button class="row" data-id="' + c.id + '">' +
+    '<span class="row-hz">' + esc(c.hz) + '</span>' +
+    '<span class="row-mid"><span class="row-py">' + colorPinyin(c.py) + '</span><span class="row-fr">' + esc(c.fr) + '</span></span>' +
+    '<span class="row-badges">' +
+      (c.unit != null ? '<i class="b u">U' + c.unit + '</i>' : "") +
+      (c.fav ? '<i class="b red">♥</i>' : "") +
+      (c.due != null ? '<i class="b gold">⏱</i>' : "") +
+      (c.acquired ? '<i class="b jade">✓</i>' : "") +
+    '</span></button>';
+}
+function updateLibList(){
+  if (!$("lib-list")) return;
+  const list = libFiltered();
+  $("lib-count").textContent = list.length + " carte" + (list.length > 1 ? "s" : "");
+  $("lib-list").innerHTML = list.map(rowHtml).join("") || '<p class="sh-p">Rien ne correspond à ta recherche.</p>';
+  document.querySelectorAll("#lib-list .row").forEach(r => r.onclick = () => openCardDetail(r.dataset.id));
+}
+function renderLib(){
+  const root = $("view");
+  const cats = Array.from(new Set(db.cards.map(c => c.cat).filter(Boolean))).sort((a,b)=>a.localeCompare(b,"fr"));
+  if (!db.cards.length){
+    root.innerHTML = '<section class="lib-head" style="padding:6px 2px"><h2 class="v-t" style="margin:0">库 · Tes cartes</h2></section>' + emptyHtml();
+    wireEmpty();
+    return;
+  }
+  const fltChip = (v, l) => '<button class="chip" data-lflt="' + v + '" aria-pressed="' + String(lib.flt === v) + '">' + l + '</button>';
+  root.innerHTML =
+    '<section class="card pad">' +
+      '<div class="lib-head"><h2 class="v-t" style="margin:0">库 · Tes cartes</h2><button class="seal-btn add" id="btn-add" aria-label="Nouvelle carte">加</button></div>' +
+      '<input class="search" id="lib-q" placeholder="Rechercher (汉字, pinyin, français…)" value="' + esc(lib.q) + '" autocomplete="off">' +
+      '<div class="chips" style="margin-top:10px">' +
+        fltChip("all", "Tout") + fltChip("fav", "♥") + fltChip("due", "⏱") + fltChip("acq", "✓ Acquises") + fltChip("notacq", "À apprendre") +
+      '</div>' +
+      '<div class="selects">' +
+        '<select class="search" id="lib-cat"><option value="">Toutes catégories</option>' +
+          cats.map(c => '<option value="' + esc(c) + '"' + (lib.cat === c ? " selected" : "") + '>' + esc(c) + '</option>').join("") +
+        '</select>' +
+        '<select class="search" id="lib-sort">' +
+          [["unit","Ordre du cours"],["new","Plus récentes"],["old","Plus anciennes"],["hz","汉字"],["py","Pinyin A→Z"],["fr","Français A→Z"]]
+            .map(o => '<option value="' + o[0] + '"' + (lib.sort === o[0] ? " selected" : "") + '>' + o[1] + '</option>').join("") +
+        '</select>' +
+      '</div>' +
+      '<div class="eyebrow" id="lib-count"></div>' +
+      '<div id="lib-list"></div>' +
+      '<div class="lib-foot"><button class="btn ghost" id="btn-packs2">Gérer les packs</button></div>' +
+    '</section>';
+  $("btn-add").onclick = () => openCardForm(null);
+  $("lib-q").oninput = e => { lib.q = e.target.value; updateLibList(); };
+  document.querySelectorAll("[data-lflt]").forEach(b => b.onclick = () => { lib.flt = b.dataset.lflt; renderLib(); });
+  $("lib-cat").onchange = e => { lib.cat = e.target.value; renderLib(); };
+  $("lib-sort").onchange = e => { lib.sort = e.target.value; renderLib(); };
+  $("btn-packs2").onclick = openPacksSheet;
+  updateLibList();
+}
+
+/* -------- fiche carte -------- */
+function openCardDetail(id){
+  const c = db.cards.find(x => x.id === id);
+  if (!c) return;
+  const status = [];
+  if (c.acquired) status.push('<span class="b jade">✓ acquise</span>');
+  else if (c.due != null) status.push('<span class="b gold">⏱ ' + fmtDate(c.due) + '</span>');
+  else status.push('<span class="b">à apprendre</span>');
+  status.push('<span class="b u">Niveau ' + (c.lvl || 0) + '</span>');
+  const packCk = db.packs.length
+    ? '<div class="eyebrow">Packs</div>' + db.packs.map(p =>
+        '<label class="ck"><input type="checkbox" data-pk="' + p.id + '"' + (p.cardIds.includes(c.id) ? " checked" : "") + '> ' + esc(p.name) + '</label>'
+      ).join("")
+    : "";
+  openSheet(
+    '<div class="cd-head"><div class="cd-hz" data-say="' + esc(c.hz) + '">' + esc(c.hz) + '</div><button class="seal" data-say="' + esc(c.hz) + '" aria-label="Écouter">听</button></div>' +
+    (c.py ? '<div class="cd-py">' + colorPinyin(c.py) + '</div>' : "") +
+    '<div class="cd-fr">' + esc(c.fr) + '</div>' +
+    '<div>' +
+      (c.cat ? '<span class="cd-cat">' + esc(c.cat) + '</span>' : "") +
+      (c.unit != null ? '<span class="cd-cat">U' + c.unit + ' · ' + esc(unitName(c.unit)) + '</span>' : "") +
+    '</div>' +
+    (c.exHz ? exampleHtml(c) : "") + noteHtml(c) +
+    '<div class="cd-status">' + status.join(" ") + '</div>' +
+    '<div class="acts" style="justify-content:flex-start">' +
+      '<button class="act' + (c.fav ? " on" : "") + '" id="cd-fav">♥ Favori</button>' +
+      '<button class="act" id="cd-hard">⏱ Programmer</button>' +
+      '<button class="act' + (c.acquired ? " on jade" : "") + '" id="cd-acq">✓ Acquise</button>' +
+    '</div>' +
+    packCk +
+    '<div class="sh-btns">' +
+      '<button class="btn" id="cd-edit">Modifier</button>' +
+      '<button class="btn danger" id="cd-del">Supprimer</button>' +
+      '<button class="btn ghost" id="cd-close">Fermer</button>' +
+    '</div>'
+  );
+  $("cd-fav").onclick = () => { c.fav = !c.fav; save(); openCardDetail(id); updateLibList(); };
+  $("cd-acq").onclick = () => { c.acquired = !c.acquired; if (c.acquired) c.due = null; save(); openCardDetail(id); updateLibList(); };
+  $("cd-hard").onclick = () => openDelaySheet(c, () => { openCardDetail(id); updateLibList(); });
+  $("cd-edit").onclick = () => openCardForm(c);
+  $("cd-del").onclick = () => {
+    if (!confirm("Supprimer « " + c.hz + " » ?")) return;
+    db.cards = db.cards.filter(x => x.id !== id);
+    db.packs.forEach(p => { p.cardIds = p.cardIds.filter(i => i !== id); });
+    save(); closeSheet(); refreshActive(); toast("Carte supprimée.");
+  };
+  $("cd-close").onclick = closeSheet;
+  document.querySelectorAll("#sheet [data-pk]").forEach(ck => ck.onchange = e => {
+    const p = db.packs.find(p => p.id === ck.dataset.pk);
+    if (!p) return;
+    if (e.target.checked){ if (!p.cardIds.includes(c.id)) p.cardIds.push(c.id); }
+    else p.cardIds = p.cardIds.filter(i => i !== c.id);
+    save();
+  });
+}
+
+/* -------- formulaire carte -------- */
+function openCardForm(c){
+  const cats = Array.from(new Set(db.cards.map(x => x.cat).filter(Boolean))).sort((a,b)=>a.localeCompare(b,"fr"));
+  const val = k => esc(c ? c[k] ?? "" : "");
+  openSheet(
+    '<h3 class="sh-t">' + (c ? "Modifier la carte" : "Nouvelle carte") + '</h3>' +
+    '<label class="f-lab">Caractères 汉字 *<input class="search" id="fm-hz" value="' + val("hz") + '"></label>' +
+    '<label class="f-lab">Pinyin<input class="search" id="fm-py" value="' + val("py") + '" placeholder="ni3 hao3 ou nǐ hǎo" autocapitalize="off"></label>' +
+    '<label class="f-lab">Français *<input class="search" id="fm-fr" value="' + val("fr") + '"></label>' +
+    '<label class="f-lab">Catégorie<input class="search" id="fm-cat" list="cats-dl" value="' + val("cat") + '"><datalist id="cats-dl">' +
+      cats.map(x => '<option value="' + esc(x) + '">').join("") + '</datalist></label>' +
+    '<label class="f-lab">Exemple 中文<input class="search" id="fm-exhz" value="' + val("exHz") + '"></label>' +
+    '<label class="f-lab">Exemple pinyin<input class="search" id="fm-expy" value="' + val("exPy") + '" autocapitalize="off"></label>' +
+    '<label class="f-lab">Exemple français<input class="search" id="fm-exfr" value="' + val("exFr") + '"></label>' +
+    '<label class="f-lab">Note (prononciation, nuance…)<input class="search" id="fm-note" value="' + val("note") + '"></label>' +
+    '<div class="sh-btns"><button class="btn primary" id="fm-save">Enregistrer</button><button class="btn ghost" id="fm-cancel">Annuler</button></div>'
+  );
+  $("fm-cancel").onclick = closeSheet;
+  $("fm-save").onclick = () => {
+    const hz = $("fm-hz").value.trim();
+    const fr = $("fm-fr").value.trim();
+    if (!hz || !fr){ toast("Caractères et français sont obligatoires."); return; }
+    const py = numToAccent($("fm-py").value.trim());
+    const key = hz + "§" + flatten(py);
+    const dup = db.cards.find(x => cardKey(x) === key && (!c || x.id !== c.id));
+    if (dup){ toast("« " + hz + " » (" + (py || "sans pinyin") + ") existe déjà."); return; }
+    const fields = {
+      hz, fr, py,
+      cat: $("fm-cat").value.trim(),
+      exHz: $("fm-exhz").value.trim(),
+      exPy: numToAccent($("fm-expy").value.trim()),
+      exFr: $("fm-exfr").value.trim(),
+      note: $("fm-note").value.trim()
+    };
+    if (c) Object.assign(c, fields);
+    else db.cards.push(normalizeCard(fields, false));
+    save(); closeSheet(); refreshActive();
+    toast(c ? "Carte modifiée." : "Carte ajoutée.");
+  };
+}
+
+/* -------- packs -------- */
+function upsertPack(name, ids){
+  let p = db.packs.find(p => p.name.toLowerCase() === name.toLowerCase());
+  if (!p){ p = { id: uid(), name, cardIds: [] }; db.packs.push(p); }
+  const set = new Set(p.cardIds);
+  ids.forEach(id => set.add(id));
+  p.cardIds = Array.from(set);
+  return p;
+}
+function openPacksSheet(){
+  const rows = db.packs.map(p => {
+    const n = p.cardIds.filter(id => db.cards.some(c => c.id === id)).length;
+    return '<div class="pk-row">' +
+      '<div class="pk-info"><b>' + esc(p.name) + '</b><span>' + n + ' carte' + (n > 1 ? "s" : "") + '</span></div>' +
+      '<div class="pk-btns">' +
+        '<button class="btn sm" data-rev="' + p.id + '">Réviser</button>' +
+        '<button class="btn sm ghost" data-ren="' + p.id + '">Renommer</button>' +
+        '<button class="btn sm danger" data-del="' + p.id + '">✕</button>' +
+      '</div></div>';
+  }).join("") || '<p class="sh-p">Aucun pack pour l\'instant. Importe un fichier JSON avec un « name », ou crée un pack ici puis coche-le depuis la fiche d\'une carte.</p>';
+  openSheet(
+    '<h3 class="sh-t">Packs</h3>' + rows +
+    '<div class="pk-new"><input class="search" id="pk-name" placeholder="Nom du nouveau pack"><button class="btn" id="pk-create">Créer</button></div>' +
+    '<button class="btn ghost wide" id="pk-close">Fermer</button>'
+  );
+  document.querySelectorAll("#sheet [data-rev]").forEach(b => b.onclick = () => {
+    hub.pack = b.dataset.rev; hub.flt = "all"; hub.freeOpen = true;
+    closeSheet(); setView("learn");
+  });
+  document.querySelectorAll("#sheet [data-ren]").forEach(b => b.onclick = () => {
+    const p = db.packs.find(p => p.id === b.dataset.ren);
+    if (!p) return;
+    const name = prompt("Nouveau nom du pack :", p.name);
+    if (name && name.trim()){ p.name = name.trim(); save(); openPacksSheet(); }
+  });
+  document.querySelectorAll("#sheet [data-del]").forEach(b => b.onclick = () => {
+    const p = db.packs.find(p => p.id === b.dataset.del);
+    if (!p) return;
+    if (!confirm("Supprimer le pack « " + p.name + " » ? (les cartes sont conservées)")) return;
+    db.packs = db.packs.filter(x => x.id !== p.id);
+    if (hub.pack === p.id) hub.pack = "";
+    save(); openPacksSheet();
+  });
+  $("pk-create").onclick = () => {
+    const name = $("pk-name").value.trim();
+    if (!name){ toast("Donne un nom au pack."); return; }
+    if (db.packs.some(p => p.name.toLowerCase() === name.toLowerCase())){ toast("Ce pack existe déjà."); return; }
+    db.packs.push({ id: uid(), name, cardIds: [] });
+    save(); openPacksSheet();
+  };
+  $("pk-close").onclick = closeSheet;
+}
+
+/* ================= atelier du trait (写) ================= */
+let writeState = { char: null, filter: "", scope: "unit" };
+let wWriter = null, wLoaded = null;
+function currentUnit(){
+  const pool = db.cards.filter(c => !c.acquired && c.unit != null);
+  const fresh = pool.filter(c => c.due == null).sort(unitSort);
+  if (fresh.length) return fresh[0].unit;
+  const any = pool.sort(unitSort);
+  return any.length ? any[0].unit : null;
+}
+function writeChars(){
+  const f = writeState.filter.trim();
+  const ff = flatten(f);
+  let cards = db.cards;
+  const u = currentUnit();
+  if (writeState.scope === "unit" && u != null) cards = cards.filter(c => c.unit === u);
+  if (f) cards = cards.filter(c => c.hz.includes(f) || (ff && (flatten(c.py).includes(ff) || flatten(c.fr).includes(ff))));
+  const set = new Set();
+  cards.forEach(c => Array.from(c.hz).forEach(ch => { if (/[\u4e00-\u9fff]/.test(ch)) set.add(ch); }));
+  return Array.from(set);
+}
+function renderWrite(){
+  const root = $("view");
+  wWriter = null; wLoaded = null;
+  if (!db.cards.length){
+    root.innerHTML = '<section class="card pad"><h2 class="v-t">写 · L\'atelier du trait</h2><p class="sh-p">Ajoute ou importe des cartes pour t\'entraîner à tracer leurs caractères.</p></section>';
+    return;
+  }
+  const u = currentUnit();
+  const hasUnits = u != null;
+  root.innerHTML =
+    '<section class="card pad">' +
+      '<h2 class="v-t">写 · L\'atelier du trait</h2>' +
+      (hasUnits
+        ? '<div class="chips" style="margin-bottom:10px">' +
+            '<button class="chip" data-wscope="unit" aria-pressed="' + String(writeState.scope === "unit") + '">Unité en cours (U' + u + ')</button>' +
+            '<button class="chip" data-wscope="all" aria-pressed="' + String(writeState.scope === "all") + '">Tous</button>' +
+          '</div>'
+        : "") +
+      '<input class="search" id="w-filter" placeholder="Filtrer (mot, pinyin, français…)" value="' + esc(writeState.filter) + '" autocomplete="off">' +
+      '<div class="picker" id="picker"></div>' +
+      '<div class="w-lab" id="w-label" style="text-align:center"></div>' +
+      '<div class="mizi"><div id="w-target"></div><div id="w-ghost" class="ghost" hidden></div><canvas id="w-canvas" hidden></canvas></div>' +
+      '<div class="w-note" id="w-note" style="text-align:center"></div>' +
+      '<div class="sh-btns">' +
+        '<button class="btn" id="w-anim">Ordre des traits</button>' +
+        '<button class="btn primary" id="w-quiz">Quiz</button>' +
+        '<button class="btn ghost" id="w-clear" hidden>Effacer</button>' +
+      '</div>' +
+    '</section>';
+  document.querySelectorAll("[data-wscope]").forEach(b => b.onclick = () => { writeState.scope = b.dataset.wscope; renderWrite(); });
+  $("w-filter").oninput = e => { writeState.filter = e.target.value; renderPicker(); };
+  $("w-anim").onclick = () => {
+    if (!wWriter){ toast("Tracé animé indisponible pour ce caractère."); return; }
+    wWriter.showCharacter(); wWriter.animateCharacter();
+    $("w-note").textContent = "Observe l'ordre des traits.";
+  };
+  $("w-quiz").onclick = () => {
+    if (!wWriter){ toast("Quiz indisponible pour ce caractère."); return; }
+    wWriter.hideCharacter();
+    $("w-note").textContent = "À toi : trace de mémoire, trait par trait.";
+    wWriter.quiz({ onComplete: () => { $("w-note").textContent = "漂亮 ! Caractère réussi ✓"; } });
+  };
+  $("w-clear").onclick = () => {
+    const cv = $("w-canvas");
+    cv.getContext("2d").clearRect(0, 0, cv.width, cv.height);
+  };
+  renderPicker();
+}
+function renderPicker(){
+  const p = $("picker");
+  if (!p) return;
+  const chars = writeChars();
+  if (!chars.length){
+    p.innerHTML = '<p class="sh-p">Aucun caractère ne correspond.</p>';
+    $("w-label").innerHTML = ""; $("w-target").innerHTML = "";
+    wWriter = null; wLoaded = null;
+    return;
+  }
+  if (!writeState.char || !chars.includes(writeState.char)) writeState.char = chars[0];
+  p.innerHTML = chars.map(ch =>
+    '<button class="chip hzchip" data-ch="' + esc(ch) + '" aria-pressed="' + String(ch === writeState.char) + '">' + esc(ch) + '</button>'
+  ).join("");
+  p.querySelectorAll(".hzchip").forEach(b => b.onclick = () => loadWriteChar(b.dataset.ch));
+  if (writeState.char !== wLoaded) loadWriteChar(writeState.char);
+}
+function loadWriteChar(ch){
+  writeState.char = ch; wLoaded = ch; wWriter = null;
+  document.querySelectorAll("#picker .hzchip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.ch === ch)));
+  const target = $("w-target"), ghost = $("w-ghost"), canvas = $("w-canvas");
+  if (!target) return;
+  const card = db.cards.find(c => c.hz.includes(ch));
+  $("w-label").innerHTML = card
+    ? '<span data-say="' + esc(card.hz) + '" style="cursor:pointer">' + esc(card.hz) + '</span> · ' + colorPinyin(card.py) + ' · ' + esc(card.fr)
+    : "";
+  target.hidden = false; ghost.hidden = true; canvas.hidden = true;
+  $("w-clear").hidden = true;
+  $("w-note").textContent = "";
+  target.innerHTML = "";
+  const size = Math.min(280, target.parentElement.clientWidth || 280);
+  target.style.width = size + "px"; target.style.height = size + "px";
+  if (typeof HanziWriter === "undefined"){ fallbackWriteChar(ch); return; }
+  wWriter = HanziWriter.create(target, ch, {
+    width: size, height: size, padding: 10,
+    showCharacter: true, showOutline: true, showHintAfterMisses: 2,
+    strokeColor: "#17140F", outlineColor: "#CDBFA1", drawingColor: "#9E2B25",
+    delayBetweenStrokes: 120,
+    onLoadCharDataError: () => { if (writeState.char === ch) fallbackWriteChar(ch); }
+  });
+}
+function fallbackWriteChar(ch){
+  // repli : modèle en filigrane + tracé libre au doigt/souris
+  wWriter = null;
+  const target = $("w-target"), ghost = $("w-ghost"), canvas = $("w-canvas");
+  if (!target || !ghost || !canvas) return;
+  target.hidden = true; ghost.hidden = false; canvas.hidden = false;
+  $("w-clear").hidden = false;
+  ghost.textContent = ch;
+  ghost.style.fontSize = "200px";
+  const size = Math.min(280, ghost.parentElement.clientWidth || 280);
+  canvas.width = size; canvas.height = size;
+  paintPad(canvas);
+  $("w-note").textContent = "Tracé animé indisponible ici — entraînement libre sur le modèle.";
+}
+
+/* ================= écoute (听) ================= */
+// vraies paires minimales : la synthèse lit un caractère chinois, jamais du pinyin latin
+const TONE_SETS = [
+  { syl: "ma",   items: [["妈","mā","maman"],["麻","má","le chanvre"],["马","mǎ","le cheval"],["骂","mà","gronder"]] },
+  { syl: "ba",   items: [["八","bā","huit"],["拔","bá","arracher"],["把","bǎ","saisir"],["爸","bà","papa"]] },
+  { syl: "shu",  items: [["书","shū","le livre"],["熟","shú","cuit, mûr"],["属","shǔ","appartenir à"],["树","shù","l'arbre"]] },
+  { syl: "tang", items: [["汤","tāng","la soupe"],["糖","táng","le sucre"],["躺","tǎng","s'allonger"],["烫","tàng","brûlant"]] },
+  { syl: "yao",  items: [["腰","yāo","la taille (du corps)"],["摇","yáo","secouer"],["咬","yǎo","mordre"],["药","yào","le médicament"]] },
+  { syl: "wen",  items: [["温","wēn","tiède"],["文","wén","l'écrit"],["吻","wěn","le baiser"],["问","wèn","demander"]] },
+  { syl: "yan",  items: [["烟","yān","la fumée"],["盐","yán","le sel"],["眼","yǎn","l'œil"],["厌","yàn","détester"]] },
+  { syl: "qing", items: [["清","qīng","clair, pur"],["情","qíng","le sentiment"],["请","qǐng","s'il te plaît"],["庆","qìng","fêter"]] }
+];
+let toneRound = null, wordRound = null;
+function renderListen(){
+  const root = $("view");
+  const enough = db.cards.length >= 4;
+  const lvlChip = (v, l) => '<button class="chip" data-llvl="' + v + '" aria-pressed="' + String(db.settings.listenLevel === v) + '">' + l + '</button>';
+  root.innerHTML =
+    '<section class="card pad">' +
+      '<h2 class="v-t">听 · Le drill des tons</h2>' +
+      '<p class="muted">Écoute un vrai caractère et retrouve son ton : <span class="tn t1">ā</span> <span class="tn t2">á</span> <span class="tn t3">ǎ</span> <span class="tn t4">à</span>.</p>' +
+      '<div class="listen-center"><button class="seal lg" id="tone-play" aria-label="Écouter">听</button></div>' +
+      '<div class="opts" id="tone-grid"></div>' +
+      '<div class="w-note" id="tone-note" style="text-align:center"></div>' +
+      '<div class="drill-foot"><button class="btn primary" id="tone-go" hidden>Continuer</button></div>' +
+    '</section>' +
+    '<section class="card pad">' +
+      '<h2 class="v-t">Reconnaître les mots</h2>' +
+      (enough
+        ? '<p class="muted">Écoute puis retrouve le mot. Choisis ton niveau d\'aide :</p>' +
+          '<div class="chips" style="margin-bottom:6px">' + lvlChip(1, "汉字 + FR") + lvlChip(2, "汉字 seuls") + lvlChip(3, "Français seul") + '</div>' +
+          '<div class="listen-center"><button class="seal lg" id="word-play" aria-label="Écouter">听</button></div>' +
+          '<div class="opts" id="word-grid"></div>' +
+          '<div class="w-note" id="word-note" style="text-align:center"></div>' +
+          '<div class="drill-foot"><button class="btn primary" id="word-go" hidden>Continuer</button></div>'
+        : '<p class="sh-p">Il te faut au moins 4 cartes pour cet exercice.</p>') +
+    '</section>';
+  newToneRound(false);
+  $("tone-play").onclick = () => { if (toneRound) speak(toneRound.target[0]); };
+  if (enough){
+    document.querySelectorAll("[data-llvl]").forEach(b => b.onclick = () => { db.settings.listenLevel = +b.dataset.llvl; save(); renderListen(); });
+    newWordRound(false);
+    $("word-play").onclick = () => { if (wordRound) speak(wordRound.target.hz); };
+  }
+}
+function newToneRound(play){
+  const grid = $("tone-grid");
+  if (!grid) return;
+  const set = TONE_SETS[Math.floor(Math.random() * TONE_SETS.length)];
+  const tone = 1 + Math.floor(Math.random() * 4);
+  toneRound = { set, tone, target: set.items[tone - 1], done: false };
+  grid.innerHTML = [1, 2, 3, 4].map(t =>
+    '<button class="opt" data-t="' + t + '"><span class="tn t' + t + '">' + numToAccent(set.syl + t) + '</span></button>'
+  ).join("");
+  $("tone-note").textContent = "Appuie sur le sceau, puis choisis le ton entendu.";
+  $("tone-go").hidden = true;
+  grid.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    if (toneRound.done) return;
+    toneRound.done = true;
+    const t = +b.dataset.t;
+    const okBtn = grid.querySelector('[data-t="' + toneRound.tone + '"]');
+    if (okBtn) okBtn.classList.add("ok");
+    const tg = toneRound.target;
+    if (t === toneRound.tone) $("tone-note").textContent = "✓ Juste ! C'était " + tg[0] + " " + tg[1] + " — " + tg[2] + ".";
+    else { b.classList.add("ko"); $("tone-note").textContent = "✗ C'était le ton " + toneRound.tone + " : " + tg[0] + " " + tg[1] + " — " + tg[2] + "."; }
+    $("tone-go").hidden = false;
+  });
+  $("tone-go").onclick = () => newToneRound(true);
+  if (play) speak(toneRound.target[0]);
+}
+function pickDistractors(target, pool){
+  // pièges intelligents : syllabes proches, même initiale, même nombre de syllabes
+  const sylCount = s => String(s || "").trim().split(/\s+/).filter(Boolean).length;
+  const tN = sylCount(target.py);
+  const tIni = (flatten(target.py) || "")[0] || "";
+  const tSyls = new Set(String(target.py || "").toLowerCase().split(/\s+/).map(x => flatten(x)).filter(Boolean));
+  return pool
+    .filter(c => c.id !== target.id)
+    .map(c => {
+      let s = Math.random();
+      if (sylCount(c.py) === tN) s += 2;
+      if (((flatten(c.py) || "")[0] || "") === tIni) s += 2;
+      if (String(c.py || "").toLowerCase().split(/\s+/).some(x => tSyls.has(flatten(x)))) s += 1.5;
+      if (c.cat && c.cat === target.cat) s += 1;
+      return [s, c];
+    })
+    .sort((a, b) => b[0] - a[0])
+    .slice(0, 6)
+    .map(x => x[1])
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3);
+}
+function newWordRound(play){
+  const grid = $("word-grid");
+  if (!grid || db.cards.length < 4) return;
+  const target = db.cards[Math.floor(Math.random() * db.cards.length)];
+  const opts = shuffle([target].concat(pickDistractors(target, db.cards)));
+  wordRound = { target, done: false };
+  const lvl = db.settings.listenLevel;
+  grid.innerHTML = opts.map(c =>
+    '<button class="opt" data-id="' + c.id + '">' +
+      (lvl !== 3 ? '<span class="o-hz">' + esc(c.hz) + '</span>' : '<span class="o-hz" style="font-size:16px;font-family:var(--ui)">' + esc(c.fr) + '</span>') +
+      (lvl === 1 ? '<span class="o-fr">' + esc(c.fr) + '</span>' : "") +
+    '</button>'
+  ).join("");
+  $("word-note").textContent = "Appuie sur le sceau, puis choisis le mot entendu.";
+  $("word-go").hidden = true;
+  grid.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    if (wordRound.done) return;
+    wordRound.done = true;
+    const okBtn = grid.querySelector('[data-id="' + wordRound.target.id + '"]');
+    if (okBtn) okBtn.classList.add("ok");
+    const tg = wordRound.target;
+    if (b.dataset.id === tg.id) $("word-note").textContent = "✓ Juste ! " + tg.hz + " (" + tg.py + ") · " + tg.fr;
+    else {
+      b.classList.add("ko");
+      const picked = db.cards.find(c => c.id === b.dataset.id);
+      $("word-note").textContent = "✗ C'était " + tg.hz + " (" + tg.py + ") · " + tg.fr + (picked ? " — tu as choisi " + picked.hz + " (" + picked.py + ")." : ".");
+    }
+    $("word-go").hidden = false;
+  });
+  $("word-go").onclick = () => newWordRound(true);
+  if (play) speak(target.hz);
+}
+
+/* ================= grammaire (法) ================= */
+function GX(hz, py, fr){
+  return '<button class="gx" data-say="' + hz + '"><span class="gx-hz">' + hz + '</span><span class="gx-py">' + py + '</span><span class="gx-fr">' + fr + '</span></button>';
+}
+// quiz : la 1re option de opts est toujours la bonne (mélangée à l'affichage)
+const GRAMMAR = [
+  { hz:"序", t:"L'ordre des mots : Sujet + Verbe + Objet",
+    body:"Comme en français, la phrase de base suit l'ordre Sujet-Verbe-Objet. Pas de conjugaison, pas d'accord : le verbe ne change jamais." +
+    GX("我喝茶。","wǒ hē chá.","Je bois du thé.") + GX("他看书。","tā kàn shū.","Il lit un livre."),
+    quiz:[
+      { q:"Quelle phrase est correcte ?", hz:true, opts:["我喝茶。","茶喝我。","喝我茶。"] },
+      { q:"« Il lit un livre » se dit…", hz:true, opts:["他看书。","书看他。","看他书。"] },
+      { q:"Le verbe chinois…", opts:["ne se conjugue jamais","s'accorde avec le sujet","change au pluriel"] }
+    ] },
+  { hz:"是", t:"是 « être » : seulement pour A = B",
+    body:"是 (shì) relie deux noms : « je suis étudiant », « c'est mon ami ». On ne l'utilise pas devant un adjectif." +
+    GX("我是学生。","wǒ shì xué sheng.","Je suis étudiant.") + GX("她是我的老师。","tā shì wǒ de lǎo shī.","C'est ma professeure."),
+    quiz:[
+      { q:"« Je suis étudiant » :", hz:true, opts:["我是学生。","我很学生。","我学生是。"] },
+      { q:"是 s'utilise…", opts:["entre deux noms","devant un adjectif","pour dire l'heure"] },
+      { q:"« C'est mon ami » :", hz:true, opts:["他是我的朋友。","他很我的朋友。","他的是朋友。"] }
+    ] },
+  { hz:"很", t:"很 devant l'adjectif",
+    body:"Devant un adjectif, on met 很 (hěn) au lieu de 是. Il est quasi obligatoire, et son sens « très » est affaibli : 我很好 veut surtout dire « je vais bien », pas « je vais TRÈS bien »." +
+    GX("我很好。","wǒ hěn hǎo.","Je vais bien.") + GX("中国很大。","zhōng guó hěn dà.","La Chine est grande."),
+    quiz:[
+      { q:"« La Chine est grande » :", hz:true, opts:["中国很大。","中国是大。","中国大很。"] },
+      { q:"Devant un adjectif, on met…", opts:["很","是","的"] },
+      { q:"我很好 signifie surtout…", opts:["je vais bien","je suis extrêmement bon","je suis le meilleur"] }
+    ] },
+  { hz:"不", t:"La négation : 不 et 没(有)",
+    body:"不 (bù) nie le présent, l'habitude et les verbes 是 / 会 / 能. La construction 没(有) + verbe nie « avoir » et les actions passées : 我没吃 = je n'ai pas mangé. Attention : devant un 4ᵉ ton, 不 se prononce bú." +
+    GX("我不去。","wǒ bú qù.","Je n'y vais pas.") + GX("我没有钱。","wǒ méi yǒu qián.","Je n'ai pas d'argent."),
+    quiz:[
+      { q:"« Je n'y vais pas » :", hz:true, opts:["我不去。","我没去不。","我去不。"] },
+      { q:"« Je n'ai pas d'argent » :", hz:true, opts:["我没有钱。","我不有钱。","我钱没有。"] },
+      { q:"Devant un 4ᵉ ton, 不 se prononce…", opts:["bú","bù","bǔ"] }
+    ] },
+  { hz:"吗", t:"Poser une question avec 吗",
+    body:"Ajoute 吗 (ma) à la fin d'une phrase affirmative : elle devient une question oui/non. Rien d'autre ne bouge." +
+    GX("你是学生吗？","nǐ shì xué sheng ma?","Es-tu étudiant ?") + GX("你喝茶吗？","nǐ hē chá ma?","Bois-tu du thé ?"),
+    quiz:[
+      { q:"你是学生___？", hz:true, opts:["吗","的","了"] },
+      { q:"吗 se place…", opts:["en fin de phrase","au début","après le sujet"] },
+      { q:"« Bois-tu du thé ? » :", hz:true, opts:["你喝茶吗？","吗你喝茶？","你吗喝茶？"] }
+    ] },
+  { hz:"什", t:"Les mots interrogatifs restent en place",
+    body:"什么 (quoi), 谁 (qui), 哪儿 (où)… se mettent exactement là où serait la réponse. On ne les déplace pas en début de phrase." +
+    GX("你叫什么名字？","nǐ jiào shén me míng zi?","Comment t'appelles-tu ?") + GX("他是谁？","tā shì shéi?","Qui est-ce ?") + GX("你在哪儿？","nǐ zài nǎr?","Où es-tu ?"),
+    quiz:[
+      { q:"« Où es-tu ? » :", hz:true, opts:["你在哪儿？","哪儿你在？","在哪儿你？"] },
+      { q:"什么 se place…", opts:["à la place de la réponse","toujours au début","toujours à la fin"] },
+      { q:"« Qui est-ce ? » :", hz:true, opts:["他是谁？","谁他是？","他谁是？"] }
+    ] },
+  { hz:"的", t:"的 : la possession",
+    body:"的 (de) se place entre le possesseur et la chose possédée : « moi 的 livre » = mon livre. Avec la famille proche, on peut l'omettre (我妈妈)." +
+    GX("我的书","wǒ de shū","mon livre") + GX("妈妈的猫","mā ma de māo","le chat de maman"),
+    quiz:[
+      { q:"« mon livre » :", hz:true, opts:["我的书","书的我","我书的"] },
+      { q:"« le chat de maman » :", hz:true, opts:["妈妈的猫","猫的妈妈","妈妈猫的"] },
+      { q:"Avec la famille proche, 的…", opts:["peut se supprimer (我妈妈)","est obligatoire","devient 了"] }
+    ] },
+  { hz:"个", t:"Les classificateurs : 个, 本, 只",
+    body:"Entre un nombre et un nom, il faut un classificateur. 个 (gè) est le passe-partout, 本 (běn) pour les livres, 只 (zhī) pour les petits animaux. Pour dire « deux » choses, on utilise 两 (liǎng), pas 二." +
+    GX("三个人","sān gè rén","trois personnes") + GX("两本书","liǎng běn shū","deux livres") + GX("一只猫","yī zhī māo","un chat"),
+    quiz:[
+      { q:"« trois personnes » :", hz:true, opts:["三个人","三人个","三本人"] },
+      { q:"« deux livres » :", hz:true, opts:["两本书","二本书","两书"] },
+      { q:"« un chat » :", hz:true, opts:["一只猫","一本猫","一猫"] }
+    ] },
+  { hz:"天", t:"Le temps se place avant le verbe",
+    body:"今天, 明天, 现在… se placent après le sujet (ou en tout début de phrase), jamais à la fin comme en français." +
+    GX("我今天去学校。","wǒ jīn tiān qù xué xiào.","Aujourd'hui je vais à l'école.") + GX("他明天来。","tā míng tiān lái.","Il vient demain."),
+    quiz:[
+      { q:"« Il vient demain » :", hz:true, opts:["他明天来。","他来明天。","明天来他。"] },
+      { q:"今天 se place…", opts:["après le sujet (ou tout au début)","à la fin de la phrase","après le verbe"] },
+      { q:"« Aujourd'hui je vais à l'école » :", hz:true, opts:["我今天去学校。","我去学校今天。","今天学校我去。"] }
+    ] },
+  { hz:"了", t:"了 : action accomplie ou changement",
+    body:"了 (le) après le verbe ou en fin de phrase indique qu'une action est accomplie ou que la situation a changé : 下雨了 = « voilà qu'il pleut ». Attention : ce n'est pas exactement un passé à la française." +
+    GX("我吃了。","wǒ chī le.","J'ai mangé.") + GX("他来了。","tā lái le.","Il est arrivé.") + GX("下雨了。","xià yǔ le.","Il pleut (ça vient de commencer)."),
+    quiz:[
+      { q:"« J'ai mangé » :", hz:true, opts:["我吃了。","我了吃。","我吃的。"] },
+      { q:"了 indique…", opts:["une action accomplie ou un changement","exactement le passé français","le futur"] },
+      { q:"« Il pleut (ça y est) » :", hz:true, opts:["下雨了。","了下雨。","雨下的。"] }
+    ] },
+  { hz:"在", t:"在 : le lieu et l'action en cours",
+    body:"在 (zài) indique où l'on se trouve. Devant un verbe, il exprime aussi une action en train de se faire (« être en train de »)." +
+    GX("我在家。","wǒ zài jiā.","Je suis à la maison.") + GX("他在打电话。","tā zài dǎ diàn huà.","Il est en train de téléphoner."),
+    quiz:[
+      { q:"« Je suis à la maison » :", hz:true, opts:["我在家。","我是家。","我家在。"] },
+      { q:"« Il est en train de téléphoner » :", hz:true, opts:["他在打电话。","他打在电话。","在他打电话。"] },
+      { q:"在 devant un verbe exprime…", opts:["une action en cours","le passé","une question"] }
+    ] },
+  { hz:"声", t:"Les 4 tons : la mélodie des mots",
+    body:"Le ton fait partie du mot : la même syllabe « ma » change de sens selon la mélodie. 1ᵉʳ haut et plat, 2ᵉ montant, 3ᵉ descend puis remonte, 4ᵉ tombe sèchement." +
+    GX("妈 mā","ton 1 — haut et plat","maman") + GX("麻 má","ton 2 — montant","chanvre") + GX("马 mǎ","ton 3 — creusé","cheval") + GX("骂 mà","ton 4 — descendant","gronder") + GX("妈妈骂马。","mā ma mà mǎ.","Maman gronde le cheval."),
+    quiz:[
+      { q:"mǎ (3ᵉ ton) veut dire…", opts:["cheval","maman","gronder"] },
+      { q:"Le 4ᵉ ton…", opts:["tombe sèchement","monte","reste plat"] },
+      { q:"mā, má, mǎ, mà : combien de mots différents ?", opts:["quatre","un seul","deux"] }
+    ] }
+];
+function quizHtml(gi){
+  const g = GRAMMAR[gi];
+  return '<div class="qz"><div class="qz-t">Mini-quiz</div>' +
+    g.quiz.map((qq, qi) => {
+      const opts = shuffle(qq.opts.map((o, i) => [o, i === 0]));
+      return '<div class="qz-q">' + (qi + 1) + '. ' + (qq.hz ? '<span class="qhz">' : '') + esc(qq.q) + (qq.hz ? '</span>' : '') + '</div>' +
+        '<div class="qz-opts" data-g="' + gi + '" data-q="' + qi + '">' +
+        opts.map(o => '<button class="chip' + (qq.hz ? " hz" : "") + '" data-ok="' + o[1] + '">' + esc(o[0]) + '</button>').join("") +
+        '</div>';
+    }).join("") +
+    '<div class="qz-score" id="qz-score-' + gi + '"></div></div>';
+}
+function renderGrammar(){
+  $("view").innerHTML =
+    '<section style="padding:6px 2px 10px"><h2 class="v-t" style="margin:0">法 · Les règles du jeu</h2><p class="muted">L\'essentiel de la grammaire HSK 1, en fiches. Touche un exemple pour l\'écouter, puis teste-toi.</p></section>' +
+    GRAMMAR.map((g, i) =>
+      '<details class="gcard"' + (i === 0 ? " open" : "") + '><summary><span class="g-hz">' + g.hz + '</span>' + g.t + '</summary><div class="g-body">' + g.body + quizHtml(i) + '</div></details>'
+    ).join("");
+  document.querySelectorAll(".qz-opts").forEach(box => {
+    const gi = +box.dataset.g;
+    box.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+      if (box.dataset.done) return;
+      box.dataset.done = "1";
+      const good = box.querySelector('[data-ok="true"]');
+      if (good) good.classList.add("ok");
+      if (b.dataset.ok !== "true") b.classList.add("ko");
+      // score de la fiche
+      const boxes = Array.from(document.querySelectorAll('.qz-opts[data-g="' + gi + '"]'));
+      const done = boxes.filter(x => x.dataset.done).length;
+      const right = boxes.filter(x => x.dataset.done && !x.querySelector(".chip.ko")).length;
+      const sc = $("qz-score-" + gi);
+      if (sc) sc.textContent = done === boxes.length ? "Score : " + right + " / " + boxes.length + (right === boxes.length ? " — 漂亮 !" : "") : "";
+    });
+  });
+}
+
+/* ================= réglages ================= */
+function openSettings(){
+  refreshVoices();
+  const s = db.settings;
+  const backup = getBackup();
+  const vopts = '<option value="">Voix automatique</option>' + voices.map(v =>
+    '<option value="' + esc(v.voiceURI) + '"' + (s.voice === v.voiceURI ? " selected" : "") + '>' + esc(v.name) + '</option>'
+  ).join("");
+  const pyChip = (v, l) => '<button class="chip" data-py="' + v + '" aria-pressed="' + String(s.pinyin === v) + '">' + l + '</button>';
+  const selOpt = (arr, cur) => arr.map(o => '<option value="' + o[0] + '"' + (cur === o[0] ? " selected" : "") + '>' + o[1] + '</option>').join("");
+  openSheet(
+    '<h3 class="sh-t">设 · Réglages</h3>' +
+    '<div class="eyebrow" style="margin-top:6px">Séance « Continuer »</div>' +
+    '<label class="f-lab">Taille maximale<select class="search" id="st-size">' + selOpt([[10,"10 cartes"],[15,"15 cartes"],[20,"20 cartes"],[30,"30 cartes"],[0,"Tout ce qui est dû"]], s.sessionSize) + '</select></label>' +
+    '<label class="f-lab">Nouvelles cartes par séance<select class="search" id="st-new">' + selOpt([[0,"0"],[3,"3"],[5,"5"],[10,"10"]], s.newPerSession) + '</select></label>' +
+    '<div class="eyebrow">Pinyin</div>' +
+    '<div class="chips" id="st-py">' + pyChip("always", "Toujours") + pyChip("reveal", "Au verso") + pyChip("never", "Jamais") + '</div>' +
+    '<label class="ck" style="margin-top:8px"><input type="checkbox" id="st-col"' + (s.toneColors ? " checked" : "") + '> Colorer les tons</label>' +
+    '<div class="eyebrow">Audio</div>' +
+    '<label class="f-lab">Vitesse · <span id="rate-lab">' + s.rate.toFixed(2) + '×</span><input type="range" id="st-rate" min="0.5" max="1.2" step="0.05" value="' + s.rate + '"></label>' +
+    '<label class="f-lab">Voix chinoise<select class="search" id="st-voice">' + vopts + '</select></label>' +
+    (voices.length ? "" : '<p class="sh-note">Aucune voix chinoise détectée. Installe une voix « Chinois (Chine) » dans ton système pour activer l\'audio.</p>') +
+    '<div class="eyebrow">Exercices écrits</div>' +
+    '<label class="ck"><input type="checkbox" id="wm-py"' + (s.writeModes.pinyin ? " checked" : "") + '> Taper le pinyin</label>' +
+    '<label class="ck"><input type="checkbox" id="wm-fr"' + (s.writeModes.fr ? " checked" : "") + '> Taper le français</label>' +
+    '<label class="ck"><input type="checkbox" id="wm-tr"' + (s.writeModes.trace ? " checked" : "") + '> Tracer les caractères</label>' +
+    '<div class="eyebrow">Données</div>' +
+    '<div class="sh-btns">' +
+      '<button class="btn" id="st-export">Exporter</button>' +
+      '<button class="btn" id="st-import">Importer</button>' +
+      '<button class="btn ghost" id="st-format">Format JSON</button>' +
+    '</div>' +
+    (backup ? '<button class="btn wide" id="st-restore">Restaurer la sauvegarde du ' + fmtDate(backup.ts) + '</button>' : "") +
+    '<button class="btn danger wide" id="st-reset">Tout effacer</button>' +
+    '<button class="btn ghost wide" id="st-close">Fermer</button>'
+  );
+  $("st-size").onchange = e => { s.sessionSize = +e.target.value; save(); };
+  $("st-new").onchange = e => { s.newPerSession = +e.target.value; save(); };
+  document.querySelectorAll("#st-py .chip").forEach(b => b.onclick = () => {
+    s.pinyin = b.dataset.py; save();
+    document.querySelectorAll("#st-py .chip").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.py === s.pinyin)));
+  });
+  $("st-col").onchange = e => { s.toneColors = e.target.checked; save(); };
+  $("st-rate").oninput = e => { s.rate = +e.target.value; $("rate-lab").textContent = s.rate.toFixed(2) + "×"; save(); };
+  $("st-voice").onchange = e => { s.voice = e.target.value; save(); speak("你好"); };
+  ["wm-py", "wm-fr", "wm-tr"].forEach(id => {
+    $(id).onchange = () => {
+      const py = $("wm-py").checked, fr = $("wm-fr").checked, tr = $("wm-tr").checked;
+      if (!py && !fr && !tr){
+        $(id).checked = true;
+        toast("Garde au moins un type d'exercice écrit.");
+        return;
+      }
+      s.writeModes = { pinyin: py, fr: fr, trace: tr };
+      save();
+    };
+  });
+  $("st-export").onclick = exportData;
+  $("st-import").onclick = () => $("file-global").click();
+  $("st-format").onclick = openFormatSheet;
+  if ($("st-restore")) $("st-restore").onclick = () => {
+    const b = getBackup();
+    if (!b){ toast("Aucune sauvegarde trouvée."); return; }
+    if (!confirm("Restaurer la sauvegarde du " + fmtDate(b.ts) + " ? Ta collection actuelle sera remplacée.")) return;
+    db.cards = b.cards.map(c => normalizeCard(c, true)).filter(Boolean);
+    db.packs = Array.isArray(b.packs) ? b.packs : [];
+    db.units = (b.units && typeof b.units === "object") ? b.units : {};
+    session = { active:false };
+    clearSavedSession();
+    save(); closeSheet(); refreshActive(); toast("Sauvegarde restaurée.");
+  };
+  $("st-reset").onclick = () => {
+    if (!confirm("Tout effacer ? Cartes, packs et progression seront supprimés (réglages conservés).\nUne sauvegarde sera gardée, restaurable depuis les réglages.")) return;
+    makeBackup();
+    db.cards = []; db.packs = []; db.units = {};
+    hub = { flt:"all", pack:"", cat:"", includeAcquired:false, freeOpen:false };
+    session = { active: false };
+    clearSavedSession();
+    save(); closeSheet(); refreshActive(); toast("Collection effacée (sauvegarde disponible dans les réglages).");
+  };
+  $("st-close").onclick = () => { closeSheet(); refreshActive(); };
+}
+
+/* ================= import / export ================= */
+function exportData(){
+  const data = { app:"mo-studio", version:2, exported:new Date().toISOString(), units:db.units, cards:db.cards, packs:db.packs, settings:db.settings };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "mo-studio-export.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  toast("Export téléchargé.");
+}
+function openImportSheet(data){
+  const rawCards = Array.isArray(data) ? data : (Array.isArray(data.cards) ? data.cards : []);
+  const incoming = rawCards.map(c => normalizeCard(c, false)).filter(Boolean);
+  if (!incoming.length){ toast("Aucune carte valide dans ce fichier (hz et fr obligatoires)."); return; }
+  const name = (!Array.isArray(data) && typeof data.name === "string") ? data.name.trim() : "";
+  const existing = new Set(db.cards.map(cardKey));
+  const fresh = incoming.filter(c => !existing.has(cardKey(c)));
+  const dupN = incoming.length - fresh.length;
+  openSheet(
+    '<h3 class="sh-t">Importer ' + incoming.length + ' carte' + (incoming.length > 1 ? "s" : "") + '</h3>' +
+    '<p class="sh-p">' + fresh.length + ' nouvelle' + (fresh.length > 1 ? "s" : "") + ' · ' + dupN + ' déjà présente' + (dupN > 1 ? "s" : "") + ' (mêmes 汉字 + pinyin).</p>' +
+    (name ? '<label class="ck"><input type="checkbox" id="im-pack" checked> Créer / compléter le pack « ' + esc(name) + ' »</label>' : "") +
+    '<div class="sh-btns">' +
+      '<button class="btn primary" id="im-merge">Fusionner</button>' +
+      '<button class="btn danger" id="im-replace">Remplacer tout</button>' +
+      '<button class="btn ghost" id="im-cancel">Annuler</button>' +
+    '</div>' +
+    '<p class="sh-note">« Fusionner » ajoute seulement les nouvelles cartes. « Remplacer tout » écrase cartes et packs (réglages conservés, sauvegarde automatique avant).</p>'
+  );
+  $("im-cancel").onclick = closeSheet;
+  $("im-merge").onclick = () => doImport(data, incoming, fresh, name, false);
+  $("im-replace").onclick = () => { if (confirm("Remplacer toute ta collection ? (une sauvegarde sera gardée)")) doImport(data, incoming, fresh, name, true); };
+}
+function doImport(data, incoming, fresh, name, replace){
+  const wantPack = !!(name && $("im-pack") && $("im-pack").checked);
+  session = { active: false };
+  clearSavedSession();
+  hub.pack = ""; hub.cat = "";
+  const inUnits = (!Array.isArray(data) && data.units && typeof data.units === "object" && !Array.isArray(data.units)) ? data.units : null;
+  if (replace){
+    makeBackup();
+    const raw = Array.isArray(data) ? incoming : (Array.isArray(data.cards) ? data.cards : incoming);
+    let cards = raw.map(c => normalizeCard(c, true)).filter(Boolean);
+    const seen = new Set();
+    cards = cards.filter(c => { const k = cardKey(c); if (seen.has(k)) return false; seen.add(k); return true; });
+    db.cards = cards;
+    const ids = new Set(cards.map(c => c.id));
+    db.packs = (!Array.isArray(data) && Array.isArray(data.packs))
+      ? data.packs.filter(p => p && p.name && Array.isArray(p.cardIds)).map(p => ({ id:String(p.id || uid()), name:String(p.name), cardIds:p.cardIds.filter(i => ids.has(i)) }))
+      : [];
+    db.units = inUnits || {};
+  } else {
+    db.cards = db.cards.concat(fresh);
+    if (inUnits) db.units = Object.assign({}, db.units, inUnits);
+  }
+  const added = replace ? db.cards.length : fresh.length;
+  if (wantPack){
+    const byKey = new Map(db.cards.map(c => [cardKey(c), c.id]));
+    const idsForPack = incoming.map(c => byKey.get(cardKey(c))).filter(Boolean);
+    upsertPack(name, idsForPack);
+  }
+  save(); closeSheet(); refreshActive();
+  toast(replace
+    ? "Collection remplacée (" + added + " cartes)."
+    : (added ? added + " carte" + (added > 1 ? "s" : "") + " ajoutée" + (added > 1 ? "s" : "") + "." : "Rien à ajouter — tout existait déjà."));
+}
+const FORMAT_EXAMPLE = '{\n  "version": 2,\n  "name": "HSK 2",\n  "units": { "1": "Ma première unité" },\n  "cards": [\n    {\n      "hz": "唱歌",\n      "py": "chang4 ge1",\n      "fr": "chanter",\n      "cat": "Verbes",\n      "unit": 1,\n      "order": 1,\n      "exHz": "我喜欢唱歌。",\n      "exPy": "wo3 xi3 huan5 chang4 ge1.",\n      "exFr": "J\'aime chanter.",\n      "note": ""\n    }\n  ]\n}';
+function openFormatSheet(){
+  openSheet(
+    '<h3 class="sh-t">Format JSON des packs</h3>' +
+    '<p class="sh-p"><b>hz</b> et <b>fr</b> sont obligatoires. <b>py</b> accepte les tons en chiffres (ai4) ou en accents (ài). <b>cat</b>, <b>exHz</b>, <b>exPy</b>, <b>exFr</b>, <b>note</b> sont optionnels. <b>unit</b> + <b>order</b> définissent l\'ordre d\'apprentissage (les nouvelles cartes arrivent dans cet ordre), et <b>units</b> donne un nom à chaque unité. Le champ <b>name</b> crée le pack automatiquement à l\'import.</p>' +
+    '<pre class="fmt" id="fmt-pre">' + esc(FORMAT_EXAMPLE) + '</pre>' +
+    '<div class="sh-btns">' +
+      '<button class="btn" id="fmt-copy">Copier l\'exemple</button>' +
+      '<button class="btn ghost" id="fmt-close">Fermer</button>' +
+    '</div>'
+  );
+  $("fmt-copy").onclick = () => {
+    const done = () => toast("Exemple copié.");
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(FORMAT_EXAMPLE).then(done, () => toast("Copie impossible ici."));
+    else toast("Copie impossible ici — sélectionne le texte à la main.");
+  };
+  $("fmt-close").onclick = closeSheet;
+}
+
+/* ================= sheet & toast ================= */
+function openSheet(html){
+  const o = $("sheet");
+  o.querySelector(".sheet-card").innerHTML = html;
+  o.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeSheet(){
+  $("sheet").classList.remove("open");
+  document.body.style.overflow = "";
+}
+const sheetOpen = () => $("sheet").classList.contains("open");
+let toastTimer = null;
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* ================= initialisation ================= */
+function init(){
+  refreshVoices();
+  document.querySelectorAll(".nav button").forEach(b => b.onclick = () => setView(b.dataset.view));
+  $("btn-settings").onclick = openSettings;
+  $("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeSheet(); });
+  // audio : tout élément portant data-say est cliquable
+  document.addEventListener("click", e => {
+    const el = e.target.closest("[data-say]");
+    if (el) speak(el.getAttribute("data-say"));
+  });
+  // import de fichier
+  $("file-global").addEventListener("change", e => {
+    const f = e.target.files[0];
+    e.target.value = "";
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try{ openImportSheet(JSON.parse(r.result)); }
+      catch(err){ toast("Fichier JSON invalide."); }
+    };
+    r.onerror = () => toast("Impossible de lire le fichier.");
+    r.readAsText(f);
+  });
+  // raccourcis clavier
+  document.addEventListener("keydown", e => {
+    if (sheetOpen()){ if (e.key === "Escape") closeSheet(); return; }
+    if (!session.active || activeView !== "learn") return;
+    const tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select"){
+      if (e.key === "Enter" && $("s-check")){ e.preventDefault(); checkWritten(); }
+      return;
+    }
+    const grades = { "1":"again", "2":"hard", "3":"good", "4":"easy" };
+    if (grades[e.key]){
+      const b = document.querySelector('[data-grade="' + grades[e.key] + '"]');
+      if (b){ e.preventDefault(); b.click(); return; }
+    }
+    if (e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      if ($("s-flip")) $("s-flip").click();
+      else if ($("s-next")) $("s-next").click();
+    } else if (e.key === "ArrowRight" && $("s-next")) $("s-next").click();
+    else if (e.key === "ArrowLeft" && $("s-prev") && !$("s-prev").disabled) $("s-prev").click();
+    else if (e.key === "Escape") endSession();
+  });
+  setView("learn");
+}
+init();
+</script>
+</body>
+</html>
