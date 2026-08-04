@@ -46,6 +46,53 @@
    gap: 10px;
 }
 
+.path-grammar {
+   display: grid;
+   grid-template-columns: auto minmax(0, 1fr) auto;
+   align-items: center;
+   gap: 16px;
+   width: 100%;
+   margin: 0 0 16px;
+   padding: 20px;
+   text-align: left;
+   border-color: color-mix(in srgb, var(--lacquer) 44%, var(--line));
+   background: linear-gradient(135deg, var(--card-2), var(--card));
+}
+
+.path-grammar-mark {
+   display: grid;
+   width: 58px;
+   height: 58px;
+   place-items: center;
+   border-radius: 14px;
+   background: var(--lacquer);
+   color: var(--card-2);
+   font: 600 31px var(--serif);
+   box-shadow: 0 5px 14px rgba(158, 43, 37, 0.22);
+}
+
+.path-grammar-copy {
+   display: flex;
+   min-width: 0;
+   flex-direction: column;
+   gap: 3px;
+}
+
+.path-grammar-copy strong {
+   font: 600 23px var(--disp);
+}
+
+.path-grammar-copy span {
+   color: var(--ink-soft);
+   font-size: 13.5px;
+   line-height: 1.4;
+}
+
+.path-grammar-arrow {
+   color: var(--lacquer);
+   font-size: 24px;
+}
+
 .path-level {
    display: flex;
    width: 100%;
@@ -265,6 +312,25 @@
    .path-level {
       min-height: 82px;
       padding: 14px;
+   }
+
+   .path-grammar {
+      gap: 12px;
+      padding: 15px 13px;
+   }
+
+   .path-grammar-mark {
+      width: 50px;
+      height: 50px;
+      font-size: 27px;
+   }
+
+   .path-grammar-copy strong {
+      font-size: 20px;
+   }
+
+   .path-grammar-copy span {
+      font-size: 12px;
    }
 
    .path-level-title {

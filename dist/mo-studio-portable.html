@@ -58,6 +58,7 @@
             line-height: 1.5;
             min-height: 100dvh;
             padding-bottom: calc(86px + env(safe-area-inset-bottom));
+            overflow-x: hidden;
          }
          body::before {
             content: "";
@@ -843,6 +844,79 @@
             gap: 10px;
             margin-top: 12px;
          }
+         .review-overview {
+            margin: 8px 0 12px;
+         }
+         .review-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 13px;
+         }
+         .review-heading .v-t {
+            margin: 0;
+         }
+         .review-mark {
+            display: grid;
+            flex: 0 0 54px;
+            width: 54px;
+            height: 54px;
+            place-items: center;
+            border-radius: 15px;
+            background: var(--lacquer);
+            color: var(--card-2);
+            font: 30px var(--serif);
+         }
+         .review-queue {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: var(--card);
+            box-shadow: 0 5px 18px rgba(23, 20, 15, 0.08);
+         }
+         .review-queue > div {
+            min-width: 0;
+            padding: 11px 6px;
+            border-right: 1px solid var(--line-soft);
+            text-align: center;
+         }
+         .review-queue > div:last-child {
+            border-right: 0;
+         }
+         .review-queue b,
+         .review-queue span {
+            display: block;
+         }
+         .review-queue b {
+            font: 600 21px var(--disp);
+         }
+         .review-queue span {
+            color: var(--ink-faint);
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+         }
+         .review-pack-label {
+            display: block;
+            margin-top: 10px;
+            color: var(--ink-soft);
+            font-size: 12px;
+            font-weight: 600;
+         }
+         .review-pack-label .search {
+            margin-top: 4px;
+         }
+         @media (max-width: 430px) {
+            .review-heading {
+               align-items: flex-start;
+            }
+            .review-queue span {
+               font-size: 9px;
+               letter-spacing: 0.025em;
+            }
+         }
 
 /* ---------- 米字格 ---------- */
          .mizi {
@@ -920,6 +994,8 @@
    border: 1px solid var(--line);
    border-radius: 12px;
    background: rgba(205, 191, 161, 0.22);
+   user-select: none;
+   -webkit-user-select: none;
 }
 .stroke-tabs [role="tab"] {
    min-height: 44px;
@@ -985,6 +1061,104 @@
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
    gap: 12px;
+}
+.stroke-gallery.is-loading {
+   opacity: 0.48;
+}
+
+.character-swipe-zone {
+   touch-action: pan-y;
+   user-select: none;
+   -webkit-user-select: none;
+   -webkit-user-drag: none;
+}
+.character-swipe-zone:not(:has(input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus)) {
+   cursor: grab;
+}
+.character-swipe-zone.is-pointer-swiping {
+   cursor: grabbing;
+}
+.character-swipe-zone *,
+.character-nav *,
+.seq-character-strip *,
+#dd-picker * {
+   -webkit-user-drag: none;
+}
+.character-nav,
+.character-nav-button,
+.stroke-tabs [role="tab"],
+.seq-character-strip .hzchip,
+#dd-picker .hzchip {
+   user-select: none;
+   -webkit-user-select: none;
+}
+.character-nav {
+   display: grid;
+   grid-template-columns: 48px minmax(92px, auto) 48px;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+   width: fit-content;
+   max-width: 100%;
+   margin: 16px auto;
+   padding: 6px 9px;
+   border: 1px solid var(--line-soft);
+   border-radius: 18px;
+   background: color-mix(in srgb, var(--card-2) 88%, transparent);
+   box-shadow: 0 5px 14px rgba(23, 20, 15, 0.07);
+}
+.character-nav-button {
+   display: inline-grid;
+   place-items: center;
+   width: 48px;
+   height: 48px;
+   padding: 0;
+   border: 1px solid var(--line);
+   border-radius: 14px;
+   background: var(--paper-2);
+   color: var(--ink-soft);
+   box-shadow: 0 3px 9px rgba(23, 20, 15, 0.08);
+   cursor: pointer;
+   transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.character-nav-button svg {
+   width: 22px;
+   height: 22px;
+   fill: none;
+   stroke: currentColor;
+   stroke-width: 2;
+   stroke-linecap: round;
+   stroke-linejoin: round;
+}
+.character-nav-button:hover,
+.character-nav-button:focus-visible {
+   border-color: var(--seal);
+   color: var(--seal);
+   box-shadow: 0 4px 12px rgba(158, 43, 37, 0.14);
+}
+.character-nav-button:focus-visible {
+   outline: 3px solid rgba(35, 122, 90, 0.5);
+   outline-offset: 2px;
+}
+.character-nav-button:active:not(:disabled) {
+   color: var(--lacquer);
+   transform: scale(0.96);
+}
+.character-nav-button:disabled {
+   border-color: var(--line-soft);
+   background: color-mix(in srgb, var(--card-2) 62%, transparent);
+   color: var(--ink-faint);
+   box-shadow: none;
+   cursor: default;
+   opacity: 0.42;
+   pointer-events: none;
+}
+.character-nav-position {
+   min-width: 92px;
+   color: var(--ink);
+   font: 600 15px var(--ui);
+   text-align: center;
+   white-space: nowrap;
 }
 .stroke-panel {
    position: relative;
@@ -1205,6 +1379,8 @@
    padding: 4px 2px 8px;
    overflow-x: auto;
    scroll-snap-type: x proximity;
+   user-select: none;
+   -webkit-user-select: none;
 }
 .seq-character-strip .hzchip {
    flex: 0 0 46px;
@@ -1216,6 +1392,18 @@
    border-color: var(--seal);
    background: var(--seal);
    color: var(--card-2);
+}
+
+@media (max-width: 430px) {
+   .character-nav {
+      grid-template-columns: 48px minmax(82px, auto) 48px;
+      gap: 8px;
+      padding-inline: 7px;
+   }
+   .character-nav-position {
+      min-width: 82px;
+      font-size: 14px;
+   }
 }
 
 /* ---------- picker & bibliothèque ---------- */
@@ -1613,8 +1801,91 @@
    min-height: 46px;
    margin: 18px 0;
 }
+.dd-character-interaction {
+   margin-top: 18px;
+   padding: 14px;
+   border: 1px solid var(--line);
+   border-radius: 16px;
+   background: color-mix(in srgb, var(--card-2) 68%, transparent);
+}
+.dd-character-study-card {
+   position: relative;
+   display: grid;
+   grid-template-columns: 52px minmax(0, 1fr);
+   gap: 12px;
+   align-items: start;
+   min-height: 132px;
+   margin: 14px 0 6px;
+   padding: 16px;
+   border: 1px solid var(--line-soft);
+   border-radius: 14px;
+   background: var(--card-2);
+   box-shadow: 0 5px 15px rgba(23, 20, 15, 0.06);
+}
+.dd-character-study-card[aria-busy="true"] {
+   opacity: 0.72;
+}
+.dd-character-audio {
+   width: 44px;
+   height: 44px;
+}
+.dd-character-study-main {
+   min-width: 0;
+}
+.dd-character-study-hanzi {
+   font-family: var(--serif);
+   font-size: 52px;
+   font-weight: 600;
+   line-height: 1;
+}
+.dd-character-study-pinyin {
+   margin-top: 5px;
+   font-size: 17px;
+}
+.dd-character-study-translation {
+   margin-top: 5px;
+   color: var(--ink-soft);
+   overflow-wrap: anywhere;
+}
+.dd-character-study-action {
+   grid-column: 1 / -1;
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   gap: 8px;
+}
+.dd-character-study-action .btn {
+   min-height: 44px;
+   border-color: var(--line);
+   background: color-mix(in srgb, var(--paper-2) 72%, transparent);
+}
+#dd-picker .hzchip[aria-current="true"] {
+   border-color: var(--seal);
+   background: var(--seal);
+   color: var(--card-2);
+   box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+}
+#dd-character-interaction .character-nav-button:focus-visible,
+#dd-picker .hzchip:focus-visible {
+   outline: 3px solid #237a5a;
+   outline-offset: 2px;
+}
 
 @media (max-width: 620px) {
+   .dd-character-interaction {
+      margin-inline: -6px;
+      padding: 12px 10px;
+   }
+   .dd-character-study-card {
+      grid-template-columns: 46px minmax(0, 1fr);
+      padding: 13px;
+   }
+   .dd-character-study-action {
+      justify-content: stretch;
+   }
+   .dd-character-study-action .btn {
+      width: 100%;
+   }
    .dictionary-search-form {
       grid-template-columns: 1fr;
    }
@@ -1641,6 +1912,38 @@
    .dict-result-hanzi b {
       font-size: 25px;
    }
+}
+.dd-learning-actions {
+   margin: 12px 0 8px;
+}
+
+.dd-learning-actions .btn {
+   border-color: color-mix(in srgb, var(--lacquer) 44%, var(--line));
+   color: var(--lacquer);
+}
+
+.dd-add-word {
+   display: flex;
+   align-items: baseline;
+   gap: 12px;
+   margin: 10px 0;
+   padding: 12px 14px;
+   border: 1px solid var(--line);
+   border-radius: 12px;
+   background: var(--card);
+}
+
+.dd-add-word b {
+   font: 600 30px var(--serif);
+}
+
+.dd-add-word span {
+   color: var(--ink-soft);
+}
+
+.dd-add-packs {
+   max-height: 220px;
+   overflow: auto;
 }
 
 /* ---------- écoute ---------- */
@@ -1804,6 +2107,20 @@
             color: var(--ink-soft);
             font-weight: 600;
          }
+         .grammar-page-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 2px 12px;
+         }
+         .grammar-page-head .v-t {
+            margin: 0;
+         }
+         .grammar-back {
+            flex: 0 0 auto;
+            min-height: 44px;
+            padding-inline: 8px;
+         }
 
 /* ---------- parcours ---------- */
 .path-page {
@@ -1851,6 +2168,53 @@
 .path-levels {
    display: grid;
    gap: 10px;
+}
+
+.path-grammar {
+   display: grid;
+   grid-template-columns: auto minmax(0, 1fr) auto;
+   align-items: center;
+   gap: 16px;
+   width: 100%;
+   margin: 0 0 16px;
+   padding: 20px;
+   text-align: left;
+   border-color: color-mix(in srgb, var(--lacquer) 44%, var(--line));
+   background: linear-gradient(135deg, var(--card-2), var(--card));
+}
+
+.path-grammar-mark {
+   display: grid;
+   width: 58px;
+   height: 58px;
+   place-items: center;
+   border-radius: 14px;
+   background: var(--lacquer);
+   color: var(--card-2);
+   font: 600 31px var(--serif);
+   box-shadow: 0 5px 14px rgba(158, 43, 37, 0.22);
+}
+
+.path-grammar-copy {
+   display: flex;
+   min-width: 0;
+   flex-direction: column;
+   gap: 3px;
+}
+
+.path-grammar-copy strong {
+   font: 600 23px var(--disp);
+}
+
+.path-grammar-copy span {
+   color: var(--ink-soft);
+   font-size: 13.5px;
+   line-height: 1.4;
+}
+
+.path-grammar-arrow {
+   color: var(--lacquer);
+   font-size: 24px;
 }
 
 .path-level {
@@ -2074,6 +2438,25 @@
       padding: 14px;
    }
 
+   .path-grammar {
+      gap: 12px;
+      padding: 15px 13px;
+   }
+
+   .path-grammar-mark {
+      width: 50px;
+      height: 50px;
+      font-size: 27px;
+   }
+
+   .path-grammar-copy strong {
+      font-size: 20px;
+   }
+
+   .path-grammar-copy span {
+      font-size: 12px;
+   }
+
    .path-level-title {
       font-size: 22px;
    }
@@ -2116,6 +2499,424 @@
    .path-word-status {
       max-width: none;
       text-align: left;
+   }
+}
+
+/* ---------- tableau d'écriture ---------- */
+.writing-page {
+   padding-top: 10px;
+}
+
+.writing-header {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   margin: 6px 0 16px;
+}
+
+.writing-header .v-t {
+   margin: 0;
+}
+
+.writing-mark {
+   display: grid;
+   flex: 0 0 54px;
+   width: 54px;
+   height: 54px;
+   place-items: center;
+   border-radius: 15px;
+   background: var(--ink);
+   color: var(--card-2);
+   font: 30px var(--serif);
+}
+
+.writing-modes {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 9px;
+   margin-bottom: 12px;
+}
+
+.writing-mode {
+   display: flex;
+   min-height: 54px;
+   align-items: center;
+   gap: 10px;
+   padding: 10px 13px;
+   border: 1px solid var(--line);
+   border-radius: 12px;
+   background: var(--card);
+   text-align: left;
+}
+
+.writing-mode span {
+   color: var(--lacquer);
+   font: 23px var(--serif);
+}
+
+.writing-mode b {
+   font-size: 14px;
+}
+
+.writing-mode[aria-pressed="true"] {
+   border-color: var(--ink);
+   background: var(--ink);
+   color: var(--card-2);
+}
+
+.writing-mode[aria-pressed="true"] span {
+   color: var(--card-2);
+}
+
+.writing-practice-controls {
+   margin-bottom: 12px;
+   padding: 14px;
+   border: 1px solid var(--line);
+   border-radius: var(--r);
+   background: color-mix(in srgb, var(--card) 82%, transparent);
+}
+
+.writing-word-form > label {
+   display: block;
+   margin-bottom: 5px;
+   color: var(--ink-soft);
+   font-size: 13px;
+   font-weight: 600;
+}
+
+.writing-word-form > div {
+   display: flex;
+   gap: 8px;
+}
+
+.writing-word-form .search {
+   min-width: 0;
+}
+
+.writing-character-nav {
+   display: grid;
+   grid-template-columns: 48px minmax(0, 1fr) 48px;
+   align-items: center;
+   gap: 8px;
+   margin-top: 12px;
+   padding: 7px;
+   border: 1px solid var(--line-soft);
+   border-radius: 12px;
+   background: var(--card-2);
+   touch-action: pan-y;
+   user-select: none;
+}
+
+.writing-character-nav strong {
+   text-align: center;
+   font: 600 21px var(--serif);
+}
+
+.writing-character-nav .character-nav-button {
+   width: 44px;
+   height: 44px;
+}
+
+.writing-character-nav .character-nav-button svg {
+   width: 22px;
+   fill: none;
+   stroke: currentColor;
+   stroke-linecap: round;
+   stroke-linejoin: round;
+   stroke-width: 1.8;
+}
+
+.writing-model-controls {
+   display: grid;
+   grid-template-columns: auto minmax(90px, 1fr);
+   align-items: center;
+   gap: 0 14px;
+   margin-top: 8px;
+}
+
+.writing-model-controls > label:not(.ck) {
+   display: flex;
+   justify-content: space-between;
+   color: var(--ink-soft);
+   font-size: 12px;
+}
+
+.writing-model-controls #writing-opacity {
+   grid-column: 2;
+}
+
+.writing-practice-empty {
+   margin-top: 12px;
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+
+.writing-workspace {
+   overflow: hidden;
+   box-shadow: var(--shadow);
+}
+
+.writing-tools {
+   position: relative;
+   z-index: 2;
+   padding: 13px;
+   border-bottom: 1px solid var(--line);
+   background: var(--card);
+}
+
+.writing-tool-row {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+
+.writing-ink-tools {
+   justify-content: space-between;
+}
+
+.writing-colors {
+   display: flex;
+   align-items: center;
+   gap: 7px;
+}
+
+.writing-color {
+   width: 28px;
+   height: 28px;
+   border: 2px solid var(--card);
+   border-radius: 50%;
+   background: var(--writing-color);
+   box-shadow: 0 0 0 1px var(--line);
+}
+
+.writing-color[aria-pressed="true"] {
+   box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--lacquer);
+}
+
+.writing-color-custom {
+   display: grid;
+   width: 32px;
+   height: 32px;
+   overflow: hidden;
+   border: 1px solid var(--line);
+   border-radius: 50%;
+   cursor: pointer;
+}
+
+.writing-color-custom span {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   overflow: hidden;
+   clip-path: inset(50%);
+}
+
+.writing-color-custom input {
+   width: 44px;
+   height: 44px;
+   margin: -6px;
+   padding: 0;
+   border: 0;
+   cursor: pointer;
+}
+
+.writing-width {
+   display: grid;
+   min-width: 150px;
+   grid-template-columns: 1fr auto;
+   gap: 0 8px;
+   color: var(--ink-soft);
+   font-size: 12px;
+}
+
+.writing-width input {
+   grid-column: 1 / -1;
+}
+
+.writing-action-tools {
+   flex-wrap: wrap;
+   margin-top: 11px;
+}
+
+.writing-tool[aria-pressed="true"] {
+   border-color: var(--ink);
+   background: var(--ink);
+   color: var(--card-2);
+}
+
+.writing-fullscreen-button {
+   margin-left: auto;
+}
+
+.writing-grid-tools .eyebrow {
+   margin: 12px 0 7px;
+}
+
+.writing-grid-button {
+   border-radius: 9px;
+}
+
+.writing-surface {
+   --writing-grid-size: 96px;
+   position: relative;
+   min-height: clamp(390px, 61vh, 590px);
+   overflow: hidden;
+   background-color: #f5eedf;
+   background-position: -1px -1px;
+}
+
+.writing-surface[data-grid="blank"] {
+   background-image: none;
+}
+
+.writing-surface[data-grid="square"] {
+   --writing-grid-size: 48px;
+   background-image:
+      linear-gradient(to right, rgba(74, 65, 50, 0.16) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(74, 65, 50, 0.16) 1px, transparent 1px);
+   background-size: var(--writing-grid-size) var(--writing-grid-size);
+}
+
+.writing-surface[data-grid="tian"],
+.writing-surface[data-grid="mi"] {
+   background-image:
+      linear-gradient(to right, rgba(158, 43, 37, 0.2) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(158, 43, 37, 0.2) 1px, transparent 1px),
+      linear-gradient(to right, transparent 49.5%, rgba(158, 43, 37, 0.12) 49.5%, rgba(158, 43, 37, 0.12) 50.5%, transparent 50.5%),
+      linear-gradient(to bottom, transparent 49.5%, rgba(158, 43, 37, 0.12) 49.5%, rgba(158, 43, 37, 0.12) 50.5%, transparent 50.5%);
+   background-size: var(--writing-grid-size) var(--writing-grid-size);
+}
+
+.writing-surface[data-grid="mi"]::before {
+   content: "";
+   position: absolute;
+   inset: 0;
+   z-index: 0;
+   pointer-events: none;
+   opacity: 0.5;
+   background-image:
+      linear-gradient(45deg, transparent 49.5%, rgba(158, 43, 37, 0.14) 49.5%, rgba(158, 43, 37, 0.14) 50.5%, transparent 50.5%),
+      linear-gradient(-45deg, transparent 49.5%, rgba(158, 43, 37, 0.14) 49.5%, rgba(158, 43, 37, 0.14) 50.5%, transparent 50.5%);
+   background-size: var(--writing-grid-size) var(--writing-grid-size);
+}
+
+.writing-model {
+   position: absolute;
+   inset: 0;
+   z-index: 0;
+   display: grid;
+   place-items: center;
+   color: var(--ink);
+   font: 500 clamp(220px, 52vw, 430px) / 1 var(--serif);
+   pointer-events: none;
+   user-select: none;
+}
+
+#writing-canvas {
+   position: absolute;
+   inset: 0;
+   z-index: 1;
+   display: block;
+   width: 100%;
+   height: 100%;
+   cursor: crosshair;
+   touch-action: none;
+}
+
+.writing-note {
+   margin: 0;
+   padding: 9px 13px 11px;
+   border-top: 1px solid var(--line-soft);
+   background: var(--card);
+   color: var(--ink-faint);
+   font-size: 11.5px;
+}
+
+.writing-workspace:fullscreen,
+.writing-workspace.writing-fullscreen-fallback {
+   display: flex;
+   width: 100vw;
+   height: 100dvh;
+   max-width: none;
+   flex-direction: column;
+   border: 0;
+   border-radius: 0;
+   background: var(--paper);
+}
+
+.writing-workspace:fullscreen .writing-surface,
+.writing-workspace.writing-fullscreen-fallback .writing-surface {
+   min-height: 0;
+   flex: 1;
+}
+
+.writing-workspace.writing-fullscreen-fallback {
+   position: fixed;
+   inset: 0;
+   z-index: 80;
+}
+
+body.writing-fullscreen-open {
+   overflow: hidden;
+}
+
+@media (max-width: 520px) {
+   .writing-header {
+      align-items: flex-start;
+   }
+
+   .writing-mode {
+      gap: 7px;
+      padding-inline: 10px;
+   }
+
+   .writing-mode b {
+      font-size: 12.5px;
+   }
+
+   .writing-ink-tools {
+      align-items: flex-end;
+   }
+
+   .writing-width {
+      min-width: 118px;
+   }
+
+   .writing-action-tools .btn {
+      flex: 1 1 auto;
+      padding-inline: 10px;
+   }
+
+   .writing-fullscreen-button {
+      margin-left: 0;
+   }
+
+   .writing-grid-tools .chips {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .writing-grid-button {
+      padding-inline: 7px;
+      font-size: 12px;
+   }
+
+   .writing-surface {
+      min-height: 410px;
+   }
+
+   .writing-model-controls {
+      grid-template-columns: 1fr;
+   }
+
+   .writing-model-controls #writing-opacity {
+      grid-column: 1;
+   }
+}
+
+@media (min-width: 900px) {
+   .writing-surface {
+      min-height: 600px;
    }
 }
 
@@ -2307,10 +3108,11 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            padding: 4px 10px;
+            width: 20%;
+            min-width: 0;
+            padding: 4px 2px;
             border-radius: 11px;
             color: var(--ink-faint);
-            min-width: 58px;
          }
          .nav .n-hz {
             font-family: var(--serif);
@@ -2318,9 +3120,13 @@
             line-height: 1.2;
          }
          .nav .n-lab {
-            font-size: 10.5px;
+            max-width: 100%;
+            overflow: hidden;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.035em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
          }
          .nav button[aria-pressed="true"] {
             color: var(--lacquer);
@@ -2504,20 +3310,20 @@
       </header>
       <main id="view"></main>
       <nav class="nav" aria-label="Navigation">
-         <button data-view="learn" aria-pressed="true">
-            <span class="n-hz">学</span><span class="n-lab">Réviser</span>
-         </button>
-         <button data-view="lib" aria-pressed="false">
-            <span class="n-hz">库</span><span class="n-lab">Cartes</span>
-         </button>
-         <button data-view="write" aria-pressed="false">
-            <span class="n-hz">查</span><span class="n-lab">Rechercher</span>
-         </button>
          <button data-view="path" aria-pressed="false">
             <span class="n-hz">学</span><span class="n-lab">Parcours</span>
          </button>
-         <button data-view="grammar" aria-pressed="false">
-            <span class="n-hz">法</span><span class="n-lab">Grammaire</span>
+         <button data-view="lib" aria-pressed="false">
+            <span class="n-hz">库</span><span class="n-lab">Mes mots</span>
+         </button>
+         <button data-view="write" aria-pressed="false">
+            <span class="n-hz">写</span><span class="n-lab">Écrire</span>
+         </button>
+         <button data-view="search" aria-pressed="false">
+            <span class="n-hz">查</span><span class="n-lab">Rechercher</span>
+         </button>
+         <button data-view="learn" aria-pressed="true">
+            <span class="n-hz">复</span><span class="n-lab">Réviser</span>
          </button>
       </nav>
       <div id="sheet" aria-hidden="true"><div class="sheet-card"></div></div>
@@ -2528,6 +3334,7 @@
          accept=".json,application/json"
          hidden
       />
+
 
 
 
@@ -3337,6 +4144,13 @@ async function openHskVocabularyEntry(entry) {
                showGrid: true,
                showGhost: false,
             },
+            writingBoard: {
+               color: "#17140f",
+               width: 5,
+               grid: "tian",
+               opacity: 0.18,
+               modelVisible: true,
+            },
          });
          function normalizeCard(c, keepId) {
             // nettoie une carte (import ou stockage) ; hz + fr obligatoires
@@ -3396,6 +4210,16 @@ async function openHskVocabularyEntry(entry) {
                   s.strokeGallery = Object.assign(
                      { showFuture: true, showGrid: true, showGhost: false },
                      (d.settings && d.settings.strokeGallery) || {},
+                  );
+                  s.writingBoard = Object.assign(
+                     {
+                        color: "#17140f",
+                        width: 5,
+                        grid: "tian",
+                        opacity: 0.18,
+                        modelVisible: true,
+                     },
+                     (d.settings && d.settings.writingBoard) || {},
                   );
                   return {
                      cards: Array.isArray(d.cards)
@@ -3575,16 +4399,19 @@ let courseProgress = loadCourseProgress();
          let session = { active: false };
          function setView(v, options) {
             const settings = options || {};
+            if (seq && v !== "search") teardownSequence();
             if (!settings.fromHistory && typeof history !== "undefined") {
-               if (v === "write" && typeof searchHistoryPayload === "function")
+               if (v === "search" && typeof searchHistoryPayload === "function")
                   history.pushState(searchHistoryPayload(srch.q ? "results" : "landing"), "");
                else history.pushState({ moStudioView: v }, "");
             }
-            if (activeView === "write" && v !== "write") {
+            if (activeView === "search" && v !== "search") {
                cancelDictionarySearches();
                if (typeof cleanupSearchView === "function") cleanupSearchView();
                closeSheet();
             }
+            if (activeView === "write" && v !== "write" && typeof destroyWritingBoard === "function")
+               destroyWritingBoard();
             activeView = v;
             document
                .querySelectorAll(".nav button")
@@ -3601,7 +4428,8 @@ let courseProgress = loadCourseProgress();
             );
             if (activeView === "learn") renderLearn();
             else if (activeView === "lib") renderLib();
-            else if (activeView === "write") renderSearch();
+            else if (activeView === "write") renderWriting();
+            else if (activeView === "search") renderSearch();
             else if (activeView === "path") renderPath();
             else if (activeView === "listen") renderListen();
             else renderGrammar();
@@ -3617,7 +4445,7 @@ let courseProgress = loadCourseProgress();
                return;
             }
             cancelDictionarySearches();
-            if (activeView === "write" && typeof cleanupSearchView === "function")
+            if (activeView === "search" && typeof cleanupSearchView === "function")
                cleanupSearchView();
             closeSheet();
             setView((event.state && event.state.moStudioView) || "learn", {
@@ -3674,8 +4502,20 @@ let courseProgress = loadCourseProgress();
          }
 
          /* -------- file intelligente pour « Continuer » -------- */
+         function smartQueuePool() {
+            let pool = db.cards.filter((c) => !c.acquired);
+            if (!hub.pack) return pool;
+            if (hub.pack.startsWith("unit:")) {
+               const unit = +hub.pack.slice(5);
+               return pool.filter((card) => card.unit === unit);
+            }
+            const pack = db.packs.find((item) => item.id === hub.pack);
+            const ids = new Set(pack ? pack.cardIds : []);
+            return pool.filter((card) => ids.has(card.id));
+         }
+
          function smartQueue() {
-            const pool = db.cards.filter((c) => !c.acquired);
+            const pool = smartQueuePool();
             const due = pool.filter(isDue).sort((a, b) => a.due - b.due);
             const fresh = pool.filter((c) => c.due == null).sort(unitSort);
             const size = db.settings.sessionSize; // 0 = tout
@@ -3695,6 +4535,7 @@ let courseProgress = loadCourseProgress();
                   newTake,
                   Math.max(0, size > 0 ? size : Infinity),
                ),
+               freshTotal: fresh.length,
                freshUnit: fresh.length ? fresh[0].unit : null,
                nextDue: planned.length ? planned[0].due : null,
             };
@@ -3738,15 +4579,56 @@ let courseProgress = loadCourseProgress();
                '<section class="card pad empty">' +
                '<div class="empty-hz">学</div>' +
                '<h2 class="empty-t">Ta collection est vide</h2>' +
-               '<p class="empty-p">Crée ta première carte pour commencer à construire ta collection.</p>' +
+               '<p class="empty-p">Ajoute ton premier mot depuis le dictionnaire ou crée-le ici pour commencer une collection personnelle.</p>' +
                '<div class="empty-btns">' +
-               '<button class="btn primary" id="btn-e-add">Créer une carte</button>' +
+               '<button class="btn primary" id="btn-e-add">Créer un mot</button>' +
                "</div></section>"
             );
          }
          function wireEmpty() {
             if ($("btn-e-add"))
                $("btn-e-add").onclick = () => openCardForm(null);
+         }
+
+         function reviewOverviewHtml(queue) {
+            const estimated = queue.q.length
+               ? "~" + Math.max(1, Math.round((queue.q.length * 25) / 60)) + " min"
+               : "0 min";
+            return (
+               '<section class="review-overview" aria-labelledby="review-title"><header class="review-heading"><div class="review-mark">复</div><div><h2 class="v-t" id="review-title">复 · Réviser</h2><p class="muted">Lance tes sessions SRS à partir des mots de ta collection personnelle.</p></div></header>' +
+               '<div class="review-queue" aria-label="Résumé de la prochaine session"><div><b>' +
+               queue.dueTotal +
+               '</b><span>À revoir</span></div><div><b>' +
+               queue.freshTotal +
+               '</b><span>Nouvelles</span></div><div><b>' +
+               estimated +
+               '</b><span>Durée estimée</span></div></div>' +
+               (db.packs.length
+                  ? '<label class="review-pack-label" for="review-pack">Pack à réviser<select class="search" id="review-pack"><option value="">Tous Mes mots</option>' +
+                    db.packs
+                       .map(
+                          (pack) =>
+                             '<option value="' +
+                             esc(pack.id) +
+                             '"' +
+                             (hub.pack === pack.id ? " selected" : "") +
+                             ">" +
+                             esc(pack.name) +
+                             "</option>",
+                       )
+                       .join("") +
+                    "</select></label>"
+                  : "") +
+               "</section>"
+            );
+         }
+
+         function wireReviewOverview() {
+            if ($("review-pack"))
+               $("review-pack").onchange = (event) => {
+                  hub.pack = event.target.value;
+                  renderLearn();
+               };
          }
 
          function renderLearn() {
@@ -3760,10 +4642,10 @@ let courseProgress = loadCourseProgress();
                return;
             }
             const root = $("view");
-            const heroTop =
-               '<section class="hero"><div class="hero-hz ink-in">墨室</div><div class="hero-sub">Mò Studio — ton atelier de chinois</div></section>';
+            const initialQueue = smartQueue();
             if (!db.cards.length) {
-               root.innerHTML = heroTop + emptyHtml();
+               root.innerHTML = reviewOverviewHtml(initialQueue) + emptyHtml();
+               wireReviewOverview();
                wireEmpty();
                return;
             }
@@ -3819,7 +4701,7 @@ let courseProgress = loadCourseProgress();
                   '<button class="cta" disabled><b>Tout est à jour 完</b><span>' +
                   (sq.nextDue
                      ? "Prochaine révision : " + fmtDate(sq.nextDue)
-                     : "Ajoute ou importe de nouvelles cartes") +
+                     : "Ajoute de nouveaux mots à ta collection") +
                   "</span></button>";
             }
 
@@ -3865,17 +4747,17 @@ let courseProgress = loadCourseProgress();
             const dis = n === 0 ? "disabled" : "";
 
             root.innerHTML =
-               heroTop +
+               reviewOverviewHtml(sq) +
                (resume
                   ? '<div class="resume"><span>Séance en cours · ' +
                     Math.min(resume.snap.index + 1, resume.cards.length) +
                     " / " +
                     resume.cards.length +
-                    '</span><span style="display:flex;gap:6px"><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">✕</button></span></div>'
+                    '</span><span style="display:flex;gap:6px"><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">×</button></span></div>'
                   : "") +
                cta +
                '<div class="stats">' +
-               statBtn("all", total, "Cartes") +
+               statBtn("all", total, "Mes mots") +
                statBtn("due", dueN, "À revoir") +
                statBtn("fav", fav, "Favoris") +
                statBtn("acq", acq, "Acquises") +
@@ -3899,8 +4781,8 @@ let courseProgress = loadCourseProgress();
                '<div class="chips">' +
                fltChip("all", "Tout") +
                fltChip("due", "À revoir") +
-               fltChip("fav", "♥ Favoris") +
-               fltChip("acq", "✓ Acquises") +
+               fltChip("fav", "Favoris") +
+               fltChip("acq", "Maîtrisées") +
                "</div>" +
                '<div class="selects">' +
                '<select class="search" id="hub-pack"><option value="">Unité / pack : tous</option>' +
@@ -3981,6 +4863,7 @@ let courseProgress = loadCourseProgress();
                "</details>";
 
             if ($("btn-resume")) $("btn-resume").onclick = resumeSession;
+            wireReviewOverview();
             if ($("btn-resume-x"))
                $("btn-resume-x").onclick = () => {
                   clearSavedSession();
@@ -4085,6 +4968,18 @@ function wirePathHome() {
          window.scrollTo(0, 0);
       };
    });
+   const grammar = $("path-grammar");
+   if (grammar) grammar.onclick = () => setView("grammar");
+}
+
+function pathGrammarCardHtml() {
+   return (
+      '<button class="card path-grammar" id="path-grammar" type="button">' +
+      '<span class="path-grammar-mark" aria-hidden="true">法</span>' +
+      '<span class="path-grammar-copy"><strong>Grammaire</strong>' +
+      '<span>Comprendre les structures essentielles, écouter les exemples et s\'entraîner avec les mini-quiz.</span></span>' +
+      '<span class="path-grammar-arrow" aria-hidden="true">→</span></button>'
+   );
 }
 
 async function renderPathHome(token) {
@@ -4106,6 +5001,7 @@ async function renderPathHome(token) {
          '<p><b>' +
          manifest.totalEntries.toLocaleString("fr-FR") +
          " entrées</b> disponibles. Les leçons et exercices ne sont pas encore créés.</p></section>" +
+         pathGrammarCardHtml() +
          '<div class="path-levels" aria-label="Niveaux HSK">' +
          [1, 2, 3, 4, 5, 6].map((level) => pathLevelCardHtml(manifest, level)).join("") +
          "</div></section>";
@@ -4286,6 +5182,554 @@ function renderPath() {
 
 "use strict";
 
+/* ================= tableau d'écriture (写) ================= */
+const WRITING_GRIDS = ["blank", "square", "tian", "mi"];
+const WRITING_COLORS = ["#17140f", "#9e2b25", "#2e6b57", "#2f5480"];
+let writingResizeObserver = null;
+let writingRenderFrame = 0;
+let writingPointerId = null;
+let writingState = {
+   mode: "free",
+   word: "",
+   characters: [],
+   index: 0,
+   tool: "pen",
+   free: { actions: [], redo: [] },
+   practice: {},
+};
+
+function writingPreferences() {
+   const prefs = db.settings.writingBoard || {};
+   prefs.color = /^#[0-9a-f]{6}$/i.test(prefs.color || "")
+      ? prefs.color
+      : "#17140f";
+   prefs.width = Math.max(1, Math.min(24, Number(prefs.width) || 5));
+   prefs.grid = WRITING_GRIDS.includes(prefs.grid) ? prefs.grid : "tian";
+   prefs.opacity = Math.max(0.04, Math.min(0.45, Number(prefs.opacity) || 0.18));
+   prefs.modelVisible = prefs.modelVisible !== false;
+   db.settings.writingBoard = prefs;
+   return prefs;
+}
+
+function saveWritingPreferences() {
+   writingPreferences();
+   save();
+}
+
+function writingDrawingKey() {
+   const character = writingState.characters[writingState.index] || "";
+   return writingState.word + "§" + writingState.index + "§" + character;
+}
+
+function writingDrawingSlot() {
+   if (writingState.mode === "free") return writingState.free;
+   const key = writingDrawingKey();
+   if (!writingState.practice[key])
+      writingState.practice[key] = { actions: [], redo: [] };
+   return writingState.practice[key];
+}
+
+function writingChevron(direction) {
+   const path =
+      direction === "left" ? "M14.5 6.5 9 12l5.5 5.5" : "M9.5 6.5 15 12l-5.5 5.5";
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' +
+      path +
+      '"></path></svg>'
+   );
+}
+
+function writingModeHtml() {
+   return (
+      '<div class="writing-modes" role="group" aria-label="Mode du tableau">' +
+      '<button class="writing-mode" type="button" data-writing-mode="free" aria-pressed="' +
+      String(writingState.mode === "free") +
+      '"><span>白</span><b>Tableau libre</b></button>' +
+      '<button class="writing-mode" type="button" data-writing-mode="practice" aria-pressed="' +
+      String(writingState.mode === "practice") +
+      '"><span>习</span><b>Entraînement</b></button></div>'
+   );
+}
+
+function writingPracticeHtml(prefs) {
+   if (writingState.mode !== "practice") return "";
+   const hasCharacters = writingState.characters.length > 0;
+   const character = hasCharacters ? writingState.characters[writingState.index] : "";
+   return (
+      '<section class="writing-practice-controls" aria-label="Mot à écrire">' +
+      '<form class="writing-word-form" id="writing-word-form"><label for="writing-word">Caractère ou mot</label>' +
+      '<div><input class="search" id="writing-word" value="' +
+      esc(writingState.word) +
+      '" placeholder="Ex. 你好" autocomplete="off" inputmode="text">' +
+      '<button class="btn primary" type="submit">Afficher</button></div></form>' +
+      (hasCharacters
+         ? '<div class="writing-character-nav" id="writing-character-nav" aria-label="Glisser ou utiliser les chevrons pour changer de caractère">' +
+           '<button class="character-nav-button" id="writing-prev" type="button" aria-label="Caractère précédent"' +
+           (writingState.index <= 0 ? " disabled" : "") +
+           ">" + writingChevron("left") + "</button>" +
+           '<strong id="writing-position" role="status" aria-live="polite">' +
+           esc(character) +
+           " · " +
+           (writingState.index + 1) +
+           " / " +
+           writingState.characters.length +
+           "</strong>" +
+           '<button class="character-nav-button" id="writing-next" type="button" aria-label="Caractère suivant"' +
+           (writingState.index >= writingState.characters.length - 1 ? " disabled" : "") +
+           ">" + writingChevron("right") + "</button></div>" +
+           '<div class="writing-model-controls"><label class="ck"><input type="checkbox" id="writing-model-visible"' +
+           (prefs.modelVisible ? " checked" : "") +
+           '> Afficher le modèle</label><label for="writing-opacity">Opacité <output id="writing-opacity-value">' +
+           Math.round(prefs.opacity * 100) +
+           '%</output></label><input id="writing-opacity" type="range" min="4" max="45" step="1" value="' +
+           Math.round(prefs.opacity * 100) +
+           '"></div>'
+         : '<p class="writing-practice-empty">Choisis un caractère ou un mot pour afficher un modèle en transparence.</p>') +
+      "</section>"
+   );
+}
+
+function writingGridButtonsHtml(prefs) {
+   const labels = {
+      blank: "Feuille blanche",
+      square: "Grille carrée",
+      tian: "田字格",
+      mi: "米字格",
+   };
+   return WRITING_GRIDS.map(
+      (grid) =>
+         '<button class="chip writing-grid-button" type="button" data-writing-grid="' +
+         grid +
+         '" aria-pressed="' +
+         String(prefs.grid === grid) +
+         '">' +
+         labels[grid] +
+         "</button>",
+   ).join("");
+}
+
+function writingToolbarHtml(prefs) {
+   return (
+      '<section class="writing-tools" aria-label="Outils de dessin"><div class="writing-tool-row writing-ink-tools">' +
+      '<div class="writing-colors" role="group" aria-label="Couleur du trait">' +
+      WRITING_COLORS.map(
+         (color) =>
+            '<button class="writing-color" type="button" data-writing-color="' +
+            color +
+            '" aria-label="Choisir la couleur ' +
+            color +
+            '" aria-pressed="' +
+            String(prefs.color.toLowerCase() === color) +
+            '" style="--writing-color:' +
+            color +
+            '"></button>',
+      ).join("") +
+      '<label class="writing-color-custom" title="Couleur personnalisée"><span>Couleur</span><input id="writing-color" type="color" value="' +
+      esc(prefs.color) +
+      '"></label></div>' +
+      '<label class="writing-width" for="writing-width">Épaisseur <output id="writing-width-value">' +
+      prefs.width +
+      ' px</output><input id="writing-width" type="range" min="1" max="24" step="1" value="' +
+      prefs.width +
+      '"></label></div>' +
+      '<div class="writing-tool-row writing-action-tools" role="group" aria-label="Actions du tableau">' +
+      '<button class="btn sm writing-tool" id="writing-pen" type="button" aria-pressed="' +
+      String(writingState.tool === "pen") +
+      '">Pinceau</button><button class="btn sm writing-tool" id="writing-eraser" type="button" aria-pressed="' +
+      String(writingState.tool === "eraser") +
+      '">Gomme</button><button class="btn sm" id="writing-undo" type="button">Annuler</button>' +
+      '<button class="btn sm" id="writing-redo" type="button">Rétablir</button>' +
+      '<button class="btn sm danger" id="writing-clear" type="button">Tout effacer</button>' +
+      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div>' +
+      '<div class="writing-grid-tools"><div class="eyebrow">Grille du papier</div><div class="chips">' +
+      writingGridButtonsHtml(prefs) +
+      "</div></div></section>"
+   );
+}
+
+function renderWriting() {
+   document.body.classList.remove("in-seq");
+   destroyWritingBoard();
+   const prefs = writingPreferences();
+   const character = writingState.characters[writingState.index] || "";
+   $("view").innerHTML =
+      '<section class="writing-page" aria-labelledby="writing-title"><header class="writing-header"><div class="writing-mark">写</div><div><h2 class="v-t" id="writing-title">写 · Écrire</h2><p class="muted">Un papier d\'entraînement toujours prêt, à la souris, au toucher ou au stylet.</p></div></header>' +
+      writingModeHtml() +
+      writingPracticeHtml(prefs) +
+      '<section class="card writing-workspace" id="writing-workspace">' +
+      writingToolbarHtml(prefs) +
+      '<div class="writing-surface" id="writing-surface" data-grid="' +
+      prefs.grid +
+      '"><div class="writing-model" id="writing-model" aria-hidden="true" style="opacity:' +
+      prefs.opacity +
+      '"' +
+      (writingState.mode === "practice" && character && prefs.modelVisible ? "" : " hidden") +
+      ">" +
+      esc(character) +
+      '</div><canvas id="writing-canvas" aria-label="Zone de dessin" tabindex="0"></canvas></div>' +
+      '<p class="writing-note">Le tracé reste sur cet appareil pendant cette visite. Aucune reconnaissance d’écriture n’est effectuée.</p></section></section>';
+   wireWritingView();
+}
+
+function setWritingCharacters(value) {
+   const visible = String(value || "").trim();
+   const characters = Array.from(visible).filter((character) => HAN_PATTERN.test(character));
+   if (!characters.length) {
+      toast("Entre au moins un caractère chinois.");
+      return false;
+   }
+   writingState.word = visible;
+   writingState.characters = characters;
+   writingState.index = 0;
+   return true;
+}
+
+function openWritingWord(value) {
+   if (!setWritingCharacters(value)) return;
+   writingState.mode = "practice";
+   closeSheet();
+   setView("write");
+}
+
+function moveWritingCharacter(delta) {
+   const next = writingState.index + delta;
+   if (next < 0 || next >= writingState.characters.length) return;
+   writingState.index = next;
+   renderWriting();
+}
+
+function wireWritingSwipe() {
+   const target = $("writing-character-nav");
+   if (!target) return;
+   let start = null;
+   target.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("button")) return;
+      start = { x: event.clientX, y: event.clientY, id: event.pointerId };
+   });
+   target.addEventListener("pointerup", (event) => {
+      if (!start || event.pointerId !== start.id) return;
+      const dx = event.clientX - start.x;
+      const dy = event.clientY - start.y;
+      start = null;
+      if (Math.abs(dx) < 34 || Math.abs(dx) <= Math.abs(dy)) return;
+      moveWritingCharacter(dx < 0 ? 1 : -1);
+   });
+   target.addEventListener("pointercancel", () => (start = null));
+}
+
+function wireWritingView() {
+   document.querySelectorAll("[data-writing-mode]").forEach((button) => {
+      button.onclick = () => {
+         writingState.mode = button.dataset.writingMode;
+         renderWriting();
+      };
+   });
+   if ($("writing-word-form"))
+      $("writing-word-form").onsubmit = (event) => {
+         event.preventDefault();
+         if (setWritingCharacters($("writing-word").value)) renderWriting();
+      };
+   if ($("writing-prev")) $("writing-prev").onclick = () => moveWritingCharacter(-1);
+   if ($("writing-next")) $("writing-next").onclick = () => moveWritingCharacter(1);
+   wireWritingSwipe();
+
+   document.querySelectorAll("[data-writing-color]").forEach((button) => {
+      button.onclick = () => {
+         const prefs = writingPreferences();
+         prefs.color = button.dataset.writingColor;
+         writingState.tool = "pen";
+         saveWritingPreferences();
+         renderWriting();
+      };
+   });
+   $("writing-color").oninput = (event) => {
+      writingPreferences().color = event.target.value;
+      writingState.tool = "pen";
+      saveWritingPreferences();
+      document.querySelectorAll("[data-writing-color]").forEach((button) =>
+         button.setAttribute("aria-pressed", "false"),
+      );
+      updateWritingToolState();
+   };
+   $("writing-width").oninput = (event) => {
+      writingPreferences().width = Number(event.target.value);
+      $("writing-width-value").textContent = event.target.value + " px";
+      saveWritingPreferences();
+   };
+   document.querySelectorAll("[data-writing-grid]").forEach((button) => {
+      button.onclick = () => {
+         const prefs = writingPreferences();
+         prefs.grid = button.dataset.writingGrid;
+         saveWritingPreferences();
+         $("writing-surface").dataset.grid = prefs.grid;
+         document.querySelectorAll("[data-writing-grid]").forEach((item) =>
+            item.setAttribute("aria-pressed", String(item === button)),
+         );
+      };
+   });
+   if ($("writing-model-visible"))
+      $("writing-model-visible").onchange = (event) => {
+         writingPreferences().modelVisible = event.target.checked;
+         saveWritingPreferences();
+         $("writing-model").hidden = !event.target.checked;
+      };
+   if ($("writing-opacity"))
+      $("writing-opacity").oninput = (event) => {
+         const opacity = Number(event.target.value) / 100;
+         writingPreferences().opacity = opacity;
+         $("writing-opacity-value").textContent = event.target.value + "%";
+         $("writing-model").style.opacity = opacity;
+         saveWritingPreferences();
+      };
+
+   $("writing-pen").onclick = () => {
+      writingState.tool = "pen";
+      updateWritingToolState();
+   };
+   $("writing-eraser").onclick = () => {
+      writingState.tool = "eraser";
+      updateWritingToolState();
+   };
+   $("writing-undo").onclick = undoWritingAction;
+   $("writing-redo").onclick = redoWritingAction;
+   $("writing-clear").onclick = clearWritingCanvas;
+   $("writing-fullscreen").onclick = toggleWritingFullscreen;
+   document.addEventListener("fullscreenchange", writingFullscreenChanged);
+   wireWritingCanvas();
+   updateWritingToolState();
+   updateWritingHistoryButtons();
+}
+
+function updateWritingToolState() {
+   const pen = $("writing-pen");
+   const eraser = $("writing-eraser");
+   if (pen) pen.setAttribute("aria-pressed", String(writingState.tool === "pen"));
+   if (eraser)
+      eraser.setAttribute("aria-pressed", String(writingState.tool === "eraser"));
+}
+
+function updateWritingHistoryButtons() {
+   const slot = writingDrawingSlot();
+   if ($("writing-undo")) $("writing-undo").disabled = !slot.actions.length;
+   if ($("writing-redo")) $("writing-redo").disabled = !slot.redo.length;
+}
+
+function undoWritingAction() {
+   const slot = writingDrawingSlot();
+   if (!slot.actions.length) return;
+   slot.redo.push(slot.actions.pop());
+   renderWritingCanvas();
+   updateWritingHistoryButtons();
+}
+
+function redoWritingAction() {
+   const slot = writingDrawingSlot();
+   if (!slot.redo.length) return;
+   slot.actions.push(slot.redo.pop());
+   renderWritingCanvas();
+   updateWritingHistoryButtons();
+}
+
+function clearWritingCanvas() {
+   const slot = writingDrawingSlot();
+   if (!slot.actions.length) return;
+   slot.actions.push({ type: "clear" });
+   slot.redo = [];
+   renderWritingCanvas();
+   updateWritingHistoryButtons();
+}
+
+function writingPoint(event, canvas) {
+   const rect = canvas.getBoundingClientRect();
+   return {
+      x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+      y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),
+      pressure:
+         event.pointerType === "pen" && event.pressure > 0
+            ? Math.max(0.35, event.pressure)
+            : 1,
+   };
+}
+
+function wireWritingCanvas() {
+   const canvas = $("writing-canvas");
+   const surface = $("writing-surface");
+   if (!canvas || !surface) return;
+   const finish = (event) => {
+      if (event.pointerId !== writingPointerId) return;
+      writingPointerId = null;
+      try {
+         canvas.releasePointerCapture(event.pointerId);
+      } catch (error) {}
+      updateWritingHistoryButtons();
+   };
+   canvas.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      event.preventDefault();
+      writingPointerId = event.pointerId;
+      try {
+         canvas.setPointerCapture(event.pointerId);
+      } catch (error) {}
+      const prefs = writingPreferences();
+      const slot = writingDrawingSlot();
+      slot.actions.push({
+         type: "stroke",
+         tool: writingState.tool,
+         color: prefs.color,
+         width: prefs.width,
+         points: [writingPoint(event, canvas)],
+      });
+      slot.redo = [];
+      scheduleWritingCanvasRender();
+   });
+   canvas.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== writingPointerId) return;
+      event.preventDefault();
+      const slot = writingDrawingSlot();
+      const stroke = slot.actions[slot.actions.length - 1];
+      if (!stroke || stroke.type !== "stroke") return;
+      const coalesced = event.getCoalescedEvents ? event.getCoalescedEvents() : [];
+      const events = coalesced.length ? coalesced : [event];
+      events.forEach((item) => stroke.points.push(writingPoint(item, canvas)));
+      scheduleWritingCanvasRender();
+   });
+   canvas.addEventListener("pointerup", finish);
+   canvas.addEventListener("pointercancel", finish);
+   writingResizeObserver = new ResizeObserver(resizeWritingCanvas);
+   writingResizeObserver.observe(surface);
+   resizeWritingCanvas();
+}
+
+function resizeWritingCanvas() {
+   const canvas = $("writing-canvas");
+   if (!canvas) return;
+   const rect = canvas.getBoundingClientRect();
+   const ratio = Math.max(1, window.devicePixelRatio || 1);
+   const width = Math.max(1, Math.round(rect.width * ratio));
+   const height = Math.max(1, Math.round(rect.height * ratio));
+   if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+      renderWritingCanvas();
+   }
+}
+
+function scheduleWritingCanvasRender() {
+   if (writingRenderFrame) return;
+   writingRenderFrame = requestAnimationFrame(() => {
+      writingRenderFrame = 0;
+      renderWritingCanvas();
+   });
+}
+
+function drawWritingStroke(context, canvas, stroke) {
+   const points = stroke.points || [];
+   if (!points.length) return;
+   const ratio = Math.max(1, window.devicePixelRatio || 1);
+   const cssWidth = canvas.width / ratio;
+   const cssHeight = canvas.height / ratio;
+   context.save();
+   context.globalCompositeOperation =
+      stroke.tool === "eraser" ? "destination-out" : "source-over";
+   context.strokeStyle = stroke.tool === "eraser" ? "rgba(0,0,0,1)" : stroke.color;
+   context.fillStyle = context.strokeStyle;
+   context.lineCap = "round";
+   context.lineJoin = "round";
+   context.lineWidth = stroke.width * (stroke.tool === "eraser" ? 2.6 : 1);
+   if (points.length === 1) {
+      const point = points[0];
+      context.beginPath();
+      context.arc(
+         point.x * cssWidth,
+         point.y * cssHeight,
+         Math.max(0.75, context.lineWidth * point.pressure * 0.5),
+         0,
+         Math.PI * 2,
+      );
+      context.fill();
+   } else {
+      context.beginPath();
+      context.moveTo(points[0].x * cssWidth, points[0].y * cssHeight);
+      for (let index = 1; index < points.length - 1; index += 1) {
+         const point = points[index];
+         const next = points[index + 1];
+         context.quadraticCurveTo(
+            point.x * cssWidth,
+            point.y * cssHeight,
+            ((point.x + next.x) / 2) * cssWidth,
+            ((point.y + next.y) / 2) * cssHeight,
+         );
+      }
+      const last = points[points.length - 1];
+      context.lineTo(last.x * cssWidth, last.y * cssHeight);
+      context.stroke();
+   }
+   context.restore();
+}
+
+function renderWritingCanvas() {
+   const canvas = $("writing-canvas");
+   if (!canvas) return;
+   const context = canvas.getContext("2d");
+   const ratio = Math.max(1, window.devicePixelRatio || 1);
+   context.setTransform(ratio, 0, 0, ratio, 0, 0);
+   context.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+   writingDrawingSlot().actions.forEach((action) => {
+      if (action.type === "clear")
+         context.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+      else if (action.type === "stroke") drawWritingStroke(context, canvas, action);
+   });
+}
+
+async function toggleWritingFullscreen() {
+   const workspace = $("writing-workspace");
+   if (!workspace) return;
+   try {
+      if (workspace.classList.contains("writing-fullscreen-fallback")) {
+         workspace.classList.remove("writing-fullscreen-fallback");
+         document.body.classList.remove("writing-fullscreen-open");
+         writingFullscreenChanged();
+      } else if (document.fullscreenElement) await document.exitFullscreen();
+      else if (workspace.requestFullscreen) await workspace.requestFullscreen();
+      else {
+         workspace.classList.toggle("writing-fullscreen-fallback");
+         document.body.classList.toggle(
+            "writing-fullscreen-open",
+            workspace.classList.contains("writing-fullscreen-fallback"),
+         );
+         writingFullscreenChanged();
+      }
+   } catch (error) {
+      workspace.classList.add("writing-fullscreen-fallback");
+      document.body.classList.add("writing-fullscreen-open");
+      writingFullscreenChanged();
+   }
+}
+
+function writingFullscreenChanged() {
+   const button = $("writing-fullscreen");
+   const workspace = $("writing-workspace");
+   if (button)
+      button.textContent =
+         document.fullscreenElement ||
+         (workspace && workspace.classList.contains("writing-fullscreen-fallback"))
+            ? "Quitter le plein écran"
+            : "Plein écran";
+   requestAnimationFrame(resizeWritingCanvas);
+}
+
+function destroyWritingBoard() {
+   if (writingResizeObserver) writingResizeObserver.disconnect();
+   writingResizeObserver = null;
+   if (writingRenderFrame) cancelAnimationFrame(writingRenderFrame);
+   writingRenderFrame = 0;
+   writingPointerId = null;
+   document.removeEventListener("fullscreenchange", writingFullscreenChanged);
+   document.body.classList.remove("writing-fullscreen-open");
+}
+
+"use strict";
+
 /* ================= séance ================= */
          const currentCard = () => session.cards[session.index];
          function getState(i) {
@@ -4366,11 +5810,11 @@ function renderPath() {
                '<div class="acts">' +
                '<button class="act' +
                (c.fav ? " on" : "") +
-               '" id="a-fav">♥ Favori</button>' +
-               '<button class="act" id="a-hard">⏱ Choisir la date</button>' +
+               '" id="a-fav">Favori</button>' +
+               '<button class="act" id="a-hard">Choisir la date</button>' +
                '<button class="act' +
                (c.acquired ? " on jade" : "") +
-               '" id="a-acq">✓ Acquise</button>' +
+               '" id="a-acq">Maîtrisée</button>' +
                "</div>"
             );
          }
@@ -4515,7 +5959,7 @@ function renderPath() {
                let verdict = "";
                if (session.mode === "written" && st.checked) {
                   const lab = st.ok
-                     ? "✓ Juste !"
+                     ? "Juste !"
                      : st.skipped
                        ? "Réponse affichée"
                        : "✗ Raté";
@@ -4553,7 +5997,7 @@ function renderPath() {
             $("view").innerHTML =
                '<section class="sess">' +
                '<div class="s-top">' +
-               '<button class="s-x" id="s-exit" aria-label="Quitter">✕</button>' +
+               '<button class="s-x" id="s-exit" aria-label="Quitter">×</button>' +
                '<div class="s-scope">' +
                esc(session.scopeLabel) +
                " · " +
@@ -4980,12 +6424,12 @@ function renderPath() {
                     "</b></div>"
                   : "") +
                (s.marked
-                  ? '<div class="sum-row"><span>Programmées à la main ⏱</span><b>' +
+                  ? '<div class="sum-row"><span>Programmées à la main</span><b>' +
                     s.marked +
                     "</b></div>"
                   : "") +
                (s.acquired
-                  ? '<div class="sum-row"><span>Passées en acquises ✓</span><b>' +
+                  ? '<div class="sum-row"><span>Passées en maîtrisées</span><b>' +
                     s.acquired +
                     "</b></div>"
                   : "") +
@@ -5016,7 +6460,7 @@ function renderPath() {
             };
          }
 
-         /* -------- programmation ⏱ manuelle -------- */
+         /* -------- programmation manuelle -------- */
          function delayTargets() {
             const t = now();
             const tonight = new Date();
@@ -5151,9 +6595,9 @@ function renderPath() {
                "</span></span>" +
                '<span class="row-badges">' +
                (c.unit != null ? '<i class="b u">U' + c.unit + "</i>" : "") +
-               (c.fav ? '<i class="b red">♥</i>' : "") +
-               (c.due != null ? '<i class="b gold">⏱</i>' : "") +
-               (c.acquired ? '<i class="b jade">✓</i>' : "") +
+               (c.fav ? '<i class="b red" aria-label="Favori">F</i>' : "") +
+               (c.due != null ? '<i class="b gold" aria-label="À revoir">R</i>' : "") +
+               (c.acquired ? '<i class="b jade" aria-label="Maîtrisé">M</i>' : "") +
                "</span></button>"
             );
          }
@@ -5161,7 +6605,7 @@ function renderPath() {
             if (!$("lib-list")) return;
             const list = libFiltered();
             $("lib-count").textContent =
-               list.length + " carte" + (list.length > 1 ? "s" : "");
+               list.length + " mot" + (list.length > 1 ? "s" : "");
             $("lib-list").innerHTML =
                list.map(rowHtml).join("") ||
                '<p class="sh-p">Rien ne correspond à ta recherche.</p>';
@@ -5178,7 +6622,7 @@ function renderPath() {
             ).sort((a, b) => a.localeCompare(b, "fr"));
             if (!db.cards.length) {
                root.innerHTML =
-                  '<section class="lib-head" style="padding:6px 2px"><h2 class="v-t" style="margin:0">库 · Tes cartes</h2></section>' +
+                  '<section class="lib-head" style="padding:6px 2px"><div><h2 class="v-t" style="margin:0">库 · Mes mots</h2><p class="muted">Ta collection personnelle, séparée du dictionnaire et du HSK.</p></div></section>' +
                   emptyHtml();
                wireEmpty();
                return;
@@ -5193,15 +6637,15 @@ function renderPath() {
                "</button>";
             root.innerHTML =
                '<section class="card pad">' +
-               '<div class="lib-head"><h2 class="v-t" style="margin:0">库 · Tes cartes</h2><button class="seal-btn add" id="btn-add" aria-label="Nouvelle carte">加</button></div>' +
+               '<div class="lib-head"><div><h2 class="v-t" style="margin:0">库 · Mes mots</h2><p class="muted">Ta collection personnelle, séparée du dictionnaire et du HSK.</p></div><button class="seal-btn add" id="btn-add" aria-label="Nouveau mot">加</button></div>' +
                '<input class="search" id="lib-q" placeholder="Rechercher (汉字, pinyin, français…)" value="' +
                esc(lib.q) +
                '" autocomplete="off">' +
                '<div class="chips" style="margin-top:10px">' +
                fltChip("all", "Tout") +
-               fltChip("fav", "♥") +
-               fltChip("due", "⏱") +
-               fltChip("acq", "✓ Acquises") +
+               fltChip("fav", "Favoris") +
+               fltChip("due", "À revoir") +
+               fltChip("acq", "Maîtrisés") +
                fltChip("notacq", "À apprendre") +
                "</div>" +
                '<div class="selects">' +
@@ -5275,10 +6719,10 @@ function renderPath() {
             if (!c) return;
             const status = [];
             if (c.acquired)
-               status.push('<span class="b jade">✓ acquise</span>');
+               status.push('<span class="b jade">maîtrisé</span>');
             else if (c.due != null)
                status.push(
-                  '<span class="b gold">⏱ ' + fmtDate(c.due) + "</span>",
+                  '<span class="b gold">À revoir ' + fmtDate(c.due) + "</span>",
                );
             else status.push('<span class="b">à apprendre</span>');
             status.push('<span class="b u">Niveau ' + (c.lvl || 0) + "</span>");
@@ -5331,14 +6775,15 @@ function renderPath() {
                   '<div class="acts" style="justify-content:flex-start">' +
                   '<button class="act' +
                   (c.fav ? " on" : "") +
-                  '" id="cd-fav">♥ Favori</button>' +
-                  '<button class="act" id="cd-hard">⏱ Programmer</button>' +
+                  '" id="cd-fav">Favori</button>' +
+                  '<button class="act" id="cd-hard">Programmer</button>' +
                   '<button class="act' +
                   (c.acquired ? " on jade" : "") +
-                  '" id="cd-acq">✓ Acquise</button>' +
+                  '" id="cd-acq">Maîtrisé</button>' +
                   "</div>" +
                   packCk +
                   '<div class="sh-btns">' +
+                  '<button class="btn primary" id="cd-write">写 Écrire ce mot</button>' +
                   '<button class="btn" id="cd-edit">Modifier</button>' +
                   '<button class="btn danger" id="cd-del">Supprimer</button>' +
                   '<button class="btn ghost" id="cd-close">Fermer</button>' +
@@ -5363,6 +6808,7 @@ function renderPath() {
                   updateLibList();
                });
             $("cd-edit").onclick = () => openCardForm(c);
+            $("cd-write").onclick = () => openWritingWord(c.hz);
             $("cd-del").onclick = () => {
                if (!confirm("Supprimer « " + c.hz + " » ?")) return;
                db.cards = db.cards.filter((x) => x.id !== id);
@@ -5510,12 +6956,12 @@ function renderPath() {
                         '">Renommer</button>' +
                         '<button class="btn sm danger" data-del="' +
                         p.id +
-                        '">✕</button>' +
+                        '">×</button>' +
                         "</div></div>"
                      );
                   })
                   .join("") ||
-               "<p class=\"sh-p\">Aucun pack pour l'instant. Importe un fichier JSON avec un « name », ou crée un pack ici puis coche-le depuis la fiche d'une carte.</p>";
+               "<p class=\"sh-p\">Aucun pack pour l'instant. Crée-en un ici, puis ajoute-lui des mots depuis leur fiche.</p>";
             openSheet(
                '<h3 class="sh-t">Packs</h3>' +
                   rows +
@@ -6012,7 +7458,7 @@ function openDictionarySources() {
          const card = $("sheet").querySelector(".sheet-card");
          card.innerHTML =
             '<h3 class="sh-t">Sources du dictionnaire</h3>' +
-            '<p class="sh-p">Les données globales restent séparées de tes cartes et de ta progression.</p>' +
+            '<p class="sh-p">Les données globales restent séparées de Mes mots et de ta progression.</p>' +
             attribution.sources.map(dictionarySourceHtml).join("") +
             '<div class="card pad" style="box-shadow:none;margin-top:10px"><h3 class="v-t" style="font-size:20px">Données de traits</h3>' +
             '<p class="sh-p">Hanzi Writer Data 2.0.1, dérivé de Make Me a Hanzi et des fontes Arphic indiquées par le projet.</p>' +
@@ -6208,7 +7654,7 @@ function rankDictionaryEntry(entry, query, context) {
    }
 
    if (entry.personalCard || entry.src === "card")
-      add("personalCard", SEARCH_WEIGHTS.PERSONAL_CARD, "déjà dans tes cartes");
+      add("personalCard", SEARCH_WEIGHTS.PERSONAL_CARD, "déjà dans Mes mots");
    if (entryType === "character")
       add("characterType", SEARCH_WEIGHTS.CHARACTER_TYPE, "entrée caractère");
 
@@ -6740,7 +8186,7 @@ function searchLandingHtml() {
            "</div></section>"
          : "") +
       (cards.length
-         ? '<section class="search-landing-section"><div class="eyebrow">Continuer avec mes cartes</div><div class="search-card-strip">' +
+         ? '<section class="search-landing-section"><div class="eyebrow">Continuer avec Mes mots</div><div class="search-card-strip">' +
            cards
               .map(
                  (card) =>
@@ -6821,7 +8267,7 @@ function dictionaryResultHtml(item, index) {
            esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
            "</i>"
          : "") +
-      (entry.personalCard ? '<i class="b jade">carte</i>' : "") +
+      (entry.personalCard ? '<i class="b jade">Mes mots</i>' : "") +
       (Number.isFinite(entry.frequencyRank) ? '<i class="b u">fréq. ' + esc(entry.frequencyRank) + "</i>" : "") +
       "</span></button>"
    );
@@ -7055,13 +8501,13 @@ function closeSearchDictionaryDetail() {
 function restoreSearchHistory(state) {
    cancelDictionarySearches();
    closeSheet();
-   activeView = "write";
+   activeView = "search";
    srch.q = state.q || "";
    srch.mode = state.mode || (srch.q ? "results" : "landing");
    srch.scrollY = Number(state.scrollY) || 0;
    srch.pendingDetailId = state.mode === "detail" ? state.entryId : null;
    document.querySelectorAll(".nav button").forEach((button) =>
-      button.setAttribute("aria-pressed", String(button.dataset.view === "write")),
+      button.setAttribute("aria-pressed", String(button.dataset.view === "search")),
    );
    if (state.mode === "sequence") {
       openSequence(Array.from(state.characters || ""), {
@@ -7454,6 +8900,8 @@ function renderStrokeGallery(data) {
    if (strokeGalleryObserver) strokeGalleryObserver.disconnect();
    strokeGalleryObserver = null;
    const settings = strokeGallerySettings();
+   gallery.classList.remove("is-loading");
+   gallery.setAttribute("aria-busy", "false");
    status.textContent = `${data.character} · ${data.strokeCount} traits réels`;
    gallery.innerHTML = Array.from({ length: data.strokeCount }, (_, index) => {
       const number = index + 1;
@@ -7496,6 +8944,8 @@ function renderStrokeGalleryError(character, error) {
    const status = $("dd-gallery-status");
    if (status) status.textContent = `${character} · données de traits indisponibles`;
    if (gallery) {
+      gallery.classList.remove("is-loading");
+      gallery.setAttribute("aria-busy", "false");
       gallery.innerHTML =
          '<div class="stroke-gallery-error" role="alert">Aucune galerie inventée : ' +
          esc(error && error.message ? error.message : "données réelles introuvables") +
@@ -7829,7 +9279,7 @@ function wireStrokeWorkspace() {
             "dd-practice-note",
             `Trait ${strokeData.strokeNum + 1} sur ${ddCharacterData.strokeCount} réussi.`,
          ),
-         onComplete: () => setStrokeWorkspaceMessage("dd-practice-note", "Caractère réussi ✓"),
+         onComplete: () => setStrokeWorkspaceMessage("dd-practice-note", "Caractère réussi"),
       });
    };
    if ($("dd-clear")) $("dd-clear").onclick = () => {
@@ -7869,14 +9319,29 @@ async function loadDDChar(character, characters, options) {
    ddChar = character;
    ddCharacterData = null;
    ddWorkspaceCharacters = Array.isArray(characters) ? characters.slice() : [character];
+   const workspaceIndex = Number.isInteger(settings.selectionIndex)
+      ? settings.selectionIndex
+      : ddWorkspaceCharacters.indexOf(character);
+   const stripSelectionIndex = Number.isInteger(settings.stripSelectionIndex)
+      ? settings.stripSelectionIndex
+      : workspaceIndex;
    document.querySelectorAll("#dd-picker .hzchip, #seq-character-strip .hzchip").forEach((button) => {
-      const value = button.dataset.character || ddWorkspaceCharacters[Number(button.dataset.i)];
-      button.setAttribute("aria-pressed", String(value === character));
+      const buttonIndex = Number(button.dataset.i);
+      const selected = button.closest("#seq-character-strip")
+         ? buttonIndex === stripSelectionIndex
+         : buttonIndex === workspaceIndex;
+      button.setAttribute("aria-pressed", String(selected));
+      button.setAttribute("aria-current", selected ? "true" : "false");
    });
    setStrokeWorkspaceMessage("dd-note", `Chargement des traits réels de ${character}…`);
    setStrokeWorkspaceMessage("dd-practice-note", `Chargement des traits réels de ${character}…`);
    setStrokeWorkspaceMessage("dd-gallery-status", `Chargement des traits réels de ${character}…`);
-   if ($("dd-gallery")) $("dd-gallery").innerHTML = '<div class="dictionary-loading"><span class="ink-loader"></span></div>';
+   if ($("dd-gallery")) {
+      $("dd-gallery").classList.add("is-loading");
+      $("dd-gallery").setAttribute("aria-busy", "true");
+      if (!$("dd-gallery").children.length)
+         $("dd-gallery").innerHTML = '<div class="dictionary-loading"><span class="ink-loader"></span></div>';
+   }
    try {
       const data = await loadStrokeCharacterData(character);
       if (
@@ -7893,7 +9358,7 @@ async function loadDDChar(character, characters, options) {
       setStrokeWorkspaceMessage("dd-note", "Animation indisponible · aucune donnée inventée.");
       setupFreehandPractice("Données réelles indisponibles · entraînement libre sans modèle inventé.");
    }
-   const index = ddWorkspaceCharacters.indexOf(character);
+   const index = workspaceIndex;
    if (index >= 0 && ddWorkspaceCharacters[index + 1]) {
       preloadStrokeCharacterData(ddWorkspaceCharacters[index + 1]);
    }
@@ -7902,14 +9367,15 @@ async function loadDDChar(character, characters, options) {
 "use strict";
 
 let dictionaryDetailToken = 0;
+let dictionaryCharacterCardToken = 0;
 
 function cardActionsHtml(card) {
    return (
-      '<section class="dd-card-actions" aria-label="Carte personnelle"><div class="acts">' +
-      '<button class="act' + (card.fav ? " on" : "") + '" id="dd-fav">♥ Favori</button>' +
-      '<button class="act' + (card.acquired ? " on jade" : "") + '" id="dd-acq">✓ Acquise</button>' +
+      '<section class="dd-card-actions" aria-label="Mot personnel"><div class="acts">' +
+      '<button class="act' + (card.fav ? " on" : "") + '" id="dd-fav">Favori</button>' +
+      '<button class="act' + (card.acquired ? " on jade" : "") + '" id="dd-acq">Maîtrisé</button>' +
       "</div>" +
-      '<button class="btn ghost wide" id="dd-manage">Modifier ou gérer cette carte</button></section>'
+      '<button class="btn ghost wide" id="dd-manage">Modifier ou gérer ce mot</button></section>'
    );
 }
 
@@ -7948,6 +9414,94 @@ function detailPinyin(entry, field) {
 
 function uniqueDetailValues(values) {
    return Array.from(new Set(values));
+}
+
+async function dictionaryCharacterStudyEntry(character) {
+   const personal = db.cards.find((card) => card.hz === character);
+   if (personal) return attachHskMetadata(personalCardAsDictionaryEntry(personal));
+   const found = await findDictionaryEntryByHanzi(character);
+   return attachHskMetadata(found || normalizeDetailEntry({ hz: character }));
+}
+
+function dictionaryCharacterStudyCardShell(character) {
+   return (
+      '<section class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
+      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
+      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      '<div class="dd-character-study-main"><div class="dd-character-study-hanzi">' +
+      esc(character) + '</div><div class="muted">Chargement du caractère…</div></div></section>'
+   );
+}
+
+function dictionaryCharacterStudyCardHtml(entry, character) {
+   const card = findPersonalCardForEntry(entry);
+   const pinyin = dictionaryEntryPinyinText(entry);
+   const definition = dictionaryResultDefinition(entry);
+   return (
+      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
+      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      '<div class="dd-character-study-main"><div class="dd-character-study-hanzi" data-say="' +
+      esc(character) + '">' + esc(character) + "</div>" +
+      (pinyin ? '<div class="dd-character-study-pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
+      '<div class="dd-character-study-translation">' +
+      (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") +
+      esc(definition.text) + "</div>" + verifiedHskBadges(entry) + "</div>" +
+      '<div class="dd-character-study-action">' +
+      (card
+         ? '<span class="cd-cat jade">Dans Mes mots</span><button class="btn ghost" id="dd-character-manage" type="button">Ouvrir le mot</button>'
+         : '<button class="btn ghost" id="dd-character-addcard" type="button" data-entry-id="' +
+           esc(entry.id) + '">+ Ajouter à Mes mots</button>') +
+      "</div>"
+   );
+}
+
+async function renderDictionaryCharacterStudyCard(character, detailToken) {
+   const target = $("dd-character-study-card");
+   if (!target) return;
+   const cardToken = ++dictionaryCharacterCardToken;
+   target.setAttribute("aria-busy", "true");
+   try {
+      const entry = await dictionaryCharacterStudyEntry(character);
+      if (
+         cardToken !== dictionaryCharacterCardToken || detailToken !== dictionaryDetailToken ||
+         ddChar !== character || !$("dd-character-study-card")
+      ) return;
+      target.innerHTML = dictionaryCharacterStudyCardHtml(entry, character);
+      target.setAttribute("aria-busy", "false");
+      if ($("dd-character-addcard"))
+         $("dd-character-addcard").onclick = () => openDictionaryAddToWords(entry);
+      if ($("dd-character-manage")) {
+         const card = findPersonalCardForEntry(entry);
+         $("dd-character-manage").onclick = () => card && openCardDetail(card.id);
+      }
+   } catch (error) {
+      if (cardToken !== dictionaryCharacterCardToken || detailToken !== dictionaryDetailToken) return;
+      target.setAttribute("aria-busy", "false");
+      target.innerHTML =
+         '<div class="dd-character-study-main"><div class="dd-character-study-hanzi">' +
+         esc(character) + '</div><div class="muted">Données du caractère indisponibles.</div></div>';
+   }
+}
+
+function dictionaryCharacterInteractionHtml(characters) {
+   if (!characters.length) return "";
+   return (
+      '<section class="dd-character-interaction character-swipe-zone" id="dd-character-interaction" aria-label="Caractère étudié">' +
+      (characters.length > 1
+         ? '<div class="eyebrow">Caractères du mot</div><div class="picker" id="dd-picker">' +
+           characters.map((character, index) =>
+              '<button class="chip hzchip" type="button" data-i="' + index +
+              '" data-character="' + esc(character) + '" aria-label="Afficher ' + esc(character) +
+              ', position ' + (index + 1) + " sur " + characters.length + '" aria-pressed="' +
+              String(index === 0) + '" aria-current="' + String(index === 0) + '">' +
+              esc(character) + "</button>",
+           ).join("") + "</div>" + dictionaryCharacterStudyCardShell(characters[0])
+         : "") +
+      characterNavigationHtml("dd-character", characters[0], 0, characters.length) +
+      '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
+      '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
+      "</section>"
+   );
 }
 
 function verifiedHskBadges(entry) {
@@ -8036,6 +9590,145 @@ function findPersonalCardForEntry(entry) {
    );
 }
 
+function addDictionaryEntryToPersonalCards(entry) {
+   const french = (entry.definitionsFr || []).join(" ; ");
+   const draft = {
+      hz: entry.simplified,
+      py: detailPinyin(entry, "marked").join(" / "),
+      fr: french,
+      cat: "",
+   };
+   if (!french) {
+      toast("Ajoute une définition française vérifiée avant d’enregistrer.");
+      openCardForm(draft);
+      return null;
+   }
+   const normalized = normalizeCard(draft, false);
+   if (!normalized) return null;
+   const identity = dictionaryEntryIdentity(entry);
+   if (db.cards.some((item) => dictionaryEntryIdentity(personalCardAsDictionaryEntry(item)) === identity)) {
+      return db.cards.find(
+         (item) => dictionaryEntryIdentity(personalCardAsDictionaryEntry(item)) === identity,
+      );
+   }
+   db.cards.push(normalized);
+   invalidateDictIndex();
+   save();
+   toast("« " + entry.simplified + " » ajouté à Mes mots.");
+   return normalized;
+}
+
+function returnFromDictionaryAdd(entry, options) {
+   if (options && typeof options.onCardStateChange === "function")
+      options.onCardStateChange();
+   else openDictDetail(entry, options);
+}
+
+function openDictionaryAddToWords(entry, options, state) {
+   const existing = findPersonalCardForEntry(entry);
+   const selected = new Set(
+      state && Array.isArray(state.packIds)
+         ? state.packIds
+         : existing
+           ? db.packs.filter((pack) => pack.cardIds.includes(existing.id)).map((pack) => pack.id)
+           : [],
+   );
+   const french =
+      state && typeof state.french === "string"
+         ? state.french
+         : (entry.definitionsFr || []).join(" ; ");
+   const packChoices = db.packs.length
+      ? '<div class="dd-add-packs"><div class="eyebrow">Packs facultatifs</div>' +
+        db.packs
+           .map(
+              (pack) =>
+                 '<label class="ck"><input type="checkbox" data-dd-add-pack="' +
+                 esc(pack.id) +
+                 '"' +
+                 (selected.has(pack.id) ? " checked" : "") +
+                 "> " +
+                 esc(pack.name) +
+                 "</label>",
+           )
+           .join("") +
+        "</div>"
+      : '<p class="sh-note">Aucun pack pour l’instant. Tu peux en créer un ci-dessous.</p>';
+   openSheet(
+      '<section class="dd-add-words" aria-labelledby="dd-add-title"><h3 class="sh-t" id="dd-add-title">' +
+         (existing ? "Gérer dans Mes mots" : "Ajouter à Mes mots") +
+         '</h3><div class="dd-add-word"><b>' +
+         esc(entry.simplified) +
+         "</b><span>" +
+         colorPinyin(dictionaryEntryPinyinText(entry)) +
+         "</span></div>" +
+         (existing
+            ? '<p class="sh-note">Ce mot existe déjà : sa carte unique sera conservée.</p>'
+            : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' +
+              esc(french) +
+              '"></label>') +
+         packChoices +
+         '<div class="pk-new"><input class="search" id="dd-add-pack-name" placeholder="Nouveau pack"><button class="btn" id="dd-add-pack-create" type="button">Créer</button></div>' +
+         '<p class="sh-note">Sans pack sélectionné, le mot est ajouté directement à Mes mots.</p>' +
+         '<div class="sh-btns"><button class="btn primary" id="dd-add-confirm" type="button">' +
+         (existing ? "Enregistrer" : "+ Ajouter à Mes mots") +
+         '</button><button class="btn ghost" id="dd-add-cancel" type="button">Annuler</button></div></section>',
+   );
+   const currentSelection = () =>
+      Array.from(document.querySelectorAll("[data-dd-add-pack]:checked")).map(
+         (checkbox) => checkbox.dataset.ddAddPack,
+      );
+   $("dd-add-pack-create").onclick = () => {
+      const name = $("dd-add-pack-name").value.trim();
+      if (!name) return toast("Donne un nom au pack.");
+      if (db.packs.some((pack) => pack.name.toLowerCase() === name.toLowerCase()))
+         return toast("Ce pack existe déjà.");
+      const pack = { id: uid(), name, cardIds: [] };
+      db.packs.push(pack);
+      save();
+      openDictionaryAddToWords(entry, options, {
+         french: existing ? french : $("dd-add-fr").value,
+         packIds: currentSelection().concat(pack.id),
+      });
+      toast("Pack créé et sélectionné.");
+   };
+   $("dd-add-cancel").onclick = () => returnFromDictionaryAdd(entry, options);
+   $("dd-add-confirm").onclick = () => {
+      let card = findPersonalCardForEntry(entry);
+      const wasExisting = !!card;
+      if (!card) {
+         const definition = $("dd-add-fr").value.trim();
+         if (!definition) return toast("La définition française est obligatoire.");
+         card = normalizeCard(
+            {
+               hz: entry.simplified,
+               py: detailPinyin(entry, "marked").join(" / "),
+               fr: definition,
+               cat: "",
+            },
+            false,
+         );
+         if (!card) return;
+         db.cards.push(card);
+         invalidateDictIndex();
+      }
+      const memberships = new Set(currentSelection());
+      db.packs.forEach((pack) => {
+         const ids = new Set(pack.cardIds);
+         if (memberships.has(pack.id)) ids.add(card.id);
+         else if (wasExisting) ids.delete(card.id);
+         pack.cardIds = Array.from(ids);
+      });
+      entry.personalCard = card;
+      save();
+      toast(
+         wasExisting
+            ? "Packs de « " + entry.simplified + " » mis à jour."
+            : "« " + entry.simplified + " » ajouté à Mes mots.",
+      );
+      returnFromDictionaryAdd(entry, options);
+   };
+}
+
 function openDictDetail(rawEntry, options) {
    const entry = attachHskMetadata(normalizeDetailEntry(rawEntry));
    const settings = options || {};
@@ -8043,9 +9736,7 @@ function openDictDetail(rawEntry, options) {
    if (!currentDetail || currentDetail.dataset.entryId !== String(entry.id))
       resetStrokeAutoplaySelection();
    const card = findPersonalCardForEntry(entry);
-   const characters = uniqueDetailValues(
-      Array.from(entry.simplified).filter((character) => HAN_PATTERN.test(character)),
-   );
+   const characters = Array.from(entry.simplified).filter((character) => HAN_PATTERN.test(character));
    const marked = uniqueDetailValues(detailPinyin(entry, "marked"));
    const numbered = uniqueDetailValues(detailPinyin(entry, "numbered"));
    const traditional = entry.traditional && entry.traditional !== entry.simplified ? entry.traditional : "";
@@ -8063,9 +9754,10 @@ function openDictDetail(rawEntry, options) {
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
          dictionaryDefinitionsHtml(entry) +
          dictionaryHskSourceHtml(entry) +
+         '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
          (card
             ? cardActionsHtml(card)
-            : '<section class="dd-card-actions" aria-label="Carte personnelle"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></section>') +
+            : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
          '<div class="dd-meta"><span class="cd-cat">' +
          (entry.entryType === "character" ? "Caractère" : "Mot") +
          "</span>" +
@@ -8073,25 +9765,11 @@ function openDictDetail(rawEntry, options) {
          (Number.isFinite(entry.frequencyRank)
             ? '<span class="cd-cat">Fréquence vérifiée · ' + esc(entry.frequencyRank) + "</span>"
             : "") +
-         (card ? '<span class="cd-cat jade">Dans tes cartes</span>' : "") +
+         (card ? '<span class="cd-cat jade">Dans Mes mots</span>' : "") +
          "</div>" +
          (card && card.exHz ? exampleHtml(card) : "") +
          (card && card.note ? noteHtml(card) : "") +
-         (characters.length > 1
-            ? '<div class="eyebrow">Caractères du mot</div><div class="picker" id="dd-picker">' +
-              characters
-                 .map(
-                    (character, index) =>
-                       '<button class="chip hzchip" data-i="' + index + '" aria-pressed="' +
-                       String(index === 0) + '">' + esc(character) + "</button>",
-                 )
-                 .join("") +
-              "</div>"
-            : "") +
-         (characters.length
-            ? '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
-              '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>'
-            : "") +
+         dictionaryCharacterInteractionHtml(characters) +
          dictionarySourcesHtml(entry) +
          '<div class="sh-btns"><button class="btn ghost wide" id="dd-close">' +
          (settings.fromSearch ? "← Retour aux résultats" : "Fermer") +
@@ -8103,9 +9781,12 @@ function openDictDetail(rawEntry, options) {
 async function renderDictionaryRelatedWords(character, token) {
    const target = $("dd-related");
    if (!target) return;
+   target.setAttribute("aria-busy", "true");
+   target.innerHTML = '<span class="muted">Chargement des mots liés à ' + esc(character) + "…</span>";
    try {
       const related = await loadDictionaryCharacterLinks(character, 10);
-      if (token !== dictionaryDetailToken || !$("dd-related")) return;
+      if (token !== dictionaryDetailToken || ddChar !== character || !$("dd-related")) return;
+      target.setAttribute("aria-busy", "false");
       if (!related.words.length) {
          target.innerHTML = '<span class="muted">Aucun mot lié classé par les sources.</span>';
          return;
@@ -8122,76 +9803,94 @@ async function renderDictionaryRelatedWords(character, token) {
       target.querySelectorAll("[data-related]").forEach((button) => {
          button.onclick = () => {
             const word = related.words[Number(button.dataset.related)];
-            if (typeof openSearchDictionaryDetail === "function" && activeView === "write")
+            if (typeof openSearchDictionaryDetail === "function" && activeView === "search")
                openSearchDictionaryDetail(word, true);
             else openDictDetail(word);
          };
       });
    } catch (error) {
-      if (token === dictionaryDetailToken && $("dd-related"))
+      if (token === dictionaryDetailToken && ddChar === character && $("dd-related")) {
+         target.setAttribute("aria-busy", "false");
          target.innerHTML = '<span class="muted">Mots liés indisponibles.</span>';
+      }
    }
 }
 
 function wireDictDetail(entry, characters, card, token, options) {
    if (characters.length) wireStrokeWorkspace();
-   const selectCharacter = (character) => {
+   let selectedCharacterIndex = 0;
+   const selectCharacter = (index) => {
+      const nextIndex = Math.max(0, Math.min(Number(index) || 0, characters.length - 1));
+      const character = characters[nextIndex];
+      selectedCharacterIndex = nextIndex;
+      updateCharacterNavigation(
+         "dd-character",
+         characters,
+         nextIndex,
+         "#dd-picker .hzchip",
+      );
       const selectionKey =
          options && typeof options.strokeSelectionKey === "function"
-            ? options.strokeSelectionKey(character)
-            : character;
-      loadDDChar(character, characters, { selectionKey });
+            ? options.strokeSelectionKey(character, nextIndex)
+            : characters.length > 1
+              ? `${entry.id}:${nextIndex}:${character}`
+              : character;
+      loadDDChar(character, characters, {
+         selectionKey,
+         selectionIndex: nextIndex,
+         stripSelectionIndex:
+            options && Number.isInteger(options.sequenceIndex)
+               ? options.sequenceIndex
+               : nextIndex,
+      });
       renderDictionaryRelatedWords(character, token);
+      if (characters.length > 1) renderDictionaryCharacterStudyCard(character, token);
+   };
+   const moveCharacter = (delta) => {
+      const nextIndex = selectedCharacterIndex + delta;
+      if (nextIndex < 0 || nextIndex >= characters.length) return;
+      selectCharacter(nextIndex);
    };
    if (characters.length) {
-      selectCharacter(characters[0]);
+      selectCharacter(0);
       document.querySelectorAll("#dd-picker .hzchip").forEach((button) => {
-         button.onclick = () => selectCharacter(characters[Number(button.dataset.i)]);
+         button.onclick = () => selectCharacter(Number(button.dataset.i));
       });
+      if ($("dd-character-prev")) $("dd-character-prev").onclick = () => moveCharacter(-1);
+      if ($("dd-character-next")) $("dd-character-next").onclick = () => moveCharacter(1);
+      setupSwipe(
+         $("dd-character-interaction"),
+         () => moveCharacter(1),
+         () => moveCharacter(-1),
+      );
    }
    if (card) {
       if ($("dd-fav"))
          $("dd-fav").onclick = () => {
             card.fav = !card.fav;
             save();
-            openDictDetail(entry, options);
+            if (options && typeof options.onCardStateChange === "function")
+               options.onCardStateChange();
+            else openDictDetail(entry, options);
          };
       if ($("dd-acq"))
          $("dd-acq").onclick = () => {
             card.acquired = !card.acquired;
             if (card.acquired) card.due = null;
             save();
-            openDictDetail(entry, options);
-            refreshActive();
+            if (options && typeof options.onCardStateChange === "function") {
+               options.onCardStateChange();
+            } else {
+               openDictDetail(entry, options);
+               refreshActive();
+            }
          };
       if ($("dd-manage")) $("dd-manage").onclick = () => openCardDetail(card.id);
    }
    if ($("dd-addcard"))
-      $("dd-addcard").onclick = () => {
-         const french = (entry.definitionsFr || []).join(" ; ");
-         const draft = {
-            hz: entry.simplified,
-            py: detailPinyin(entry, "marked").join(" / "),
-            fr: french,
-            cat: "",
-         };
-         if (!french) {
-            toast("Ajoute une définition française vérifiée avant d’enregistrer.");
-            openCardForm(draft);
-            return;
-         }
-         const normalized = normalizeCard(draft, false);
-         if (!normalized) return;
-         const identity = dictionaryEntryIdentity(entry);
-         if (db.cards.some((item) => dictionaryEntryIdentity(personalCardAsDictionaryEntry(item)) === identity))
-            return toast("Déjà dans tes cartes.");
-         db.cards.push(normalized);
-         invalidateDictIndex();
-         save();
-         entry.personalCard = normalized;
-         toast("« " + entry.simplified + " » ajoutée à tes cartes.");
-         openDictDetail(entry, options);
-      };
+      $("dd-addcard").onclick = () => openDictionaryAddToWords(entry, options);
+   if ($("dd-write"))
+      $("dd-write").onclick = () => openWritingWord(entry.simplified);
    const closeDetail = () => {
          if (options && options.fromSearch && typeof closeSearchDictionaryDetail === "function")
             closeSearchDictionaryDetail();
@@ -8210,10 +9909,43 @@ function wireDictDetail(entry, characters, card, token, options) {
 let seq = null;
 
 async function seqEntry(character) {
-   const personal = db.cards.find((card) => card.hz === character);
-   if (personal) return personalCardAsDictionaryEntry(personal);
-   const found = await findDictionaryEntryByHanzi(character);
-   return found || normalizeDetailEntry({ hz: character });
+   return dictionaryCharacterStudyEntry(character);
+}
+
+function characterNavigationHtml(prefix, character, index, total) {
+   const previousDisabled = index <= 0 ? " disabled" : "";
+   const nextDisabled = index >= total - 1 ? " disabled" : "";
+   const positionClass = prefix === "seq" ? " s-count" : "";
+   const chevron = (direction) =>
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' +
+      (direction === "left" ? "M14.5 6.5 9 12l5.5 5.5" : "M9.5 6.5 15 12l-5.5 5.5") +
+      '"></path></svg>';
+   return (
+      '<nav class="character-nav" id="' + prefix + '-nav" aria-label="Navigation entre les caractères">' +
+      '<button class="character-nav-button" id="' + prefix + '-prev" type="button" aria-label="Caractère précédent"' +
+      previousDisabled + ">" + chevron("left") + "</button>" +
+      '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
+      '-position" role="status" aria-live="polite" aria-atomic="true">' +
+      esc(character) + " · " + (index + 1) + " / " + total + "</strong>" +
+      '<button class="character-nav-button" id="' + prefix + '-next" type="button" aria-label="Caractère suivant"' +
+      nextDisabled + ">" + chevron("right") + "</button></nav>"
+   );
+}
+
+function updateCharacterNavigation(prefix, characters, index, stripSelector) {
+   const previous = $(prefix + "-prev");
+   const next = $(prefix + "-next");
+   const position = $(prefix + "-position");
+   if (previous) previous.disabled = index <= 0;
+   if (next) next.disabled = index >= characters.length - 1;
+   if (position)
+      position.textContent = `${characters[index]} · ${index + 1} / ${characters.length}`;
+   if (!stripSelector) return;
+   document.querySelectorAll(stripSelector).forEach((button) => {
+      const selected = Number(button.dataset.i) === index;
+      button.setAttribute("aria-pressed", String(selected));
+      button.setAttribute("aria-current", selected ? "true" : "false");
+   });
 }
 
 function sequenceHistoryPayload() {
@@ -8275,7 +10007,7 @@ function setSequenceIndex(index, focusStrip) {
    renderSequence().then(() => {
       if (focusStrip) {
          const selected = document.querySelector('#seq-character-strip [aria-current="true"]');
-         if (selected) selected.focus();
+         if (selected) selected.focus({ preventScroll: true });
       }
    });
 }
@@ -8287,48 +10019,110 @@ function moveSequence(delta) {
 
 function setupSwipe(element, onLeft, onRight) {
    if (!element) return;
-   let x0 = null;
-   let y0 = null;
-   element.addEventListener("pointerdown", (event) => {
-      if (event.target.closest("button, input, select, .stroke-workspace")) {
-         x0 = null;
-         return;
-      }
-      x0 = event.clientX;
-      y0 = event.clientY;
-   });
-   element.addEventListener("pointerup", (event) => {
-      if (x0 == null) return;
-      const dx = event.clientX - x0;
-      const dy = event.clientY - y0;
-      if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-         if (dx < 0) onLeft();
+   const ignoredTarget =
+      "button, input, textarea, select, [contenteditable='true'], canvas, .stroke-gallery, .stroke-focus";
+   let pointerId = null;
+   let startX = 0;
+   let startY = 0;
+   let currentX = 0;
+   let currentY = 0;
+   let horizontalGesture = false;
+   let suppressClick = false;
+   const clearSelection = () => {
+      const selection = window.getSelection && window.getSelection();
+      if (selection && selection.rangeCount) selection.removeAllRanges();
+   };
+   const finish = (event, navigate) => {
+      if (pointerId == null || (event && event.pointerId !== pointerId)) return;
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+      const qualifies =
+         horizontalGesture && Math.abs(deltaX) >= 54 &&
+         Math.abs(deltaX) > Math.abs(deltaY) * 1.45;
+      if (horizontalGesture) clearSelection();
+      element.classList.remove("is-pointer-swiping");
+      const finishedPointerId = pointerId;
+      pointerId = null;
+      horizontalGesture = false;
+      try {
+         if (element.hasPointerCapture(finishedPointerId)) element.releasePointerCapture(finishedPointerId);
+      } catch (error) {}
+      if (qualifies && navigate) {
+         suppressClick = true;
+         if (deltaX < 0) onLeft();
          else onRight();
       }
-      x0 = null;
-      y0 = null;
+      if (suppressClick)
+         setTimeout(() => {
+            suppressClick = false;
+         }, 0);
+   };
+   element.addEventListener("pointerdown", (event) => {
+      if (pointerId != null || !event.isPrimary) return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (event.target.closest(ignoredTarget)) return;
+      pointerId = event.pointerId;
+      startX = currentX = event.clientX;
+      startY = currentY = event.clientY;
+      horizontalGesture = false;
    });
+   element.addEventListener("pointermove", (event) => {
+      if (pointerId == null || event.pointerId !== pointerId) return;
+      currentX = event.clientX;
+      currentY = event.clientY;
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+      if (!horizontalGesture && Math.abs(deltaX) >= 12 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35) {
+         horizontalGesture = true;
+         element.classList.add("is-pointer-swiping");
+         clearSelection();
+         try { element.setPointerCapture(pointerId); } catch (error) {}
+      }
+      if (horizontalGesture) event.preventDefault();
+   });
+   element.addEventListener("pointerup", (event) => {
+      if (pointerId == null || event.pointerId !== pointerId) return;
+      currentX = event.clientX;
+      currentY = event.clientY;
+      if (horizontalGesture) event.preventDefault();
+      finish(event, true);
+   });
+   element.addEventListener("pointercancel", (event) => finish(event, false));
+   element.addEventListener("lostpointercapture", (event) => finish(event, false));
+   element.addEventListener("dragstart", (event) => event.preventDefault());
+   element.addEventListener(
+      "click",
+      (event) => {
+         if (!suppressClick) return;
+         suppressClick = false;
+         event.preventDefault();
+         event.stopPropagation();
+      },
+      true,
+   );
 }
 
 async function renderSequence() {
    if (!seq) return;
+   const preserveScroll = !!$("seq-flash");
+   const previousScrollY = window.scrollY;
    destroyStrokeWorkspace();
    const current = seq;
    const token = ++current.renderToken;
    const index = current.index;
    const character = current.chars[index];
-   $("view").innerHTML =
-      '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
-      esc(character) + "…</b></div></section>";
+   if (!preserveScroll)
+      $("view").innerHTML =
+         '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
+         esc(character) + "…</b></div></section>";
    const entry = await seqEntry(character).catch(() => normalizeDetailEntry({ hz: character }));
    if (!seq || seq !== current || token !== current.renderToken) return;
    const card = findPersonalCardForEntry(entry);
    const pinyin = dictionaryEntryPinyinText(entry);
    const definition = dictionaryResultDefinition(entry);
    $("view").innerHTML =
-      '<section class="sess"><div class="s-top"><button class="s-x" id="seq-exit" aria-label="Quitter la séquence">✕</button>' +
-      '<div class="s-scope">Séquence · ' + esc(current.chars.join("")) + '</div><div class="s-count" aria-live="polite">' +
-      (index + 1) + " / " + current.chars.length + "</div></div>" +
+      '<section class="sess"><div class="s-top"><button class="s-x" id="seq-exit" aria-label="Quitter la séquence">×</button>' +
+      '<div class="s-scope">Séquence · ' + esc(current.chars.join("")) + "</div></div>" +
       '<div class="s-bar"><i style="width:' + (((index + 1) / current.chars.length) * 100).toFixed(1) + '%"></i></div>' +
       '<nav class="seq-character-strip" id="seq-character-strip" aria-label="Caractères de la séquence">' +
       current.chars.map((item, index) =>
@@ -8336,31 +10130,28 @@ async function renderSequence() {
          '" aria-current="' + String(index === current.index) + '" aria-label="Afficher ' + esc(item) +
          ', position ' + (index + 1) + " sur " + current.chars.length + '">' + esc(item) + "</button>",
       ).join("") + "</nav>" +
-      '<div class="flash card seq-card" id="seq-flash"><button class="seal fl-seal" data-say="' +
+      '<div class="flash card seq-card character-swipe-zone" id="seq-flash"><button class="seal fl-seal" data-say="' +
       esc(character) + '" aria-label="Écouter ' + esc(character) + '">听</button><div class="hanzi ink-in" data-say="' + esc(character) + '">' +
       esc(character) + "</div>" +
       (pinyin ? '<div class="pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       verifiedHskBadges(entry) +
       '<div class="sep"></div><div class="fr">' +
       (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") + esc(definition.text) + "</div>" +
-      '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
-      (card
-         ? cardActionsHtml(card)
-         : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></div>') +
-      '</div><div class="s-foot"><button class="btn ghost" id="seq-prev" type="button"' +
-      (index === 0 ? " disabled" : "") + ">← préc.</button>" +
-      '<button class="btn primary" id="seq-next" type="button">' +
-      (index >= current.chars.length - 1 ? "Terminer 完" : "suivant →") +
-      "</button></div></section>";
+       '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
+       '<div class="sh-btns"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></div>' +
+       (card
+          ? cardActionsHtml(card)
+          : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></div>') +
+      "</div>" + characterNavigationHtml("seq", character, index, current.chars.length) +
+      "</section>";
    wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
       strokeSelectionKey: () => `sequence:${index}:${character}`,
+      sequenceIndex: index,
+      onCardStateChange: () => renderSequence(),
    });
    $("seq-exit").onclick = () => closeSequence();
    $("seq-prev").onclick = () => moveSequence(-1);
-   $("seq-next").onclick = () => {
-      if (seq && seq.index < seq.chars.length - 1) moveSequence(1);
-      else closeSequence();
-   };
+   $("seq-next").onclick = () => moveSequence(1);
    document.querySelectorAll("#seq-character-strip [data-i]").forEach((button) => {
       button.onclick = () => setSequenceIndex(Number(button.dataset.i), true);
    });
@@ -8369,6 +10160,11 @@ async function renderSequence() {
       () => moveSequence(1),
       () => moveSequence(-1),
    );
+   if (preserveScroll)
+      requestAnimationFrame(() => {
+         const maximum = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+         window.scrollTo(0, Math.min(previousScrollY, maximum));
+      });
    const nextCharacter = current.chars[index + 1];
    if (nextCharacter) {
       preloadStrokeCharacterData(nextCharacter);
@@ -8544,7 +10340,7 @@ async function renderSequence() {
                      const tg = toneRound.target;
                      if (t === toneRound.tone)
                         $("tone-note").textContent =
-                           "✓ Juste ! C'était " +
+                           "Juste ! C'était " +
                            tg[0] +
                            " " +
                            tg[1] +
@@ -8650,7 +10446,7 @@ async function renderSequence() {
                      const tg = wordRound.target;
                      if (b.dataset.id === tg.id)
                         $("word-note").textContent =
-                           "✓ Juste ! " + tg.hz + " (" + tg.py + ") · " + tg.fr;
+                           "Juste ! " + tg.hz + " (" + tg.py + ") · " + tg.fr;
                      else {
                         b.classList.add("ko");
                         const picked = db.cards.find(
@@ -9084,7 +10880,7 @@ async function renderSequence() {
          }
          function renderGrammar() {
             $("view").innerHTML =
-               '<section style="padding:6px 2px 10px"><h2 class="v-t" style="margin:0">法 · Les règles du jeu</h2><p class="muted">L\'essentiel de la grammaire HSK 1, en fiches. Touche un exemple pour l\'écouter, puis teste-toi.</p></section>' +
+               '<section class="grammar-page-head"><button class="btn ghost grammar-back" id="grammar-back" type="button">← Parcours</button><div><h2 class="v-t">法 · Grammaire</h2><p class="muted">L\'essentiel de la grammaire HSK 1, en fiches. Touche un exemple pour l\'écouter, puis teste-toi.</p></div></section>' +
                GRAMMAR.map(
                   (g, i) =>
                      '<details class="gcard"' +
@@ -9098,6 +10894,7 @@ async function renderSequence() {
                      quizHtml(i) +
                      "</div></details>",
                ).join("");
+            $("grammar-back").onclick = () => setView("path");
             document.querySelectorAll(".qz-opts").forEach((box) => {
                const gi = +box.dataset.g;
                box.querySelectorAll(".chip").forEach(
@@ -9641,7 +11438,7 @@ async function renderSequence() {
             $("sheet").addEventListener("click", (e) => {
                if (e.target.id !== "sheet") return;
                if (
-                  activeView === "write" &&
+                  activeView === "search" &&
                   history.state &&
                   history.state.moStudioSearch &&
                   history.state.mode === "detail"
@@ -9675,13 +11472,29 @@ async function renderSequence() {
                if (sheetOpen()) {
                   if (e.key === "Escape") {
                      if (
-                        activeView === "write" &&
+                        activeView === "search" &&
                         history.state &&
                         history.state.moStudioSearch &&
                         history.state.mode === "detail"
                      )
                         closeSearchDictionaryDetail();
                      else closeSheet();
+                     return;
+                  }
+                  const tag = (e.target.tagName || "").toLowerCase();
+                  const editing =
+                     tag === "input" || tag === "textarea" || tag === "select" ||
+                     (e.target && e.target.isContentEditable);
+                  if (e.defaultPrevented || editing) return;
+                  const characterButton =
+                     e.key === "ArrowLeft"
+                        ? $("dd-character-prev")
+                        : e.key === "ArrowRight"
+                          ? $("dd-character-next")
+                          : null;
+                  if (characterButton && !characterButton.disabled) {
+                     e.preventDefault();
+                     characterButton.click();
                   }
                   return;
                }
@@ -9691,7 +11504,10 @@ async function renderSequence() {
                      (e.target.closest && e.target.closest(".stroke-workspace, .stroke-focus"))
                   ) return;
                   const tag = (e.target.tagName || "").toLowerCase();
-                  if (tag === "input") return;
+                  if (
+                     tag === "input" || tag === "textarea" || tag === "select" ||
+                     (e.target && e.target.isContentEditable)
+                  ) return;
                   if (e.key === "ArrowRight" && $("seq-next"))
                      $("seq-next").click();
                   else if (

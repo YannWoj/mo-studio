@@ -38,6 +38,18 @@ function wirePathHome() {
          window.scrollTo(0, 0);
       };
    });
+   const grammar = $("path-grammar");
+   if (grammar) grammar.onclick = () => setView("grammar");
+}
+
+function pathGrammarCardHtml() {
+   return (
+      '<button class="card path-grammar" id="path-grammar" type="button">' +
+      '<span class="path-grammar-mark" aria-hidden="true">法</span>' +
+      '<span class="path-grammar-copy"><strong>Grammaire</strong>' +
+      '<span>Comprendre les structures essentielles, écouter les exemples et s\'entraîner avec les mini-quiz.</span></span>' +
+      '<span class="path-grammar-arrow" aria-hidden="true">→</span></button>'
+   );
 }
 
 async function renderPathHome(token) {
@@ -59,6 +71,7 @@ async function renderPathHome(token) {
          '<p><b>' +
          manifest.totalEntries.toLocaleString("fr-FR") +
          " entrées</b> disponibles. Les leçons et exercices ne sont pas encore créés.</p></section>" +
+         pathGrammarCardHtml() +
          '<div class="path-levels" aria-label="Niveaux HSK">' +
          [1, 2, 3, 4, 5, 6].map((level) => pathLevelCardHtml(manifest, level)).join("") +
          "</div></section>";

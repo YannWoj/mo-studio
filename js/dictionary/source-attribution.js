@@ -37,7 +37,7 @@ function openDictionarySources() {
          const card = $("sheet").querySelector(".sheet-card");
          card.innerHTML =
             '<h3 class="sh-t">Sources du dictionnaire</h3>' +
-            '<p class="sh-p">Les données globales restent séparées de tes cartes et de ta progression.</p>' +
+            '<p class="sh-p">Les données globales restent séparées de Mes mots et de ta progression.</p>' +
             attribution.sources.map(dictionarySourceHtml).join("") +
             '<div class="card pad" style="box-shadow:none;margin-top:10px"><h3 class="v-t" style="font-size:20px">Données de traits</h3>' +
             '<p class="sh-p">Hanzi Writer Data 2.0.1, dérivé de Make Me a Hanzi et des fontes Arphic indiquées par le projet.</p>' +

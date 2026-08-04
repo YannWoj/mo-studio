@@ -10,7 +10,7 @@
             $("sheet").addEventListener("click", (e) => {
                if (e.target.id !== "sheet") return;
                if (
-                  activeView === "write" &&
+                  activeView === "search" &&
                   history.state &&
                   history.state.moStudioSearch &&
                   history.state.mode === "detail"
@@ -44,13 +44,29 @@
                if (sheetOpen()) {
                   if (e.key === "Escape") {
                      if (
-                        activeView === "write" &&
+                        activeView === "search" &&
                         history.state &&
                         history.state.moStudioSearch &&
                         history.state.mode === "detail"
                      )
                         closeSearchDictionaryDetail();
                      else closeSheet();
+                     return;
+                  }
+                  const tag = (e.target.tagName || "").toLowerCase();
+                  const editing =
+                     tag === "input" || tag === "textarea" || tag === "select" ||
+                     (e.target && e.target.isContentEditable);
+                  if (e.defaultPrevented || editing) return;
+                  const characterButton =
+                     e.key === "ArrowLeft"
+                        ? $("dd-character-prev")
+                        : e.key === "ArrowRight"
+                          ? $("dd-character-next")
+                          : null;
+                  if (characterButton && !characterButton.disabled) {
+                     e.preventDefault();
+                     characterButton.click();
                   }
                   return;
                }
@@ -60,7 +76,10 @@
                      (e.target.closest && e.target.closest(".stroke-workspace, .stroke-focus"))
                   ) return;
                   const tag = (e.target.tagName || "").toLowerCase();
-                  if (tag === "input") return;
+                  if (
+                     tag === "input" || tag === "textarea" || tag === "select" ||
+                     (e.target && e.target.isContentEditable)
+                  ) return;
                   if (e.key === "ArrowRight" && $("seq-next"))
                      $("seq-next").click();
                   else if (

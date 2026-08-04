@@ -153,7 +153,7 @@ function rankDictionaryEntry(entry, query, context) {
    }
 
    if (entry.personalCard || entry.src === "card")
-      add("personalCard", SEARCH_WEIGHTS.PERSONAL_CARD, "déjà dans tes cartes");
+      add("personalCard", SEARCH_WEIGHTS.PERSONAL_CARD, "déjà dans Mes mots");
    if (entryType === "character")
       add("characterType", SEARCH_WEIGHTS.CHARACTER_TYPE, "entrée caractère");
 

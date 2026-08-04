@@ -70,7 +70,7 @@ function searchLandingHtml() {
            "</div></section>"
          : "") +
       (cards.length
-         ? '<section class="search-landing-section"><div class="eyebrow">Continuer avec mes cartes</div><div class="search-card-strip">' +
+         ? '<section class="search-landing-section"><div class="eyebrow">Continuer avec Mes mots</div><div class="search-card-strip">' +
            cards
               .map(
                  (card) =>
@@ -151,7 +151,7 @@ function dictionaryResultHtml(item, index) {
            esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
            "</i>"
          : "") +
-      (entry.personalCard ? '<i class="b jade">carte</i>' : "") +
+      (entry.personalCard ? '<i class="b jade">Mes mots</i>' : "") +
       (Number.isFinite(entry.frequencyRank) ? '<i class="b u">fréq. ' + esc(entry.frequencyRank) + "</i>" : "") +
       "</span></button>"
    );
@@ -385,13 +385,13 @@ function closeSearchDictionaryDetail() {
 function restoreSearchHistory(state) {
    cancelDictionarySearches();
    closeSheet();
-   activeView = "write";
+   activeView = "search";
    srch.q = state.q || "";
    srch.mode = state.mode || (srch.q ? "results" : "landing");
    srch.scrollY = Number(state.scrollY) || 0;
    srch.pendingDetailId = state.mode === "detail" ? state.entryId : null;
    document.querySelectorAll(".nav button").forEach((button) =>
-      button.setAttribute("aria-pressed", String(button.dataset.view === "write")),
+      button.setAttribute("aria-pressed", String(button.dataset.view === "search")),
    );
    if (state.mode === "sequence") {
       openSequence(Array.from(state.characters || ""), {

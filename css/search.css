@@ -393,8 +393,91 @@
    min-height: 46px;
    margin: 18px 0;
 }
+.dd-character-interaction {
+   margin-top: 18px;
+   padding: 14px;
+   border: 1px solid var(--line);
+   border-radius: 16px;
+   background: color-mix(in srgb, var(--card-2) 68%, transparent);
+}
+.dd-character-study-card {
+   position: relative;
+   display: grid;
+   grid-template-columns: 52px minmax(0, 1fr);
+   gap: 12px;
+   align-items: start;
+   min-height: 132px;
+   margin: 14px 0 6px;
+   padding: 16px;
+   border: 1px solid var(--line-soft);
+   border-radius: 14px;
+   background: var(--card-2);
+   box-shadow: 0 5px 15px rgba(23, 20, 15, 0.06);
+}
+.dd-character-study-card[aria-busy="true"] {
+   opacity: 0.72;
+}
+.dd-character-audio {
+   width: 44px;
+   height: 44px;
+}
+.dd-character-study-main {
+   min-width: 0;
+}
+.dd-character-study-hanzi {
+   font-family: var(--serif);
+   font-size: 52px;
+   font-weight: 600;
+   line-height: 1;
+}
+.dd-character-study-pinyin {
+   margin-top: 5px;
+   font-size: 17px;
+}
+.dd-character-study-translation {
+   margin-top: 5px;
+   color: var(--ink-soft);
+   overflow-wrap: anywhere;
+}
+.dd-character-study-action {
+   grid-column: 1 / -1;
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   gap: 8px;
+}
+.dd-character-study-action .btn {
+   min-height: 44px;
+   border-color: var(--line);
+   background: color-mix(in srgb, var(--paper-2) 72%, transparent);
+}
+#dd-picker .hzchip[aria-current="true"] {
+   border-color: var(--seal);
+   background: var(--seal);
+   color: var(--card-2);
+   box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+}
+#dd-character-interaction .character-nav-button:focus-visible,
+#dd-picker .hzchip:focus-visible {
+   outline: 3px solid #237a5a;
+   outline-offset: 2px;
+}
 
 @media (max-width: 620px) {
+   .dd-character-interaction {
+      margin-inline: -6px;
+      padding: 12px 10px;
+   }
+   .dd-character-study-card {
+      grid-template-columns: 46px minmax(0, 1fr);
+      padding: 13px;
+   }
+   .dd-character-study-action {
+      justify-content: stretch;
+   }
+   .dd-character-study-action .btn {
+      width: 100%;
+   }
    .dictionary-search-form {
       grid-template-columns: 1fr;
    }
@@ -421,4 +504,36 @@
    .dict-result-hanzi b {
       font-size: 25px;
    }
+}
+.dd-learning-actions {
+   margin: 12px 0 8px;
+}
+
+.dd-learning-actions .btn {
+   border-color: color-mix(in srgb, var(--lacquer) 44%, var(--line));
+   color: var(--lacquer);
+}
+
+.dd-add-word {
+   display: flex;
+   align-items: baseline;
+   gap: 12px;
+   margin: 10px 0;
+   padding: 12px 14px;
+   border: 1px solid var(--line);
+   border-radius: 12px;
+   background: var(--card);
+}
+
+.dd-add-word b {
+   font: 600 30px var(--serif);
+}
+
+.dd-add-word span {
+   color: var(--ink-soft);
+}
+
+.dd-add-packs {
+   max-height: 220px;
+   overflow: auto;
 }

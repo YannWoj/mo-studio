@@ -404,7 +404,7 @@
          }
          function renderGrammar() {
             $("view").innerHTML =
-               '<section style="padding:6px 2px 10px"><h2 class="v-t" style="margin:0">法 · Les règles du jeu</h2><p class="muted">L\'essentiel de la grammaire HSK 1, en fiches. Touche un exemple pour l\'écouter, puis teste-toi.</p></section>' +
+               '<section class="grammar-page-head"><button class="btn ghost grammar-back" id="grammar-back" type="button">← Parcours</button><div><h2 class="v-t">法 · Grammaire</h2><p class="muted">L\'essentiel de la grammaire HSK 1, en fiches. Touche un exemple pour l\'écouter, puis teste-toi.</p></div></section>' +
                GRAMMAR.map(
                   (g, i) =>
                      '<details class="gcard"' +
@@ -418,6 +418,7 @@
                      quizHtml(i) +
                      "</div></details>",
                ).join("");
+            $("grammar-back").onclick = () => setView("path");
             document.querySelectorAll(".qz-opts").forEach((box) => {
                const gi = +box.dataset.g;
                box.querySelectorAll(".chip").forEach(

@@ -37,6 +37,7 @@
             line-height: 1.5;
             min-height: 100dvh;
             padding-bottom: calc(86px + env(safe-area-inset-bottom));
+            overflow-x: hidden;
          }
          body::before {
             content: "";

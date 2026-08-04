@@ -26,6 +26,7 @@
       <link rel="stylesheet" href="css/listening.css" />
       <link rel="stylesheet" href="css/grammar.css" />
       <link rel="stylesheet" href="css/learning-path.css" />
+      <link rel="stylesheet" href="css/writing.css" />
       <link rel="stylesheet" href="css/overlays.css" />
       <link rel="stylesheet" href="css/responsive.css" />
    </head>
@@ -41,20 +42,20 @@
       </header>
       <main id="view"></main>
       <nav class="nav" aria-label="Navigation">
-         <button data-view="learn" aria-pressed="true">
-            <span class="n-hz">学</span><span class="n-lab">Réviser</span>
-         </button>
-         <button data-view="lib" aria-pressed="false">
-            <span class="n-hz">库</span><span class="n-lab">Cartes</span>
-         </button>
-         <button data-view="write" aria-pressed="false">
-            <span class="n-hz">查</span><span class="n-lab">Rechercher</span>
-         </button>
          <button data-view="path" aria-pressed="false">
             <span class="n-hz">学</span><span class="n-lab">Parcours</span>
          </button>
-         <button data-view="grammar" aria-pressed="false">
-            <span class="n-hz">法</span><span class="n-lab">Grammaire</span>
+         <button data-view="lib" aria-pressed="false">
+            <span class="n-hz">库</span><span class="n-lab">Mes mots</span>
+         </button>
+         <button data-view="write" aria-pressed="false">
+            <span class="n-hz">写</span><span class="n-lab">Écrire</span>
+         </button>
+         <button data-view="search" aria-pressed="false">
+            <span class="n-hz">查</span><span class="n-lab">Rechercher</span>
+         </button>
+         <button data-view="learn" aria-pressed="true">
+            <span class="n-hz">复</span><span class="n-lab">Réviser</span>
          </button>
       </nav>
       <div id="sheet" aria-hidden="true"><div class="sheet-card"></div></div>
@@ -75,6 +76,7 @@
       <script data-mo-app src="js/history.js"></script>
       <script data-mo-app src="js/views/home.js"></script>
       <script data-mo-app src="js/views/path.js"></script>
+      <script data-mo-app src="js/views/writing.js"></script>
       <script data-mo-app src="js/views/review.js"></script>
       <script data-mo-app src="js/views/library.js"></script>
       <script data-mo-app src="js/dictionary/dictionary-loader.js"></script>

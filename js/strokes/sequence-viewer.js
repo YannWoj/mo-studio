@@ -3,10 +3,43 @@
 let seq = null;
 
 async function seqEntry(character) {
-   const personal = db.cards.find((card) => card.hz === character);
-   if (personal) return personalCardAsDictionaryEntry(personal);
-   const found = await findDictionaryEntryByHanzi(character);
-   return found || normalizeDetailEntry({ hz: character });
+   return dictionaryCharacterStudyEntry(character);
+}
+
+function characterNavigationHtml(prefix, character, index, total) {
+   const previousDisabled = index <= 0 ? " disabled" : "";
+   const nextDisabled = index >= total - 1 ? " disabled" : "";
+   const positionClass = prefix === "seq" ? " s-count" : "";
+   const chevron = (direction) =>
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' +
+      (direction === "left" ? "M14.5 6.5 9 12l5.5 5.5" : "M9.5 6.5 15 12l-5.5 5.5") +
+      '"></path></svg>';
+   return (
+      '<nav class="character-nav" id="' + prefix + '-nav" aria-label="Navigation entre les caractères">' +
+      '<button class="character-nav-button" id="' + prefix + '-prev" type="button" aria-label="Caractère précédent"' +
+      previousDisabled + ">" + chevron("left") + "</button>" +
+      '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
+      '-position" role="status" aria-live="polite" aria-atomic="true">' +
+      esc(character) + " · " + (index + 1) + " / " + total + "</strong>" +
+      '<button class="character-nav-button" id="' + prefix + '-next" type="button" aria-label="Caractère suivant"' +
+      nextDisabled + ">" + chevron("right") + "</button></nav>"
+   );
+}
+
+function updateCharacterNavigation(prefix, characters, index, stripSelector) {
+   const previous = $(prefix + "-prev");
+   const next = $(prefix + "-next");
+   const position = $(prefix + "-position");
+   if (previous) previous.disabled = index <= 0;
+   if (next) next.disabled = index >= characters.length - 1;
+   if (position)
+      position.textContent = `${characters[index]} · ${index + 1} / ${characters.length}`;
+   if (!stripSelector) return;
+   document.querySelectorAll(stripSelector).forEach((button) => {
+      const selected = Number(button.dataset.i) === index;
+      button.setAttribute("aria-pressed", String(selected));
+      button.setAttribute("aria-current", selected ? "true" : "false");
+   });
 }
 
 function sequenceHistoryPayload() {
@@ -68,7 +101,7 @@ function setSequenceIndex(index, focusStrip) {
    renderSequence().then(() => {
       if (focusStrip) {
          const selected = document.querySelector('#seq-character-strip [aria-current="true"]');
-         if (selected) selected.focus();
+         if (selected) selected.focus({ preventScroll: true });
       }
    });
 }
@@ -80,48 +113,110 @@ function moveSequence(delta) {
 
 function setupSwipe(element, onLeft, onRight) {
    if (!element) return;
-   let x0 = null;
-   let y0 = null;
-   element.addEventListener("pointerdown", (event) => {
-      if (event.target.closest("button, input, select, .stroke-workspace")) {
-         x0 = null;
-         return;
-      }
-      x0 = event.clientX;
-      y0 = event.clientY;
-   });
-   element.addEventListener("pointerup", (event) => {
-      if (x0 == null) return;
-      const dx = event.clientX - x0;
-      const dy = event.clientY - y0;
-      if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-         if (dx < 0) onLeft();
+   const ignoredTarget =
+      "button, input, textarea, select, [contenteditable='true'], canvas, .stroke-gallery, .stroke-focus";
+   let pointerId = null;
+   let startX = 0;
+   let startY = 0;
+   let currentX = 0;
+   let currentY = 0;
+   let horizontalGesture = false;
+   let suppressClick = false;
+   const clearSelection = () => {
+      const selection = window.getSelection && window.getSelection();
+      if (selection && selection.rangeCount) selection.removeAllRanges();
+   };
+   const finish = (event, navigate) => {
+      if (pointerId == null || (event && event.pointerId !== pointerId)) return;
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+      const qualifies =
+         horizontalGesture && Math.abs(deltaX) >= 54 &&
+         Math.abs(deltaX) > Math.abs(deltaY) * 1.45;
+      if (horizontalGesture) clearSelection();
+      element.classList.remove("is-pointer-swiping");
+      const finishedPointerId = pointerId;
+      pointerId = null;
+      horizontalGesture = false;
+      try {
+         if (element.hasPointerCapture(finishedPointerId)) element.releasePointerCapture(finishedPointerId);
+      } catch (error) {}
+      if (qualifies && navigate) {
+         suppressClick = true;
+         if (deltaX < 0) onLeft();
          else onRight();
       }
-      x0 = null;
-      y0 = null;
+      if (suppressClick)
+         setTimeout(() => {
+            suppressClick = false;
+         }, 0);
+   };
+   element.addEventListener("pointerdown", (event) => {
+      if (pointerId != null || !event.isPrimary) return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (event.target.closest(ignoredTarget)) return;
+      pointerId = event.pointerId;
+      startX = currentX = event.clientX;
+      startY = currentY = event.clientY;
+      horizontalGesture = false;
    });
+   element.addEventListener("pointermove", (event) => {
+      if (pointerId == null || event.pointerId !== pointerId) return;
+      currentX = event.clientX;
+      currentY = event.clientY;
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+      if (!horizontalGesture && Math.abs(deltaX) >= 12 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35) {
+         horizontalGesture = true;
+         element.classList.add("is-pointer-swiping");
+         clearSelection();
+         try { element.setPointerCapture(pointerId); } catch (error) {}
+      }
+      if (horizontalGesture) event.preventDefault();
+   });
+   element.addEventListener("pointerup", (event) => {
+      if (pointerId == null || event.pointerId !== pointerId) return;
+      currentX = event.clientX;
+      currentY = event.clientY;
+      if (horizontalGesture) event.preventDefault();
+      finish(event, true);
+   });
+   element.addEventListener("pointercancel", (event) => finish(event, false));
+   element.addEventListener("lostpointercapture", (event) => finish(event, false));
+   element.addEventListener("dragstart", (event) => event.preventDefault());
+   element.addEventListener(
+      "click",
+      (event) => {
+         if (!suppressClick) return;
+         suppressClick = false;
+         event.preventDefault();
+         event.stopPropagation();
+      },
+      true,
+   );
 }
 
 async function renderSequence() {
    if (!seq) return;
+   const preserveScroll = !!$("seq-flash");
+   const previousScrollY = window.scrollY;
    destroyStrokeWorkspace();
    const current = seq;
    const token = ++current.renderToken;
    const index = current.index;
    const character = current.chars[index];
-   $("view").innerHTML =
-      '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
-      esc(character) + "…</b></div></section>";
+   if (!preserveScroll)
+      $("view").innerHTML =
+         '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
+         esc(character) + "…</b></div></section>";
    const entry = await seqEntry(character).catch(() => normalizeDetailEntry({ hz: character }));
    if (!seq || seq !== current || token !== current.renderToken) return;
    const card = findPersonalCardForEntry(entry);
    const pinyin = dictionaryEntryPinyinText(entry);
    const definition = dictionaryResultDefinition(entry);
    $("view").innerHTML =
-      '<section class="sess"><div class="s-top"><button class="s-x" id="seq-exit" aria-label="Quitter la séquence">✕</button>' +
-      '<div class="s-scope">Séquence · ' + esc(current.chars.join("")) + '</div><div class="s-count" aria-live="polite">' +
-      (index + 1) + " / " + current.chars.length + "</div></div>" +
+      '<section class="sess"><div class="s-top"><button class="s-x" id="seq-exit" aria-label="Quitter la séquence">×</button>' +
+      '<div class="s-scope">Séquence · ' + esc(current.chars.join("")) + "</div></div>" +
       '<div class="s-bar"><i style="width:' + (((index + 1) / current.chars.length) * 100).toFixed(1) + '%"></i></div>' +
       '<nav class="seq-character-strip" id="seq-character-strip" aria-label="Caractères de la séquence">' +
       current.chars.map((item, index) =>
@@ -129,31 +224,28 @@ async function renderSequence() {
          '" aria-current="' + String(index === current.index) + '" aria-label="Afficher ' + esc(item) +
          ', position ' + (index + 1) + " sur " + current.chars.length + '">' + esc(item) + "</button>",
       ).join("") + "</nav>" +
-      '<div class="flash card seq-card" id="seq-flash"><button class="seal fl-seal" data-say="' +
+      '<div class="flash card seq-card character-swipe-zone" id="seq-flash"><button class="seal fl-seal" data-say="' +
       esc(character) + '" aria-label="Écouter ' + esc(character) + '">听</button><div class="hanzi ink-in" data-say="' + esc(character) + '">' +
       esc(character) + "</div>" +
       (pinyin ? '<div class="pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       verifiedHskBadges(entry) +
       '<div class="sep"></div><div class="fr">' +
       (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") + esc(definition.text) + "</div>" +
-      '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
-      (card
-         ? cardActionsHtml(card)
-         : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></div>') +
-      '</div><div class="s-foot"><button class="btn ghost" id="seq-prev" type="button"' +
-      (index === 0 ? " disabled" : "") + ">← préc.</button>" +
-      '<button class="btn primary" id="seq-next" type="button">' +
-      (index >= current.chars.length - 1 ? "Terminer 完" : "suivant →") +
-      "</button></div></section>";
+       '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
+       '<div class="sh-btns"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></div>' +
+       (card
+          ? cardActionsHtml(card)
+          : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></div>') +
+      "</div>" + characterNavigationHtml("seq", character, index, current.chars.length) +
+      "</section>";
    wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
       strokeSelectionKey: () => `sequence:${index}:${character}`,
+      sequenceIndex: index,
+      onCardStateChange: () => renderSequence(),
    });
    $("seq-exit").onclick = () => closeSequence();
    $("seq-prev").onclick = () => moveSequence(-1);
-   $("seq-next").onclick = () => {
-      if (seq && seq.index < seq.chars.length - 1) moveSequence(1);
-      else closeSequence();
-   };
+   $("seq-next").onclick = () => moveSequence(1);
    document.querySelectorAll("#seq-character-strip [data-i]").forEach((button) => {
       button.onclick = () => setSequenceIndex(Number(button.dataset.i), true);
    });
@@ -162,6 +254,11 @@ async function renderSequence() {
       () => moveSequence(1),
       () => moveSequence(-1),
    );
+   if (preserveScroll)
+      requestAnimationFrame(() => {
+         const maximum = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+         window.scrollTo(0, Math.min(previousScrollY, maximum));
+      });
    const nextCharacter = current.chars[index + 1];
    if (nextCharacter) {
       preloadStrokeCharacterData(nextCharacter);

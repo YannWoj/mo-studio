@@ -303,7 +303,7 @@ function wireStrokeWorkspace() {
             "dd-practice-note",
             `Trait ${strokeData.strokeNum + 1} sur ${ddCharacterData.strokeCount} réussi.`,
          ),
-         onComplete: () => setStrokeWorkspaceMessage("dd-practice-note", "Caractère réussi ✓"),
+         onComplete: () => setStrokeWorkspaceMessage("dd-practice-note", "Caractère réussi"),
       });
    };
    if ($("dd-clear")) $("dd-clear").onclick = () => {
@@ -343,14 +343,29 @@ async function loadDDChar(character, characters, options) {
    ddChar = character;
    ddCharacterData = null;
    ddWorkspaceCharacters = Array.isArray(characters) ? characters.slice() : [character];
+   const workspaceIndex = Number.isInteger(settings.selectionIndex)
+      ? settings.selectionIndex
+      : ddWorkspaceCharacters.indexOf(character);
+   const stripSelectionIndex = Number.isInteger(settings.stripSelectionIndex)
+      ? settings.stripSelectionIndex
+      : workspaceIndex;
    document.querySelectorAll("#dd-picker .hzchip, #seq-character-strip .hzchip").forEach((button) => {
-      const value = button.dataset.character || ddWorkspaceCharacters[Number(button.dataset.i)];
-      button.setAttribute("aria-pressed", String(value === character));
+      const buttonIndex = Number(button.dataset.i);
+      const selected = button.closest("#seq-character-strip")
+         ? buttonIndex === stripSelectionIndex
+         : buttonIndex === workspaceIndex;
+      button.setAttribute("aria-pressed", String(selected));
+      button.setAttribute("aria-current", selected ? "true" : "false");
    });
    setStrokeWorkspaceMessage("dd-note", `Chargement des traits réels de ${character}…`);
    setStrokeWorkspaceMessage("dd-practice-note", `Chargement des traits réels de ${character}…`);
    setStrokeWorkspaceMessage("dd-gallery-status", `Chargement des traits réels de ${character}…`);
-   if ($("dd-gallery")) $("dd-gallery").innerHTML = '<div class="dictionary-loading"><span class="ink-loader"></span></div>';
+   if ($("dd-gallery")) {
+      $("dd-gallery").classList.add("is-loading");
+      $("dd-gallery").setAttribute("aria-busy", "true");
+      if (!$("dd-gallery").children.length)
+         $("dd-gallery").innerHTML = '<div class="dictionary-loading"><span class="ink-loader"></span></div>';
+   }
    try {
       const data = await loadStrokeCharacterData(character);
       if (
@@ -367,7 +382,7 @@ async function loadDDChar(character, characters, options) {
       setStrokeWorkspaceMessage("dd-note", "Animation indisponible · aucune donnée inventée.");
       setupFreehandPractice("Données réelles indisponibles · entraînement libre sans modèle inventé.");
    }
-   const index = ddWorkspaceCharacters.indexOf(character);
+   const index = workspaceIndex;
    if (index >= 0 && ddWorkspaceCharacters[index + 1]) {
       preloadStrokeCharacterData(ddWorkspaceCharacters[index + 1]);
    }

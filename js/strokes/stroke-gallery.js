@@ -157,6 +157,8 @@ function renderStrokeGallery(data) {
    if (strokeGalleryObserver) strokeGalleryObserver.disconnect();
    strokeGalleryObserver = null;
    const settings = strokeGallerySettings();
+   gallery.classList.remove("is-loading");
+   gallery.setAttribute("aria-busy", "false");
    status.textContent = `${data.character} · ${data.strokeCount} traits réels`;
    gallery.innerHTML = Array.from({ length: data.strokeCount }, (_, index) => {
       const number = index + 1;
@@ -199,6 +201,8 @@ function renderStrokeGalleryError(character, error) {
    const status = $("dd-gallery-status");
    if (status) status.textContent = `${character} · données de traits indisponibles`;
    if (gallery) {
+      gallery.classList.remove("is-loading");
+      gallery.setAttribute("aria-busy", "false");
       gallery.innerHTML =
          '<div class="stroke-gallery-error" role="alert">Aucune galerie inventée : ' +
          esc(error && error.message ? error.message : "données réelles introuvables") +

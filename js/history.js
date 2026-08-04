@@ -5,16 +5,19 @@
          let session = { active: false };
          function setView(v, options) {
             const settings = options || {};
+            if (seq && v !== "search") teardownSequence();
             if (!settings.fromHistory && typeof history !== "undefined") {
-               if (v === "write" && typeof searchHistoryPayload === "function")
+               if (v === "search" && typeof searchHistoryPayload === "function")
                   history.pushState(searchHistoryPayload(srch.q ? "results" : "landing"), "");
                else history.pushState({ moStudioView: v }, "");
             }
-            if (activeView === "write" && v !== "write") {
+            if (activeView === "search" && v !== "search") {
                cancelDictionarySearches();
                if (typeof cleanupSearchView === "function") cleanupSearchView();
                closeSheet();
             }
+            if (activeView === "write" && v !== "write" && typeof destroyWritingBoard === "function")
+               destroyWritingBoard();
             activeView = v;
             document
                .querySelectorAll(".nav button")
@@ -31,7 +34,8 @@
             );
             if (activeView === "learn") renderLearn();
             else if (activeView === "lib") renderLib();
-            else if (activeView === "write") renderSearch();
+            else if (activeView === "write") renderWriting();
+            else if (activeView === "search") renderSearch();
             else if (activeView === "path") renderPath();
             else if (activeView === "listen") renderListen();
             else renderGrammar();
@@ -47,7 +51,7 @@
                return;
             }
             cancelDictionarySearches();
-            if (activeView === "write" && typeof cleanupSearchView === "function")
+            if (activeView === "search" && typeof cleanupSearchView === "function")
                cleanupSearchView();
             closeSheet();
             setView((event.state && event.state.moStudioView) || "learn", {

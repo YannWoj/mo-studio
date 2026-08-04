@@ -50,9 +50,9 @@
                "</span></span>" +
                '<span class="row-badges">' +
                (c.unit != null ? '<i class="b u">U' + c.unit + "</i>" : "") +
-               (c.fav ? '<i class="b red">♥</i>' : "") +
-               (c.due != null ? '<i class="b gold">⏱</i>' : "") +
-               (c.acquired ? '<i class="b jade">✓</i>' : "") +
+               (c.fav ? '<i class="b red" aria-label="Favori">F</i>' : "") +
+               (c.due != null ? '<i class="b gold" aria-label="À revoir">R</i>' : "") +
+               (c.acquired ? '<i class="b jade" aria-label="Maîtrisé">M</i>' : "") +
                "</span></button>"
             );
          }
@@ -60,7 +60,7 @@
             if (!$("lib-list")) return;
             const list = libFiltered();
             $("lib-count").textContent =
-               list.length + " carte" + (list.length > 1 ? "s" : "");
+               list.length + " mot" + (list.length > 1 ? "s" : "");
             $("lib-list").innerHTML =
                list.map(rowHtml).join("") ||
                '<p class="sh-p">Rien ne correspond à ta recherche.</p>';
@@ -77,7 +77,7 @@
             ).sort((a, b) => a.localeCompare(b, "fr"));
             if (!db.cards.length) {
                root.innerHTML =
-                  '<section class="lib-head" style="padding:6px 2px"><h2 class="v-t" style="margin:0">库 · Tes cartes</h2></section>' +
+                  '<section class="lib-head" style="padding:6px 2px"><div><h2 class="v-t" style="margin:0">库 · Mes mots</h2><p class="muted">Ta collection personnelle, séparée du dictionnaire et du HSK.</p></div></section>' +
                   emptyHtml();
                wireEmpty();
                return;
@@ -92,15 +92,15 @@
                "</button>";
             root.innerHTML =
                '<section class="card pad">' +
-               '<div class="lib-head"><h2 class="v-t" style="margin:0">库 · Tes cartes</h2><button class="seal-btn add" id="btn-add" aria-label="Nouvelle carte">加</button></div>' +
+               '<div class="lib-head"><div><h2 class="v-t" style="margin:0">库 · Mes mots</h2><p class="muted">Ta collection personnelle, séparée du dictionnaire et du HSK.</p></div><button class="seal-btn add" id="btn-add" aria-label="Nouveau mot">加</button></div>' +
                '<input class="search" id="lib-q" placeholder="Rechercher (汉字, pinyin, français…)" value="' +
                esc(lib.q) +
                '" autocomplete="off">' +
                '<div class="chips" style="margin-top:10px">' +
                fltChip("all", "Tout") +
-               fltChip("fav", "♥") +
-               fltChip("due", "⏱") +
-               fltChip("acq", "✓ Acquises") +
+               fltChip("fav", "Favoris") +
+               fltChip("due", "À revoir") +
+               fltChip("acq", "Maîtrisés") +
                fltChip("notacq", "À apprendre") +
                "</div>" +
                '<div class="selects">' +
@@ -174,10 +174,10 @@
             if (!c) return;
             const status = [];
             if (c.acquired)
-               status.push('<span class="b jade">✓ acquise</span>');
+               status.push('<span class="b jade">maîtrisé</span>');
             else if (c.due != null)
                status.push(
-                  '<span class="b gold">⏱ ' + fmtDate(c.due) + "</span>",
+                  '<span class="b gold">À revoir ' + fmtDate(c.due) + "</span>",
                );
             else status.push('<span class="b">à apprendre</span>');
             status.push('<span class="b u">Niveau ' + (c.lvl || 0) + "</span>");
@@ -230,14 +230,15 @@
                   '<div class="acts" style="justify-content:flex-start">' +
                   '<button class="act' +
                   (c.fav ? " on" : "") +
-                  '" id="cd-fav">♥ Favori</button>' +
-                  '<button class="act" id="cd-hard">⏱ Programmer</button>' +
+                  '" id="cd-fav">Favori</button>' +
+                  '<button class="act" id="cd-hard">Programmer</button>' +
                   '<button class="act' +
                   (c.acquired ? " on jade" : "") +
-                  '" id="cd-acq">✓ Acquise</button>' +
+                  '" id="cd-acq">Maîtrisé</button>' +
                   "</div>" +
                   packCk +
                   '<div class="sh-btns">' +
+                  '<button class="btn primary" id="cd-write">写 Écrire ce mot</button>' +
                   '<button class="btn" id="cd-edit">Modifier</button>' +
                   '<button class="btn danger" id="cd-del">Supprimer</button>' +
                   '<button class="btn ghost" id="cd-close">Fermer</button>' +
@@ -262,6 +263,7 @@
                   updateLibList();
                });
             $("cd-edit").onclick = () => openCardForm(c);
+            $("cd-write").onclick = () => openWritingWord(c.hz);
             $("cd-del").onclick = () => {
                if (!confirm("Supprimer « " + c.hz + " » ?")) return;
                db.cards = db.cards.filter((x) => x.id !== id);
@@ -409,12 +411,12 @@
                         '">Renommer</button>' +
                         '<button class="btn sm danger" data-del="' +
                         p.id +
-                        '">✕</button>' +
+                        '">×</button>' +
                         "</div></div>"
                      );
                   })
                   .join("") ||
-               "<p class=\"sh-p\">Aucun pack pour l'instant. Importe un fichier JSON avec un « name », ou crée un pack ici puis coche-le depuis la fiche d'une carte.</p>";
+               "<p class=\"sh-p\">Aucun pack pour l'instant. Crée-en un ici, puis ajoute-lui des mots depuis leur fiche.</p>";
             openSheet(
                '<h3 class="sh-t">Packs</h3>' +
                   rows +

@@ -80,11 +80,11 @@
                '<div class="acts">' +
                '<button class="act' +
                (c.fav ? " on" : "") +
-               '" id="a-fav">♥ Favori</button>' +
-               '<button class="act" id="a-hard">⏱ Choisir la date</button>' +
+               '" id="a-fav">Favori</button>' +
+               '<button class="act" id="a-hard">Choisir la date</button>' +
                '<button class="act' +
                (c.acquired ? " on jade" : "") +
-               '" id="a-acq">✓ Acquise</button>' +
+               '" id="a-acq">Maîtrisée</button>' +
                "</div>"
             );
          }
@@ -229,7 +229,7 @@
                let verdict = "";
                if (session.mode === "written" && st.checked) {
                   const lab = st.ok
-                     ? "✓ Juste !"
+                     ? "Juste !"
                      : st.skipped
                        ? "Réponse affichée"
                        : "✗ Raté";
@@ -267,7 +267,7 @@
             $("view").innerHTML =
                '<section class="sess">' +
                '<div class="s-top">' +
-               '<button class="s-x" id="s-exit" aria-label="Quitter">✕</button>' +
+               '<button class="s-x" id="s-exit" aria-label="Quitter">×</button>' +
                '<div class="s-scope">' +
                esc(session.scopeLabel) +
                " · " +
@@ -694,12 +694,12 @@
                     "</b></div>"
                   : "") +
                (s.marked
-                  ? '<div class="sum-row"><span>Programmées à la main ⏱</span><b>' +
+                  ? '<div class="sum-row"><span>Programmées à la main</span><b>' +
                     s.marked +
                     "</b></div>"
                   : "") +
                (s.acquired
-                  ? '<div class="sum-row"><span>Passées en acquises ✓</span><b>' +
+                  ? '<div class="sum-row"><span>Passées en maîtrisées</span><b>' +
                     s.acquired +
                     "</b></div>"
                   : "") +
@@ -730,7 +730,7 @@
             };
          }
 
-         /* -------- programmation ⏱ manuelle -------- */
+         /* -------- programmation manuelle -------- */
          function delayTargets() {
             const t = now();
             const tonight = new Date();

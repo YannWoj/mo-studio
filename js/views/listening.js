@@ -166,7 +166,7 @@
                      const tg = toneRound.target;
                      if (t === toneRound.tone)
                         $("tone-note").textContent =
-                           "✓ Juste ! C'était " +
+                           "Juste ! C'était " +
                            tg[0] +
                            " " +
                            tg[1] +
@@ -272,7 +272,7 @@
                      const tg = wordRound.target;
                      if (b.dataset.id === tg.id)
                         $("word-note").textContent =
-                           "✓ Juste ! " + tg.hz + " (" + tg.py + ") · " + tg.fr;
+                           "Juste ! " + tg.hz + " (" + tg.py + ") · " + tg.fr;
                      else {
                         b.classList.add("ko");
                         const picked = db.cards.find(

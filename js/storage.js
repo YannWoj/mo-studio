@@ -21,6 +21,13 @@
                showGrid: true,
                showGhost: false,
             },
+            writingBoard: {
+               color: "#17140f",
+               width: 5,
+               grid: "tian",
+               opacity: 0.18,
+               modelVisible: true,
+            },
          });
          function normalizeCard(c, keepId) {
             // nettoie une carte (import ou stockage) ; hz + fr obligatoires
@@ -80,6 +87,16 @@
                   s.strokeGallery = Object.assign(
                      { showFuture: true, showGrid: true, showGhost: false },
                      (d.settings && d.settings.strokeGallery) || {},
+                  );
+                  s.writingBoard = Object.assign(
+                     {
+                        color: "#17140f",
+                        width: 5,
+                        grid: "tian",
+                        opacity: 0.18,
+                        modelVisible: true,
+                     },
+                     (d.settings && d.settings.writingBoard) || {},
                   );
                   return {
                      cards: Array.isArray(d.cards)

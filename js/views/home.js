@@ -47,8 +47,20 @@
          }
 
          /* -------- file intelligente pour « Continuer » -------- */
+         function smartQueuePool() {
+            let pool = db.cards.filter((c) => !c.acquired);
+            if (!hub.pack) return pool;
+            if (hub.pack.startsWith("unit:")) {
+               const unit = +hub.pack.slice(5);
+               return pool.filter((card) => card.unit === unit);
+            }
+            const pack = db.packs.find((item) => item.id === hub.pack);
+            const ids = new Set(pack ? pack.cardIds : []);
+            return pool.filter((card) => ids.has(card.id));
+         }
+
          function smartQueue() {
-            const pool = db.cards.filter((c) => !c.acquired);
+            const pool = smartQueuePool();
             const due = pool.filter(isDue).sort((a, b) => a.due - b.due);
             const fresh = pool.filter((c) => c.due == null).sort(unitSort);
             const size = db.settings.sessionSize; // 0 = tout
@@ -68,6 +80,7 @@
                   newTake,
                   Math.max(0, size > 0 ? size : Infinity),
                ),
+               freshTotal: fresh.length,
                freshUnit: fresh.length ? fresh[0].unit : null,
                nextDue: planned.length ? planned[0].due : null,
             };
@@ -111,15 +124,56 @@
                '<section class="card pad empty">' +
                '<div class="empty-hz">学</div>' +
                '<h2 class="empty-t">Ta collection est vide</h2>' +
-               '<p class="empty-p">Crée ta première carte pour commencer à construire ta collection.</p>' +
+               '<p class="empty-p">Ajoute ton premier mot depuis le dictionnaire ou crée-le ici pour commencer une collection personnelle.</p>' +
                '<div class="empty-btns">' +
-               '<button class="btn primary" id="btn-e-add">Créer une carte</button>' +
+               '<button class="btn primary" id="btn-e-add">Créer un mot</button>' +
                "</div></section>"
             );
          }
          function wireEmpty() {
             if ($("btn-e-add"))
                $("btn-e-add").onclick = () => openCardForm(null);
+         }
+
+         function reviewOverviewHtml(queue) {
+            const estimated = queue.q.length
+               ? "~" + Math.max(1, Math.round((queue.q.length * 25) / 60)) + " min"
+               : "0 min";
+            return (
+               '<section class="review-overview" aria-labelledby="review-title"><header class="review-heading"><div class="review-mark">复</div><div><h2 class="v-t" id="review-title">复 · Réviser</h2><p class="muted">Lance tes sessions SRS à partir des mots de ta collection personnelle.</p></div></header>' +
+               '<div class="review-queue" aria-label="Résumé de la prochaine session"><div><b>' +
+               queue.dueTotal +
+               '</b><span>À revoir</span></div><div><b>' +
+               queue.freshTotal +
+               '</b><span>Nouvelles</span></div><div><b>' +
+               estimated +
+               '</b><span>Durée estimée</span></div></div>' +
+               (db.packs.length
+                  ? '<label class="review-pack-label" for="review-pack">Pack à réviser<select class="search" id="review-pack"><option value="">Tous Mes mots</option>' +
+                    db.packs
+                       .map(
+                          (pack) =>
+                             '<option value="' +
+                             esc(pack.id) +
+                             '"' +
+                             (hub.pack === pack.id ? " selected" : "") +
+                             ">" +
+                             esc(pack.name) +
+                             "</option>",
+                       )
+                       .join("") +
+                    "</select></label>"
+                  : "") +
+               "</section>"
+            );
+         }
+
+         function wireReviewOverview() {
+            if ($("review-pack"))
+               $("review-pack").onchange = (event) => {
+                  hub.pack = event.target.value;
+                  renderLearn();
+               };
          }
 
          function renderLearn() {
@@ -133,10 +187,10 @@
                return;
             }
             const root = $("view");
-            const heroTop =
-               '<section class="hero"><div class="hero-hz ink-in">墨室</div><div class="hero-sub">Mò Studio — ton atelier de chinois</div></section>';
+            const initialQueue = smartQueue();
             if (!db.cards.length) {
-               root.innerHTML = heroTop + emptyHtml();
+               root.innerHTML = reviewOverviewHtml(initialQueue) + emptyHtml();
+               wireReviewOverview();
                wireEmpty();
                return;
             }
@@ -192,7 +246,7 @@
                   '<button class="cta" disabled><b>Tout est à jour 完</b><span>' +
                   (sq.nextDue
                      ? "Prochaine révision : " + fmtDate(sq.nextDue)
-                     : "Ajoute ou importe de nouvelles cartes") +
+                     : "Ajoute de nouveaux mots à ta collection") +
                   "</span></button>";
             }
 
@@ -238,17 +292,17 @@
             const dis = n === 0 ? "disabled" : "";
 
             root.innerHTML =
-               heroTop +
+               reviewOverviewHtml(sq) +
                (resume
                   ? '<div class="resume"><span>Séance en cours · ' +
                     Math.min(resume.snap.index + 1, resume.cards.length) +
                     " / " +
                     resume.cards.length +
-                    '</span><span style="display:flex;gap:6px"><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">✕</button></span></div>'
+                    '</span><span style="display:flex;gap:6px"><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">×</button></span></div>'
                   : "") +
                cta +
                '<div class="stats">' +
-               statBtn("all", total, "Cartes") +
+               statBtn("all", total, "Mes mots") +
                statBtn("due", dueN, "À revoir") +
                statBtn("fav", fav, "Favoris") +
                statBtn("acq", acq, "Acquises") +
@@ -272,8 +326,8 @@
                '<div class="chips">' +
                fltChip("all", "Tout") +
                fltChip("due", "À revoir") +
-               fltChip("fav", "♥ Favoris") +
-               fltChip("acq", "✓ Acquises") +
+               fltChip("fav", "Favoris") +
+               fltChip("acq", "Maîtrisées") +
                "</div>" +
                '<div class="selects">' +
                '<select class="search" id="hub-pack"><option value="">Unité / pack : tous</option>' +
@@ -354,6 +408,7 @@
                "</details>";
 
             if ($("btn-resume")) $("btn-resume").onclick = resumeSession;
+            wireReviewOverview();
             if ($("btn-resume-x"))
                $("btn-resume-x").onclick = () => {
                   clearSavedSession();

@@ -114,3 +114,17 @@
             color: var(--ink-soft);
             font-weight: 600;
          }
+         .grammar-page-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 6px 2px 12px;
+         }
+         .grammar-page-head .v-t {
+            margin: 0;
+         }
+         .grammar-back {
+            flex: 0 0 auto;
+            min-height: 44px;
+            padding-inline: 8px;
+         }

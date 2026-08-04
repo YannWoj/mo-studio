@@ -186,10 +186,11 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            padding: 4px 10px;
+            width: 20%;
+            min-width: 0;
+            padding: 4px 2px;
             border-radius: 11px;
             color: var(--ink-faint);
-            min-width: 58px;
          }
          .nav .n-hz {
             font-family: var(--serif);
@@ -197,9 +198,13 @@
             line-height: 1.2;
          }
          .nav .n-lab {
-            font-size: 10.5px;
+            max-width: 100%;
+            overflow: hidden;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.035em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
          }
          .nav button[aria-pressed="true"] {
             color: var(--lacquer);
