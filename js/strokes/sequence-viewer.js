@@ -24,6 +24,7 @@ function openSequence(characters, options) {
    const settings = options || {};
    const list = Array.from(characters || []).filter((character) => /^\p{Script=Han}$/u.test(character));
    if (list.length < 2) return toast("La séquence demande au moins deux caractères Han réels.");
+   resetStrokeAutoplaySelection();
    destroyStrokeWorkspace();
    seq = {
       chars: list,
@@ -72,6 +73,11 @@ function setSequenceIndex(index, focusStrip) {
    });
 }
 
+function moveSequence(delta) {
+   if (!seq) return;
+   setSequenceIndex(seq.index + delta);
+}
+
 function setupSwipe(element, onLeft, onRight) {
    if (!element) return;
    let x0 = null;
@@ -102,7 +108,8 @@ async function renderSequence() {
    destroyStrokeWorkspace();
    const current = seq;
    const token = ++current.renderToken;
-   const character = current.chars[current.index];
+   const index = current.index;
+   const character = current.chars[index];
    $("view").innerHTML =
       '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
       esc(character) + "…</b></div></section>";
@@ -114,8 +121,8 @@ async function renderSequence() {
    $("view").innerHTML =
       '<section class="sess"><div class="s-top"><button class="s-x" id="seq-exit" aria-label="Quitter la séquence">✕</button>' +
       '<div class="s-scope">Séquence · ' + esc(current.chars.join("")) + '</div><div class="s-count" aria-live="polite">' +
-      (current.index + 1) + " / " + current.chars.length + "</div></div>" +
-      '<div class="s-bar"><i style="width:' + (((current.index + 1) / current.chars.length) * 100).toFixed(1) + '%"></i></div>' +
+      (index + 1) + " / " + current.chars.length + "</div></div>" +
+      '<div class="s-bar"><i style="width:' + (((index + 1) / current.chars.length) * 100).toFixed(1) + '%"></i></div>' +
       '<nav class="seq-character-strip" id="seq-character-strip" aria-label="Caractères de la séquence">' +
       current.chars.map((item, index) =>
          '<button class="chip hzchip" type="button" data-i="' + index + '" data-character="' + esc(item) +
@@ -133,16 +140,18 @@ async function renderSequence() {
       (card
          ? cardActionsHtml(card)
          : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></div>') +
-      '</div><div class="s-foot"><button class="btn ghost" id="seq-prev"' +
-      (current.index === 0 ? " disabled" : "") + ">← préc.</button>" +
-      '<button class="btn primary" id="seq-next">' +
-      (current.index >= current.chars.length - 1 ? "Terminer 完" : "suivant →") +
+      '</div><div class="s-foot"><button class="btn ghost" id="seq-prev" type="button"' +
+      (index === 0 ? " disabled" : "") + ">← préc.</button>" +
+      '<button class="btn primary" id="seq-next" type="button">' +
+      (index >= current.chars.length - 1 ? "Terminer 完" : "suivant →") +
       "</button></div></section>";
-   wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {});
+   wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
+      strokeSelectionKey: () => `sequence:${index}:${character}`,
+   });
    $("seq-exit").onclick = () => closeSequence();
-   $("seq-prev").onclick = () => setSequenceIndex(current.index - 1);
+   $("seq-prev").onclick = () => moveSequence(-1);
    $("seq-next").onclick = () => {
-      if (current.index < current.chars.length - 1) setSequenceIndex(current.index + 1);
+      if (seq && seq.index < seq.chars.length - 1) moveSequence(1);
       else closeSequence();
    };
    document.querySelectorAll("#seq-character-strip [data-i]").forEach((button) => {
@@ -150,10 +159,10 @@ async function renderSequence() {
    });
    setupSwipe(
       $("seq-flash"),
-      () => setSequenceIndex(current.index + 1),
-      () => setSequenceIndex(current.index - 1),
+      () => moveSequence(1),
+      () => moveSequence(-1),
    );
-   const nextCharacter = current.chars[current.index + 1];
+   const nextCharacter = current.chars[index + 1];
    if (nextCharacter) {
       preloadStrokeCharacterData(nextCharacter);
       seqEntry(nextCharacter).catch(() => null);

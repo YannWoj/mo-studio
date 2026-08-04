@@ -109,6 +109,20 @@ function dictionaryResultDefinition(entry) {
 }
 
 function verifiedResultHskBadge(entry) {
+   const verified = verifiedHskLevels(entry);
+   if (verified.length)
+      return verified
+         .map(
+            (level) =>
+               '<i class="b hsk-badge hsk-level-' +
+               level +
+               '" data-hsk-badge="' +
+               level +
+               '">HSK ' +
+               esc(level) +
+               "</i>",
+         )
+         .join("");
    if (entry.hskLegacy && entry.hskLegacy.length)
       return '<i class="b u">HSK ' + esc(entry.hskLegacy[0]) + "</i>";
    if (entry.hsk30 && entry.hsk30.length)
@@ -121,7 +135,7 @@ function dictionaryResultHtml(item, index) {
    const definition = dictionaryResultDefinition(entry);
    const traditional = entry.traditional !== entry.simplified ? entry.traditional : "";
    return (
-      '<button class="dict-result" data-result-index="' + index + '">' +
+      '<button class="dict-result" data-result-index="' + index + '" data-entry-id="' + esc(entry.id) + '">' +
       '<span class="dict-result-hanzi"><b>' + esc(entry.simplified) + "</b>" +
       (traditional ? '<small>繁 · ' + esc(traditional) + "</small>" : "") +
       "</span>" +
@@ -132,6 +146,11 @@ function dictionaryResultHtml(item, index) {
       '<span class="row-badges"><i class="b u">' +
       (entry.entryType === "character" ? "caractère" : "mot") +
       "</i>" + verifiedResultHskBadge(entry) +
+      (entry.__hskSource
+         ? '<i class="b hsk-source-status">' +
+           esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
+           "</i>"
+         : "") +
       (entry.personalCard ? '<i class="b jade">carte</i>' : "") +
       (Number.isFinite(entry.frequencyRank) ? '<i class="b u">fréq. ' + esc(entry.frequencyRank) + "</i>" : "") +
       "</span></button>"
@@ -305,6 +324,11 @@ async function launchDictionarySearch(value, options) {
             if (target) target.textContent = message;
          },
       });
+      try {
+         await mergeHskSearchResults(response, srch.q);
+      } catch (hskError) {
+         response.hskError = hskError.message;
+      }
       srch.search = response;
       srch.mode = "results";
       if (response.query.valid) rememberRecentSearch(srch.q);
@@ -313,7 +337,7 @@ async function launchDictionarySearch(value, options) {
       if (srch.pendingDetailId) {
          const entryId = srch.pendingDetailId;
          srch.pendingDetailId = null;
-         const entry = await loadDictionaryEntryById(entryId);
+          const entry = await loadHskSearchDetailEntry(entryId);
          if (entry) openSearchDictionaryDetail(entry, false);
       }
    } catch (error) {
@@ -338,14 +362,14 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
          '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche complète…</b></div>',
       );
       try {
-         entry = (await loadDictionaryEntryById(entry.id)) || entry;
+         entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
       } catch (error) {
          closeSheet();
          toast("Fiche détaillée indisponible hors ligne.");
          return;
       }
    }
-   openDictDetail(entry, { fromSearch: true });
+   openDictDetail(attachHskMetadata(entry), { fromSearch: true });
 }
 
 function closeSearchDictionaryDetail() {
@@ -383,7 +407,7 @@ function restoreSearchHistory(state) {
       renderDictionaryResults();
       requestAnimationFrame(() => window.scrollTo(0, srch.scrollY));
       if (srch.pendingDetailId)
-         loadDictionaryEntryById(srch.pendingDetailId).then((entry) => {
+         loadHskSearchDetailEntry(srch.pendingDetailId).then((entry) => {
             srch.pendingDetailId = null;
             if (entry) openSearchDictionaryDetail(entry, false);
          });

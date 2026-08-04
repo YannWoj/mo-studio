@@ -1,0 +1,6529 @@
+{
+  "reportVersion": 1,
+  "generatedOn": "2026-08-04",
+  "scope": "HSK 1-6 generated data and read-only linkage to the current generated dictionary",
+  "dictionary": {
+    "buildId": "a3638e42e5c11264ab7fec39b592e6c6f8507d489ab6d8ed344ea908f66f384c",
+    "schemaVersion": 1,
+    "modified": false
+  },
+  "counts": {
+    "initialTotal": 5401,
+    "finalTotal": 5399,
+    "dictionaryResolution": {
+      "exact": 5252,
+      "normalizedPinyin": 57,
+      "sourceOnly": 2,
+      "ambiguous": 88
+    },
+    "sourceOccurrenceResolutionBeforeMerges": {
+      "exact": 5254,
+      "normalizedPinyin": 57,
+      "sourceOnly": 2,
+      "ambiguous": 88
+    },
+    "finalDictionaryLinkStatus": {
+      "exact": 5132,
+      "normalized-pinyin": 57,
+      "source-only": 2,
+      "ambiguous": 82,
+      "duplicate-sense": 126
+    },
+    "duplicateOccurrencesMerged": 2,
+    "duplicateOccurrencesMergedWithinLevel": 0,
+    "sameSenseOccurrencesMergedAcrossLevels": 2,
+    "distinctSenseEntriesRetained": 126,
+    "distinctSenseGroupsRetained": 62,
+    "withinLevelDuplicateGroups": 17,
+    "wordsInMultipleLevels": 48,
+    "entriesLostWithoutJustification": 0
+  },
+  "pinyinCleanup": {
+    "initiallyReportedMinorDifferences": 116,
+    "acceptedAsNormalizedPinyin": 57,
+    "doubtfulRealToneOrPronunciationDifferences": 59,
+    "acceptedRule": "Only spacing, apostrophe, case, tone-mark versus tone-number representation, segmentation without syllable change, or a neutral tone written versus omitted. In the 116 reported cases, the surviving automatic normalization is specifically neutral-tone notation.",
+    "rejectedRule": "Any different lexical tone, syllable, or pronunciation remains ambiguous.",
+    "doubtfulCases": [
+      {
+        "key": "1:13",
+        "hskLevel": 1,
+        "sourceNumber": 13,
+        "chinese": "不客气",
+        "pinyin": "búkèqi",
+        "partOfSpeech": null,
+        "sourceTranslation": "de rien",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù kè qi",
+            "numbered": "bu4 ke4 qi5",
+            "plain": "bu ke qi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-c9f516d2ad37c56111114c93",
+            "pronunciation": {
+              "marked": "bù kè qi",
+              "numbered": "bu4 ke4 qi5",
+              "plain": "bu ke qi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bukeqi",
+              "dictBase": "bukeqi",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "ke",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "qi",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "1:14",
+        "hskLevel": 1,
+        "sourceNumber": 14,
+        "chinese": "不要",
+        "pinyin": "búyào",
+        "partOfSpeech": null,
+        "sourceTranslation": "ne fais pas! • ne doit pas",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù yào",
+            "numbered": "bu4 yao4",
+            "plain": "bu yao"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-0436a30c12c76f94f76d6bff",
+            "pronunciation": {
+              "marked": "bù yào",
+              "numbered": "bu4 yao4",
+              "plain": "bu yao"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buyao",
+              "dictBase": "buyao",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yao",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "1:259",
+        "hskLevel": 1,
+        "sourceNumber": 259,
+        "chinese": "一半",
+        "pinyin": "yíbàn",
+        "partOfSpeech": null,
+        "sourceTranslation": "moitié",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī bàn",
+            "numbered": "yi1 ban4",
+            "plain": "yi ban"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-5eb400f1da528c5afb64a614",
+            "pronunciation": {
+              "marked": "yī bàn",
+              "numbered": "yi1 ban4",
+              "plain": "yi ban"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiban",
+              "dictBase": "yiban",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "ban",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "1:260",
+        "hskLevel": 1,
+        "sourceNumber": 260,
+        "chinese": "一下",
+        "pinyin": "yíxià",
+        "partOfSpeech": null,
+        "sourceTranslation": "utilisé après un verbe indiquantun acte ou une tentative • fairequelque chose (lui redonner unechance) • une fois • dans unmoment • tout à coup • soudain",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī xià",
+            "numbered": "yi1 xia4",
+            "plain": "yi xia"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-9b6c5712491e37badcd2103c",
+            "pronunciation": {
+              "marked": "yī xià",
+              "numbered": "yi1 xia4",
+              "plain": "yi xia"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yixia",
+              "dictBase": "yixia",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "xia",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "1:262",
+        "hskLevel": 1,
+        "sourceNumber": 262,
+        "chinese": "一点儿",
+        "pinyin": "yìdiǎnr",
+        "partOfSpeech": null,
+        "sourceTranslation": "un peu • un peu de • un point de• variante de一点",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī diǎn r",
+            "numbered": "yi1 dian3 r",
+            "plain": "yi dian r"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-7fbe959bbf49eb4504d7b289",
+            "pronunciation": {
+              "marked": "yī diǎn r",
+              "numbered": "yi1 dian3 r",
+              "plain": "yi dian r"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yidianr",
+              "dictBase": "yidianr",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dian",
+                  "hskTone": 3,
+                  "dictionaryTone": 3,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "r",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          },
+          {
+            "dictionaryEntryId": "word-423807bfd3d9a34719e0c8a3",
+            "pronunciation": {
+              "marked": "yī diǎn r",
+              "numbered": "yi1 dian3 r5",
+              "plain": "yi dian r"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yidianr",
+              "dictBase": "yidianr",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dian",
+                  "hskTone": 3,
+                  "dictionaryTone": 3,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "r",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "1:263",
+        "hskLevel": 1,
+        "sourceNumber": 263,
+        "chinese": "一些",
+        "pinyin": "yìxiē",
+        "partOfSpeech": null,
+        "sourceTranslation": "certains • quelques • un peu",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī xiē",
+            "numbered": "yi1 xie1",
+            "plain": "yi xie"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-3a78e903637d7c7cd74dad1b",
+            "pronunciation": {
+              "marked": "yī xiē",
+              "numbered": "yi1 xie1",
+              "plain": "yi xie"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yixie",
+              "dictBase": "yixie",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "xie",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "2:12",
+        "hskLevel": 2,
+        "sourceNumber": 12,
+        "chinese": "不错",
+        "pinyin": "búcuò",
+        "partOfSpeech": "adjective",
+        "sourceTranslation": "not bad, pretty good",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù cuò",
+            "numbered": "bu4 cuo4",
+            "plain": "bu cuo"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-af645d363ceb053498e1eede",
+            "pronunciation": {
+              "marked": "bù cuò",
+              "numbered": "bu4 cuo4",
+              "plain": "bu cuo"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bucuo",
+              "dictBase": "bucuo",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "cuo",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "2:171",
+        "hskLevel": 2,
+        "sourceNumber": 171,
+        "chinese": "一会儿",
+        "pinyin": "yíhuìr",
+        "partOfSpeech": "numberclassifier、(adverb)",
+        "sourceTranslation": "a while, a moment; (soon, in a little while)",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī huì r",
+            "numbered": "yi1 hui4 r",
+            "plain": "yi hui r"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-463af2fc07a877fa979e5abe",
+            "pronunciation": {
+              "marked": "yī huì r",
+              "numbered": "yi1 hui4 r",
+              "plain": "yi hui r"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yihuir",
+              "dictBase": "yihuir",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "hui",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "r",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          },
+          {
+            "dictionaryEntryId": "word-086fa8994c86272c979303fc",
+            "pronunciation": {
+              "marked": "yī huì r",
+              "numbered": "yi1 hui4 r5",
+              "plain": "yi hui r"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yihuir",
+              "dictBase": "yihuir",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "hui",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "r",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "2:173",
+        "hskLevel": 2,
+        "sourceNumber": 173,
+        "chinese": "一起",
+        "pinyin": "yìqǐ",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "together",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī qǐ",
+            "numbered": "yi1 qi3",
+            "plain": "yi qi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-890399b3ea19ec860088694b",
+            "pronunciation": {
+              "marked": "yī qǐ",
+              "numbered": "yi1 qi3",
+              "plain": "yi qi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiqi",
+              "dictBase": "yiqi",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "qi",
+                  "hskTone": 3,
+                  "dictionaryTone": 3,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:38",
+        "hskLevel": 3,
+        "sourceNumber": 38,
+        "chinese": "不但",
+        "pinyin": "búdàn",
+        "partOfSpeech": "conjunction",
+        "sourceTranslation": "not only",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù dàn",
+            "numbered": "bu4 dan4",
+            "plain": "bu dan"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-a6b978a83a3289252bb8221e",
+            "pronunciation": {
+              "marked": "bù dàn",
+              "numbered": "bu4 dan4",
+              "plain": "bu dan"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "budan",
+              "dictBase": "budan",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dan",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:39",
+        "hskLevel": 3,
+        "sourceNumber": 39,
+        "chinese": "不见",
+        "pinyin": "bújiàn",
+        "partOfSpeech": "verb",
+        "sourceTranslation": "to disappear, to not see",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù jiàn",
+            "numbered": "bu4 jian4",
+            "plain": "bu jian"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-7679e4a82c4802969a36c410",
+            "pronunciation": {
+              "marked": "bù jiàn",
+              "numbered": "bu4 jian4",
+              "plain": "bu jian"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bujian",
+              "dictBase": "bujian",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "jian",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:40",
+        "hskLevel": 3,
+        "sourceNumber": 40,
+        "chinese": "不用",
+        "pinyin": "búyòng",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "need not",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù yòng",
+            "numbered": "bu4 yong4",
+            "plain": "bu yong"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-4f2c21c48137be66874631a9",
+            "pronunciation": {
+              "marked": "bù yòng",
+              "numbered": "bu4 yong4",
+              "plain": "bu yong"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buyong",
+              "dictBase": "buyong",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yong",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:422",
+        "hskLevel": 3,
+        "sourceNumber": 422,
+        "chinese": "一定",
+        "pinyin": "yídìng",
+        "partOfSpeech": "adjective、adverb",
+        "sourceTranslation": "certain; certainly",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī dìng",
+            "numbered": "yi1 ding4",
+            "plain": "yi ding"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-e498cabd96da07d55805c5ee",
+            "pronunciation": {
+              "marked": "yī dìng",
+              "numbered": "yi1 ding4",
+              "plain": "yi ding"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiding",
+              "dictBase": "yiding",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "ding",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:423",
+        "hskLevel": 3,
+        "sourceNumber": 423,
+        "chinese": "一共",
+        "pinyin": "yígòng",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "altogether, in total",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī gòng",
+            "numbered": "yi1 gong4",
+            "plain": "yi gong"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-ecb193e9ede1d8c2d7dce2fb",
+            "pronunciation": {
+              "marked": "yī gòng",
+              "numbered": "yi1 gong4",
+              "plain": "yi gong"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yigong",
+              "dictBase": "yigong",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "gong",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:424",
+        "hskLevel": 3,
+        "sourceNumber": 424,
+        "chinese": "一块儿",
+        "pinyin": "yíkuàir",
+        "partOfSpeech": "noun、adverb",
+        "sourceTranslation": "the same place; together",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī kuài r",
+            "numbered": "yi1 kuai4 r",
+            "plain": "yi kuai r"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-26a114b8433562bf27bdb537",
+            "pronunciation": {
+              "marked": "yī kuài r",
+              "numbered": "yi1 kuai4 r",
+              "plain": "yi kuai r"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yikuair",
+              "dictBase": "yikuair",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "kuai",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "r",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          },
+          {
+            "dictionaryEntryId": "word-254eea1f9be944dbd6bdd739",
+            "pronunciation": {
+              "marked": "yī kuài r",
+              "numbered": "yi1 kuai4 r5",
+              "plain": "yi kuai r"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yikuair",
+              "dictBase": "yikuair",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "kuai",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "r",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:425",
+        "hskLevel": 3,
+        "sourceNumber": 425,
+        "chinese": "一样",
+        "pinyin": "yíyàng",
+        "partOfSpeech": "adjective",
+        "sourceTranslation": "same",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī yàng",
+            "numbered": "yi1 yang4",
+            "plain": "yi yang"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-80322b65320f08896c79cd30",
+            "pronunciation": {
+              "marked": "yī yàng",
+              "numbered": "yi1 yang4",
+              "plain": "yi yang"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiyang",
+              "dictBase": "yiyang",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yang",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:432",
+        "hskLevel": 3,
+        "sourceNumber": 432,
+        "chinese": "一般",
+        "pinyin": "yìbān",
+        "partOfSpeech": "adjective",
+        "sourceTranslation": "general, ordinary",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī bān",
+            "numbered": "yi1 ban1",
+            "plain": "yi ban"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-da89ddf6dbecd8ae4ed70d76",
+            "pronunciation": {
+              "marked": "yī bān",
+              "numbered": "yi1 ban1",
+              "plain": "yi ban"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiban",
+              "dictBase": "yiban",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "ban",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:433",
+        "hskLevel": 3,
+        "sourceNumber": 433,
+        "chinese": "一边",
+        "pinyin": "yìbiān",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "at the same time",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī biān",
+            "numbered": "yi1 bian1",
+            "plain": "yi bian"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-196e0d380087ed436be15e59",
+            "pronunciation": {
+              "marked": "yī biān",
+              "numbered": "yi1 bian1",
+              "plain": "yi bian"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yibian",
+              "dictBase": "yibian",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "bian",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "3:434",
+        "hskLevel": 3,
+        "sourceNumber": 434,
+        "chinese": "一直",
+        "pinyin": "yìzhí",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "always, straight",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī zhí",
+            "numbered": "yi1 zhi2",
+            "plain": "yi zhi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-f15c8f1f0463cba5829683c1",
+            "pronunciation": {
+              "marked": "yī zhí",
+              "numbered": "yi1 zhi2",
+              "plain": "yi zhi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yizhi",
+              "dictBase": "yizhi",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zhi",
+                  "hskTone": 2,
+                  "dictionaryTone": 2,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:43",
+        "hskLevel": 4,
+        "sourceNumber": 43,
+        "chinese": "不必",
+        "pinyin": "búbì",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "need not, not necessary",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù bì",
+            "numbered": "bu4 bi4",
+            "plain": "bu bi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-da7d60154251f39f4743fa9a",
+            "pronunciation": {
+              "marked": "bù bì",
+              "numbered": "bu4 bi4",
+              "plain": "bu bi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bubi",
+              "dictBase": "bubi",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "bi",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:44",
+        "hskLevel": 4,
+        "sourceNumber": 44,
+        "chinese": "不便",
+        "pinyin": "búbiàn",
+        "partOfSpeech": "adjective、verb",
+        "sourceTranslation": "inconvenient; to be short of money",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù biàn",
+            "numbered": "bu4 bian4",
+            "plain": "bu bian"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-4c4f6956e24d7092c8793a63",
+            "pronunciation": {
+              "marked": "bù biàn",
+              "numbered": "bu4 bian4",
+              "plain": "bu bian"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bubian",
+              "dictBase": "bubian",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "bian",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:45",
+        "hskLevel": 4,
+        "sourceNumber": 45,
+        "chinese": "不断",
+        "pinyin": "búduàn",
+        "partOfSpeech": "verb、adverb",
+        "sourceTranslation": "continuous, unceasing; continuously, constantly",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù duàn",
+            "numbered": "bu4 duan4",
+            "plain": "bu duan"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-d440724b4e4b1b1f8f844c22",
+            "pronunciation": {
+              "marked": "bù duàn",
+              "numbered": "bu4 duan4",
+              "plain": "bu duan"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buduan",
+              "dictBase": "buduan",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "duan",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:46",
+        "hskLevel": 4,
+        "sourceNumber": 46,
+        "chinese": "不够",
+        "pinyin": "búgòu",
+        "partOfSpeech": "verb、adverb",
+        "sourceTranslation": "not enough, insufficient; not sufficiently",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù gòu",
+            "numbered": "bu4 gou4",
+            "plain": "bu gou"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-2951ea58befbb0284a46ce42",
+            "pronunciation": {
+              "marked": "bù gòu",
+              "numbered": "bu4 gou4",
+              "plain": "bu gou"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bugou",
+              "dictBase": "bugou",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "gou",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:47",
+        "hskLevel": 4,
+        "sourceNumber": 47,
+        "chinese": "不过",
+        "pinyin": "búguò",
+        "partOfSpeech": "conjunction、(adverb)",
+        "sourceTranslation": "but, however; (only, merely)",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù guò",
+            "numbered": "bu4 guo4",
+            "plain": "bu guo"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-476a2a705d87cebf3541d10e",
+            "pronunciation": {
+              "marked": "bù guò",
+              "numbered": "bu4 guo4",
+              "plain": "bu guo"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buguo",
+              "dictBase": "buguo",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "guo",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:48",
+        "hskLevel": 4,
+        "sourceNumber": 48,
+        "chinese": "不论",
+        "pinyin": "búlùn",
+        "partOfSpeech": "conjunction",
+        "sourceTranslation": "no matter, regardless",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù lùn",
+            "numbered": "bu4 lun4",
+            "plain": "bu lun"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-7bb01ea2d89f1176582887e6",
+            "pronunciation": {
+              "marked": "bù lùn",
+              "numbered": "bu4 lun4",
+              "plain": "bu lun"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bulun",
+              "dictBase": "bulun",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "lun",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:865",
+        "hskLevel": 4,
+        "sourceNumber": 865,
+        "chinese": "一切",
+        "pinyin": "yíqiè",
+        "partOfSpeech": "pronoun",
+        "sourceTranslation": "everything",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī qiè",
+            "numbered": "yi1 qie4",
+            "plain": "yi qie"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-4c62fafed563cc7eddb8f200",
+            "pronunciation": {
+              "marked": "yī qiè",
+              "numbered": "yi1 qie4",
+              "plain": "yi qie"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiqie",
+              "dictBase": "yiqie",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "qie",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "4:869",
+        "hskLevel": 4,
+        "sourceNumber": 869,
+        "chinese": "一生",
+        "pinyin": "yìshēng",
+        "partOfSpeech": "noun",
+        "sourceTranslation": "lifetime, all one’s life",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī shēng",
+            "numbered": "yi1 sheng1",
+            "plain": "yi sheng"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-f80b05655e133e1e0290a37c",
+            "pronunciation": {
+              "marked": "yī shēng",
+              "numbered": "yi1 sheng1",
+              "plain": "yi sheng"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yisheng",
+              "dictBase": "yisheng",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "sheng",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:73",
+        "hskLevel": 5,
+        "sourceNumber": 73,
+        "chinese": "不利",
+        "pinyin": "búlì",
+        "partOfSpeech": "adjective",
+        "sourceTranslation": "unfavorable",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù lì",
+            "numbered": "bu4 li4",
+            "plain": "bu li"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-cf18ebe78d1d6b50d5081758",
+            "pronunciation": {
+              "marked": "bù lì",
+              "numbered": "bu4 li4",
+              "plain": "bu li"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buli",
+              "dictBase": "buli",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "li",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:74",
+        "hskLevel": 5,
+        "sourceNumber": 74,
+        "chinese": "不幸",
+        "pinyin": "búxìng",
+        "partOfSpeech": "adjective、noun",
+        "sourceTranslation": "unfortunate, unlucky; misfortune",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù xìng",
+            "numbered": "bu4 xing4",
+            "plain": "bu xing"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-e960a6aa78c62161dbb7f76d",
+            "pronunciation": {
+              "marked": "bù xìng",
+              "numbered": "bu4 xing4",
+              "plain": "bu xing"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buxing",
+              "dictBase": "buxing",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "xing",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:75",
+        "hskLevel": 5,
+        "sourceNumber": 75,
+        "chinese": "不要紧",
+        "pinyin": "búyàojǐn",
+        "partOfSpeech": "adjective",
+        "sourceTranslation": "not serious, not matter",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù yào jǐn",
+            "numbered": "bu4 yao4 jin3",
+            "plain": "bu yao jin"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-0e1d9eb8282ec14ddf8e3831",
+            "pronunciation": {
+              "marked": "bù yào jǐn",
+              "numbered": "bu4 yao4 jin3",
+              "plain": "bu yao jin"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buyaojin",
+              "dictBase": "buyaojin",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yao",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "jin",
+                  "hskTone": 3,
+                  "dictionaryTone": 3,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:620",
+        "hskLevel": 5,
+        "sourceNumber": 620,
+        "chinese": "进一步",
+        "pinyin": "jìnyíbù",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "further",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "jìn yī bù",
+            "numbered": "jin4 yi1 bu4",
+            "plain": "jin yi bu"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-0d4e116e4afe44d384fa6cd8",
+            "pronunciation": {
+              "marked": "jìn yī bù",
+              "numbered": "jin4 yi1 bu4",
+              "plain": "jin yi bu"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "jinyibu",
+              "dictBase": "jinyibu",
+              "syllables": [
+                {
+                  "syllable": "jin",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "bu",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1230",
+        "hskLevel": 5,
+        "sourceNumber": 1230,
+        "chinese": "下载",
+        "pinyin": "xiàzài",
+        "partOfSpeech": "verb",
+        "sourceTranslation": "to download",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "xià zǎi",
+            "numbered": "xia4 zai3",
+            "plain": "xia zai"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-95f5e215f76f1fe5bbe7ace6",
+            "pronunciation": {
+              "marked": "xià zǎi",
+              "numbered": "xia4 zai3",
+              "plain": "xia zai"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "xiazai",
+              "dictBase": "xiazai",
+              "syllables": [
+                {
+                  "syllable": "xia",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zai",
+                  "hskTone": 4,
+                  "dictionaryTone": 3,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1352",
+        "hskLevel": 5,
+        "sourceNumber": 1352,
+        "chinese": "一次性",
+        "pinyin": "yícìxìng",
+        "partOfSpeech": "adjective",
+        "sourceTranslation": "disposable",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī cì xìng",
+            "numbered": "yi1 ci4 xing4",
+            "plain": "yi ci xing"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-7ca2f029666276c61c1c1aa1",
+            "pronunciation": {
+              "marked": "yī cì xìng",
+              "numbered": "yi1 ci4 xing4",
+              "plain": "yi ci xing"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yicixing",
+              "dictBase": "yicixing",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "ci",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "xing",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1353",
+        "hskLevel": 5,
+        "sourceNumber": 1353,
+        "chinese": "一代",
+        "pinyin": "yídài",
+        "partOfSpeech": "noun",
+        "sourceTranslation": "generation",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī dài",
+            "numbered": "yi1 dai4",
+            "plain": "yi dai"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-a06e7e35be8b8b835b6bfce3",
+            "pronunciation": {
+              "marked": "yī dài",
+              "numbered": "yi1 dai4",
+              "plain": "yi dai"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yidai",
+              "dictBase": "yidai",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dai",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1354",
+        "hskLevel": 5,
+        "sourceNumber": 1354,
+        "chinese": "一旦",
+        "pinyin": "yídàn",
+        "partOfSpeech": "adverb",
+        "sourceTranslation": "once, in case",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī dàn",
+            "numbered": "yi1 dan4",
+            "plain": "yi dan"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-9c3dd59f85710b5918285f62",
+            "pronunciation": {
+              "marked": "yī dàn",
+              "numbered": "yi1 dan4",
+              "plain": "yi dan"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yidan",
+              "dictBase": "yidan",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dan",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1357",
+        "hskLevel": 5,
+        "sourceNumber": 1357,
+        "chinese": "一路",
+        "pinyin": "yílù",
+        "partOfSpeech": "noun、adverb",
+        "sourceTranslation": "all the way; throughout the journey",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī lù",
+            "numbered": "yi1 lu4",
+            "plain": "yi lu"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-06e637965be085c52f8c9793",
+            "pronunciation": {
+              "marked": "yī lù",
+              "numbered": "yi1 lu4",
+              "plain": "yi lu"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yilu",
+              "dictBase": "yilu",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "lu",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1358",
+        "hskLevel": 5,
+        "sourceNumber": 1358,
+        "chinese": "一路顺风",
+        "pinyin": "yílù-shùnfēng",
+        "partOfSpeech": null,
+        "sourceTranslation": "bon voyage, have a safe trip",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī lù shùn fēng",
+            "numbered": "yi1 lu4 shun4 feng1",
+            "plain": "yi lu shun feng"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-7b1c5b7c022e51c0a04dfcb6",
+            "pronunciation": {
+              "marked": "yī lù shùn fēng",
+              "numbered": "yi1 lu4 shun4 feng1",
+              "plain": "yi lu shun feng"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yilushunfeng",
+              "dictBase": "yilushunfeng",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "lu",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "shun",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "feng",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "5:1360",
+        "hskLevel": 5,
+        "sourceNumber": 1360,
+        "chinese": "一致",
+        "pinyin": "yízhì",
+        "partOfSpeech": "adjective、adverb",
+        "sourceTranslation": "consistent, unanimous; consistently",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī zhì",
+            "numbered": "yi1 zhi4",
+            "plain": "yi zhi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-a3d372e63100bdc243140ac1",
+            "pronunciation": {
+              "marked": "yī zhì",
+              "numbered": "yi1 zhi4",
+              "plain": "yi zhi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yizhi",
+              "dictBase": "yizhi",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zhi",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:67",
+        "hskLevel": 6,
+        "sourceNumber": 67,
+        "chinese": "不耐烦",
+        "pinyin": "búnàifán",
+        "partOfSpeech": null,
+        "sourceTranslation": "impatient",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù nài fán",
+            "numbered": "bu4 nai4 fan2",
+            "plain": "bu nai fan"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-41372891c082e0428228b6cf",
+            "pronunciation": {
+              "marked": "bù nài fán",
+              "numbered": "bu4 nai4 fan2",
+              "plain": "bu nai fan"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bunaifan",
+              "dictBase": "bunaifan",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "nai",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "fan",
+                  "hskTone": 2,
+                  "dictionaryTone": 2,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:68",
+        "hskLevel": 6,
+        "sourceNumber": 68,
+        "chinese": "不顾",
+        "pinyin": "búgù",
+        "partOfSpeech": "动",
+        "sourceTranslation": "to disregard, to ignore",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù gù",
+            "numbered": "bu4 gu4",
+            "plain": "bu gu"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-ddc81a24170ff7d9520910f4",
+            "pronunciation": {
+              "marked": "bù gù",
+              "numbered": "bu4 gu4",
+              "plain": "bu gu"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bugu",
+              "dictBase": "bugu",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "gu",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:69",
+        "hskLevel": 6,
+        "sourceNumber": 69,
+        "chinese": "不料",
+        "pinyin": "búliào",
+        "partOfSpeech": "连",
+        "sourceTranslation": "unexpectedly, to one’s surprise",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù liào",
+            "numbered": "bu4 liao4",
+            "plain": "bu liao"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-190c8b04df056a603c249590",
+            "pronunciation": {
+              "marked": "bù liào",
+              "numbered": "bu4 liao4",
+              "plain": "bu liao"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buliao",
+              "dictBase": "buliao",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "liao",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:70",
+        "hskLevel": 6,
+        "sourceNumber": 70,
+        "chinese": "不适",
+        "pinyin": "búshì",
+        "partOfSpeech": "形",
+        "sourceTranslation": "uncomfortable, unwell",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù shì",
+            "numbered": "bu4 shi4",
+            "plain": "bu shi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-8e12addcc5d1aea42e874eb6",
+            "pronunciation": {
+              "marked": "bù shì",
+              "numbered": "bu4 shi4",
+              "plain": "bu shi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "bushi",
+              "dictBase": "bushi",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "shi",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:71",
+        "hskLevel": 6,
+        "sourceNumber": 71,
+        "chinese": "不至于",
+        "pinyin": "búzhìyú",
+        "partOfSpeech": "动",
+        "sourceTranslation": "not to the extent of, unlikely to",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "bù zhì yú",
+            "numbered": "bu4 zhi4 yu2",
+            "plain": "bu zhi yu"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-a8056874994499a822588564",
+            "pronunciation": {
+              "marked": "bù zhì yú",
+              "numbered": "bu4 zhi4 yu2",
+              "plain": "bu zhi yu"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "buzhiyu",
+              "dictBase": "buzhiyu",
+              "syllables": [
+                {
+                  "syllable": "bu",
+                  "hskTone": 2,
+                  "dictionaryTone": 4,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zhi",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yu",
+                  "hskTone": 2,
+                  "dictionaryTone": 2,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:245",
+        "hskLevel": 6,
+        "sourceNumber": 245,
+        "chinese": "大吃一惊",
+        "pinyin": "dàchī-yìjīng",
+        "partOfSpeech": null,
+        "sourceTranslation": "to be greatly surprised",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "dà chī yī jīng",
+            "numbered": "da4 chi1 yi1 jing1",
+            "plain": "da chi yi jing"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-2ca42ce5ffafdb540193e49f",
+            "pronunciation": {
+              "marked": "dà chī yī jīng",
+              "numbered": "da4 chi1 yi1 jing1",
+              "plain": "da chi yi jing"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "dachiyijing",
+              "dictBase": "dachiyijing",
+              "syllables": [
+                {
+                  "syllable": "da",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "chi",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "jing",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1543",
+        "hskLevel": 6,
+        "sourceNumber": 1543,
+        "chinese": "一辈子",
+        "pinyin": "yíbèizi",
+        "partOfSpeech": "名",
+        "sourceTranslation": "a lifetime",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī bèi zi",
+            "numbered": "yi1 bei4 zi5",
+            "plain": "yi bei zi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-10871cb5de6b88da8184d2e5",
+            "pronunciation": {
+              "marked": "yī bèi zi",
+              "numbered": "yi1 bei4 zi5",
+              "plain": "yi bei zi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yibeizi",
+              "dictBase": "yibeizi",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "bei",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zi",
+                  "hskTone": 5,
+                  "dictionaryTone": 5,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1546",
+        "hskLevel": 6,
+        "sourceNumber": 1546,
+        "chinese": "一带",
+        "pinyin": "yídài",
+        "partOfSpeech": "名",
+        "sourceTranslation": "region, area",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī dài",
+            "numbered": "yi1 dai4",
+            "plain": "yi dai"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-96b795f43718ee4f7569d69b",
+            "pronunciation": {
+              "marked": "yī dài",
+              "numbered": "yi1 dai4",
+              "plain": "yi dai"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yidai",
+              "dictBase": "yidai",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dai",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1547",
+        "hskLevel": 6,
+        "sourceNumber": 1547,
+        "chinese": "一道",
+        "pinyin": "yídào",
+        "partOfSpeech": "副",
+        "sourceTranslation": "together",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī dào",
+            "numbered": "yi1 dao4",
+            "plain": "yi dao"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-bcad7426e7405037e541cea2",
+            "pronunciation": {
+              "marked": "yī dào",
+              "numbered": "yi1 dao4",
+              "plain": "yi dao"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yidao",
+              "dictBase": "yidao",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "dao",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1548",
+        "hskLevel": 6,
+        "sourceNumber": 1548,
+        "chinese": "一贯",
+        "pinyin": "yíguàn",
+        "partOfSpeech": "形",
+        "sourceTranslation": "consistent, unswerving",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī guàn",
+            "numbered": "yi1 guan4",
+            "plain": "yi guan"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-3895c7805d5a68168d0f6327",
+            "pronunciation": {
+              "marked": "yī guàn",
+              "numbered": "yi1 guan4",
+              "plain": "yi guan"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yiguan",
+              "dictBase": "yiguan",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "guan",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1550",
+        "hskLevel": 6,
+        "sourceNumber": 1550,
+        "chinese": "一律",
+        "pinyin": "yílǜ",
+        "partOfSpeech": "副",
+        "sourceTranslation": "uniform, all alike; without exception",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī lǜ",
+            "numbered": "yi1 lü4",
+            "plain": "yi lu"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-effb174c4f7987bda04ae30f",
+            "pronunciation": {
+              "marked": "yī lǜ",
+              "numbered": "yi1 lü4",
+              "plain": "yi lu"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yilü",
+              "dictBase": "yilü",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "lü",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1554",
+        "hskLevel": 6,
+        "sourceNumber": 1554,
+        "chinese": "一向",
+        "pinyin": "yíxiàng",
+        "partOfSpeech": "副",
+        "sourceTranslation": "always, consistently",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī xiàng",
+            "numbered": "yi1 xiang4",
+            "plain": "yi xiang"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-aa625da0a49be35d5aea615f",
+            "pronunciation": {
+              "marked": "yī xiàng",
+              "numbered": "yi1 xiang4",
+              "plain": "yi xiang"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yixiang",
+              "dictBase": "yixiang",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "xiang",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1555",
+        "hskLevel": 6,
+        "sourceNumber": 1555,
+        "chinese": "一系列",
+        "pinyin": "yíxìliè",
+        "partOfSpeech": "形",
+        "sourceTranslation": "a series of",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī xì liè",
+            "numbered": "yi1 xi4 lie4",
+            "plain": "yi xi lie"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-2b0b8f7290bb311505e33fe4",
+            "pronunciation": {
+              "marked": "yī xì liè",
+              "numbered": "yi1 xi4 lie4",
+              "plain": "yi xi lie"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yixilie",
+              "dictBase": "yixilie",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "xi",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "lie",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1556",
+        "hskLevel": 6,
+        "sourceNumber": 1556,
+        "chinese": "一再",
+        "pinyin": "yízài",
+        "partOfSpeech": "副",
+        "sourceTranslation": "repeatedly, time and again",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī zài",
+            "numbered": "yi1 zai4",
+            "plain": "yi zai"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-87315ad0a69ff8413cdb7cf7",
+            "pronunciation": {
+              "marked": "yī zài",
+              "numbered": "yi1 zai4",
+              "plain": "yi zai"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yizai",
+              "dictBase": "yizai",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zai",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1557",
+        "hskLevel": 6,
+        "sourceNumber": 1557,
+        "chinese": "一阵",
+        "pinyin": "yízhèn",
+        "partOfSpeech": "数量",
+        "sourceTranslation": "a period of, a burst of",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī zhèn",
+            "numbered": "yi1 zhen4",
+            "plain": "yi zhen"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-013ce2ed6654dc4b9475ff23",
+            "pronunciation": {
+              "marked": "yī zhèn",
+              "numbered": "yi1 zhen4",
+              "plain": "yi zhen"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yizhen",
+              "dictBase": "yizhen",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "zhen",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1564",
+        "hskLevel": 6,
+        "sourceNumber": 1564,
+        "chinese": "一帆风顺",
+        "pinyin": "yìfān-fēngshùn",
+        "partOfSpeech": null,
+        "sourceTranslation": "plain sailing, smooth going",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī fān fēng shùn",
+            "numbered": "yi1 fan1 feng1 shun4",
+            "plain": "yi fan feng shun"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-0295a2a7554816cd5c337346",
+            "pronunciation": {
+              "marked": "yī fān fēng shùn",
+              "numbered": "yi1 fan1 feng1 shun4",
+              "plain": "yi fan feng shun"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yifanfengshun",
+              "dictBase": "yifanfengshun",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "fan",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "feng",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "shun",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1565",
+        "hskLevel": 6,
+        "sourceNumber": 1565,
+        "chinese": "一口气",
+        "pinyin": "yìkǒuqì",
+        "partOfSpeech": "副",
+        "sourceTranslation": "in one breath, without a break",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī kǒu qì",
+            "numbered": "yi1 kou3 qi4",
+            "plain": "yi kou qi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-8466df6f8fc98c81cc9f6f85",
+            "pronunciation": {
+              "marked": "yī kǒu qì",
+              "numbered": "yi1 kou3 qi4",
+              "plain": "yi kou qi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yikouqi",
+              "dictBase": "yikouqi",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "kou",
+                  "hskTone": 3,
+                  "dictionaryTone": 3,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "qi",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1567",
+        "hskLevel": 6,
+        "sourceNumber": 1567,
+        "chinese": "一模一样",
+        "pinyin": "yìmú-yíyàng",
+        "partOfSpeech": null,
+        "sourceTranslation": "exactly the same",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī mú yī yàng",
+            "numbered": "yi1 mu2 yi1 yang4",
+            "plain": "yi mu yi yang"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-e87935a233c9b6e33440bada",
+            "pronunciation": {
+              "marked": "yī mú yī yàng",
+              "numbered": "yi1 mu2 yi1 yang4",
+              "plain": "yi mu yi yang"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yimuyiyang",
+              "dictBase": "yimuyiyang",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "mu",
+                  "hskTone": 2,
+                  "dictionaryTone": 2,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yi",
+                  "hskTone": 2,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "yang",
+                  "hskTone": 4,
+                  "dictionaryTone": 4,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1569",
+        "hskLevel": 6,
+        "sourceNumber": 1569,
+        "chinese": "一身",
+        "pinyin": "yìshēn",
+        "partOfSpeech": "名",
+        "sourceTranslation": "whole body",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī shēn",
+            "numbered": "yi1 shen1",
+            "plain": "yi shen"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-5474ac5888603d70fd32415d",
+            "pronunciation": {
+              "marked": "yī shēn",
+              "numbered": "yi1 shen1",
+              "plain": "yi shen"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yishen",
+              "dictBase": "yishen",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "shen",
+                  "hskTone": 1,
+                  "dictionaryTone": 1,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1570",
+        "hskLevel": 6,
+        "sourceNumber": 1570,
+        "chinese": "一时",
+        "pinyin": "yìshí",
+        "partOfSpeech": "名、副",
+        "sourceTranslation": "temporarily; for a moment",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī shí",
+            "numbered": "yi1 shi2",
+            "plain": "yi shi"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-e6f46c01f2952ebdd76391c2",
+            "pronunciation": {
+              "marked": "yī shí",
+              "numbered": "yi1 shi2",
+              "plain": "yi shi"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yishi",
+              "dictBase": "yishi",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "shi",
+                  "hskTone": 2,
+                  "dictionaryTone": 2,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "6:1571",
+        "hskLevel": 6,
+        "sourceNumber": 1571,
+        "chinese": "一同",
+        "pinyin": "yìtóng",
+        "partOfSpeech": "副",
+        "sourceTranslation": "together, along with",
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryPronunciations": [
+          {
+            "marked": "yī tóng",
+            "numbered": "yi1 tong2",
+            "plain": "yi tong"
+          }
+        ],
+        "comparisons": [
+          {
+            "dictionaryEntryId": "word-65da34f3d4477f7224403005",
+            "pronunciation": {
+              "marked": "yī tóng",
+              "numbered": "yi1 tong2",
+              "plain": "yi tong"
+            },
+            "comparison": {
+              "classification": "different-lexical-tone",
+              "hskBase": "yitong",
+              "dictBase": "yitong",
+              "syllables": [
+                {
+                  "syllable": "yi",
+                  "hskTone": 4,
+                  "dictionaryTone": 1,
+                  "sameTone": false,
+                  "neutralToneOnly": false
+                },
+                {
+                  "syllable": "tong",
+                  "hskTone": 2,
+                  "dictionaryTone": 2,
+                  "sameTone": true,
+                  "neutralToneOnly": false
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "manualPinyinCases": [
+    {
+      "key": "4:534",
+      "chinese": "嗯",
+      "hskLevel": 4,
+      "sourceNumber": 534,
+      "hskPinyin": "ǹg",
+      "rawExtractedHskPinyin": "ǹg",
+      "rawExtractedPartOfSpeech": "interjection",
+      "sourceFieldRepair": null,
+      "sourceTranslation": "uh-huh, hmm",
+      "partOfSpeech": "interjection",
+      "dictionaryEntryId": null,
+      "dictionaryLinkStatus": "ambiguous",
+      "decision": "manual-review-no-dictionary-reading-matches-hsk-ng",
+      "selectedDictionaryPronunciation": null,
+      "allDictionaryPronunciations": [
+        {
+          "marked": "èn",
+          "numbered": "en4",
+          "plain": "en"
+        },
+        {
+          "marked": "ēn",
+          "numbered": "en1",
+          "plain": "en"
+        },
+        {
+          "marked": "en",
+          "numbered": "en5",
+          "plain": "en"
+        }
+      ],
+      "candidates": [
+        {
+          "id": "char-嗯",
+          "entryType": "character",
+          "simplified": "嗯",
+          "traditional": "嗯",
+          "pinyin": [
+            {
+              "marked": "èn",
+              "numbered": "en4",
+              "plain": "en"
+            },
+            {
+              "marked": "ēn",
+              "numbered": "en1",
+              "plain": "en"
+            },
+            {
+              "marked": "en",
+              "numbered": "en5",
+              "plain": "en"
+            }
+          ],
+          "definitionsEn": [
+            "(nonverbal grunt as interjection)",
+            "OK, yeah",
+            "what?",
+            "(a groaning sound)",
+            "interjection indicating approval, appreciation or agreement"
+          ],
+          "definitionsFr": [
+            "(son de grondement)",
+            "(employé pour marquer une interrogation)",
+            "(employé pour marquer une surprise)",
+            "( employé pour marquer une réponse)"
+          ],
+          "sources": [
+            "CFDICT",
+            "CC-CEDICT"
+          ]
+        },
+        {
+          "id": "word-e714c19f19d296bc9fbcf665",
+          "entryType": "word",
+          "simplified": "嗯",
+          "traditional": "嗯",
+          "pinyin": [
+            {
+              "marked": "en",
+              "numbered": "en5",
+              "plain": "en"
+            }
+          ],
+          "definitionsEn": [
+            "interjection indicating approval, appreciation or agreement"
+          ],
+          "definitionsFr": [
+            "(employé pour marquer une interrogation)",
+            "(employé pour marquer une surprise)",
+            "( employé pour marquer une réponse)"
+          ],
+          "sources": [
+            "CFDICT",
+            "CC-CEDICT"
+          ]
+        },
+        {
+          "id": "word-7be4c96ad7fb478743fefb9f",
+          "entryType": "word",
+          "simplified": "嗯",
+          "traditional": "嗯",
+          "pinyin": [
+            {
+              "marked": "ēn",
+              "numbered": "en1",
+              "plain": "en"
+            }
+          ],
+          "definitionsEn": [
+            "(a groaning sound)"
+          ],
+          "definitionsFr": [
+            "(son de grondement)"
+          ],
+          "sources": [
+            "CFDICT",
+            "CC-CEDICT"
+          ]
+        },
+        {
+          "id": "word-4103730c93a2acf55a9ae995",
+          "entryType": "word",
+          "simplified": "嗯",
+          "traditional": "嗯",
+          "pinyin": [
+            {
+              "marked": "èn",
+              "numbered": "en4",
+              "plain": "en"
+            }
+          ],
+          "definitionsEn": [
+            "(nonverbal grunt as interjection)",
+            "OK, yeah",
+            "what?"
+          ],
+          "definitionsFr": [],
+          "sources": [
+            "CC-CEDICT"
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "pronunciation": {
+            "marked": "èn",
+            "numbered": "en4",
+            "plain": "en"
+          },
+          "comparison": {
+            "classification": "different-syllable",
+            "hskBase": "ng",
+            "dictBase": "en",
+            "syllables": []
+          }
+        },
+        {
+          "pronunciation": {
+            "marked": "ēn",
+            "numbered": "en1",
+            "plain": "en"
+          },
+          "comparison": {
+            "classification": "different-syllable",
+            "hskBase": "ng",
+            "dictBase": "en",
+            "syllables": []
+          }
+        },
+        {
+          "pronunciation": {
+            "marked": "en",
+            "numbered": "en5",
+            "plain": "en"
+          },
+          "comparison": {
+            "classification": "different-syllable",
+            "hskBase": "ng",
+            "dictBase": "en",
+            "syllables": []
+          }
+        }
+      ]
+    },
+    {
+      "key": "5:1521",
+      "chinese": "中华民族",
+      "hskLevel": 5,
+      "sourceNumber": 1521,
+      "hskPinyin": "Zhōnghuá Mínzú",
+      "rawExtractedHskPinyin": "Zhōnghuá",
+      "rawExtractedPartOfSpeech": "Mínzú",
+      "sourceFieldRepair": {
+        "reconstructedPinyin": "Zhōnghuá Mínzú",
+        "reconstructedPartOfSpeech": null,
+        "rationale": "“Mínzú” is pinyin with a tone mark, not a grammatical label; rejoining the adjacent extracted columns recreates the complete source pinyin for 中华民族."
+      },
+      "sourceTranslation": "Chinese nation",
+      "partOfSpeech": null,
+      "dictionaryEntryId": "word-8339e4df235a40416540626f",
+      "dictionaryLinkStatus": "exact",
+      "decision": "manual-review-source-column-repair-clear-word-pinyin-and-meaning-match",
+      "selectedDictionaryPronunciation": {
+        "marked": "zhōng huá mín zú",
+        "numbered": "zhong1 hua2 min2 zu2",
+        "plain": "zhong hua min zu"
+      },
+      "allDictionaryPronunciations": [
+        {
+          "marked": "zhōng huá mín zú",
+          "numbered": "zhong1 hua2 min2 zu2",
+          "plain": "zhong hua min zu"
+        }
+      ],
+      "comparisons": [
+        {
+          "pronunciation": {
+            "marked": "zhōng huá mín zú",
+            "numbered": "zhong1 hua2 min2 zu2",
+            "plain": "zhong hua min zu"
+          },
+          "comparison": {
+            "classification": "same-pronunciation",
+            "hskBase": "zhonghuaminzu",
+            "dictBase": "zhonghuaminzu",
+            "syllables": [
+              {
+                "syllable": "zhong",
+                "hskTone": 1,
+                "dictionaryTone": 1,
+                "sameTone": true,
+                "neutralToneOnly": false
+              },
+              {
+                "syllable": "hua",
+                "hskTone": 2,
+                "dictionaryTone": 2,
+                "sameTone": true,
+                "neutralToneOnly": false
+              },
+              {
+                "syllable": "min",
+                "hskTone": 2,
+                "dictionaryTone": 2,
+                "sameTone": true,
+                "neutralToneOnly": false
+              },
+              {
+                "syllable": "zu",
+                "hskTone": 2,
+                "dictionaryTone": 2,
+                "sameTone": true,
+                "neutralToneOnly": false
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "repairedSourceFields": [
+    {
+      "key": "5:1521",
+      "rawPinyin": "Zhōnghuá",
+      "rawPartOfSpeech": "Mínzú",
+      "pinyin": "Zhōnghuá Mínzú",
+      "partOfSpeech": null,
+      "rationale": "“Mínzú” is pinyin with a tone mark, not a grammatical label; rejoining the adjacent extracted columns recreates the complete source pinyin for 中华民族."
+    }
+  ],
+  "manualSourceSenseDisambiguations": [
+    {
+      "key": "1:78",
+      "chinese": "和",
+      "sourceTranslation": "et",
+      "dictionaryEntryId": "word-95657ae488f8b5b2e27a27d2",
+      "rationale": "The source sense is the conjunction “and”; the other word candidates are literary or old character variants."
+    },
+    {
+      "key": "1:202",
+      "chinese": "它",
+      "sourceTranslation": "pronom de troisième personnepour les animaux et les objetsinanimés",
+      "dictionaryEntryId": "word-2e5763cd4a108a0ab8a80e9f",
+      "rationale": "The source covers animals and inanimate objects; the competing traditional form is restricted to animals."
+    },
+    {
+      "key": "1:289",
+      "chinese": "只",
+      "sourceTranslation": "CL: pour les oiseaux et certainsanimaux, l'un d'une paire,certains ustensiles, récipients,etc",
+      "dictionaryEntryId": "word-f64630eb8cccb15f99a69b92",
+      "rationale": "The source is the classifier sense; the other candidates are a variant reference and an unrelated “ripening grain” sense."
+    },
+    {
+      "key": "2:58",
+      "chinese": "花",
+      "sourceTranslation": "flower; (colorful)",
+      "dictionaryEntryId": "word-262b5d550079f95a0e83a1bd",
+      "rationale": "This entry contains both the flower and florid/colorful senses supplied by the source."
+    },
+    {
+      "key": "3:470",
+      "chinese": "照",
+      "sourceTranslation": "to shine, to photograph",
+      "dictionaryEntryId": "word-ca952c9aafc0f77737afe70b",
+      "rationale": "This entry contains both “shine” and “photograph”; the competing form only covers shining."
+    },
+    {
+      "key": "4:39",
+      "chinese": "并",
+      "sourceTranslation": "to combine, to merge; actually, indeed; and, also",
+      "dictionaryEntryId": "word-61ef6787b0e47e281c47c226",
+      "rationale": "This entry contains both the conjunction/adverb and combine/merge senses supplied by the source."
+    },
+    {
+      "key": "4:564",
+      "chinese": "期",
+      "sourceTranslation": "period, phase; measure word for issues, semesters, etc.",
+      "dictionaryEntryId": "word-85d5c170415768a245e98df3",
+      "rationale": "This entry contains period, phase, and the periodical/course classifier sense."
+    },
+    {
+      "key": "4:880",
+      "chinese": "用于",
+      "sourceTranslation": "to be used for, to be applied to",
+      "dictionaryEntryId": "word-4f276c8e4ce11bb9feb3f026",
+      "rationale": "Its definition explicitly matches “to be used for/to use for”."
+    },
+    {
+      "key": "5:828",
+      "chinese": "匹",
+      "sourceTranslation": "measure word for horses, cloth",
+      "dictionaryEntryId": "word-ae07db4c4e6fd787e70edc81",
+      "rationale": "This entry contains classifiers for both horses and cloth; the competing form only covers cloth."
+    },
+    {
+      "key": "6:741",
+      "chinese": "局",
+      "sourceTranslation": "measure word for games, sets",
+      "dictionaryEntryId": "word-5edcbbdaa2c925eae138e94d",
+      "rationale": "This is the only word candidate containing the classifier-for-games sense."
+    },
+    {
+      "key": "6:797",
+      "chinese": "扣",
+      "sourceTranslation": "to deduct, to button; button",
+      "dictionaryEntryId": "word-250410b174866e4b6083ca9f",
+      "rationale": "This entry contains both deduct and button; the competing form only contains button."
+    },
+    {
+      "key": "6:1606",
+      "chinese": "于",
+      "sourceTranslation": "in, at, to",
+      "dictionaryEntryId": "word-b83a84fdcb5d87e40de3ed0b",
+      "rationale": "This entry explicitly contains the prepositional in/at/to senses from the source."
+    },
+    {
+      "key": "6:1675",
+      "chinese": "折",
+      "sourceTranslation": "to break, to fold",
+      "dictionaryEntryId": "word-4677d13d3c4a604dc0bdf6b0",
+      "rationale": "This entry contains both break and fold; the competing form only contains fold."
+    }
+  ],
+  "multiplePronunciations": {
+    "initiallyReported": 345,
+    "preciseHskPronunciationSelected": 343,
+    "ambiguous": 2,
+    "dictionaryPronunciationsDeleted": 0,
+    "allDictionaryReadingsPreservedInLinkRecords": true
+  },
+  "absentWords": {
+    "audit": [
+      {
+        "chinese": "新媒体",
+        "checkedVariants": [
+          "新媒体",
+          "新媒體"
+        ],
+        "exactIndexMatches": [],
+        "normalizedIndexMatches": [],
+        "fullDictionaryEntryMatchesAfterWhitespaceAndPunctuationNormalization": [],
+        "unindexedDictionaryEntryMatches": [],
+        "compoundIndexMatches": [],
+        "sourceDictionaryLineMatches": {
+          "ccCedict": [],
+          "cfdict": []
+        },
+        "conclusion": "truly-absent"
+      },
+      {
+        "chinese": "新能源",
+        "checkedVariants": [
+          "新能源"
+        ],
+        "exactIndexMatches": [],
+        "normalizedIndexMatches": [],
+        "fullDictionaryEntryMatchesAfterWhitespaceAndPunctuationNormalization": [],
+        "unindexedDictionaryEntryMatches": [],
+        "compoundIndexMatches": [],
+        "sourceDictionaryLineMatches": {
+          "ccCedict": [],
+          "cfdict": []
+        },
+        "conclusion": "truly-absent"
+      }
+    ],
+    "sourceOnlySupplement": [
+      {
+        "hskEntryId": "hsk:6:1464",
+        "chinese": "新媒体",
+        "pinyin": "xīnméitǐ",
+        "hskLevel": 6,
+        "firstHskLevel": 6,
+        "sourceLevels": [
+          6
+        ],
+        "partOfSpeech": "名",
+        "sourceTranslation": "new media",
+        "dictionaryEntryId": null,
+        "dictionaryLinkStatus": "source-only",
+        "senseId": null,
+        "sourceNumber": 1464,
+        "sourceNumbers": [
+          {
+            "hskLevel": 6,
+            "sourceNumber": 1464
+          }
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1466",
+        "chinese": "新能源",
+        "pinyin": "xīnnéngyuán",
+        "hskLevel": 6,
+        "firstHskLevel": 6,
+        "sourceLevels": [
+          6
+        ],
+        "partOfSpeech": "名",
+        "sourceTranslation": "new energy",
+        "dictionaryEntryId": null,
+        "dictionaryLinkStatus": "source-only",
+        "senseId": null,
+        "sourceNumber": 1466,
+        "sourceNumbers": [
+          {
+            "hskLevel": 6,
+            "sourceNumber": 1466
+          }
+        ]
+      }
+    ]
+  },
+  "withinLevelDuplicates": [
+    {
+      "chinese": "花",
+      "hskLevel": 2,
+      "occurrences": [
+        {
+          "key": "2:57",
+          "sourceNumber": 57,
+          "pinyin": "huā",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to spend (money or time)",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "2:58",
+          "sourceNumber": 58,
+          "pinyin": "huā",
+          "partOfSpeech": "noun、(adjective)",
+          "sourceTranslation": "flower; (colorful)",
+          "sourceSenseNumber": 2
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "过",
+      "hskLevel": 2,
+      "occurrences": [
+        {
+          "key": "2:47",
+          "sourceNumber": 47,
+          "pinyin": "guò",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to pass, to cross; excessive",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "2:51",
+          "sourceNumber": 51,
+          "pinyin": "guo",
+          "partOfSpeech": "auxiliary",
+          "sourceTranslation": "particle indicating past experience",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "得",
+      "hskLevel": 3,
+      "occurrences": [
+        {
+          "key": "3:83",
+          "sourceNumber": 83,
+          "pinyin": "dé",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to get, to obtain",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "3:87",
+          "sourceNumber": 87,
+          "pinyin": "děi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "must, need",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "生",
+      "hskLevel": 4,
+      "occurrences": [
+        {
+          "key": "4:646",
+          "sourceNumber": 646,
+          "pinyin": "shēng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to give birth, to produce, to grow",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "4:647",
+          "sourceNumber": 647,
+          "pinyin": "shēng",
+          "partOfSpeech": "adjective、(adverb)",
+          "sourceTranslation": "raw, uncooked, unripe; ( very, extremely, terribly )",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "空",
+      "hskLevel": 4,
+      "occurrences": [
+        {
+          "key": "4:436",
+          "sourceNumber": 436,
+          "pinyin": "kōng",
+          "partOfSpeech": "adjective、(adverb)",
+          "sourceTranslation": "empty, vacant, hollow; ( vain, in for nothing )",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "4:439",
+          "sourceNumber": 439,
+          "pinyin": "kòng",
+          "partOfSpeech": "verb、adjective、noun",
+          "sourceTranslation": "to leave empty, to make time, to free up; empty, free, unoccupied; free time, empty space",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "重",
+      "hskLevel": 4,
+      "occurrences": [
+        {
+          "key": "4:86",
+          "sourceNumber": 86,
+          "pinyin": "chóng",
+          "partOfSpeech": "adverb、(verb)",
+          "sourceTranslation": "again, once more; (to repeat)",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "4:960",
+          "sourceNumber": 960,
+          "pinyin": "zhòng",
+          "partOfSpeech": "noun、adjective",
+          "sourceTranslation": "weight, importance; heavy, important",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "处",
+      "hskLevel": 5,
+      "occurrences": [
+        {
+          "key": "5:179",
+          "sourceNumber": 179,
+          "pinyin": "chǔ",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to handle, to manage",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "5:182",
+          "sourceNumber": 182,
+          "pinyin": "chù",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "place, location",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "批",
+      "hskLevel": 5,
+      "occurrences": [
+        {
+          "key": "5:825",
+          "sourceNumber": 825,
+          "pinyin": "pī",
+          "partOfSpeech": null,
+          "sourceTranslation": "measure word for batches",
+          "sourceSenseNumber": 1
+        },
+        {
+          "key": "5:826",
+          "sourceNumber": 826,
+          "pinyin": "pī",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to criticize, to approve",
+          "sourceSenseNumber": 2
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "称",
+      "hskLevel": 5,
+      "occurrences": [
+        {
+          "key": "5:132",
+          "sourceNumber": 132,
+          "pinyin": "chēng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to call, to address",
+          "sourceSenseNumber": 1
+        },
+        {
+          "key": "5:133",
+          "sourceNumber": 133,
+          "pinyin": "chēng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to weigh",
+          "sourceSenseNumber": 2
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "系",
+      "hskLevel": 5,
+      "occurrences": [
+        {
+          "key": "5:539",
+          "sourceNumber": 539,
+          "pinyin": "jì",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to tie, to fasten",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "5:1226",
+          "sourceNumber": 1226,
+          "pinyin": "xì",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "department, system",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "调",
+      "hskLevel": 5,
+      "occurrences": [
+        {
+          "key": "5:284",
+          "sourceNumber": 284,
+          "pinyin": "diào",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to transfer, to move; tone",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "5:1130",
+          "sourceNumber": 1130,
+          "pinyin": "tiáo",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to adjust, to tune",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "卷",
+      "hskLevel": 6,
+      "occurrences": [
+        {
+          "key": "6:753",
+          "sourceNumber": 753,
+          "pinyin": "juǎn",
+          "partOfSpeech": "动、名、量",
+          "sourceTranslation": "to roll, to curl; roll; measure word for rolls",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "6:754",
+          "sourceNumber": 754,
+          "pinyin": "juàn",
+          "partOfSpeech": "量、名",
+          "sourceTranslation": "measure word for books; volume",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "吐",
+      "hskLevel": 6,
+      "occurrences": [
+        {
+          "key": "6:1333",
+          "sourceNumber": 1333,
+          "pinyin": "tǔ",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to spit",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "6:1335",
+          "sourceNumber": 1335,
+          "pinyin": "tù",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to vomit",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "局",
+      "hskLevel": 6,
+      "occurrences": [
+        {
+          "key": "6:741",
+          "sourceNumber": 741,
+          "pinyin": "jú",
+          "partOfSpeech": "量",
+          "sourceTranslation": "measure word for games, sets",
+          "sourceSenseNumber": 1
+        },
+        {
+          "key": "6:742",
+          "sourceNumber": 742,
+          "pinyin": "jú",
+          "partOfSpeech": "名",
+          "sourceTranslation": "bureau, office, situation",
+          "sourceSenseNumber": 2
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "散",
+      "hskLevel": 6,
+      "occurrences": [
+        {
+          "key": "6:1126",
+          "sourceNumber": 1126,
+          "pinyin": "sǎn",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to scatter",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "6:1128",
+          "sourceNumber": 1128,
+          "pinyin": "sàn",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to scatter, to disperse",
+          "sourceSenseNumber": null
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "料",
+      "hskLevel": 6,
+      "occurrences": [
+        {
+          "key": "6:850",
+          "sourceNumber": 850,
+          "pinyin": "liào",
+          "partOfSpeech": "名",
+          "sourceTranslation": "material",
+          "sourceSenseNumber": 1
+        },
+        {
+          "key": "6:851",
+          "sourceNumber": 851,
+          "pinyin": "liào",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to guess, to anticipate",
+          "sourceSenseNumber": 2
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    },
+    {
+      "chinese": "露",
+      "hskLevel": 6,
+      "occurrences": [
+        {
+          "key": "6:861",
+          "sourceNumber": 861,
+          "pinyin": "lòu",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to expose, to reveal",
+          "sourceSenseNumber": null
+        },
+        {
+          "key": "6:863",
+          "sourceNumber": 863,
+          "pinyin": "lù",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to expose, to reveal",
+          "sourceSenseNumber": 1
+        }
+      ],
+      "decision": "distinct-senses-retained",
+      "duplicatePairs": []
+    }
+  ],
+  "crossLevelWords": [
+    {
+      "chinese": "两",
+      "levels": [
+        1,
+        4
+      ],
+      "occurrences": [
+        {
+          "key": "1:111",
+          "hskLevel": 1,
+          "sourceNumber": 111,
+          "pinyin": "liǎng",
+          "partOfSpeech": null,
+          "sourceTranslation": "tous les deux • certains •quelques • deux • poids: 50grammes"
+        },
+        {
+          "key": "4:473",
+          "hskLevel": 4,
+          "sourceNumber": 473,
+          "pinyin": "liǎng",
+          "partOfSpeech": "classifier",
+          "sourceTranslation": "measure word for vehicles, animals, etc."
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "中",
+      "levels": [
+        3,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "3:481",
+          "hskLevel": 3,
+          "sourceNumber": 481,
+          "pinyin": "zhōng",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "middle"
+        },
+        {
+          "key": "6:1728",
+          "hskLevel": 6,
+          "sourceNumber": 1728,
+          "pinyin": "zhòng",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to hit, to be hit by"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "为",
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "3:375",
+          "hskLevel": 3,
+          "sourceNumber": 375,
+          "pinyin": "wèi",
+          "partOfSpeech": "preposition",
+          "sourceTranslation": "for, because of, to"
+        },
+        {
+          "key": "4:771",
+          "hskLevel": 4,
+          "sourceNumber": 771,
+          "pinyin": "wéi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to do, to act, to serve as"
+        },
+        {
+          "key": "5:1184",
+          "hskLevel": 5,
+          "sourceNumber": 1184,
+          "pinyin": "wéi",
+          "partOfSpeech": "preposition",
+          "sourceTranslation": "for, for the sake of"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "乘",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "4:78",
+          "hskLevel": 4,
+          "sourceNumber": 78,
+          "pinyin": "chéng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to ride, to take, to multiply"
+        },
+        {
+          "key": "6:157",
+          "hskLevel": 6,
+          "sourceNumber": 157,
+          "pinyin": "chéng",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to ride, to take"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "会",
+      "levels": [
+        1,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "1:82",
+          "hskLevel": 1,
+          "sourceNumber": 82,
+          "pinyin": "huì",
+          "partOfSpeech": null,
+          "sourceTranslation": "avoir la capacité de, savoir fairequelque chose • indique le futurou une probabilité"
+        },
+        {
+          "key": "3:183",
+          "hskLevel": 3,
+          "sourceNumber": 183,
+          "pinyin": "huì",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "meeting"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "倒",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "4:139",
+          "hskLevel": 4,
+          "sourceNumber": 139,
+          "pinyin": "dào",
+          "partOfSpeech": "verb、(adverb)",
+          "sourceTranslation": "to fall, to collapse; (however, but)"
+        },
+        {
+          "key": "5:253",
+          "hskLevel": 5,
+          "sourceNumber": 253,
+          "pinyin": "dǎo",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to fall, to collapse"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "冲",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:158",
+          "hskLevel": 5,
+          "sourceNumber": 158,
+          "pinyin": "chōng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to rush, to rinse, to pour"
+        },
+        {
+          "key": "6:179",
+          "hskLevel": 6,
+          "sourceNumber": 179,
+          "pinyin": "chòng",
+          "partOfSpeech": "动、介",
+          "sourceTranslation": "towards; with the force of"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "划",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:496",
+          "hskLevel": 5,
+          "sourceNumber": 496,
+          "pinyin": "huá",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to row, to paddle"
+        },
+        {
+          "key": "6:567",
+          "hskLevel": 6,
+          "sourceNumber": 567,
+          "pinyin": "huà",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to row, to paddle"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "别",
+      "levels": [
+        2,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "2:11",
+          "hskLevel": 2,
+          "sourceNumber": 11,
+          "pinyin": "bié",
+          "partOfSpeech": "adverb",
+          "sourceTranslation": "don’t, not bad"
+        },
+        {
+          "key": "5:66",
+          "hskLevel": 5,
+          "sourceNumber": 66,
+          "pinyin": "bié",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to leave, to part ways"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "副",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:369",
+          "hskLevel": 5,
+          "sourceNumber": 369,
+          "pinyin": "fù",
+          "partOfSpeech": null,
+          "sourceTranslation": "measure word for pairs, sets"
+        },
+        {
+          "key": "6:407",
+          "hskLevel": 6,
+          "sourceNumber": 407,
+          "pinyin": "fù",
+          "partOfSpeech": "形",
+          "sourceTranslation": "deputy, vice-"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "升",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:989",
+          "hskLevel": 5,
+          "sourceNumber": 989,
+          "pinyin": "shēng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to rise, to go up"
+        },
+        {
+          "key": "6:1169",
+          "hskLevel": 6,
+          "sourceNumber": 1169,
+          "pinyin": "shēng",
+          "partOfSpeech": "量",
+          "sourceTranslation": "liter"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "只",
+      "levels": [
+        1,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "1:289",
+          "hskLevel": 1,
+          "sourceNumber": 289,
+          "pinyin": "zhī",
+          "partOfSpeech": null,
+          "sourceTranslation": "CL: pour les oiseaux et certainsanimaux, l'un d'une paire,certains ustensiles, récipients,etc"
+        },
+        {
+          "key": "3:475",
+          "hskLevel": 3,
+          "sourceNumber": 475,
+          "pinyin": "zhǐ",
+          "partOfSpeech": "adverb",
+          "sourceTranslation": "only, merely"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "啊",
+      "levels": [
+        2,
+        4
+      ],
+      "occurrences": [
+        {
+          "key": "2:1",
+          "hskLevel": 2,
+          "sourceNumber": 1,
+          "pinyin": "a",
+          "partOfSpeech": "auxiliary",
+          "sourceTranslation": "ah, oh"
+        },
+        {
+          "key": "4:1",
+          "hskLevel": 4,
+          "sourceNumber": 1,
+          "pinyin": "ā",
+          "partOfSpeech": "interjection",
+          "sourceTranslation": "ah, oh"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "喂",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "1:219",
+          "hskLevel": 1,
+          "sourceNumber": 219,
+          "pinyin": "wèi",
+          "partOfSpeech": null,
+          "sourceTranslation": "hé !"
+        },
+        {
+          "key": "5:1195",
+          "hskLevel": 5,
+          "sourceNumber": 1195,
+          "pinyin": "wèi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to feed"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "地",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "2:33",
+          "hskLevel": 2,
+          "sourceNumber": 33,
+          "pinyin": "de",
+          "partOfSpeech": "auxiliary",
+          "sourceTranslation": "particle modifying an adjective into an adverb"
+        },
+        {
+          "key": "3:89",
+          "hskLevel": 3,
+          "sourceNumber": 89,
+          "pinyin": "dì",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "ground, earth, land"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "地方",
+      "levels": [
+        3,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "3:91",
+          "hskLevel": 3,
+          "sourceNumber": 91,
+          "pinyin": "dìfang",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "place"
+        },
+        {
+          "key": "6:292",
+          "hskLevel": 6,
+          "sourceNumber": 292,
+          "pinyin": "dìfāng",
+          "partOfSpeech": "名",
+          "sourceTranslation": "place, location"
+        }
+      ],
+      "decision": "same-word-and-sense-merged-at-first-level",
+      "rationale": "Same pronunciation modulo an allowed neutral-tone notation difference, and the source translations describe the same sense."
+    },
+    {
+      "chinese": "头",
+      "levels": [
+        2,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "2:145",
+          "hskLevel": 2,
+          "sourceNumber": 145,
+          "pinyin": "tóu",
+          "partOfSpeech": "noun、(classifier)、(adjective)",
+          "sourceTranslation": "head; (measure word for animals); (first)"
+        },
+        {
+          "key": "5:1149",
+          "hskLevel": 5,
+          "sourceNumber": 1149,
+          "pinyin": "tou",
+          "partOfSpeech": "suffix",
+          "sourceTranslation": "suffix used after nouns"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "好",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "1:71",
+          "hskLevel": 1,
+          "sourceNumber": 71,
+          "pinyin": "hǎo",
+          "partOfSpeech": null,
+          "sourceTranslation": "bien • bon"
+        },
+        {
+          "key": "5:472",
+          "hskLevel": 5,
+          "sourceNumber": 472,
+          "pinyin": "hào",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to like, to be fond of"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "干",
+      "levels": [
+        3,
+        4
+      ],
+      "occurrences": [
+        {
+          "key": "3:140",
+          "hskLevel": 3,
+          "sourceNumber": 140,
+          "pinyin": "gàn",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to do, to work"
+        },
+        {
+          "key": "4:220",
+          "hskLevel": 4,
+          "sourceNumber": 220,
+          "pinyin": "gān",
+          "partOfSpeech": "adjective、(noun)",
+          "sourceTranslation": "dry; (dried food)"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "当",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "4:135",
+          "hskLevel": 4,
+          "sourceNumber": 135,
+          "pinyin": "dāng",
+          "partOfSpeech": "verb、preposition",
+          "sourceTranslation": "to serve as, to be; at the time of"
+        },
+        {
+          "key": "5:250",
+          "hskLevel": 5,
+          "sourceNumber": 250,
+          "pinyin": "dàng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to treat as, to regard as; to serve as"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "待",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "4:131",
+          "hskLevel": 4,
+          "sourceNumber": 131,
+          "pinyin": "dāi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to stay"
+        },
+        {
+          "key": "6:256",
+          "hskLevel": 6,
+          "sourceNumber": 256,
+          "pinyin": "dài",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to stay, to wait"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "得",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "2:32",
+          "hskLevel": 2,
+          "sourceNumber": 32,
+          "pinyin": "de",
+          "partOfSpeech": "auxiliary",
+          "sourceTranslation": "particle indicating degree or manner"
+        },
+        {
+          "key": "3:83",
+          "hskLevel": 3,
+          "sourceNumber": 83,
+          "pinyin": "dé",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to get, to obtain"
+        },
+        {
+          "key": "3:87",
+          "hskLevel": 3,
+          "sourceNumber": 87,
+          "pinyin": "děi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "must, need"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "所",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:1098",
+          "hskLevel": 5,
+          "sourceNumber": 1098,
+          "pinyin": "suǒ",
+          "partOfSpeech": "、noun",
+          "sourceTranslation": "measure word for places; place, office"
+        },
+        {
+          "key": "6:1254",
+          "hskLevel": 6,
+          "sourceNumber": 1254,
+          "pinyin": "suǒ",
+          "partOfSpeech": "助",
+          "sourceTranslation": "particle used to indicate passive voice or to nominalize 动 s"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "扇",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:949",
+          "hskLevel": 5,
+          "sourceNumber": 949,
+          "pinyin": "shān",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to fan"
+        },
+        {
+          "key": "6:1142",
+          "hskLevel": 6,
+          "sourceNumber": 1142,
+          "pinyin": "shàn",
+          "partOfSpeech": "量",
+          "sourceTranslation": "measure word for doors, windows"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "才",
+      "levels": [
+        3,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "3:44",
+          "hskLevel": 3,
+          "sourceNumber": 44,
+          "pinyin": "cái",
+          "partOfSpeech": "adverb",
+          "sourceTranslation": "just, only"
+        },
+        {
+          "key": "5:83",
+          "hskLevel": 5,
+          "sourceNumber": 83,
+          "pinyin": "cái",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "talent, ability"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "支",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:1499",
+          "hskLevel": 5,
+          "sourceNumber": 1499,
+          "pinyin": "zhī",
+          "partOfSpeech": null,
+          "sourceTranslation": "measure word for long, slender objects"
+        },
+        {
+          "key": "6:1694",
+          "hskLevel": 6,
+          "sourceNumber": 1694,
+          "pinyin": "zhī",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to support"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "数",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "4:691",
+          "hskLevel": 4,
+          "sourceNumber": 691,
+          "pinyin": "shù",
+          "partOfSpeech": "noun、number",
+          "sourceTranslation": "number, figure; several, a few"
+        },
+        {
+          "key": "5:1063",
+          "hskLevel": 5,
+          "sourceNumber": 1063,
+          "pinyin": "shǔ",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to count"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "本",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "1:10",
+          "hskLevel": 1,
+          "sourceNumber": 10,
+          "pinyin": "běn",
+          "partOfSpeech": null,
+          "sourceTranslation": "carnet • racine • origine • CL:livres"
+        },
+        {
+          "key": "5:40",
+          "hskLevel": 5,
+          "sourceNumber": 40,
+          "pinyin": "běn",
+          "partOfSpeech": "adverb、pronoun",
+          "sourceTranslation": "originally; this, current"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "炸",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:1460",
+          "hskLevel": 5,
+          "sourceNumber": 1460,
+          "pinyin": "zhá",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to fry"
+        },
+        {
+          "key": "6:1655",
+          "hskLevel": 6,
+          "sourceNumber": 1655,
+          "pinyin": "zhà",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to explode, to blast"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "点",
+      "levels": [
+        1,
+        2
+      ],
+      "occurrences": [
+        {
+          "key": "1:33",
+          "hskLevel": 1,
+          "sourceNumber": 33,
+          "pinyin": "diǎn",
+          "partOfSpeech": null,
+          "sourceTranslation": "l'heure pile • petite quantité"
+        },
+        {
+          "key": "2:36",
+          "hskLevel": 2,
+          "sourceNumber": 36,
+          "pinyin": "diǎn",
+          "partOfSpeech": "verb、(noun、classifier)",
+          "sourceTranslation": "to light, to ignite; (point, dot; to order)"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "省",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "4:650",
+          "hskLevel": 4,
+          "sourceNumber": 650,
+          "pinyin": "shěng",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "province"
+        },
+        {
+          "key": "5:998",
+          "hskLevel": 5,
+          "sourceNumber": 998,
+          "pinyin": "shěng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to save"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "看",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "1:99",
+          "hskLevel": 1,
+          "sourceNumber": 99,
+          "pinyin": "kàn",
+          "partOfSpeech": null,
+          "sourceTranslation": "voir • regarder • lire • examiner •considérer comme • pour visiter •pour s'occuper"
+        },
+        {
+          "key": "5:657",
+          "hskLevel": 5,
+          "sourceNumber": 657,
+          "pinyin": "kān",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to look after, to watch"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "着",
+      "levels": [
+        2,
+        4
+      ],
+      "occurrences": [
+        {
+          "key": "2:190",
+          "hskLevel": 2,
+          "sourceNumber": 190,
+          "pinyin": "zhe",
+          "partOfSpeech": "auxiliary",
+          "sourceTranslation": "particle indicating ongoing action or state"
+        },
+        {
+          "key": "4:924",
+          "hskLevel": 4,
+          "sourceNumber": 924,
+          "pinyin": "zháo",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to touch, to get to, to catch (fire)"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "种",
+      "levels": [
+        3,
+        4
+      ],
+      "occurrences": [
+        {
+          "key": "3:484",
+          "hskLevel": 3,
+          "sourceNumber": 484,
+          "pinyin": "zhǒng",
+          "partOfSpeech": "classifier",
+          "sourceTranslation": "measure word for kinds"
+        },
+        {
+          "key": "4:959",
+          "hskLevel": 4,
+          "sourceNumber": 959,
+          "pinyin": "zhòng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to plant, to grow"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "站",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "2:186",
+          "hskLevel": 2,
+          "sourceNumber": 186,
+          "pinyin": "zhàn",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "station, stop; to stand"
+        },
+        {
+          "key": "3:466",
+          "hskLevel": 3,
+          "sourceNumber": 466,
+          "pinyin": "zhàn",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to stand; station"
+        }
+      ],
+      "decision": "same-word-and-sense-merged-at-first-level",
+      "rationale": "Same pronunciation modulo an allowed neutral-tone notation difference, and the source translations describe the same sense."
+    },
+    {
+      "chinese": "等",
+      "levels": [
+        2,
+        4
+      ],
+      "occurrences": [
+        {
+          "key": "2:34",
+          "hskLevel": 2,
+          "sourceNumber": 34,
+          "pinyin": "děng",
+          "partOfSpeech": "verb、(preposition)",
+          "sourceTranslation": "to wait; (and so on, until)"
+        },
+        {
+          "key": "4:147",
+          "hskLevel": 4,
+          "sourceNumber": 147,
+          "pinyin": "děng",
+          "partOfSpeech": "auxiliary、(noun、classifier)",
+          "sourceTranslation": "and so on, etc.; (class, grade; measure word)"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "结",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "5:600",
+          "hskLevel": 5,
+          "sourceNumber": 600,
+          "pinyin": "jié",
+          "partOfSpeech": "verb、noun",
+          "sourceTranslation": "to tie, to knot; result"
+        },
+        {
+          "key": "6:681",
+          "hskLevel": 6,
+          "sourceNumber": 681,
+          "pinyin": "jiē",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to bear (fruit)"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "结果",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "4:382",
+          "hskLevel": 4,
+          "sourceNumber": 382,
+          "pinyin": "jiéguǒ",
+          "partOfSpeech": "noun、conjunction",
+          "sourceTranslation": "result, outcome, consequence; as a result, consequently, in the end"
+        },
+        {
+          "key": "6:682",
+          "hskLevel": 6,
+          "sourceNumber": 682,
+          "pinyin": "jiēguǒ",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to bear fruit, to produce a result"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "背",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "4:20",
+          "hskLevel": 4,
+          "sourceNumber": 20,
+          "pinyin": "bēi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to carry on the back"
+        },
+        {
+          "key": "5:36",
+          "hskLevel": 5,
+          "sourceNumber": 36,
+          "pinyin": "bèi",
+          "partOfSpeech": "noun、verb、adjective",
+          "sourceTranslation": "back, the back of the body; to carry on the back, to bear, to recite from memory; out-of-the-way, remote"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "落",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "4:493",
+          "hskLevel": 4,
+          "sourceNumber": 493,
+          "pinyin": "luò",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to fall, to drop, to land"
+        },
+        {
+          "key": "6:810",
+          "hskLevel": 6,
+          "sourceNumber": 810,
+          "pinyin": "là",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to leave behind, to lag behind"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "行",
+      "levels": [
+        3,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "3:408",
+          "hskLevel": 3,
+          "sourceNumber": 408,
+          "pinyin": "xíng",
+          "partOfSpeech": "verb、adjective",
+          "sourceTranslation": "to go; okay, permissible"
+        },
+        {
+          "key": "5:467",
+          "hskLevel": 5,
+          "sourceNumber": 467,
+          "pinyin": "háng",
+          "partOfSpeech": "noun、",
+          "sourceTranslation": "line, row; measure word for lines"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "该",
+      "levels": [
+        3,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "3:135",
+          "hskLevel": 3,
+          "sourceNumber": 135,
+          "pinyin": "gāi",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "should"
+        },
+        {
+          "key": "6:413",
+          "hskLevel": 6,
+          "sourceNumber": 413,
+          "pinyin": "gāi",
+          "partOfSpeech": "代",
+          "sourceTranslation": "that, such"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "转",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "key": "4:970",
+          "hskLevel": 4,
+          "sourceNumber": 970,
+          "pinyin": "zhuǎn",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to turn, to shift, to transfer"
+        },
+        {
+          "key": "6:1769",
+          "hskLevel": 6,
+          "sourceNumber": 1769,
+          "pinyin": "zhuàn",
+          "partOfSpeech": "动",
+          "sourceTranslation": "to turn, to revolve"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "过去",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "2:50",
+          "hskLevel": 2,
+          "sourceNumber": 50,
+          "pinyin": "guòqù",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to go over"
+        },
+        {
+          "key": "3:160",
+          "hskLevel": 3,
+          "sourceNumber": 160,
+          "pinyin": "guòqù",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "past"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "还",
+      "levels": [
+        1,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "1:67",
+          "hskLevel": 1,
+          "sourceNumber": 67,
+          "pinyin": "hái",
+          "partOfSpeech": null,
+          "sourceTranslation": "assez • plutôt • passable • enplus • aussi • même • encore •inclus"
+        },
+        {
+          "key": "3:178",
+          "hskLevel": 3,
+          "sourceNumber": 178,
+          "pinyin": "huán",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to return, to give back"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "量",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "4:472",
+          "hskLevel": 4,
+          "sourceNumber": 472,
+          "pinyin": "liáng",
+          "partOfSpeech": "verb",
+          "sourceTranslation": "to measure, to weigh"
+        },
+        {
+          "key": "5:719",
+          "hskLevel": 5,
+          "sourceNumber": 719,
+          "pinyin": "liàng",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "quantity, amount"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "长",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "key": "2:14",
+          "hskLevel": 2,
+          "sourceNumber": 14,
+          "pinyin": "cháng",
+          "partOfSpeech": "adjective",
+          "sourceTranslation": "long"
+        },
+        {
+          "key": "3:468",
+          "hskLevel": 3,
+          "sourceNumber": 468,
+          "pinyin": "zhǎng",
+          "partOfSpeech": "verb、suffix",
+          "sourceTranslation": "to grow; suffix for head"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    },
+    {
+      "chinese": "面",
+      "levels": [
+        2,
+        5
+      ],
+      "occurrences": [
+        {
+          "key": "2:103",
+          "hskLevel": 2,
+          "sourceNumber": 103,
+          "pinyin": "miàn",
+          "partOfSpeech": "suffix、(verb、noun、classifier)",
+          "sourceTranslation": "suffix indicating a person with a certain characteristic; (to face; side, aspect; measure word for flat objects)"
+        },
+        {
+          "key": "5:767",
+          "hskLevel": 5,
+          "sourceNumber": 767,
+          "pinyin": "miàn",
+          "partOfSpeech": "noun",
+          "sourceTranslation": "side, aspect, surface"
+        }
+      ],
+      "decision": "distinct-senses-retained-per-level",
+      "rationale": "At least one source field (pronunciation, part of speech, or meaning) distinguishes the occurrences; no level was declared erroneous."
+    }
+  ],
+  "remainingAnomalies": {
+    "ambiguousEntries": [
+      {
+        "hskEntryId": "hsk:1:13",
+        "chinese": "不客气",
+        "pinyin": "búkèqi",
+        "hskLevel": 1,
+        "sourceNumber": 13,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-c9f516d2ad37c56111114c93"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:14",
+        "chinese": "不要",
+        "pinyin": "búyào",
+        "hskLevel": 1,
+        "sourceNumber": 14,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-0436a30c12c76f94f76d6bff"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:134",
+        "chinese": "哪里",
+        "pinyin": "nǎlǐ",
+        "hskLevel": 1,
+        "sourceNumber": 134,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-592bed2288fed9462b4c3d08",
+          "word-3a795d15eaa2af531700d441"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:135",
+        "chinese": "哪儿",
+        "pinyin": "nǎr",
+        "hskLevel": 1,
+        "sourceNumber": 135,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-aade9fb2d5e33458f625507c",
+          "word-7955eacae1c8de05de13e44c"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:259",
+        "chinese": "一半",
+        "pinyin": "yíbàn",
+        "hskLevel": 1,
+        "sourceNumber": 259,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-5eb400f1da528c5afb64a614"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:260",
+        "chinese": "一下",
+        "pinyin": "yíxià",
+        "hskLevel": 1,
+        "sourceNumber": 260,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-9b6c5712491e37badcd2103c"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:262",
+        "chinese": "一点儿",
+        "pinyin": "yìdiǎnr",
+        "hskLevel": 1,
+        "sourceNumber": 262,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-7fbe959bbf49eb4504d7b289",
+          "word-423807bfd3d9a34719e0c8a3"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:1:263",
+        "chinese": "一些",
+        "pinyin": "yìxiē",
+        "hskLevel": 1,
+        "sourceNumber": 263,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-3a78e903637d7c7cd74dad1b"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:1",
+        "chinese": "啊",
+        "pinyin": "a",
+        "hskLevel": 2,
+        "sourceNumber": 1,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-啊",
+          "word-464af4f5481a0e127e45da46",
+          "word-9701647b73954954d38884a3"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:12",
+        "chinese": "不错",
+        "pinyin": "búcuò",
+        "hskLevel": 2,
+        "sourceNumber": 12,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-af645d363ceb053498e1eede"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:80",
+        "chinese": "考",
+        "pinyin": "kǎo",
+        "hskLevel": 2,
+        "sourceNumber": 80,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-考",
+          "word-0972fd1a34f659a247d3543e",
+          "word-bd950f7d960b7450760df3bb"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:110",
+        "chinese": "男孩儿",
+        "pinyin": "nánháir",
+        "hskLevel": 2,
+        "sourceNumber": 110,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-4f588417470ccfb6909b9120",
+          "word-99af2f95ddf6a54e76fa8783"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:112",
+        "chinese": "女孩儿",
+        "pinyin": "nǚháir",
+        "hskLevel": 2,
+        "sourceNumber": 112,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-bf956fbae4bb5362de10eee5",
+          "word-76ae3ab108dabf3e2e0bb991"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:161",
+        "chinese": "小孩儿",
+        "pinyin": "xiǎoháir",
+        "hskLevel": 2,
+        "sourceNumber": 161,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-2314508f0fca5d414a26df31",
+          "word-cba28fd53a90746232c12954"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:171",
+        "chinese": "一会儿",
+        "pinyin": "yíhuìr",
+        "hskLevel": 2,
+        "sourceNumber": 171,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-463af2fc07a877fa979e5abe",
+          "word-086fa8994c86272c979303fc"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:173",
+        "chinese": "一起",
+        "pinyin": "yìqǐ",
+        "hskLevel": 2,
+        "sourceNumber": 173,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-890399b3ea19ec860088694b"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:2:192",
+        "chinese": "周",
+        "pinyin": "zhōu",
+        "hskLevel": 2,
+        "sourceNumber": 192,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-周",
+          "word-e1c881437319546be95d2cb1",
+          "word-ffa6fde23d4786d8ad2432f0"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:38",
+        "chinese": "不但",
+        "pinyin": "búdàn",
+        "hskLevel": 3,
+        "sourceNumber": 38,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-a6b978a83a3289252bb8221e"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:39",
+        "chinese": "不见",
+        "pinyin": "bújiàn",
+        "hskLevel": 3,
+        "sourceNumber": 39,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-7679e4a82c4802969a36c410"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:40",
+        "chinese": "不用",
+        "pinyin": "búyòng",
+        "hskLevel": 3,
+        "sourceNumber": 40,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-4f2c21c48137be66874631a9"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:44",
+        "chinese": "才",
+        "pinyin": "cái",
+        "hskLevel": 3,
+        "sourceNumber": 44,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-才",
+          "word-6acbaeb322465e6692524c52",
+          "word-2429cc62d3dee39b25104d83"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:53",
+        "chinese": "尝",
+        "pinyin": "cháng",
+        "hskLevel": 3,
+        "sourceNumber": 53,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-尝",
+          "word-9babee7b6c28a45d0822d1a5",
+          "word-4505894cd3121692fa523d70",
+          "word-78e85e196431f2fdb186bb72"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:142",
+        "chinese": "刚才",
+        "pinyin": "gāngcái",
+        "hskLevel": 3,
+        "sourceNumber": 142,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-032bb428078da6246e581aea",
+          "word-ee8959672a681fd2524d2590"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:257",
+        "chinese": "了解",
+        "pinyin": "liǎojiě",
+        "hskLevel": 3,
+        "sourceNumber": 257,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-3f393a9725148a9aafad1e01",
+          "word-03a677fd7d6fb4249b48bcee"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:394",
+        "chinese": "向",
+        "pinyin": "xiàng",
+        "hskLevel": 3,
+        "sourceNumber": 394,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-向",
+          "word-f368eac807dd2751cb3f8c4c",
+          "word-21e71ed6cff9934c0c08eb93",
+          "word-8aa88bc28e791707bb581421"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:422",
+        "chinese": "一定",
+        "pinyin": "yídìng",
+        "hskLevel": 3,
+        "sourceNumber": 422,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-e498cabd96da07d55805c5ee"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:423",
+        "chinese": "一共",
+        "pinyin": "yígòng",
+        "hskLevel": 3,
+        "sourceNumber": 423,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-ecb193e9ede1d8c2d7dce2fb"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:424",
+        "chinese": "一块儿",
+        "pinyin": "yíkuàir",
+        "hskLevel": 3,
+        "sourceNumber": 424,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-26a114b8433562bf27bdb537",
+          "word-254eea1f9be944dbd6bdd739"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:425",
+        "chinese": "一样",
+        "pinyin": "yíyàng",
+        "hskLevel": 3,
+        "sourceNumber": 425,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-80322b65320f08896c79cd30"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:432",
+        "chinese": "一般",
+        "pinyin": "yìbān",
+        "hskLevel": 3,
+        "sourceNumber": 432,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-da89ddf6dbecd8ae4ed70d76"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:433",
+        "chinese": "一边",
+        "pinyin": "yìbiān",
+        "hskLevel": 3,
+        "sourceNumber": 433,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-196e0d380087ed436be15e59"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:3:434",
+        "chinese": "一直",
+        "pinyin": "yìzhí",
+        "hskLevel": 3,
+        "sourceNumber": 434,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-f15c8f1f0463cba5829683c1"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:43",
+        "chinese": "不必",
+        "pinyin": "búbì",
+        "hskLevel": 4,
+        "sourceNumber": 43,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-da7d60154251f39f4743fa9a"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:44",
+        "chinese": "不便",
+        "pinyin": "búbiàn",
+        "hskLevel": 4,
+        "sourceNumber": 44,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-4c4f6956e24d7092c8793a63"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:45",
+        "chinese": "不断",
+        "pinyin": "búduàn",
+        "hskLevel": 4,
+        "sourceNumber": 45,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-d440724b4e4b1b1f8f844c22"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:46",
+        "chinese": "不够",
+        "pinyin": "búgòu",
+        "hskLevel": 4,
+        "sourceNumber": 46,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-2951ea58befbb0284a46ce42"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:47",
+        "chinese": "不过",
+        "pinyin": "búguò",
+        "hskLevel": 4,
+        "sourceNumber": 47,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-476a2a705d87cebf3541d10e"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:48",
+        "chinese": "不论",
+        "pinyin": "búlùn",
+        "hskLevel": 4,
+        "sourceNumber": 48,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-7bb01ea2d89f1176582887e6"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:70",
+        "chinese": "差点儿",
+        "pinyin": "chàdiǎnr",
+        "hskLevel": 4,
+        "sourceNumber": 70,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-f35b98ea9c0287f9a29971d4",
+          "word-d21900bfbba5548234e2c7ba"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:187",
+        "chinese": "法",
+        "pinyin": "fǎ",
+        "hskLevel": 4,
+        "sourceNumber": 187,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-法",
+          "word-c6640610815b2a6b06692a00",
+          "word-1324ed329e494b5352aa1505",
+          "word-dfc2cdc3aafde096b1e81aa6"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:234",
+        "chinese": "干活儿",
+        "pinyin": "gànhuór",
+        "hskLevel": 4,
+        "sourceNumber": 234,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-17777aa6be9dc6965759d4d1",
+          "word-bcbc05ae2dc9edad2a76f9e5"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:534",
+        "chinese": "嗯",
+        "pinyin": "ǹg",
+        "hskLevel": 4,
+        "sourceNumber": 534,
+        "reason": "manual-review-no-dictionary-reading-matches-hsk-ng",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-嗯",
+          "word-e714c19f19d296bc9fbcf665",
+          "word-7be4c96ad7fb478743fefb9f",
+          "word-4103730c93a2acf55a9ae995"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:688",
+        "chinese": "熟",
+        "pinyin": "shú/shóu",
+        "hskLevel": 4,
+        "sourceNumber": 688,
+        "reason": "hsk-source-gives-multiple-pronunciations-no-single-reading-selected",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-熟",
+          "word-53e1daa7d864bfbf77bcf331"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:865",
+        "chinese": "一切",
+        "pinyin": "yíqiè",
+        "hskLevel": 4,
+        "sourceNumber": 865,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-4c62fafed563cc7eddb8f200"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:4:869",
+        "chinese": "一生",
+        "pinyin": "yìshēng",
+        "hskLevel": 4,
+        "sourceNumber": 869,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-f80b05655e133e1e0290a37c"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:9",
+        "chinese": "暗",
+        "pinyin": "àn",
+        "hskLevel": 5,
+        "sourceNumber": 9,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-暗",
+          "word-78143d0f16784db7e74c028b",
+          "word-8859d7bcdeb29da432e4866b",
+          "word-3e14563870f1faf660a7f5d1"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:73",
+        "chinese": "不利",
+        "pinyin": "búlì",
+        "hskLevel": 5,
+        "sourceNumber": 73,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-cf18ebe78d1d6b50d5081758"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:74",
+        "chinese": "不幸",
+        "pinyin": "búxìng",
+        "hskLevel": 5,
+        "sourceNumber": 74,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-e960a6aa78c62161dbb7f76d"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:75",
+        "chinese": "不要紧",
+        "pinyin": "búyàojǐn",
+        "hskLevel": 5,
+        "sourceNumber": 75,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-0e1d9eb8282ec14ddf8e3831"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:158",
+        "chinese": "冲",
+        "pinyin": "chōng",
+        "hskLevel": 5,
+        "sourceNumber": 158,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-冲",
+          "word-c79ce4bf6bddfb1733d72efe",
+          "word-c70b695f0dbfcc3b3e34e8a2"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:343",
+        "chinese": "仿佛",
+        "pinyin": "fǎngfú",
+        "hskLevel": 5,
+        "sourceNumber": 343,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-612fc2ed24bfed017183f185",
+          "word-ea2ba2122760871460870753"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:620",
+        "chinese": "进一步",
+        "pinyin": "jìnyíbù",
+        "hskLevel": 5,
+        "sourceNumber": 620,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-0d4e116e4afe44d384fa6cd8"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:912",
+        "chinese": "绕",
+        "pinyin": "rào",
+        "hskLevel": 5,
+        "sourceNumber": 912,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-绕",
+          "word-1f2b31ea25c5c2c8790c3864",
+          "word-c3ae333e0a3518a41bb346b8"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:989",
+        "chinese": "升",
+        "pinyin": "shēng",
+        "hskLevel": 5,
+        "sourceNumber": 989,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-升",
+          "word-c9ef4ecd72e5ce1fbf06d952",
+          "word-b9ff97e313ac31ea80221108",
+          "word-071ec1c324bfd00c6f2b30ff"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1195",
+        "chinese": "喂",
+        "pinyin": "wèi",
+        "hskLevel": 5,
+        "sourceNumber": 1195,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-喂",
+          "word-9740e5a3c9ce86c5349a9c48",
+          "word-6057c48749634ea5d1416968",
+          "word-963a82e63e31c315989bc716"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1230",
+        "chinese": "下载",
+        "pinyin": "xiàzài",
+        "hskLevel": 5,
+        "sourceNumber": 1230,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-95f5e215f76f1fe5bbe7ace6"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1352",
+        "chinese": "一次性",
+        "pinyin": "yícìxìng",
+        "hskLevel": 5,
+        "sourceNumber": 1352,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-7ca2f029666276c61c1c1aa1"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1353",
+        "chinese": "一代",
+        "pinyin": "yídài",
+        "hskLevel": 5,
+        "sourceNumber": 1353,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-a06e7e35be8b8b835b6bfce3"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1354",
+        "chinese": "一旦",
+        "pinyin": "yídàn",
+        "hskLevel": 5,
+        "sourceNumber": 1354,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-9c3dd59f85710b5918285f62"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1357",
+        "chinese": "一路",
+        "pinyin": "yílù",
+        "hskLevel": 5,
+        "sourceNumber": 1357,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-06e637965be085c52f8c9793"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1358",
+        "chinese": "一路顺风",
+        "pinyin": "yílù-shùnfēng",
+        "hskLevel": 5,
+        "sourceNumber": 1358,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-7b1c5b7c022e51c0a04dfcb6"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:5:1360",
+        "chinese": "一致",
+        "pinyin": "yízhì",
+        "hskLevel": 5,
+        "sourceNumber": 1360,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-a3d372e63100bdc243140ac1"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:67",
+        "chinese": "不耐烦",
+        "pinyin": "búnàifán",
+        "hskLevel": 6,
+        "sourceNumber": 67,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-41372891c082e0428228b6cf"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:68",
+        "chinese": "不顾",
+        "pinyin": "búgù",
+        "hskLevel": 6,
+        "sourceNumber": 68,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-ddc81a24170ff7d9520910f4"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:69",
+        "chinese": "不料",
+        "pinyin": "búliào",
+        "hskLevel": 6,
+        "sourceNumber": 69,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-190c8b04df056a603c249590"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:70",
+        "chinese": "不适",
+        "pinyin": "búshì",
+        "hskLevel": 6,
+        "sourceNumber": 70,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-8e12addcc5d1aea42e874eb6"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:71",
+        "chinese": "不至于",
+        "pinyin": "búzhìyú",
+        "hskLevel": 6,
+        "sourceNumber": 71,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-a8056874994499a822588564"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:245",
+        "chinese": "大吃一惊",
+        "pinyin": "dàchī-yìjīng",
+        "hskLevel": 6,
+        "sourceNumber": 245,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-2ca42ce5ffafdb540193e49f"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:255",
+        "chinese": "呆",
+        "pinyin": "dāi",
+        "hskLevel": 6,
+        "sourceNumber": 255,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-呆",
+          "word-c4430525ded7aad0920b6708",
+          "word-d34c7c6c812b996e60acb213"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:589",
+        "chinese": "汇报",
+        "pinyin": "huìbào",
+        "hskLevel": 6,
+        "sourceNumber": 589,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-6c5b268da3dff3b58903e3e2",
+          "word-59aff189f05e20c84f26ca93"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:753",
+        "chinese": "卷",
+        "pinyin": "juǎn",
+        "hskLevel": 6,
+        "sourceNumber": 753,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-卷",
+          "word-94cc2099f7dcee49a57fc8b3",
+          "word-a0fe1b0642e996e83b324c1c"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1521",
+        "chinese": "痒",
+        "pinyin": "yǎng",
+        "hskLevel": 6,
+        "sourceNumber": 1521,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "char-痒",
+          "word-a0441e2f0e492e7297304c12",
+          "word-9d7b4e28387f20c8eacc881d"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1543",
+        "chinese": "一辈子",
+        "pinyin": "yíbèizi",
+        "hskLevel": 6,
+        "sourceNumber": 1543,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-10871cb5de6b88da8184d2e5"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1546",
+        "chinese": "一带",
+        "pinyin": "yídài",
+        "hskLevel": 6,
+        "sourceNumber": 1546,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-96b795f43718ee4f7569d69b"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1547",
+        "chinese": "一道",
+        "pinyin": "yídào",
+        "hskLevel": 6,
+        "sourceNumber": 1547,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-bcad7426e7405037e541cea2"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1548",
+        "chinese": "一贯",
+        "pinyin": "yíguàn",
+        "hskLevel": 6,
+        "sourceNumber": 1548,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-3895c7805d5a68168d0f6327"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1550",
+        "chinese": "一律",
+        "pinyin": "yílǜ",
+        "hskLevel": 6,
+        "sourceNumber": 1550,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-effb174c4f7987bda04ae30f"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1554",
+        "chinese": "一向",
+        "pinyin": "yíxiàng",
+        "hskLevel": 6,
+        "sourceNumber": 1554,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-aa625da0a49be35d5aea615f"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1555",
+        "chinese": "一系列",
+        "pinyin": "yíxìliè",
+        "hskLevel": 6,
+        "sourceNumber": 1555,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-2b0b8f7290bb311505e33fe4"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1556",
+        "chinese": "一再",
+        "pinyin": "yízài",
+        "hskLevel": 6,
+        "sourceNumber": 1556,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-87315ad0a69ff8413cdb7cf7"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1557",
+        "chinese": "一阵",
+        "pinyin": "yízhèn",
+        "hskLevel": 6,
+        "sourceNumber": 1557,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-013ce2ed6654dc4b9475ff23"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1564",
+        "chinese": "一帆风顺",
+        "pinyin": "yìfān-fēngshùn",
+        "hskLevel": 6,
+        "sourceNumber": 1564,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-0295a2a7554816cd5c337346"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1565",
+        "chinese": "一口气",
+        "pinyin": "yìkǒuqì",
+        "hskLevel": 6,
+        "sourceNumber": 1565,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-8466df6f8fc98c81cc9f6f85"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1567",
+        "chinese": "一模一样",
+        "pinyin": "yìmú-yíyàng",
+        "hskLevel": 6,
+        "sourceNumber": 1567,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-e87935a233c9b6e33440bada"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1569",
+        "chinese": "一身",
+        "pinyin": "yìshēn",
+        "hskLevel": 6,
+        "sourceNumber": 1569,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-5474ac5888603d70fd32415d"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1570",
+        "chinese": "一时",
+        "pinyin": "yìshí",
+        "hskLevel": 6,
+        "sourceNumber": 1570,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-e6f46c01f2952ebdd76391c2"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1571",
+        "chinese": "一同",
+        "pinyin": "yìtóng",
+        "hskLevel": 6,
+        "sourceNumber": 1571,
+        "reason": "real-tone-or-pronunciation-difference",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-65da34f3d4477f7224403005"
+        ]
+      },
+      {
+        "hskEntryId": "hsk:6:1572",
+        "chinese": "易于",
+        "pinyin": "yìyú",
+        "hskLevel": 6,
+        "sourceNumber": 1572,
+        "reason": "multiple-dictionary-entries-without-unique-semantic-match",
+        "dictionaryEntryId": null,
+        "candidateDictionaryEntryIds": [
+          "word-c369dd3a95c2f197a5785be3",
+          "word-6de8acb692a305fb9c29b82a"
+        ]
+      }
+    ],
+    "semanticDictionaryCandidateAmbiguities": [
+      "hsk:1:134",
+      "hsk:1:135",
+      "hsk:2:1",
+      "hsk:2:80",
+      "hsk:2:110",
+      "hsk:2:112",
+      "hsk:2:161",
+      "hsk:2:192",
+      "hsk:3:44",
+      "hsk:3:53",
+      "hsk:3:142",
+      "hsk:3:257",
+      "hsk:3:394",
+      "hsk:4:70",
+      "hsk:4:187",
+      "hsk:4:234",
+      "hsk:5:9",
+      "hsk:5:158",
+      "hsk:5:343",
+      "hsk:5:912",
+      "hsk:5:989",
+      "hsk:5:1195",
+      "hsk:6:255",
+      "hsk:6:589",
+      "hsk:6:753",
+      "hsk:6:1521",
+      "hsk:6:1572"
+    ],
+    "extractionAnomaliesCarriedForward": [
+      {
+        "level": 1,
+        "page": 15,
+        "source_number": 236,
+        "chinese": "小朋友",
+        "type": "unexpected_digit_in_pinyin",
+        "raw": "xiǎopéngyou5",
+        "stored": "xiǎopéngyou"
+      },
+      {
+        "level": 5,
+        "source_number": 683,
+        "chinese": "劳动",
+        "type": "malformed_headword_in_pdf_text_layer",
+        "raw": "劳verb",
+        "stored": "劳动",
+        "evidence": "pinyin láodòng; translation 'labor, work; to work'"
+      }
+    ],
+    "suspiciousSourceDifferencesCarriedForward": [
+      {
+        "type": "source_and_language_change",
+        "details": "Le HSK 1 est un document français Chinesimple/Khanji School ; les HSK 2 à 6 sont des documents anglais Mandarin Zest."
+      },
+      {
+        "type": "missing_grammatical_column",
+        "details": "Le HSK 1 ne fournit pas de colonne de nature grammaticale ; les valeurs sont stockées à null."
+      },
+      {
+        "type": "part_of_speech_language_change",
+        "details": "Les HSK 2 à 5 emploient des catégories grammaticales anglaises, tandis que le HSK 6 emploie des abréviations chinoises ; toutes les valeurs source sont conservées."
+      },
+      {
+        "type": "unexpected_hsk1_count",
+        "details": "Le PDF HSK 1 est numéroté de 1 à 301, alors que les autres listes ont des totaux ronds (200, 500, 1000, 1600 et 1800). Aucune entrée n’a été supprimée ou réaffectée."
+      },
+      {
+        "type": "mixed_translation_languages_in_hsk1",
+        "details": "Le PDF français HSK 1 contient des traductions espagnoles pour 哪个, 那个 et 这个 ; ces traductions source sont conservées."
+      },
+      {
+        "type": "suspect_hsk1_source_glyphs",
+        "details": "Le PDF HSK 1 contient des glyphes parasites dans les traductions (notamment ʛ pour 超市 et ʓ pour 零) et un chiffre 5 après le pinyin de 小朋友. Les glyphes des traductions sont conservés ; le chiffre du pinyin est retiré et journalisé comme erreur d’extraction."
+      },
+      {
+        "type": "chinese_compatibility_glyphs",
+        "details": "Le HSK 1 emploie de nombreux glyphes CJK de compatibilité ou de radicaux (par exemple ⼋ et ⻋). Les mots chinois sont normalisés en Unicode ; leur niveau provient toujours exclusivement du PDF source."
+      },
+      {
+        "type": "numbered_homographs",
+        "details": "Plusieurs PDF ajoutent des indices numériques aux homographes (par exemple 花2, 称1 et 称2). Ces indices sont retirés du mot stocké et consignés dans normalization_actions."
+      },
+      {
+        "type": "missing_part_of_speech_values",
+        "details": "Certaines lignes des HSK 2 à 6 laissent la nature grammaticale vide dans la source. Elles sont stockées à null et listées dans words_without_part_of_speech."
+      },
+      {
+        "type": "invalid_hsk5_headword",
+        "details": "À l’entrée 683 du HSK 5, la couche texte du PDF donne « 劳verb » avec le pinyin láodòng et la traduction « labor, work; to work ». Le mot stocké est réparé en 劳动 et la valeur brute reste consignée dans les erreurs et normalisations."
+      }
+    ],
+    "finalEntriesWithoutPinyin": []
+  },
+  "validation": {
+    "equation": "5401 initial - 2 justified merged occurrence(s) = 5399 final",
+    "initialTotalIs5401": true,
+    "statusCountsSumToFinal": true,
+    "resolutionCountsSumToFinal": true,
+    "sourceOccurrenceResolutionCountsSumToInitial": true,
+    "everySourceOccurrenceRepresentedExactlyOnce": true,
+    "noEntryLostWithoutJustification": true,
+    "onlyAllowedStatuses": true,
+    "dictionaryFilesModified": false
+  }
+}

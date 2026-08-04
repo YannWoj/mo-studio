@@ -45,7 +45,7 @@
             inset: 0;
             margin: auto;
          }
-         .ghost {
+         .mizi > .ghost {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -174,18 +174,25 @@
    width: 100%;
    height: 100%;
 }
-.stroke-grid-lines rect,
-.stroke-grid-lines path {
+.stroke-grid-lines > * {
    fill: none;
-   stroke: #b99857;
-   stroke-width: 5;
-   stroke-dasharray: 18 15;
-   opacity: 0.55;
+   stroke: #9f7b39;
    vector-effect: non-scaling-stroke;
 }
-.stroke-grid-lines rect {
+.stroke-grid-center {
+   stroke-width: 0.8;
+   stroke-dasharray: 18 15;
+   opacity: 0.25;
+}
+.stroke-grid-diagonal {
+   stroke-width: 0.65;
+   stroke-dasharray: 14 18;
+   opacity: 0.13;
+}
+.stroke-grid-border {
+   stroke-width: 1;
    stroke-dasharray: none;
-   opacity: 0.75;
+   opacity: 0.34;
 }
 .stroke-path {
    stroke: none;

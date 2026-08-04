@@ -55,6 +55,9 @@ function entryHanziLength(entry) {
 
 function verifiedHskLevel(entry) {
    const levels = [
+      ...(Array.isArray(entry.hskVerified)
+         ? entry.hskVerified.map((item) => item.firstHskLevel ?? item.level)
+         : []),
       ...(Array.isArray(entry.hskLegacy) ? entry.hskLegacy : []),
       ...(Array.isArray(entry.hsk30) ? entry.hsk30 : []),
    ].filter((value) => Number.isFinite(Number(value)));

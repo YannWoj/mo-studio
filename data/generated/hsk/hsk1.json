@@ -1,0 +1,2109 @@
+[
+  {
+    "chinese": "爱",
+    "pinyin": "ài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aimer • avoir de l'affection"
+  },
+  {
+    "chinese": "八",
+    "pinyin": "bā",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "huit • 8"
+  },
+  {
+    "chinese": "爸爸",
+    "pinyin": "bàba",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "papa"
+  },
+  {
+    "chinese": "吧",
+    "pinyin": "ba",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "particule modale utilisée à la finde la phrase pour indiquer uneconsultation, une suggestion,une requête ou une commande"
+  },
+  {
+    "chinese": "白天",
+    "pinyin": "báitiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "journée • pendant la journée •jour"
+  },
+  {
+    "chinese": "百",
+    "pinyin": "bǎi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cent"
+  },
+  {
+    "chinese": "半",
+    "pinyin": "bàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "moitié • demi • incomplet • etdemi (après un nombre)"
+  },
+  {
+    "chinese": "包子",
+    "pinyin": "bāozi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "petit pain farci cuit à la vapeur"
+  },
+  {
+    "chinese": "杯子",
+    "pinyin": "bēizi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tasse • verre"
+  },
+  {
+    "chinese": "本",
+    "pinyin": "běn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "carnet • racine • origine • CL:livres"
+  },
+  {
+    "chinese": "边",
+    "pinyin": "biān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "côté • bord • marge • frontière •limite • simultanément"
+  },
+  {
+    "chinese": "病",
+    "pinyin": "bìng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "maladie • malaise • affection •tomber malade • malade • défaut"
+  },
+  {
+    "chinese": "不客气",
+    "pinyin": "búkèqi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "de rien"
+  },
+  {
+    "chinese": "不要",
+    "pinyin": "búyào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ne fais pas! • ne doit pas"
+  },
+  {
+    "chinese": "不",
+    "pinyin": "bù",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "négation"
+  },
+  {
+    "chinese": "菜",
+    "pinyin": "cài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "plat (de nourriture) • légumes"
+  },
+  {
+    "chinese": "茶",
+    "pinyin": "chá",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "thé"
+  },
+  {
+    "chinese": "唱",
+    "pinyin": "chàng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chanter"
+  },
+  {
+    "chinese": "超市",
+    "pinyin": "chāoshì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "supermarché • abréviation pour超級市場ʛ超级市场"
+  },
+  {
+    "chinese": "车",
+    "pinyin": "chē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "voiture • véhicule"
+  },
+  {
+    "chinese": "吃",
+    "pinyin": "chī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "manger"
+  },
+  {
+    "chinese": "出租车",
+    "pinyin": "chūzūchē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "taxi"
+  },
+  {
+    "chinese": "穿",
+    "pinyin": "chuān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "s'habiller • porter"
+  },
+  {
+    "chinese": "打电话",
+    "pinyin": "dǎdiànhuà",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "téléphoner"
+  },
+  {
+    "chinese": "大",
+    "pinyin": "dà",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "grand • gros"
+  },
+  {
+    "chinese": "大家",
+    "pinyin": "dàjiā",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tout le monde • famille influente •grand expert"
+  },
+  {
+    "chinese": "大学",
+    "pinyin": "dàxué",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "université"
+  },
+  {
+    "chinese": "大学生",
+    "pinyin": "dàxuéshēng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "étudiant universitaire"
+  },
+  {
+    "chinese": "到",
+    "pinyin": "dào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "arriver • vers/jusqu'à (un lieu) • à(une période de temps) • aller"
+  },
+  {
+    "chinese": "的",
+    "pinyin": "de",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "particule structurelle • devant unsubstantif indique la possessionou un attribut descriptif"
+  },
+  {
+    "chinese": "第",
+    "pinyin": "dì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "préfixe pour indiquer le nombreordinal"
+  },
+  {
+    "chinese": "弟弟",
+    "pinyin": "dìdi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "petit frère"
+  },
+  {
+    "chinese": "点",
+    "pinyin": "diǎn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "l'heure pile • petite quantité"
+  },
+  {
+    "chinese": "店",
+    "pinyin": "diàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "boutique • magasin • auberge"
+  },
+  {
+    "chinese": "电话",
+    "pinyin": "diànhuà",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "téléphone"
+  },
+  {
+    "chinese": "电脑",
+    "pinyin": "diànnǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ordinateur"
+  },
+  {
+    "chinese": "电视",
+    "pinyin": "diànshì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "télévision"
+  },
+  {
+    "chinese": "电影",
+    "pinyin": "diànyǐng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "film"
+  },
+  {
+    "chinese": "电影院",
+    "pinyin": "diànyǐngyuàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cinéma • salle de cinéma"
+  },
+  {
+    "chinese": "东西",
+    "pinyin": "dōngxi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chose"
+  },
+  {
+    "chinese": "都",
+    "pinyin": "dōu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tout • tous • tout le monde"
+  },
+  {
+    "chinese": "读",
+    "pinyin": "dú",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "lire • étudier"
+  },
+  {
+    "chinese": "读书",
+    "pinyin": "dúshū",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "lire un livre • étudier"
+  },
+  {
+    "chinese": "对",
+    "pinyin": "duì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "correct • une paire • opposé •répondre • par rapport à • pour •à"
+  },
+  {
+    "chinese": "对不起",
+    "pinyin": "duìbuqǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "désolé"
+  },
+  {
+    "chinese": "多",
+    "pinyin": "duō",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "beaucoup"
+  },
+  {
+    "chinese": "多少",
+    "pinyin": "duōshao",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "combien?"
+  },
+  {
+    "chinese": "儿子",
+    "pinyin": "érzi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "fils"
+  },
+  {
+    "chinese": "二",
+    "pinyin": "èr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "deux • 2"
+  },
+  {
+    "chinese": "饭",
+    "pinyin": "fàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "nourriture • cuisine • riz cuit •repas"
+  },
+  {
+    "chinese": "饭店",
+    "pinyin": "fàndiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "restaurant • hôtel"
+  },
+  {
+    "chinese": "房间",
+    "pinyin": "fángjiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chambre"
+  },
+  {
+    "chinese": "非常",
+    "pinyin": "fēicháng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "beaucoup • extraordinairement"
+  },
+  {
+    "chinese": "飞机",
+    "pinyin": "fēijī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "avion"
+  },
+  {
+    "chinese": "分",
+    "pinyin": "fēn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "diviser • séparer • assigner •distinguer • partie sous divisionou fraction • unité de longueurégale à 0,33 cm • minute • unitémonétaire égale à 0,01 yuan"
+  },
+  {
+    "chinese": "分钟",
+    "pinyin": "fēnzhōng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "minute"
+  },
+  {
+    "chinese": "高兴",
+    "pinyin": "gāoxìng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "content"
+  },
+  {
+    "chinese": "歌",
+    "pinyin": "gē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chanson"
+  },
+  {
+    "chinese": "哥哥",
+    "pinyin": "gēge",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "grand frère"
+  },
+  {
+    "chinese": "个",
+    "pinyin": "gè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "CL: classificateur de gens etd'objets en général"
+  },
+  {
+    "chinese": "给",
+    "pinyin": "gěi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "donner • permettre • pour(quelqu'un)"
+  },
+  {
+    "chinese": "公司",
+    "pinyin": "gōngsī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "compagnie"
+  },
+  {
+    "chinese": "工作",
+    "pinyin": "gōngzuò",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "travailler • travail"
+  },
+  {
+    "chinese": "狗",
+    "pinyin": "gǒu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chien"
+  },
+  {
+    "chinese": "贵",
+    "pinyin": "guì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cher"
+  },
+  {
+    "chinese": "国",
+    "pinyin": "guó",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pays • nation • état • national"
+  },
+  {
+    "chinese": "还",
+    "pinyin": "hái",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "assez • plutôt • passable • enplus • aussi • même • encore •inclus"
+  },
+  {
+    "chinese": "孩子",
+    "pinyin": "háizi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "enfant"
+  },
+  {
+    "chinese": "汉语",
+    "pinyin": "hànyǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "le chinois"
+  },
+  {
+    "chinese": "汉字",
+    "pinyin": "hànzì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "caractère chinois"
+  },
+  {
+    "chinese": "好",
+    "pinyin": "hǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "bien • bon"
+  },
+  {
+    "chinese": "好吃",
+    "pinyin": "hǎochī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "délicieux • savoureux"
+  },
+  {
+    "chinese": "好看",
+    "pinyin": "hǎokàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "beau • de belle apparence • bon(d'un film, d'un livre, d'uneémission de télévision, etc.)"
+  },
+  {
+    "chinese": "好听",
+    "pinyin": "hǎotīng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "agréable à écouter • mélodieux(chanson, voix, etc.)"
+  },
+  {
+    "chinese": "好玩儿",
+    "pinyin": "hǎowánr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "drôle • intéressant • délicieux •amusant"
+  },
+  {
+    "chinese": "号",
+    "pinyin": "hào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "numéro • jour du mois"
+  },
+  {
+    "chinese": "喝",
+    "pinyin": "hē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "boire"
+  },
+  {
+    "chinese": "和",
+    "pinyin": "hé",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "et"
+  },
+  {
+    "chinese": "很",
+    "pinyin": "hěn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "très"
+  },
+  {
+    "chinese": "后",
+    "pinyin": "hòu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "derrière • à l'arrière • plus tard •ensuite"
+  },
+  {
+    "chinese": "回",
+    "pinyin": "huí",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "revenir"
+  },
+  {
+    "chinese": "会",
+    "pinyin": "huì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "avoir la capacité de, savoir fairequelque chose • indique le futurou une probabilité"
+  },
+  {
+    "chinese": "火车",
+    "pinyin": "huǒchē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "train"
+  },
+  {
+    "chinese": "鸡蛋",
+    "pinyin": "jīdàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "œuf de poule"
+  },
+  {
+    "chinese": "几",
+    "pinyin": "jǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "quelques • combien"
+  },
+  {
+    "chinese": "家",
+    "pinyin": "jiā",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "foyer • maison • famille"
+  },
+  {
+    "chinese": "家人",
+    "pinyin": "jiārén",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "famille"
+  },
+  {
+    "chinese": "见",
+    "pinyin": "jiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "voir • rencontrer • apparaître(être qqch) • interviewer"
+  },
+  {
+    "chinese": "件",
+    "pinyin": "jiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "CL: vêtements, choses,évènements"
+  },
+  {
+    "chinese": "饺子",
+    "pinyin": "jiǎozi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "boulette de pâte • autocollant"
+  },
+  {
+    "chinese": "叫",
+    "pinyin": "jiào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "s'appeler"
+  },
+  {
+    "chinese": "姐姐",
+    "pinyin": "jiějie",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "grand sœur"
+  },
+  {
+    "chinese": "今年",
+    "pinyin": "jīnnián",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cette année"
+  },
+  {
+    "chinese": "今天",
+    "pinyin": "jīntiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aujourd'hui"
+  },
+  {
+    "chinese": "九",
+    "pinyin": "jiǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "neuf • 9"
+  },
+  {
+    "chinese": "觉得",
+    "pinyin": "juéde",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "penser • sentir"
+  },
+  {
+    "chinese": "开",
+    "pinyin": "kāi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ouvrir • commencer • conduire"
+  },
+  {
+    "chinese": "开车",
+    "pinyin": "kāichē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "conduire une voiture"
+  },
+  {
+    "chinese": "看",
+    "pinyin": "kàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "voir • regarder • lire • examiner •considérer comme • pour visiter •pour s'occuper"
+  },
+  {
+    "chinese": "看病",
+    "pinyin": "kànbìng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "voir un médecin"
+  },
+  {
+    "chinese": "看见",
+    "pinyin": "kànjiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "regarder • apercevoir"
+  },
+  {
+    "chinese": "可以",
+    "pinyin": "kěyǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pouvoir • être capable de"
+  },
+  {
+    "chinese": "课",
+    "pinyin": "kè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "leçon • cours • sujet"
+  },
+  {
+    "chinese": "口",
+    "pinyin": "kǒu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "bouche • CL: pour les animauxou les choses avec une bouche"
+  },
+  {
+    "chinese": "块",
+    "pinyin": "kuài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pièce • morceau • CL: pourl'argent et les unités monétaires"
+  },
+  {
+    "chinese": "来",
+    "pinyin": "lái",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "venir"
+  },
+  {
+    "chinese": "老师",
+    "pinyin": "lǎoshī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "professeur • professeure"
+  },
+  {
+    "chinese": "了",
+    "pinyin": "le",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "particule modale, intensifiel'action précédente, indique unchangement ou une actionterminée"
+  },
+  {
+    "chinese": "冷",
+    "pinyin": "lěng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "froid"
+  },
+  {
+    "chinese": "里",
+    "pinyin": "lǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dedans"
+  },
+  {
+    "chinese": "两",
+    "pinyin": "liǎng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tous les deux • certains •quelques • deux • poids: 50grammes"
+  },
+  {
+    "chinese": "零",
+    "pinyin": "líng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "zéro • 0 •ʓ"
+  },
+  {
+    "chinese": "六",
+    "pinyin": "liù",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "six • 6"
+  },
+  {
+    "chinese": "妈妈",
+    "pinyin": "māma",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "maman"
+  },
+  {
+    "chinese": "吗",
+    "pinyin": "ma",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "particule pour questions • utiliséà la fin d'une question"
+  },
+  {
+    "chinese": "买",
+    "pinyin": "mǎi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "acheter"
+  },
+  {
+    "chinese": "卖",
+    "pinyin": "mài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vendre"
+  },
+  {
+    "chinese": "忙",
+    "pinyin": "máng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "occupé"
+  },
+  {
+    "chinese": "猫",
+    "pinyin": "māo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chat"
+  },
+  {
+    "chinese": "没",
+    "pinyin": "méi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "(préfixe négatif pour les verbes)• ne pas avoir • ne..pas"
+  },
+  {
+    "chinese": "没关系",
+    "pinyin": "méiguānxi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "c'est pas grave • pas de soucis •il n'y a pas de quoi"
+  },
+  {
+    "chinese": "没事",
+    "pinyin": "méishì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ce n'est rien • ne t'inquiètes pas •ce n'est pas important"
+  },
+  {
+    "chinese": "没有",
+    "pinyin": "méiyǒu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "n'ont pas • n'a pas • n'existe pas• à moins que"
+  },
+  {
+    "chinese": "妹妹",
+    "pinyin": "mèimei",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "petite sœur"
+  },
+  {
+    "chinese": "们",
+    "pinyin": "men",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "marqueur de pluriel pour lespronoms et les substantifs seréférant à des individus"
+  },
+  {
+    "chinese": "米饭",
+    "pinyin": "mǐfàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "riz cuit"
+  },
+  {
+    "chinese": "面包",
+    "pinyin": "miànbāo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pain"
+  },
+  {
+    "chinese": "面条儿",
+    "pinyin": "miàntiáor",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "nouilles"
+  },
+  {
+    "chinese": "明年",
+    "pinyin": "míngnián",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "l'année prochaine"
+  },
+  {
+    "chinese": "明天",
+    "pinyin": "míngtiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "demain"
+  },
+  {
+    "chinese": "名字",
+    "pinyin": "míngzi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "nom"
+  },
+  {
+    "chinese": "哪",
+    "pinyin": "nǎ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "quel • quelle • quels • quelles"
+  },
+  {
+    "chinese": "哪个",
+    "pinyin": "nǎge",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ese • esa • eso • aquel • aquello• (muletilla oral) ya sabes, eh... •también pronunciado [nei4ge5]"
+  },
+  {
+    "chinese": "哪里",
+    "pinyin": "nǎlǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "où? • expression humblerefusant le compliment"
+  },
+  {
+    "chinese": "哪儿",
+    "pinyin": "nǎr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "où • où?"
+  },
+  {
+    "chinese": "哪些",
+    "pinyin": "nǎxiē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "lesquels? • Qui? • quoi?"
+  },
+  {
+    "chinese": "那",
+    "pinyin": "nà",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ce, cela • alors, dans ce cas"
+  },
+  {
+    "chinese": "那边",
+    "pinyin": "nàbiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "là • par là • là-bas • aussiprononcé [nàbian]"
+  },
+  {
+    "chinese": "那个",
+    "pinyin": "nàge",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cual • quien"
+  },
+  {
+    "chinese": "那里",
+    "pinyin": "nàlǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "là-bas, cet endroit-là"
+  },
+  {
+    "chinese": "那儿",
+    "pinyin": "nàr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "là • là-bas"
+  },
+  {
+    "chinese": "那些",
+    "pinyin": "nàxiē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ces"
+  },
+  {
+    "chinese": "男",
+    "pinyin": "nán",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "mâle"
+  },
+  {
+    "chinese": "男朋友",
+    "pinyin": "nánpéngyou",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ami • petit ami"
+  },
+  {
+    "chinese": "呢",
+    "pinyin": "ne",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "particule pour demander un avis,un emplacement, uneaffirmation, etc"
+  },
+  {
+    "chinese": "能",
+    "pinyin": "néng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pouvoir • avoir la capacité de"
+  },
+  {
+    "chinese": "你",
+    "pinyin": "nǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tu"
+  },
+  {
+    "chinese": "你好",
+    "pinyin": "nǐhǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "Bonjour"
+  },
+  {
+    "chinese": "你们",
+    "pinyin": "nǐmen",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vous (pluriel)"
+  },
+  {
+    "chinese": "年",
+    "pinyin": "nián",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "an • année"
+  },
+  {
+    "chinese": "您",
+    "pinyin": "nín",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vous"
+  },
+  {
+    "chinese": "牛奶",
+    "pinyin": "niúnǎi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "lait de vache"
+  },
+  {
+    "chinese": "女",
+    "pinyin": "nǚ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "femme • femelle • fille"
+  },
+  {
+    "chinese": "女儿",
+    "pinyin": "nǚ'ér",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "fille"
+  },
+  {
+    "chinese": "女朋友",
+    "pinyin": "nǚpéngyou",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "amie • petite amie"
+  },
+  {
+    "chinese": "女士",
+    "pinyin": "nǚshì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dame • madame"
+  },
+  {
+    "chinese": "朋友",
+    "pinyin": "péngyou",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ami"
+  },
+  {
+    "chinese": "便宜",
+    "pinyin": "piányi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "bon marché"
+  },
+  {
+    "chinese": "漂亮",
+    "pinyin": "piàoliang",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "jolie • belle"
+  },
+  {
+    "chinese": "苹果",
+    "pinyin": "píngguǒ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pomme"
+  },
+  {
+    "chinese": "七",
+    "pinyin": "qī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "sept • 7"
+  },
+  {
+    "chinese": "起床",
+    "pinyin": "qǐchuáng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "se réveiller"
+  },
+  {
+    "chinese": "千",
+    "pinyin": "qiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "mille"
+  },
+  {
+    "chinese": "前",
+    "pinyin": "qián",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "devant • en avant • avant • il y a• précédent • antérieur"
+  },
+  {
+    "chinese": "钱",
+    "pinyin": "qián",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "l'argent"
+  },
+  {
+    "chinese": "请",
+    "pinyin": "qǐng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "s'il vous plaît • inviter • questionou invitation à faire quelquechose"
+  },
+  {
+    "chinese": "请问",
+    "pinyin": "qǐngwèn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "excuse-moi"
+  },
+  {
+    "chinese": "去",
+    "pinyin": "qù",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aller"
+  },
+  {
+    "chinese": "去年",
+    "pinyin": "qùnián",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "l'année dernière"
+  },
+  {
+    "chinese": "热",
+    "pinyin": "rè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chaud • chaleur"
+  },
+  {
+    "chinese": "人",
+    "pinyin": "rén",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "personne • gens"
+  },
+  {
+    "chinese": "认识",
+    "pinyin": "rènshi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "savoir • reconnaître • êtrehabitué avec"
+  },
+  {
+    "chinese": "日",
+    "pinyin": "rì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "soleil • jour"
+  },
+  {
+    "chinese": "三",
+    "pinyin": "sān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "trois • 3"
+  },
+  {
+    "chinese": "商店",
+    "pinyin": "shāngdiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "boutique"
+  },
+  {
+    "chinese": "上",
+    "pinyin": "shàng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "en haut • sur • au-dessus de •vers le haut • assister à (cours,réunion) • dernier (semaine/mois/année) • précédent •monter (dans un véhicule)"
+  },
+  {
+    "chinese": "上班",
+    "pinyin": "shàngbān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aller au travail • commencer àtravailler"
+  },
+  {
+    "chinese": "上课",
+    "pinyin": "shàngkè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aller en classe • assister à uncours • aller donner un cours"
+  },
+  {
+    "chinese": "上午",
+    "pinyin": "shàngwǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "matin"
+  },
+  {
+    "chinese": "上学",
+    "pinyin": "shàngxué",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aller à l'école • être à l'école"
+  },
+  {
+    "chinese": "少",
+    "pinyin": "shǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "peu"
+  },
+  {
+    "chinese": "谁",
+    "pinyin": "shéi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "qui"
+  },
+  {
+    "chinese": "什么",
+    "pinyin": "shénme",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "que? • quelque chose"
+  },
+  {
+    "chinese": "生病",
+    "pinyin": "shēngbìng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tomber malade"
+  },
+  {
+    "chinese": "十",
+    "pinyin": "shí",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dix • 10"
+  },
+  {
+    "chinese": "时候",
+    "pinyin": "shíhou",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "moment • période du temps"
+  },
+  {
+    "chinese": "时间",
+    "pinyin": "shíjiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "temps • période"
+  },
+  {
+    "chinese": "事",
+    "pinyin": "shì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "matière • chose • objet • travail •affaire"
+  },
+  {
+    "chinese": "是",
+    "pinyin": "shì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "être • oui, si"
+  },
+  {
+    "chinese": "手机",
+    "pinyin": "shǒujī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "téléphone portable"
+  },
+  {
+    "chinese": "书",
+    "pinyin": "shū",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "livre"
+  },
+  {
+    "chinese": "书店",
+    "pinyin": "shūdiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "librairie"
+  },
+  {
+    "chinese": "水",
+    "pinyin": "shuǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "l'eau"
+  },
+  {
+    "chinese": "水果",
+    "pinyin": "shuǐguǒ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "fruit"
+  },
+  {
+    "chinese": "睡",
+    "pinyin": "shuì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dormir"
+  },
+  {
+    "chinese": "睡觉",
+    "pinyin": "shuìjiào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dormir"
+  },
+  {
+    "chinese": "说",
+    "pinyin": "shuō",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "parler • dire • expliquer • gronder• reprocher"
+  },
+  {
+    "chinese": "说话",
+    "pinyin": "shuōhuà",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "parler"
+  },
+  {
+    "chinese": "四",
+    "pinyin": "sì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "quatre • 4"
+  },
+  {
+    "chinese": "岁",
+    "pinyin": "suì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ans (âge)"
+  },
+  {
+    "chinese": "他",
+    "pinyin": "tā",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "il"
+  },
+  {
+    "chinese": "它",
+    "pinyin": "tā",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pronom de troisième personnepour les animaux et les objetsinanimés"
+  },
+  {
+    "chinese": "她",
+    "pinyin": "tā",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "elle"
+  },
+  {
+    "chinese": "他们",
+    "pinyin": "tāmen",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ils • eux, à eux"
+  },
+  {
+    "chinese": "它们",
+    "pinyin": "tāmen",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ils (pour les objets inanimés)"
+  },
+  {
+    "chinese": "她们",
+    "pinyin": "tāmen",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "elles • à elles (pour les femmes)"
+  },
+  {
+    "chinese": "太",
+    "pinyin": "tài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "trop • excessivement"
+  },
+  {
+    "chinese": "天",
+    "pinyin": "tiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "jour • ciel • paradis"
+  },
+  {
+    "chinese": "天气",
+    "pinyin": "tiānqì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "temps (climat)"
+  },
+  {
+    "chinese": "听",
+    "pinyin": "tīng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "écouter"
+  },
+  {
+    "chinese": "听见",
+    "pinyin": "tīngjiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "entendre"
+  },
+  {
+    "chinese": "同学",
+    "pinyin": "tóngxué",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "camarade de classe"
+  },
+  {
+    "chinese": "外",
+    "pinyin": "wài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "à l'extérieur • étranger"
+  },
+  {
+    "chinese": "外边",
+    "pinyin": "wàibian",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "extérieur • surface extérieure •étranger • un lieu autre que sondomicile"
+  },
+  {
+    "chinese": "玩",
+    "pinyin": "wán",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "jouer • s'amuser"
+  },
+  {
+    "chinese": "晚",
+    "pinyin": "wǎn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "soir • nuit • tard"
+  },
+  {
+    "chinese": "晚饭",
+    "pinyin": "wǎnfàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dîner"
+  },
+  {
+    "chinese": "晚上",
+    "pinyin": "wǎnshang",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dans l'après-midi/la nuit"
+  },
+  {
+    "chinese": "喂",
+    "pinyin": "wèi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "hé !"
+  },
+  {
+    "chinese": "问",
+    "pinyin": "wèn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "interroger"
+  },
+  {
+    "chinese": "问题",
+    "pinyin": "wèntí",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "question • problème"
+  },
+  {
+    "chinese": "我",
+    "pinyin": "wǒ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "je • me • mon"
+  },
+  {
+    "chinese": "我们",
+    "pinyin": "wǒmen",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "nous • notre"
+  },
+  {
+    "chinese": "五",
+    "pinyin": "wǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cinq • 5"
+  },
+  {
+    "chinese": "午饭",
+    "pinyin": "wǔfàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "déjeuner"
+  },
+  {
+    "chinese": "喜欢",
+    "pinyin": "xǐhuan",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aimer (apprécier)"
+  },
+  {
+    "chinese": "下",
+    "pinyin": "xià",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dessous • plus tard • suivant"
+  },
+  {
+    "chinese": "下班",
+    "pinyin": "xiàbān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "après le travail • hors service"
+  },
+  {
+    "chinese": "下课",
+    "pinyin": "xiàkè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "après la classe • terminer laclasse • sortir de classe"
+  },
+  {
+    "chinese": "下午",
+    "pinyin": "xiàwǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "après midi"
+  },
+  {
+    "chinese": "下雨",
+    "pinyin": "xiàyǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pleuvoir • pluvieux"
+  },
+  {
+    "chinese": "先生",
+    "pinyin": "xiānsheng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "monsieur • mari"
+  },
+  {
+    "chinese": "现在",
+    "pinyin": "xiànzài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "maintenant"
+  },
+  {
+    "chinese": "想",
+    "pinyin": "xiǎng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vouloir • penser • désirer"
+  },
+  {
+    "chinese": "小",
+    "pinyin": "xiǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "petit • jeune"
+  },
+  {
+    "chinese": "小朋友",
+    "pinyin": "xiǎopéngyou",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "enfant"
+  },
+  {
+    "chinese": "小时",
+    "pinyin": "xiǎoshí",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "heure"
+  },
+  {
+    "chinese": "小学",
+    "pinyin": "xiǎoxué",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "école primaire"
+  },
+  {
+    "chinese": "小学生",
+    "pinyin": "xiǎoxuéshēng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "élève de l'école primaire • écolier"
+  },
+  {
+    "chinese": "些",
+    "pinyin": "xiē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "quelques"
+  },
+  {
+    "chinese": "写",
+    "pinyin": "xiě",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "écrire"
+  },
+  {
+    "chinese": "谢谢",
+    "pinyin": "xièxie",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "merci"
+  },
+  {
+    "chinese": "新",
+    "pinyin": "xīn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "nouveau"
+  },
+  {
+    "chinese": "星期",
+    "pinyin": "xīngqī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "semaine"
+  },
+  {
+    "chinese": "星期日",
+    "pinyin": "xīngqīrì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dimanche"
+  },
+  {
+    "chinese": "星期天",
+    "pinyin": "xīngqītiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dimanche"
+  },
+  {
+    "chinese": "休息",
+    "pinyin": "xiūxi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "se reposer • repos"
+  },
+  {
+    "chinese": "学",
+    "pinyin": "xué",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "apprendre • étudier"
+  },
+  {
+    "chinese": "学生",
+    "pinyin": "xuésheng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "étudiant"
+  },
+  {
+    "chinese": "学习",
+    "pinyin": "xuéxí",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "étudier"
+  },
+  {
+    "chinese": "学校",
+    "pinyin": "xuéxiào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "école"
+  },
+  {
+    "chinese": "雪",
+    "pinyin": "xuě",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "neige"
+  },
+  {
+    "chinese": "要",
+    "pinyin": "yào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vouloir • devoir, falloir • commeauxiliaire, indique un futurproche"
+  },
+  {
+    "chinese": "也",
+    "pinyin": "yě",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "aussi, également"
+  },
+  {
+    "chinese": "一",
+    "pinyin": "yī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "un • 1 • un/une"
+  },
+  {
+    "chinese": "衣服",
+    "pinyin": "yīfu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vêtements"
+  },
+  {
+    "chinese": "医生",
+    "pinyin": "yīshēng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "docteur"
+  },
+  {
+    "chinese": "医院",
+    "pinyin": "yīyuàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "hôpital"
+  },
+  {
+    "chinese": "一半",
+    "pinyin": "yíbàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "moitié"
+  },
+  {
+    "chinese": "一下",
+    "pinyin": "yíxià",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "utilisé après un verbe indiquantun acte ou une tentative • fairequelque chose (lui redonner unechance) • une fois • dans unmoment • tout à coup • soudain"
+  },
+  {
+    "chinese": "椅子",
+    "pinyin": "yǐzi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chaise"
+  },
+  {
+    "chinese": "一点儿",
+    "pinyin": "yìdiǎnr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "un peu • un peu de • un point de• variante de一点"
+  },
+  {
+    "chinese": "一些",
+    "pinyin": "yìxiē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "certains • quelques • un peu"
+  },
+  {
+    "chinese": "有",
+    "pinyin": "yǒu",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "avoir • il y a"
+  },
+  {
+    "chinese": "有的",
+    "pinyin": "yǒude",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "(il y a) quelques (qui sont...) •quelques (existent)"
+  },
+  {
+    "chinese": "有点儿",
+    "pinyin": "yǒudiǎnr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "un peu •有一点儿[yǒuyìdiǎnr]"
+  },
+  {
+    "chinese": "有些",
+    "pinyin": "yǒuxiē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "un peu • quelque peu •有一些[yǒuyīxiē]"
+  },
+  {
+    "chinese": "雨",
+    "pinyin": "yǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "pluie"
+  },
+  {
+    "chinese": "元",
+    "pinyin": "yuán",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "unité de monnaie chinoise •premier"
+  },
+  {
+    "chinese": "月",
+    "pinyin": "yuè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "lune • mois"
+  },
+  {
+    "chinese": "再",
+    "pinyin": "zài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "de nouveau • alors • encore unefois • autre fois"
+  },
+  {
+    "chinese": "在",
+    "pinyin": "zài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "à • dans"
+  },
+  {
+    "chinese": "再见",
+    "pinyin": "zàijiàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "au revoir"
+  },
+  {
+    "chinese": "早",
+    "pinyin": "zǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "tôt • matin • Bonjour!"
+  },
+  {
+    "chinese": "早饭",
+    "pinyin": "zǎofàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "petit-déjeuner"
+  },
+  {
+    "chinese": "早上",
+    "pinyin": "zǎoshang",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "matin • tôt le matin"
+  },
+  {
+    "chinese": "怎么",
+    "pinyin": "zěnme",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "comment?"
+  },
+  {
+    "chinese": "怎么样",
+    "pinyin": "zěnmeyàng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ça va?"
+  },
+  {
+    "chinese": "找",
+    "pinyin": "zhǎo",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "chercher • trouver • rendre"
+  },
+  {
+    "chinese": "这",
+    "pinyin": "zhè",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "celui-ci • celui-là"
+  },
+  {
+    "chinese": "这边",
+    "pinyin": "zhèbiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ici • par ici • de ce côté"
+  },
+  {
+    "chinese": "这个",
+    "pinyin": "zhège",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "este • esta • esto"
+  },
+  {
+    "chinese": "这里",
+    "pinyin": "zhèlǐ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ici"
+  },
+  {
+    "chinese": "这儿",
+    "pinyin": "zhèr",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ici"
+  },
+  {
+    "chinese": "这些",
+    "pinyin": "zhèxiē",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "ces"
+  },
+  {
+    "chinese": "真",
+    "pinyin": "zhēn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "réellement • vraiment •authentique"
+  },
+  {
+    "chinese": "正在",
+    "pinyin": "zhèngzài",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "dans le processus de • pendantque"
+  },
+  {
+    "chinese": "知道",
+    "pinyin": "zhīdào",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "savoir"
+  },
+  {
+    "chinese": "只",
+    "pinyin": "zhī",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "CL: pour les oiseaux et certainsanimaux, l'un d'une paire,certains ustensiles, récipients,etc"
+  },
+  {
+    "chinese": "中国",
+    "pinyin": "zhōngguó",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "Chine"
+  },
+  {
+    "chinese": "中文",
+    "pinyin": "zhōngwén",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "langue chinoise écrite"
+  },
+  {
+    "chinese": "中午",
+    "pinyin": "zhōngwǔ",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "midi"
+  },
+  {
+    "chinese": "中学",
+    "pinyin": "zhōngxué",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "enseignement secondaire"
+  },
+  {
+    "chinese": "中学生",
+    "pinyin": "zhōngxuéshēng",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "élève du collège • élève du lycée"
+  },
+  {
+    "chinese": "住",
+    "pinyin": "zhù",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "vivre"
+  },
+  {
+    "chinese": "桌子",
+    "pinyin": "zhuōzi",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "table"
+  },
+  {
+    "chinese": "字",
+    "pinyin": "zì",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "mot • caractère • symbole"
+  },
+  {
+    "chinese": "昨天",
+    "pinyin": "zuótiān",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "hier"
+  },
+  {
+    "chinese": "坐",
+    "pinyin": "zuò",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "s'asseoir • prendre (l'avion,l'autobus, etc)"
+  },
+  {
+    "chinese": "做",
+    "pinyin": "zuò",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "faire"
+  },
+  {
+    "chinese": "做饭",
+    "pinyin": "zuòfàn",
+    "hsk_level": 1,
+    "part_of_speech": null,
+    "source_translation": "cuisiner • préparer un repas"
+  }
+]

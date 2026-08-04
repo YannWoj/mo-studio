@@ -99,9 +99,9 @@
                   "> Tracer les caractères</label>" +
                   '<div class="eyebrow">Données</div>' +
                   '<div class="sh-btns">' +
-                  '<button class="btn" id="st-export">Exporter</button>' +
                   '<button class="btn" id="st-import">Importer</button>' +
-                  '<button class="btn ghost" id="st-format">Format JSON</button>' +
+                  '<button class="btn" id="st-export">Exporter</button>' +
+                  '<button class="btn ghost" id="st-format">Voir le format JSON</button>' +
                   '<button class="btn ghost" id="st-dictionary-sources">Sources du dictionnaire</button>' +
                   "</div>" +
                   (backup

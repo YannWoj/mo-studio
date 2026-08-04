@@ -51,11 +51,51 @@ function uniqueDetailValues(values) {
 
 function verifiedHskBadges(entry) {
    const output = [];
+   verifiedHskLevels(entry).forEach((level) =>
+      output.push(
+         '<span class="cd-cat hsk-badge hsk-level-' +
+            level +
+            '" data-hsk-badge="' +
+            level +
+            '">HSK ' +
+            esc(level) +
+            "</span>",
+      ),
+   );
    if (Array.isArray(entry.hskLegacy))
       entry.hskLegacy.forEach((level) => output.push('<span class="cd-cat">HSK historique ' + esc(level) + "</span>"));
    if (Array.isArray(entry.hsk30))
       entry.hsk30.forEach((level) => output.push('<span class="cd-cat">HSK 3.0 ' + esc(level) + "</span>"));
    return output.join("");
+}
+
+function dictionaryHskSourceHtml(entry) {
+   const values = Array.isArray(entry.hskVerified) ? entry.hskVerified : [];
+   if (!values.length) return "";
+   return (
+      '<section class="dd-hsk-source"><div class="eyebrow">Données HSK source</div>' +
+      values
+         .map(
+            (item) =>
+               '<div class="dd-hsk-source-item"><div><b>HSK ' +
+               esc(item.firstHskLevel ?? item.level) +
+               "</b> · " +
+               colorPinyin(item.sourcePinyin || "") +
+               "</div>" +
+               (item.sourceTranslation
+                  ? '<p class="dd-hsk-translation">' + esc(item.sourceTranslation) + "</p>"
+                  : "") +
+               '<small>' +
+               (item.partOfSpeech ? esc(item.partOfSpeech) + " · " : "") +
+               esc(hskLinkStatusLabel(item.dictionaryLinkStatus)) +
+               (Array.isArray(item.sourceLevels) && item.sourceLevels.length > 1
+                  ? " · niveaux source " + item.sourceLevels.map(esc).join(", ")
+                  : "") +
+               "</small></div>",
+         )
+         .join("") +
+      "</section>"
+   );
 }
 
 function dictionaryDefinitionsHtml(entry) {
@@ -96,8 +136,11 @@ function findPersonalCardForEntry(entry) {
 }
 
 function openDictDetail(rawEntry, options) {
-   const entry = normalizeDetailEntry(rawEntry);
+   const entry = attachHskMetadata(normalizeDetailEntry(rawEntry));
    const settings = options || {};
+   const currentDetail = document.querySelector("#sheet.open .dd-entry");
+   if (!currentDetail || currentDetail.dataset.entryId !== String(entry.id))
+      resetStrokeAutoplaySelection();
    const card = findPersonalCardForEntry(entry);
    const characters = uniqueDetailValues(
       Array.from(entry.simplified).filter((character) => HAN_PATTERN.test(character)),
@@ -118,6 +161,7 @@ function openDictDetail(rawEntry, options) {
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
          dictionaryDefinitionsHtml(entry) +
+         dictionaryHskSourceHtml(entry) +
          (card
             ? cardActionsHtml(card)
             : '<section class="dd-card-actions" aria-label="Carte personnelle"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></section>') +
@@ -191,7 +235,11 @@ async function renderDictionaryRelatedWords(character, token) {
 function wireDictDetail(entry, characters, card, token, options) {
    if (characters.length) wireStrokeWorkspace();
    const selectCharacter = (character) => {
-      loadDDChar(character, characters);
+      const selectionKey =
+         options && typeof options.strokeSelectionKey === "function"
+            ? options.strokeSelectionKey(character)
+            : character;
+      loadDDChar(character, characters, { selectionKey });
       renderDictionaryRelatedWords(character, token);
    };
    if (characters.length) {

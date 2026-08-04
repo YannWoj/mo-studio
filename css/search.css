@@ -336,6 +336,30 @@
 .dd-definitions.english {
    color: var(--ink-soft);
 }
+.dd-hsk-source {
+   display: grid;
+   gap: 8px;
+   margin: 16px 0;
+   padding: 12px 14px;
+   border: 1px solid color-mix(in srgb, var(--seal) 30%, var(--line));
+   border-radius: 11px;
+   background: color-mix(in srgb, var(--seal) 5%, var(--card-2));
+}
+.dd-hsk-source .eyebrow {
+   margin: 0 0 2px;
+}
+.dd-hsk-source-item + .dd-hsk-source-item {
+   padding-top: 8px;
+   border-top: 1px solid var(--line-soft);
+}
+.dd-hsk-translation {
+   margin: 2px 0;
+   overflow-wrap: anywhere;
+   color: var(--ink-soft);
+}
+.dd-hsk-source-item small {
+   color: var(--ink-faint);
+}
 .dd-card-actions {
    display: grid;
    gap: 10px;

@@ -32,6 +32,7 @@
             if (activeView === "learn") renderLearn();
             else if (activeView === "lib") renderLib();
             else if (activeView === "write") renderSearch();
+            else if (activeView === "path") renderPath();
             else if (activeView === "listen") renderListen();
             else renderGrammar();
          }

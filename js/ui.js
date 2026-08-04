@@ -25,9 +25,11 @@
             });
             document.body.style.overflow = "hidden";
             const focusSheet = () => {
-               const focusTarget = o.querySelector(
-                  "[data-sheet-close], button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
-               );
+               const focusTarget =
+                  o.querySelector("[data-sheet-close]") ||
+                  o.querySelector(
+                     "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+                  );
                if (focusTarget) focusTarget.focus({ preventScroll: true });
             };
             focusSheet();

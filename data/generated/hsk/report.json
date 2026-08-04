@@ -1,0 +1,3429 @@
+{
+  "sources": {
+    "1": "data/source/hsk/new_hsk1.pdf",
+    "2": "data/source/hsk/new_hsk2.pdf",
+    "3": "data/source/hsk/new_hsk3.pdf",
+    "4": "data/source/hsk/new_hsk4.pdf",
+    "5": "data/source/hsk/new_hsk5.pdf",
+    "6": "data/source/hsk/new_hsk6.pdf"
+  },
+  "counts_by_level": {
+    "1": 301,
+    "2": 200,
+    "3": 500,
+    "4": 1000,
+    "5": 1600,
+    "6": 1800
+  },
+  "total_words": 5401,
+  "duplicates_within_level": [
+    {
+      "level": 2,
+      "chinese": "过",
+      "occurrences": [
+        {
+          "source_number": 47,
+          "pinyin": "guò",
+          "part_of_speech": "verb",
+          "source_translation": "to pass, to cross; excessive"
+        },
+        {
+          "source_number": 51,
+          "pinyin": "guo",
+          "part_of_speech": "auxiliary",
+          "source_translation": "particle indicating past experience"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "chinese": "花",
+      "occurrences": [
+        {
+          "source_number": 57,
+          "pinyin": "huā",
+          "part_of_speech": "verb",
+          "source_translation": "to spend (money or time)"
+        },
+        {
+          "source_number": 58,
+          "pinyin": "huā",
+          "part_of_speech": "noun、(adjective)",
+          "source_translation": "flower; (colorful)"
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "chinese": "得",
+      "occurrences": [
+        {
+          "source_number": 83,
+          "pinyin": "dé",
+          "part_of_speech": "verb",
+          "source_translation": "to get, to obtain"
+        },
+        {
+          "source_number": 87,
+          "pinyin": "děi",
+          "part_of_speech": "verb",
+          "source_translation": "must, need"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "chinese": "重",
+      "occurrences": [
+        {
+          "source_number": 86,
+          "pinyin": "chóng",
+          "part_of_speech": "adverb、(verb)",
+          "source_translation": "again, once more; (to repeat)"
+        },
+        {
+          "source_number": 960,
+          "pinyin": "zhòng",
+          "part_of_speech": "noun、adjective",
+          "source_translation": "weight, importance; heavy, important"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "chinese": "空",
+      "occurrences": [
+        {
+          "source_number": 436,
+          "pinyin": "kōng",
+          "part_of_speech": "adjective、(adverb)",
+          "source_translation": "empty, vacant, hollow; ( vain, in for nothing )"
+        },
+        {
+          "source_number": 439,
+          "pinyin": "kòng",
+          "part_of_speech": "verb、adjective、noun",
+          "source_translation": "to leave empty, to make time, to free up; empty, free, unoccupied; free time, empty space"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "chinese": "生",
+      "occurrences": [
+        {
+          "source_number": 646,
+          "pinyin": "shēng",
+          "part_of_speech": "verb",
+          "source_translation": "to give birth, to produce, to grow"
+        },
+        {
+          "source_number": 647,
+          "pinyin": "shēng",
+          "part_of_speech": "adjective、(adverb)",
+          "source_translation": "raw, uncooked, unripe; ( very, extremely, terribly )"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "chinese": "称",
+      "occurrences": [
+        {
+          "source_number": 132,
+          "pinyin": "chēng",
+          "part_of_speech": "verb",
+          "source_translation": "to call, to address"
+        },
+        {
+          "source_number": 133,
+          "pinyin": "chēng",
+          "part_of_speech": "verb",
+          "source_translation": "to weigh"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "chinese": "处",
+      "occurrences": [
+        {
+          "source_number": 179,
+          "pinyin": "chǔ",
+          "part_of_speech": "verb",
+          "source_translation": "to handle, to manage"
+        },
+        {
+          "source_number": 182,
+          "pinyin": "chù",
+          "part_of_speech": "noun",
+          "source_translation": "place, location"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "chinese": "调",
+      "occurrences": [
+        {
+          "source_number": 284,
+          "pinyin": "diào",
+          "part_of_speech": "verb",
+          "source_translation": "to transfer, to move; tone"
+        },
+        {
+          "source_number": 1130,
+          "pinyin": "tiáo",
+          "part_of_speech": "verb",
+          "source_translation": "to adjust, to tune"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "chinese": "系",
+      "occurrences": [
+        {
+          "source_number": 539,
+          "pinyin": "jì",
+          "part_of_speech": "verb",
+          "source_translation": "to tie, to fasten"
+        },
+        {
+          "source_number": 1226,
+          "pinyin": "xì",
+          "part_of_speech": "noun",
+          "source_translation": "department, system"
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "chinese": "批",
+      "occurrences": [
+        {
+          "source_number": 825,
+          "pinyin": "pī",
+          "part_of_speech": null,
+          "source_translation": "measure word for batches"
+        },
+        {
+          "source_number": 826,
+          "pinyin": "pī",
+          "part_of_speech": "verb",
+          "source_translation": "to criticize, to approve"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "chinese": "局",
+      "occurrences": [
+        {
+          "source_number": 741,
+          "pinyin": "jú",
+          "part_of_speech": "量",
+          "source_translation": "measure word for games, sets"
+        },
+        {
+          "source_number": 742,
+          "pinyin": "jú",
+          "part_of_speech": "名",
+          "source_translation": "bureau, office, situation"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "chinese": "卷",
+      "occurrences": [
+        {
+          "source_number": 753,
+          "pinyin": "juǎn",
+          "part_of_speech": "动、名、量",
+          "source_translation": "to roll, to curl; roll; measure word for rolls"
+        },
+        {
+          "source_number": 754,
+          "pinyin": "juàn",
+          "part_of_speech": "量、名",
+          "source_translation": "measure word for books; volume"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "chinese": "料",
+      "occurrences": [
+        {
+          "source_number": 850,
+          "pinyin": "liào",
+          "part_of_speech": "名",
+          "source_translation": "material"
+        },
+        {
+          "source_number": 851,
+          "pinyin": "liào",
+          "part_of_speech": "动",
+          "source_translation": "to guess, to anticipate"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "chinese": "露",
+      "occurrences": [
+        {
+          "source_number": 861,
+          "pinyin": "lòu",
+          "part_of_speech": "动",
+          "source_translation": "to expose, to reveal"
+        },
+        {
+          "source_number": 863,
+          "pinyin": "lù",
+          "part_of_speech": "动",
+          "source_translation": "to expose, to reveal"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "chinese": "散",
+      "occurrences": [
+        {
+          "source_number": 1126,
+          "pinyin": "sǎn",
+          "part_of_speech": "动",
+          "source_translation": "to scatter"
+        },
+        {
+          "source_number": 1128,
+          "pinyin": "sàn",
+          "part_of_speech": "动",
+          "source_translation": "to scatter, to disperse"
+        }
+      ]
+    },
+    {
+      "level": 6,
+      "chinese": "吐",
+      "occurrences": [
+        {
+          "source_number": 1333,
+          "pinyin": "tǔ",
+          "part_of_speech": "动",
+          "source_translation": "to spit"
+        },
+        {
+          "source_number": 1335,
+          "pinyin": "tù",
+          "part_of_speech": "动",
+          "source_translation": "to vomit"
+        }
+      ]
+    }
+  ],
+  "exact_duplicates_anywhere": [],
+  "words_without_pinyin": [],
+  "words_without_part_of_speech": [
+    {
+      "level": 1,
+      "source_number": 1,
+      "chinese": "爱"
+    },
+    {
+      "level": 1,
+      "source_number": 2,
+      "chinese": "八"
+    },
+    {
+      "level": 1,
+      "source_number": 3,
+      "chinese": "爸爸"
+    },
+    {
+      "level": 1,
+      "source_number": 4,
+      "chinese": "吧"
+    },
+    {
+      "level": 1,
+      "source_number": 5,
+      "chinese": "白天"
+    },
+    {
+      "level": 1,
+      "source_number": 6,
+      "chinese": "百"
+    },
+    {
+      "level": 1,
+      "source_number": 7,
+      "chinese": "半"
+    },
+    {
+      "level": 1,
+      "source_number": 8,
+      "chinese": "包子"
+    },
+    {
+      "level": 1,
+      "source_number": 9,
+      "chinese": "杯子"
+    },
+    {
+      "level": 1,
+      "source_number": 10,
+      "chinese": "本"
+    },
+    {
+      "level": 1,
+      "source_number": 11,
+      "chinese": "边"
+    },
+    {
+      "level": 1,
+      "source_number": 12,
+      "chinese": "病"
+    },
+    {
+      "level": 1,
+      "source_number": 13,
+      "chinese": "不客气"
+    },
+    {
+      "level": 1,
+      "source_number": 14,
+      "chinese": "不要"
+    },
+    {
+      "level": 1,
+      "source_number": 15,
+      "chinese": "不"
+    },
+    {
+      "level": 1,
+      "source_number": 16,
+      "chinese": "菜"
+    },
+    {
+      "level": 1,
+      "source_number": 17,
+      "chinese": "茶"
+    },
+    {
+      "level": 1,
+      "source_number": 18,
+      "chinese": "唱"
+    },
+    {
+      "level": 1,
+      "source_number": 19,
+      "chinese": "超市"
+    },
+    {
+      "level": 1,
+      "source_number": 20,
+      "chinese": "车"
+    },
+    {
+      "level": 1,
+      "source_number": 21,
+      "chinese": "吃"
+    },
+    {
+      "level": 1,
+      "source_number": 22,
+      "chinese": "出租车"
+    },
+    {
+      "level": 1,
+      "source_number": 23,
+      "chinese": "穿"
+    },
+    {
+      "level": 1,
+      "source_number": 24,
+      "chinese": "打电话"
+    },
+    {
+      "level": 1,
+      "source_number": 25,
+      "chinese": "大"
+    },
+    {
+      "level": 1,
+      "source_number": 26,
+      "chinese": "大家"
+    },
+    {
+      "level": 1,
+      "source_number": 27,
+      "chinese": "大学"
+    },
+    {
+      "level": 1,
+      "source_number": 28,
+      "chinese": "大学生"
+    },
+    {
+      "level": 1,
+      "source_number": 29,
+      "chinese": "到"
+    },
+    {
+      "level": 1,
+      "source_number": 30,
+      "chinese": "的"
+    },
+    {
+      "level": 1,
+      "source_number": 31,
+      "chinese": "第"
+    },
+    {
+      "level": 1,
+      "source_number": 32,
+      "chinese": "弟弟"
+    },
+    {
+      "level": 1,
+      "source_number": 33,
+      "chinese": "点"
+    },
+    {
+      "level": 1,
+      "source_number": 34,
+      "chinese": "店"
+    },
+    {
+      "level": 1,
+      "source_number": 35,
+      "chinese": "电话"
+    },
+    {
+      "level": 1,
+      "source_number": 36,
+      "chinese": "电脑"
+    },
+    {
+      "level": 1,
+      "source_number": 37,
+      "chinese": "电视"
+    },
+    {
+      "level": 1,
+      "source_number": 38,
+      "chinese": "电影"
+    },
+    {
+      "level": 1,
+      "source_number": 39,
+      "chinese": "电影院"
+    },
+    {
+      "level": 1,
+      "source_number": 40,
+      "chinese": "东西"
+    },
+    {
+      "level": 1,
+      "source_number": 41,
+      "chinese": "都"
+    },
+    {
+      "level": 1,
+      "source_number": 42,
+      "chinese": "读"
+    },
+    {
+      "level": 1,
+      "source_number": 43,
+      "chinese": "读书"
+    },
+    {
+      "level": 1,
+      "source_number": 44,
+      "chinese": "对"
+    },
+    {
+      "level": 1,
+      "source_number": 45,
+      "chinese": "对不起"
+    },
+    {
+      "level": 1,
+      "source_number": 46,
+      "chinese": "多"
+    },
+    {
+      "level": 1,
+      "source_number": 47,
+      "chinese": "多少"
+    },
+    {
+      "level": 1,
+      "source_number": 48,
+      "chinese": "儿子"
+    },
+    {
+      "level": 1,
+      "source_number": 49,
+      "chinese": "二"
+    },
+    {
+      "level": 1,
+      "source_number": 50,
+      "chinese": "饭"
+    },
+    {
+      "level": 1,
+      "source_number": 51,
+      "chinese": "饭店"
+    },
+    {
+      "level": 1,
+      "source_number": 52,
+      "chinese": "房间"
+    },
+    {
+      "level": 1,
+      "source_number": 53,
+      "chinese": "非常"
+    },
+    {
+      "level": 1,
+      "source_number": 54,
+      "chinese": "飞机"
+    },
+    {
+      "level": 1,
+      "source_number": 55,
+      "chinese": "分"
+    },
+    {
+      "level": 1,
+      "source_number": 56,
+      "chinese": "分钟"
+    },
+    {
+      "level": 1,
+      "source_number": 57,
+      "chinese": "高兴"
+    },
+    {
+      "level": 1,
+      "source_number": 58,
+      "chinese": "歌"
+    },
+    {
+      "level": 1,
+      "source_number": 59,
+      "chinese": "哥哥"
+    },
+    {
+      "level": 1,
+      "source_number": 60,
+      "chinese": "个"
+    },
+    {
+      "level": 1,
+      "source_number": 61,
+      "chinese": "给"
+    },
+    {
+      "level": 1,
+      "source_number": 62,
+      "chinese": "公司"
+    },
+    {
+      "level": 1,
+      "source_number": 63,
+      "chinese": "工作"
+    },
+    {
+      "level": 1,
+      "source_number": 64,
+      "chinese": "狗"
+    },
+    {
+      "level": 1,
+      "source_number": 65,
+      "chinese": "贵"
+    },
+    {
+      "level": 1,
+      "source_number": 66,
+      "chinese": "国"
+    },
+    {
+      "level": 1,
+      "source_number": 67,
+      "chinese": "还"
+    },
+    {
+      "level": 1,
+      "source_number": 68,
+      "chinese": "孩子"
+    },
+    {
+      "level": 1,
+      "source_number": 69,
+      "chinese": "汉语"
+    },
+    {
+      "level": 1,
+      "source_number": 70,
+      "chinese": "汉字"
+    },
+    {
+      "level": 1,
+      "source_number": 71,
+      "chinese": "好"
+    },
+    {
+      "level": 1,
+      "source_number": 72,
+      "chinese": "好吃"
+    },
+    {
+      "level": 1,
+      "source_number": 73,
+      "chinese": "好看"
+    },
+    {
+      "level": 1,
+      "source_number": 74,
+      "chinese": "好听"
+    },
+    {
+      "level": 1,
+      "source_number": 75,
+      "chinese": "好玩儿"
+    },
+    {
+      "level": 1,
+      "source_number": 76,
+      "chinese": "号"
+    },
+    {
+      "level": 1,
+      "source_number": 77,
+      "chinese": "喝"
+    },
+    {
+      "level": 1,
+      "source_number": 78,
+      "chinese": "和"
+    },
+    {
+      "level": 1,
+      "source_number": 79,
+      "chinese": "很"
+    },
+    {
+      "level": 1,
+      "source_number": 80,
+      "chinese": "后"
+    },
+    {
+      "level": 1,
+      "source_number": 81,
+      "chinese": "回"
+    },
+    {
+      "level": 1,
+      "source_number": 82,
+      "chinese": "会"
+    },
+    {
+      "level": 1,
+      "source_number": 83,
+      "chinese": "火车"
+    },
+    {
+      "level": 1,
+      "source_number": 84,
+      "chinese": "鸡蛋"
+    },
+    {
+      "level": 1,
+      "source_number": 85,
+      "chinese": "几"
+    },
+    {
+      "level": 1,
+      "source_number": 86,
+      "chinese": "家"
+    },
+    {
+      "level": 1,
+      "source_number": 87,
+      "chinese": "家人"
+    },
+    {
+      "level": 1,
+      "source_number": 88,
+      "chinese": "见"
+    },
+    {
+      "level": 1,
+      "source_number": 89,
+      "chinese": "件"
+    },
+    {
+      "level": 1,
+      "source_number": 90,
+      "chinese": "饺子"
+    },
+    {
+      "level": 1,
+      "source_number": 91,
+      "chinese": "叫"
+    },
+    {
+      "level": 1,
+      "source_number": 92,
+      "chinese": "姐姐"
+    },
+    {
+      "level": 1,
+      "source_number": 93,
+      "chinese": "今年"
+    },
+    {
+      "level": 1,
+      "source_number": 94,
+      "chinese": "今天"
+    },
+    {
+      "level": 1,
+      "source_number": 95,
+      "chinese": "九"
+    },
+    {
+      "level": 1,
+      "source_number": 96,
+      "chinese": "觉得"
+    },
+    {
+      "level": 1,
+      "source_number": 97,
+      "chinese": "开"
+    },
+    {
+      "level": 1,
+      "source_number": 98,
+      "chinese": "开车"
+    },
+    {
+      "level": 1,
+      "source_number": 99,
+      "chinese": "看"
+    },
+    {
+      "level": 1,
+      "source_number": 100,
+      "chinese": "看病"
+    },
+    {
+      "level": 1,
+      "source_number": 101,
+      "chinese": "看见"
+    },
+    {
+      "level": 1,
+      "source_number": 102,
+      "chinese": "可以"
+    },
+    {
+      "level": 1,
+      "source_number": 103,
+      "chinese": "课"
+    },
+    {
+      "level": 1,
+      "source_number": 104,
+      "chinese": "口"
+    },
+    {
+      "level": 1,
+      "source_number": 105,
+      "chinese": "块"
+    },
+    {
+      "level": 1,
+      "source_number": 106,
+      "chinese": "来"
+    },
+    {
+      "level": 1,
+      "source_number": 107,
+      "chinese": "老师"
+    },
+    {
+      "level": 1,
+      "source_number": 108,
+      "chinese": "了"
+    },
+    {
+      "level": 1,
+      "source_number": 109,
+      "chinese": "冷"
+    },
+    {
+      "level": 1,
+      "source_number": 110,
+      "chinese": "里"
+    },
+    {
+      "level": 1,
+      "source_number": 111,
+      "chinese": "两"
+    },
+    {
+      "level": 1,
+      "source_number": 112,
+      "chinese": "零"
+    },
+    {
+      "level": 1,
+      "source_number": 113,
+      "chinese": "六"
+    },
+    {
+      "level": 1,
+      "source_number": 114,
+      "chinese": "妈妈"
+    },
+    {
+      "level": 1,
+      "source_number": 115,
+      "chinese": "吗"
+    },
+    {
+      "level": 1,
+      "source_number": 116,
+      "chinese": "买"
+    },
+    {
+      "level": 1,
+      "source_number": 117,
+      "chinese": "卖"
+    },
+    {
+      "level": 1,
+      "source_number": 118,
+      "chinese": "忙"
+    },
+    {
+      "level": 1,
+      "source_number": 119,
+      "chinese": "猫"
+    },
+    {
+      "level": 1,
+      "source_number": 120,
+      "chinese": "没"
+    },
+    {
+      "level": 1,
+      "source_number": 121,
+      "chinese": "没关系"
+    },
+    {
+      "level": 1,
+      "source_number": 122,
+      "chinese": "没事"
+    },
+    {
+      "level": 1,
+      "source_number": 123,
+      "chinese": "没有"
+    },
+    {
+      "level": 1,
+      "source_number": 124,
+      "chinese": "妹妹"
+    },
+    {
+      "level": 1,
+      "source_number": 125,
+      "chinese": "们"
+    },
+    {
+      "level": 1,
+      "source_number": 126,
+      "chinese": "米饭"
+    },
+    {
+      "level": 1,
+      "source_number": 127,
+      "chinese": "面包"
+    },
+    {
+      "level": 1,
+      "source_number": 128,
+      "chinese": "面条儿"
+    },
+    {
+      "level": 1,
+      "source_number": 129,
+      "chinese": "明年"
+    },
+    {
+      "level": 1,
+      "source_number": 130,
+      "chinese": "明天"
+    },
+    {
+      "level": 1,
+      "source_number": 131,
+      "chinese": "名字"
+    },
+    {
+      "level": 1,
+      "source_number": 132,
+      "chinese": "哪"
+    },
+    {
+      "level": 1,
+      "source_number": 133,
+      "chinese": "哪个"
+    },
+    {
+      "level": 1,
+      "source_number": 134,
+      "chinese": "哪里"
+    },
+    {
+      "level": 1,
+      "source_number": 135,
+      "chinese": "哪儿"
+    },
+    {
+      "level": 1,
+      "source_number": 136,
+      "chinese": "哪些"
+    },
+    {
+      "level": 1,
+      "source_number": 137,
+      "chinese": "那"
+    },
+    {
+      "level": 1,
+      "source_number": 138,
+      "chinese": "那边"
+    },
+    {
+      "level": 1,
+      "source_number": 139,
+      "chinese": "那个"
+    },
+    {
+      "level": 1,
+      "source_number": 140,
+      "chinese": "那里"
+    },
+    {
+      "level": 1,
+      "source_number": 141,
+      "chinese": "那儿"
+    },
+    {
+      "level": 1,
+      "source_number": 142,
+      "chinese": "那些"
+    },
+    {
+      "level": 1,
+      "source_number": 143,
+      "chinese": "男"
+    },
+    {
+      "level": 1,
+      "source_number": 144,
+      "chinese": "男朋友"
+    },
+    {
+      "level": 1,
+      "source_number": 145,
+      "chinese": "呢"
+    },
+    {
+      "level": 1,
+      "source_number": 146,
+      "chinese": "能"
+    },
+    {
+      "level": 1,
+      "source_number": 147,
+      "chinese": "你"
+    },
+    {
+      "level": 1,
+      "source_number": 148,
+      "chinese": "你好"
+    },
+    {
+      "level": 1,
+      "source_number": 149,
+      "chinese": "你们"
+    },
+    {
+      "level": 1,
+      "source_number": 150,
+      "chinese": "年"
+    },
+    {
+      "level": 1,
+      "source_number": 151,
+      "chinese": "您"
+    },
+    {
+      "level": 1,
+      "source_number": 152,
+      "chinese": "牛奶"
+    },
+    {
+      "level": 1,
+      "source_number": 153,
+      "chinese": "女"
+    },
+    {
+      "level": 1,
+      "source_number": 154,
+      "chinese": "女儿"
+    },
+    {
+      "level": 1,
+      "source_number": 155,
+      "chinese": "女朋友"
+    },
+    {
+      "level": 1,
+      "source_number": 156,
+      "chinese": "女士"
+    },
+    {
+      "level": 1,
+      "source_number": 157,
+      "chinese": "朋友"
+    },
+    {
+      "level": 1,
+      "source_number": 158,
+      "chinese": "便宜"
+    },
+    {
+      "level": 1,
+      "source_number": 159,
+      "chinese": "漂亮"
+    },
+    {
+      "level": 1,
+      "source_number": 160,
+      "chinese": "苹果"
+    },
+    {
+      "level": 1,
+      "source_number": 161,
+      "chinese": "七"
+    },
+    {
+      "level": 1,
+      "source_number": 162,
+      "chinese": "起床"
+    },
+    {
+      "level": 1,
+      "source_number": 163,
+      "chinese": "千"
+    },
+    {
+      "level": 1,
+      "source_number": 164,
+      "chinese": "前"
+    },
+    {
+      "level": 1,
+      "source_number": 165,
+      "chinese": "钱"
+    },
+    {
+      "level": 1,
+      "source_number": 166,
+      "chinese": "请"
+    },
+    {
+      "level": 1,
+      "source_number": 167,
+      "chinese": "请问"
+    },
+    {
+      "level": 1,
+      "source_number": 168,
+      "chinese": "去"
+    },
+    {
+      "level": 1,
+      "source_number": 169,
+      "chinese": "去年"
+    },
+    {
+      "level": 1,
+      "source_number": 170,
+      "chinese": "热"
+    },
+    {
+      "level": 1,
+      "source_number": 171,
+      "chinese": "人"
+    },
+    {
+      "level": 1,
+      "source_number": 172,
+      "chinese": "认识"
+    },
+    {
+      "level": 1,
+      "source_number": 173,
+      "chinese": "日"
+    },
+    {
+      "level": 1,
+      "source_number": 174,
+      "chinese": "三"
+    },
+    {
+      "level": 1,
+      "source_number": 175,
+      "chinese": "商店"
+    },
+    {
+      "level": 1,
+      "source_number": 176,
+      "chinese": "上"
+    },
+    {
+      "level": 1,
+      "source_number": 177,
+      "chinese": "上班"
+    },
+    {
+      "level": 1,
+      "source_number": 178,
+      "chinese": "上课"
+    },
+    {
+      "level": 1,
+      "source_number": 179,
+      "chinese": "上午"
+    },
+    {
+      "level": 1,
+      "source_number": 180,
+      "chinese": "上学"
+    },
+    {
+      "level": 1,
+      "source_number": 181,
+      "chinese": "少"
+    },
+    {
+      "level": 1,
+      "source_number": 182,
+      "chinese": "谁"
+    },
+    {
+      "level": 1,
+      "source_number": 183,
+      "chinese": "什么"
+    },
+    {
+      "level": 1,
+      "source_number": 184,
+      "chinese": "生病"
+    },
+    {
+      "level": 1,
+      "source_number": 185,
+      "chinese": "十"
+    },
+    {
+      "level": 1,
+      "source_number": 186,
+      "chinese": "时候"
+    },
+    {
+      "level": 1,
+      "source_number": 187,
+      "chinese": "时间"
+    },
+    {
+      "level": 1,
+      "source_number": 188,
+      "chinese": "事"
+    },
+    {
+      "level": 1,
+      "source_number": 189,
+      "chinese": "是"
+    },
+    {
+      "level": 1,
+      "source_number": 190,
+      "chinese": "手机"
+    },
+    {
+      "level": 1,
+      "source_number": 191,
+      "chinese": "书"
+    },
+    {
+      "level": 1,
+      "source_number": 192,
+      "chinese": "书店"
+    },
+    {
+      "level": 1,
+      "source_number": 193,
+      "chinese": "水"
+    },
+    {
+      "level": 1,
+      "source_number": 194,
+      "chinese": "水果"
+    },
+    {
+      "level": 1,
+      "source_number": 195,
+      "chinese": "睡"
+    },
+    {
+      "level": 1,
+      "source_number": 196,
+      "chinese": "睡觉"
+    },
+    {
+      "level": 1,
+      "source_number": 197,
+      "chinese": "说"
+    },
+    {
+      "level": 1,
+      "source_number": 198,
+      "chinese": "说话"
+    },
+    {
+      "level": 1,
+      "source_number": 199,
+      "chinese": "四"
+    },
+    {
+      "level": 1,
+      "source_number": 200,
+      "chinese": "岁"
+    },
+    {
+      "level": 1,
+      "source_number": 201,
+      "chinese": "他"
+    },
+    {
+      "level": 1,
+      "source_number": 202,
+      "chinese": "它"
+    },
+    {
+      "level": 1,
+      "source_number": 203,
+      "chinese": "她"
+    },
+    {
+      "level": 1,
+      "source_number": 204,
+      "chinese": "他们"
+    },
+    {
+      "level": 1,
+      "source_number": 205,
+      "chinese": "它们"
+    },
+    {
+      "level": 1,
+      "source_number": 206,
+      "chinese": "她们"
+    },
+    {
+      "level": 1,
+      "source_number": 207,
+      "chinese": "太"
+    },
+    {
+      "level": 1,
+      "source_number": 208,
+      "chinese": "天"
+    },
+    {
+      "level": 1,
+      "source_number": 209,
+      "chinese": "天气"
+    },
+    {
+      "level": 1,
+      "source_number": 210,
+      "chinese": "听"
+    },
+    {
+      "level": 1,
+      "source_number": 211,
+      "chinese": "听见"
+    },
+    {
+      "level": 1,
+      "source_number": 212,
+      "chinese": "同学"
+    },
+    {
+      "level": 1,
+      "source_number": 213,
+      "chinese": "外"
+    },
+    {
+      "level": 1,
+      "source_number": 214,
+      "chinese": "外边"
+    },
+    {
+      "level": 1,
+      "source_number": 215,
+      "chinese": "玩"
+    },
+    {
+      "level": 1,
+      "source_number": 216,
+      "chinese": "晚"
+    },
+    {
+      "level": 1,
+      "source_number": 217,
+      "chinese": "晚饭"
+    },
+    {
+      "level": 1,
+      "source_number": 218,
+      "chinese": "晚上"
+    },
+    {
+      "level": 1,
+      "source_number": 219,
+      "chinese": "喂"
+    },
+    {
+      "level": 1,
+      "source_number": 220,
+      "chinese": "问"
+    },
+    {
+      "level": 1,
+      "source_number": 221,
+      "chinese": "问题"
+    },
+    {
+      "level": 1,
+      "source_number": 222,
+      "chinese": "我"
+    },
+    {
+      "level": 1,
+      "source_number": 223,
+      "chinese": "我们"
+    },
+    {
+      "level": 1,
+      "source_number": 224,
+      "chinese": "五"
+    },
+    {
+      "level": 1,
+      "source_number": 225,
+      "chinese": "午饭"
+    },
+    {
+      "level": 1,
+      "source_number": 226,
+      "chinese": "喜欢"
+    },
+    {
+      "level": 1,
+      "source_number": 227,
+      "chinese": "下"
+    },
+    {
+      "level": 1,
+      "source_number": 228,
+      "chinese": "下班"
+    },
+    {
+      "level": 1,
+      "source_number": 229,
+      "chinese": "下课"
+    },
+    {
+      "level": 1,
+      "source_number": 230,
+      "chinese": "下午"
+    },
+    {
+      "level": 1,
+      "source_number": 231,
+      "chinese": "下雨"
+    },
+    {
+      "level": 1,
+      "source_number": 232,
+      "chinese": "先生"
+    },
+    {
+      "level": 1,
+      "source_number": 233,
+      "chinese": "现在"
+    },
+    {
+      "level": 1,
+      "source_number": 234,
+      "chinese": "想"
+    },
+    {
+      "level": 1,
+      "source_number": 235,
+      "chinese": "小"
+    },
+    {
+      "level": 1,
+      "source_number": 236,
+      "chinese": "小朋友"
+    },
+    {
+      "level": 1,
+      "source_number": 237,
+      "chinese": "小时"
+    },
+    {
+      "level": 1,
+      "source_number": 238,
+      "chinese": "小学"
+    },
+    {
+      "level": 1,
+      "source_number": 239,
+      "chinese": "小学生"
+    },
+    {
+      "level": 1,
+      "source_number": 240,
+      "chinese": "些"
+    },
+    {
+      "level": 1,
+      "source_number": 241,
+      "chinese": "写"
+    },
+    {
+      "level": 1,
+      "source_number": 242,
+      "chinese": "谢谢"
+    },
+    {
+      "level": 1,
+      "source_number": 243,
+      "chinese": "新"
+    },
+    {
+      "level": 1,
+      "source_number": 244,
+      "chinese": "星期"
+    },
+    {
+      "level": 1,
+      "source_number": 245,
+      "chinese": "星期日"
+    },
+    {
+      "level": 1,
+      "source_number": 246,
+      "chinese": "星期天"
+    },
+    {
+      "level": 1,
+      "source_number": 247,
+      "chinese": "休息"
+    },
+    {
+      "level": 1,
+      "source_number": 248,
+      "chinese": "学"
+    },
+    {
+      "level": 1,
+      "source_number": 249,
+      "chinese": "学生"
+    },
+    {
+      "level": 1,
+      "source_number": 250,
+      "chinese": "学习"
+    },
+    {
+      "level": 1,
+      "source_number": 251,
+      "chinese": "学校"
+    },
+    {
+      "level": 1,
+      "source_number": 252,
+      "chinese": "雪"
+    },
+    {
+      "level": 1,
+      "source_number": 253,
+      "chinese": "要"
+    },
+    {
+      "level": 1,
+      "source_number": 254,
+      "chinese": "也"
+    },
+    {
+      "level": 1,
+      "source_number": 255,
+      "chinese": "一"
+    },
+    {
+      "level": 1,
+      "source_number": 256,
+      "chinese": "衣服"
+    },
+    {
+      "level": 1,
+      "source_number": 257,
+      "chinese": "医生"
+    },
+    {
+      "level": 1,
+      "source_number": 258,
+      "chinese": "医院"
+    },
+    {
+      "level": 1,
+      "source_number": 259,
+      "chinese": "一半"
+    },
+    {
+      "level": 1,
+      "source_number": 260,
+      "chinese": "一下"
+    },
+    {
+      "level": 1,
+      "source_number": 261,
+      "chinese": "椅子"
+    },
+    {
+      "level": 1,
+      "source_number": 262,
+      "chinese": "一点儿"
+    },
+    {
+      "level": 1,
+      "source_number": 263,
+      "chinese": "一些"
+    },
+    {
+      "level": 1,
+      "source_number": 264,
+      "chinese": "有"
+    },
+    {
+      "level": 1,
+      "source_number": 265,
+      "chinese": "有的"
+    },
+    {
+      "level": 1,
+      "source_number": 266,
+      "chinese": "有点儿"
+    },
+    {
+      "level": 1,
+      "source_number": 267,
+      "chinese": "有些"
+    },
+    {
+      "level": 1,
+      "source_number": 268,
+      "chinese": "雨"
+    },
+    {
+      "level": 1,
+      "source_number": 269,
+      "chinese": "元"
+    },
+    {
+      "level": 1,
+      "source_number": 270,
+      "chinese": "月"
+    },
+    {
+      "level": 1,
+      "source_number": 271,
+      "chinese": "再"
+    },
+    {
+      "level": 1,
+      "source_number": 272,
+      "chinese": "在"
+    },
+    {
+      "level": 1,
+      "source_number": 273,
+      "chinese": "再见"
+    },
+    {
+      "level": 1,
+      "source_number": 274,
+      "chinese": "早"
+    },
+    {
+      "level": 1,
+      "source_number": 275,
+      "chinese": "早饭"
+    },
+    {
+      "level": 1,
+      "source_number": 276,
+      "chinese": "早上"
+    },
+    {
+      "level": 1,
+      "source_number": 277,
+      "chinese": "怎么"
+    },
+    {
+      "level": 1,
+      "source_number": 278,
+      "chinese": "怎么样"
+    },
+    {
+      "level": 1,
+      "source_number": 279,
+      "chinese": "找"
+    },
+    {
+      "level": 1,
+      "source_number": 280,
+      "chinese": "这"
+    },
+    {
+      "level": 1,
+      "source_number": 281,
+      "chinese": "这边"
+    },
+    {
+      "level": 1,
+      "source_number": 282,
+      "chinese": "这个"
+    },
+    {
+      "level": 1,
+      "source_number": 283,
+      "chinese": "这里"
+    },
+    {
+      "level": 1,
+      "source_number": 284,
+      "chinese": "这儿"
+    },
+    {
+      "level": 1,
+      "source_number": 285,
+      "chinese": "这些"
+    },
+    {
+      "level": 1,
+      "source_number": 286,
+      "chinese": "真"
+    },
+    {
+      "level": 1,
+      "source_number": 287,
+      "chinese": "正在"
+    },
+    {
+      "level": 1,
+      "source_number": 288,
+      "chinese": "知道"
+    },
+    {
+      "level": 1,
+      "source_number": 289,
+      "chinese": "只"
+    },
+    {
+      "level": 1,
+      "source_number": 290,
+      "chinese": "中国"
+    },
+    {
+      "level": 1,
+      "source_number": 291,
+      "chinese": "中文"
+    },
+    {
+      "level": 1,
+      "source_number": 292,
+      "chinese": "中午"
+    },
+    {
+      "level": 1,
+      "source_number": 293,
+      "chinese": "中学"
+    },
+    {
+      "level": 1,
+      "source_number": 294,
+      "chinese": "中学生"
+    },
+    {
+      "level": 1,
+      "source_number": 295,
+      "chinese": "住"
+    },
+    {
+      "level": 1,
+      "source_number": 296,
+      "chinese": "桌子"
+    },
+    {
+      "level": 1,
+      "source_number": 297,
+      "chinese": "字"
+    },
+    {
+      "level": 1,
+      "source_number": 298,
+      "chinese": "昨天"
+    },
+    {
+      "level": 1,
+      "source_number": 299,
+      "chinese": "坐"
+    },
+    {
+      "level": 1,
+      "source_number": 300,
+      "chinese": "做"
+    },
+    {
+      "level": 1,
+      "source_number": 301,
+      "chinese": "做饭"
+    },
+    {
+      "level": 2,
+      "source_number": 13,
+      "chinese": "不好意思"
+    },
+    {
+      "level": 2,
+      "source_number": 98,
+      "chinese": "没意思"
+    },
+    {
+      "level": 2,
+      "source_number": 154,
+      "chinese": "为什么"
+    },
+    {
+      "level": 2,
+      "source_number": 179,
+      "chinese": "有意思"
+    },
+    {
+      "level": 3,
+      "source_number": 41,
+      "chinese": "不同"
+    },
+    {
+      "level": 3,
+      "source_number": 55,
+      "chinese": "常见"
+    },
+    {
+      "level": 3,
+      "source_number": 56,
+      "chinese": "常用"
+    },
+    {
+      "level": 3,
+      "source_number": 137,
+      "chinese": "感兴趣"
+    },
+    {
+      "level": 3,
+      "source_number": 464,
+      "chinese": "怎么办"
+    },
+    {
+      "level": 3,
+      "source_number": 477,
+      "chinese": "只能"
+    },
+    {
+      "level": 4,
+      "source_number": 100,
+      "chinese": "此次"
+    },
+    {
+      "level": 4,
+      "source_number": 115,
+      "chinese": "打招呼"
+    },
+    {
+      "level": 4,
+      "source_number": 419,
+      "chinese": "开玩笑"
+    },
+    {
+      "level": 4,
+      "source_number": 476,
+      "chinese": "零下"
+    },
+    {
+      "level": 4,
+      "source_number": 531,
+      "chinese": "能否"
+    },
+    {
+      "level": 4,
+      "source_number": 665,
+      "chinese": "十字路口"
+    },
+    {
+      "level": 5,
+      "source_number": 94,
+      "chinese": "册"
+    },
+    {
+      "level": 5,
+      "source_number": 200,
+      "chinese": "从不"
+    },
+    {
+      "level": 5,
+      "source_number": 310,
+      "chinese": "吨"
+    },
+    {
+      "level": 5,
+      "source_number": 311,
+      "chinese": "朵"
+    },
+    {
+      "level": 5,
+      "source_number": 358,
+      "chinese": "丰富多彩"
+    },
+    {
+      "level": 5,
+      "source_number": 369,
+      "chinese": "副"
+    },
+    {
+      "level": 5,
+      "source_number": 399,
+      "chinese": "各行各业"
+    },
+    {
+      "level": 5,
+      "source_number": 514,
+      "chinese": "伙"
+    },
+    {
+      "level": 5,
+      "source_number": 605,
+      "chinese": "届"
+    },
+    {
+      "level": 5,
+      "source_number": 617,
+      "chinese": "近年来"
+    },
+    {
+      "level": 5,
+      "source_number": 662,
+      "chinese": "颗"
+    },
+    {
+      "level": 5,
+      "source_number": 699,
+      "chinese": "厘米"
+    },
+    {
+      "level": 5,
+      "source_number": 825,
+      "chinese": "批"
+    },
+    {
+      "level": 5,
+      "source_number": 828,
+      "chinese": "匹"
+    },
+    {
+      "level": 5,
+      "source_number": 880,
+      "chinese": "亲朋好友"
+    },
+    {
+      "level": 5,
+      "source_number": 1066,
+      "chinese": "束"
+    },
+    {
+      "level": 5,
+      "source_number": 1087,
+      "chinese": "酸甜苦辣"
+    },
+    {
+      "level": 5,
+      "source_number": 1214,
+      "chinese": "五颜六色"
+    },
+    {
+      "level": 5,
+      "source_number": 1358,
+      "chinese": "一路顺风"
+    },
+    {
+      "level": 5,
+      "source_number": 1402,
+      "chinese": "由此"
+    },
+    {
+      "level": 5,
+      "source_number": 1409,
+      "chinese": "有害"
+    },
+    {
+      "level": 5,
+      "source_number": 1430,
+      "chinese": "原有"
+    },
+    {
+      "level": 5,
+      "source_number": 1487,
+      "chinese": "阵"
+    },
+    {
+      "level": 5,
+      "source_number": 1499,
+      "chinese": "支"
+    },
+    {
+      "level": 6,
+      "source_number": 67,
+      "chinese": "不耐烦"
+    },
+    {
+      "level": 6,
+      "source_number": 163,
+      "chinese": "成千上万"
+    },
+    {
+      "level": 6,
+      "source_number": 236,
+      "chinese": "打交道"
+    },
+    {
+      "level": 6,
+      "source_number": 245,
+      "chinese": "大吃一惊"
+    },
+    {
+      "level": 6,
+      "source_number": 336,
+      "chinese": "多才多艺"
+    },
+    {
+      "level": 6,
+      "source_number": 437,
+      "chinese": "高新技术"
+    },
+    {
+      "level": 6,
+      "source_number": 517,
+      "chinese": "海内外"
+    },
+    {
+      "level": 6,
+      "source_number": 528,
+      "chinese": "毫不"
+    },
+    {
+      "level": 6,
+      "source_number": 529,
+      "chinese": "毫无"
+    },
+    {
+      "level": 6,
+      "source_number": 1033,
+      "chinese": "千家万户"
+    },
+    {
+      "level": 6,
+      "source_number": 1094,
+      "chinese": "人工智能"
+    },
+    {
+      "level": 6,
+      "source_number": 1097,
+      "chinese": "人山人海"
+    },
+    {
+      "level": 6,
+      "source_number": 1414,
+      "chinese": "下功夫"
+    },
+    {
+      "level": 6,
+      "source_number": 1539,
+      "chinese": "衣食住行"
+    },
+    {
+      "level": 6,
+      "source_number": 1564,
+      "chinese": "一帆风顺"
+    },
+    {
+      "level": 6,
+      "source_number": 1567,
+      "chinese": "一模一样"
+    },
+    {
+      "level": 6,
+      "source_number": 1713,
+      "chinese": "至关重要"
+    },
+    {
+      "level": 6,
+      "source_number": 1734,
+      "chinese": "众所周知"
+    },
+    {
+      "level": 6,
+      "source_number": 1783,
+      "chinese": "自言自语"
+    }
+  ],
+  "counts_without_part_of_speech_by_level": {
+    "1": 301,
+    "2": 4,
+    "3": 6,
+    "4": 6,
+    "5": 24,
+    "6": 19
+  },
+  "extraction_errors": [
+    {
+      "level": 1,
+      "page": 15,
+      "source_number": 236,
+      "chinese": "小朋友",
+      "type": "unexpected_digit_in_pinyin",
+      "raw": "xiǎopéngyou5",
+      "stored": "xiǎopéngyou"
+    },
+    {
+      "level": 5,
+      "source_number": 683,
+      "chinese": "劳动",
+      "type": "malformed_headword_in_pdf_text_layer",
+      "raw": "劳verb",
+      "stored": "劳动",
+      "evidence": "pinyin láodòng; translation 'labor, work; to work'"
+    }
+  ],
+  "normalization_actions": [
+    {
+      "level": 2,
+      "source_number": 58,
+      "type": "removed_trailing_sense_marker",
+      "raw": "花2",
+      "stored": "花"
+    },
+    {
+      "level": 5,
+      "source_number": 132,
+      "type": "removed_trailing_sense_marker",
+      "raw": "称1",
+      "stored": "称"
+    },
+    {
+      "level": 5,
+      "source_number": 133,
+      "type": "removed_trailing_sense_marker",
+      "raw": "称2",
+      "stored": "称"
+    },
+    {
+      "level": 5,
+      "source_number": 683,
+      "type": "repaired_malformed_headword",
+      "raw": "劳verb",
+      "stored": "劳动"
+    },
+    {
+      "level": 5,
+      "source_number": 767,
+      "type": "removed_trailing_sense_marker",
+      "raw": "面2",
+      "stored": "面"
+    },
+    {
+      "level": 5,
+      "source_number": 825,
+      "type": "removed_trailing_sense_marker",
+      "raw": "批1",
+      "stored": "批"
+    },
+    {
+      "level": 5,
+      "source_number": 826,
+      "type": "removed_trailing_sense_marker",
+      "raw": "批2",
+      "stored": "批"
+    },
+    {
+      "level": 6,
+      "source_number": 407,
+      "type": "removed_trailing_sense_marker",
+      "raw": "副2",
+      "stored": "副"
+    },
+    {
+      "level": 6,
+      "source_number": 741,
+      "type": "removed_trailing_sense_marker",
+      "raw": "局1",
+      "stored": "局"
+    },
+    {
+      "level": 6,
+      "source_number": 742,
+      "type": "removed_trailing_sense_marker",
+      "raw": "局2",
+      "stored": "局"
+    },
+    {
+      "level": 6,
+      "source_number": 850,
+      "type": "removed_trailing_sense_marker",
+      "raw": "料1",
+      "stored": "料"
+    },
+    {
+      "level": 6,
+      "source_number": 851,
+      "type": "removed_trailing_sense_marker",
+      "raw": "料2",
+      "stored": "料"
+    },
+    {
+      "level": 6,
+      "source_number": 863,
+      "type": "removed_trailing_sense_marker",
+      "raw": "露1",
+      "stored": "露"
+    },
+    {
+      "level": 6,
+      "source_number": 1653,
+      "type": "removed_trailing_sense_marker",
+      "raw": "则1",
+      "stored": "则"
+    },
+    {
+      "level": 6,
+      "source_number": 1694,
+      "type": "removed_trailing_sense_marker",
+      "raw": "支2",
+      "stored": "支"
+    }
+  ],
+  "words_in_multiple_levels": [
+    {
+      "chinese": "两",
+      "levels": [
+        1,
+        4
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 111,
+          "pinyin": "liǎng",
+          "part_of_speech": null,
+          "source_translation": "tous les deux • certains •quelques • deux • poids: 50grammes"
+        },
+        {
+          "level": 4,
+          "source_number": 473,
+          "pinyin": "liǎng",
+          "part_of_speech": "classifier",
+          "source_translation": "measure word for vehicles, animals, etc."
+        }
+      ]
+    },
+    {
+      "chinese": "中",
+      "levels": [
+        3,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 481,
+          "pinyin": "zhōng",
+          "part_of_speech": "noun",
+          "source_translation": "middle"
+        },
+        {
+          "level": 6,
+          "source_number": 1728,
+          "pinyin": "zhòng",
+          "part_of_speech": "动",
+          "source_translation": "to hit, to be hit by"
+        }
+      ]
+    },
+    {
+      "chinese": "为",
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 375,
+          "pinyin": "wèi",
+          "part_of_speech": "preposition",
+          "source_translation": "for, because of, to"
+        },
+        {
+          "level": 4,
+          "source_number": 771,
+          "pinyin": "wéi",
+          "part_of_speech": "verb",
+          "source_translation": "to do, to act, to serve as"
+        },
+        {
+          "level": 5,
+          "source_number": 1184,
+          "pinyin": "wéi",
+          "part_of_speech": "preposition",
+          "source_translation": "for, for the sake of"
+        }
+      ]
+    },
+    {
+      "chinese": "乘",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 78,
+          "pinyin": "chéng",
+          "part_of_speech": "verb",
+          "source_translation": "to ride, to take, to multiply"
+        },
+        {
+          "level": 6,
+          "source_number": 157,
+          "pinyin": "chéng",
+          "part_of_speech": "动",
+          "source_translation": "to ride, to take"
+        }
+      ]
+    },
+    {
+      "chinese": "会",
+      "levels": [
+        1,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 82,
+          "pinyin": "huì",
+          "part_of_speech": null,
+          "source_translation": "avoir la capacité de, savoir fairequelque chose • indique le futurou une probabilité"
+        },
+        {
+          "level": 3,
+          "source_number": 183,
+          "pinyin": "huì",
+          "part_of_speech": "noun",
+          "source_translation": "meeting"
+        }
+      ]
+    },
+    {
+      "chinese": "倒",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 139,
+          "pinyin": "dào",
+          "part_of_speech": "verb、(adverb)",
+          "source_translation": "to fall, to collapse; (however, but)"
+        },
+        {
+          "level": 5,
+          "source_number": 253,
+          "pinyin": "dǎo",
+          "part_of_speech": "verb",
+          "source_translation": "to fall, to collapse"
+        }
+      ]
+    },
+    {
+      "chinese": "冲",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 158,
+          "pinyin": "chōng",
+          "part_of_speech": "verb",
+          "source_translation": "to rush, to rinse, to pour"
+        },
+        {
+          "level": 6,
+          "source_number": 179,
+          "pinyin": "chòng",
+          "part_of_speech": "动、介",
+          "source_translation": "towards; with the force of"
+        }
+      ]
+    },
+    {
+      "chinese": "划",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 496,
+          "pinyin": "huá",
+          "part_of_speech": "verb",
+          "source_translation": "to row, to paddle"
+        },
+        {
+          "level": 6,
+          "source_number": 567,
+          "pinyin": "huà",
+          "part_of_speech": "动",
+          "source_translation": "to row, to paddle"
+        }
+      ]
+    },
+    {
+      "chinese": "别",
+      "levels": [
+        2,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 11,
+          "pinyin": "bié",
+          "part_of_speech": "adverb",
+          "source_translation": "don’t, not bad"
+        },
+        {
+          "level": 5,
+          "source_number": 66,
+          "pinyin": "bié",
+          "part_of_speech": "verb",
+          "source_translation": "to leave, to part ways"
+        }
+      ]
+    },
+    {
+      "chinese": "副",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 369,
+          "pinyin": "fù",
+          "part_of_speech": null,
+          "source_translation": "measure word for pairs, sets"
+        },
+        {
+          "level": 6,
+          "source_number": 407,
+          "pinyin": "fù",
+          "part_of_speech": "形",
+          "source_translation": "deputy, vice-"
+        }
+      ]
+    },
+    {
+      "chinese": "升",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 989,
+          "pinyin": "shēng",
+          "part_of_speech": "verb",
+          "source_translation": "to rise, to go up"
+        },
+        {
+          "level": 6,
+          "source_number": 1169,
+          "pinyin": "shēng",
+          "part_of_speech": "量",
+          "source_translation": "liter"
+        }
+      ]
+    },
+    {
+      "chinese": "只",
+      "levels": [
+        1,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 289,
+          "pinyin": "zhī",
+          "part_of_speech": null,
+          "source_translation": "CL: pour les oiseaux et certainsanimaux, l'un d'une paire,certains ustensiles, récipients,etc"
+        },
+        {
+          "level": 3,
+          "source_number": 475,
+          "pinyin": "zhǐ",
+          "part_of_speech": "adverb",
+          "source_translation": "only, merely"
+        }
+      ]
+    },
+    {
+      "chinese": "啊",
+      "levels": [
+        2,
+        4
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 1,
+          "pinyin": "a",
+          "part_of_speech": "auxiliary",
+          "source_translation": "ah, oh"
+        },
+        {
+          "level": 4,
+          "source_number": 1,
+          "pinyin": "ā",
+          "part_of_speech": "interjection",
+          "source_translation": "ah, oh"
+        }
+      ]
+    },
+    {
+      "chinese": "喂",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 219,
+          "pinyin": "wèi",
+          "part_of_speech": null,
+          "source_translation": "hé !"
+        },
+        {
+          "level": 5,
+          "source_number": 1195,
+          "pinyin": "wèi",
+          "part_of_speech": "verb",
+          "source_translation": "to feed"
+        }
+      ]
+    },
+    {
+      "chinese": "地",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 33,
+          "pinyin": "de",
+          "part_of_speech": "auxiliary",
+          "source_translation": "particle modifying an adjective into an adverb"
+        },
+        {
+          "level": 3,
+          "source_number": 89,
+          "pinyin": "dì",
+          "part_of_speech": "noun",
+          "source_translation": "ground, earth, land"
+        }
+      ]
+    },
+    {
+      "chinese": "地方",
+      "levels": [
+        3,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 91,
+          "pinyin": "dìfang",
+          "part_of_speech": "noun",
+          "source_translation": "place"
+        },
+        {
+          "level": 6,
+          "source_number": 292,
+          "pinyin": "dìfāng",
+          "part_of_speech": "名",
+          "source_translation": "place, location"
+        }
+      ]
+    },
+    {
+      "chinese": "头",
+      "levels": [
+        2,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 145,
+          "pinyin": "tóu",
+          "part_of_speech": "noun、(classifier)、(adjective)",
+          "source_translation": "head; (measure word for animals); (first)"
+        },
+        {
+          "level": 5,
+          "source_number": 1149,
+          "pinyin": "tou",
+          "part_of_speech": "suffix",
+          "source_translation": "suffix used after nouns"
+        }
+      ]
+    },
+    {
+      "chinese": "好",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 71,
+          "pinyin": "hǎo",
+          "part_of_speech": null,
+          "source_translation": "bien • bon"
+        },
+        {
+          "level": 5,
+          "source_number": 472,
+          "pinyin": "hào",
+          "part_of_speech": "verb",
+          "source_translation": "to like, to be fond of"
+        }
+      ]
+    },
+    {
+      "chinese": "干",
+      "levels": [
+        3,
+        4
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 140,
+          "pinyin": "gàn",
+          "part_of_speech": "verb",
+          "source_translation": "to do, to work"
+        },
+        {
+          "level": 4,
+          "source_number": 220,
+          "pinyin": "gān",
+          "part_of_speech": "adjective、(noun)",
+          "source_translation": "dry; (dried food)"
+        }
+      ]
+    },
+    {
+      "chinese": "当",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 135,
+          "pinyin": "dāng",
+          "part_of_speech": "verb、preposition",
+          "source_translation": "to serve as, to be; at the time of"
+        },
+        {
+          "level": 5,
+          "source_number": 250,
+          "pinyin": "dàng",
+          "part_of_speech": "verb",
+          "source_translation": "to treat as, to regard as; to serve as"
+        }
+      ]
+    },
+    {
+      "chinese": "待",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 131,
+          "pinyin": "dāi",
+          "part_of_speech": "verb",
+          "source_translation": "to stay"
+        },
+        {
+          "level": 6,
+          "source_number": 256,
+          "pinyin": "dài",
+          "part_of_speech": "动",
+          "source_translation": "to stay, to wait"
+        }
+      ]
+    },
+    {
+      "chinese": "得",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 32,
+          "pinyin": "de",
+          "part_of_speech": "auxiliary",
+          "source_translation": "particle indicating degree or manner"
+        },
+        {
+          "level": 3,
+          "source_number": 83,
+          "pinyin": "dé",
+          "part_of_speech": "verb",
+          "source_translation": "to get, to obtain"
+        },
+        {
+          "level": 3,
+          "source_number": 87,
+          "pinyin": "děi",
+          "part_of_speech": "verb",
+          "source_translation": "must, need"
+        }
+      ]
+    },
+    {
+      "chinese": "所",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 1098,
+          "pinyin": "suǒ",
+          "part_of_speech": "、noun",
+          "source_translation": "measure word for places; place, office"
+        },
+        {
+          "level": 6,
+          "source_number": 1254,
+          "pinyin": "suǒ",
+          "part_of_speech": "助",
+          "source_translation": "particle used to indicate passive voice or to nominalize 动 s"
+        }
+      ]
+    },
+    {
+      "chinese": "扇",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 949,
+          "pinyin": "shān",
+          "part_of_speech": "verb",
+          "source_translation": "to fan"
+        },
+        {
+          "level": 6,
+          "source_number": 1142,
+          "pinyin": "shàn",
+          "part_of_speech": "量",
+          "source_translation": "measure word for doors, windows"
+        }
+      ]
+    },
+    {
+      "chinese": "才",
+      "levels": [
+        3,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 44,
+          "pinyin": "cái",
+          "part_of_speech": "adverb",
+          "source_translation": "just, only"
+        },
+        {
+          "level": 5,
+          "source_number": 83,
+          "pinyin": "cái",
+          "part_of_speech": "noun",
+          "source_translation": "talent, ability"
+        }
+      ]
+    },
+    {
+      "chinese": "支",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 1499,
+          "pinyin": "zhī",
+          "part_of_speech": null,
+          "source_translation": "measure word for long, slender objects"
+        },
+        {
+          "level": 6,
+          "source_number": 1694,
+          "pinyin": "zhī",
+          "part_of_speech": "动",
+          "source_translation": "to support"
+        }
+      ]
+    },
+    {
+      "chinese": "数",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 691,
+          "pinyin": "shù",
+          "part_of_speech": "noun、number",
+          "source_translation": "number, figure; several, a few"
+        },
+        {
+          "level": 5,
+          "source_number": 1063,
+          "pinyin": "shǔ",
+          "part_of_speech": "verb",
+          "source_translation": "to count"
+        }
+      ]
+    },
+    {
+      "chinese": "本",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 10,
+          "pinyin": "běn",
+          "part_of_speech": null,
+          "source_translation": "carnet • racine • origine • CL:livres"
+        },
+        {
+          "level": 5,
+          "source_number": 40,
+          "pinyin": "běn",
+          "part_of_speech": "adverb、pronoun",
+          "source_translation": "originally; this, current"
+        }
+      ]
+    },
+    {
+      "chinese": "炸",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 1460,
+          "pinyin": "zhá",
+          "part_of_speech": "verb",
+          "source_translation": "to fry"
+        },
+        {
+          "level": 6,
+          "source_number": 1655,
+          "pinyin": "zhà",
+          "part_of_speech": "动",
+          "source_translation": "to explode, to blast"
+        }
+      ]
+    },
+    {
+      "chinese": "点",
+      "levels": [
+        1,
+        2
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 33,
+          "pinyin": "diǎn",
+          "part_of_speech": null,
+          "source_translation": "l'heure pile • petite quantité"
+        },
+        {
+          "level": 2,
+          "source_number": 36,
+          "pinyin": "diǎn",
+          "part_of_speech": "verb、(noun、classifier)",
+          "source_translation": "to light, to ignite; (point, dot; to order)"
+        }
+      ]
+    },
+    {
+      "chinese": "省",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 650,
+          "pinyin": "shěng",
+          "part_of_speech": "noun",
+          "source_translation": "province"
+        },
+        {
+          "level": 5,
+          "source_number": 998,
+          "pinyin": "shěng",
+          "part_of_speech": "verb",
+          "source_translation": "to save"
+        }
+      ]
+    },
+    {
+      "chinese": "看",
+      "levels": [
+        1,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 99,
+          "pinyin": "kàn",
+          "part_of_speech": null,
+          "source_translation": "voir • regarder • lire • examiner •considérer comme • pour visiter •pour s'occuper"
+        },
+        {
+          "level": 5,
+          "source_number": 657,
+          "pinyin": "kān",
+          "part_of_speech": "verb",
+          "source_translation": "to look after, to watch"
+        }
+      ]
+    },
+    {
+      "chinese": "着",
+      "levels": [
+        2,
+        4
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 190,
+          "pinyin": "zhe",
+          "part_of_speech": "auxiliary",
+          "source_translation": "particle indicating ongoing action or state"
+        },
+        {
+          "level": 4,
+          "source_number": 924,
+          "pinyin": "zháo",
+          "part_of_speech": "verb",
+          "source_translation": "to touch, to get to, to catch (fire)"
+        }
+      ]
+    },
+    {
+      "chinese": "种",
+      "levels": [
+        3,
+        4
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 484,
+          "pinyin": "zhǒng",
+          "part_of_speech": "classifier",
+          "source_translation": "measure word for kinds"
+        },
+        {
+          "level": 4,
+          "source_number": 959,
+          "pinyin": "zhòng",
+          "part_of_speech": "verb",
+          "source_translation": "to plant, to grow"
+        }
+      ]
+    },
+    {
+      "chinese": "站",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 186,
+          "pinyin": "zhàn",
+          "part_of_speech": "noun",
+          "source_translation": "station, stop; to stand"
+        },
+        {
+          "level": 3,
+          "source_number": 466,
+          "pinyin": "zhàn",
+          "part_of_speech": "verb",
+          "source_translation": "to stand; station"
+        }
+      ]
+    },
+    {
+      "chinese": "等",
+      "levels": [
+        2,
+        4
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 34,
+          "pinyin": "děng",
+          "part_of_speech": "verb、(preposition)",
+          "source_translation": "to wait; (and so on, until)"
+        },
+        {
+          "level": 4,
+          "source_number": 147,
+          "pinyin": "děng",
+          "part_of_speech": "auxiliary、(noun、classifier)",
+          "source_translation": "and so on, etc.; (class, grade; measure word)"
+        }
+      ]
+    },
+    {
+      "chinese": "结",
+      "levels": [
+        5,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 5,
+          "source_number": 600,
+          "pinyin": "jié",
+          "part_of_speech": "verb、noun",
+          "source_translation": "to tie, to knot; result"
+        },
+        {
+          "level": 6,
+          "source_number": 681,
+          "pinyin": "jiē",
+          "part_of_speech": "动",
+          "source_translation": "to bear (fruit)"
+        }
+      ]
+    },
+    {
+      "chinese": "结果",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 382,
+          "pinyin": "jiéguǒ",
+          "part_of_speech": "noun、conjunction",
+          "source_translation": "result, outcome, consequence; as a result, consequently, in the end"
+        },
+        {
+          "level": 6,
+          "source_number": 682,
+          "pinyin": "jiēguǒ",
+          "part_of_speech": "动",
+          "source_translation": "to bear fruit, to produce a result"
+        }
+      ]
+    },
+    {
+      "chinese": "背",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 20,
+          "pinyin": "bēi",
+          "part_of_speech": "verb",
+          "source_translation": "to carry on the back"
+        },
+        {
+          "level": 5,
+          "source_number": 36,
+          "pinyin": "bèi",
+          "part_of_speech": "noun、verb、adjective",
+          "source_translation": "back, the back of the body; to carry on the back, to bear, to recite from memory; out-of-the-way, remote"
+        }
+      ]
+    },
+    {
+      "chinese": "落",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 493,
+          "pinyin": "luò",
+          "part_of_speech": "verb",
+          "source_translation": "to fall, to drop, to land"
+        },
+        {
+          "level": 6,
+          "source_number": 810,
+          "pinyin": "là",
+          "part_of_speech": "动",
+          "source_translation": "to leave behind, to lag behind"
+        }
+      ]
+    },
+    {
+      "chinese": "行",
+      "levels": [
+        3,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 408,
+          "pinyin": "xíng",
+          "part_of_speech": "verb、adjective",
+          "source_translation": "to go; okay, permissible"
+        },
+        {
+          "level": 5,
+          "source_number": 467,
+          "pinyin": "háng",
+          "part_of_speech": "noun、",
+          "source_translation": "line, row; measure word for lines"
+        }
+      ]
+    },
+    {
+      "chinese": "该",
+      "levels": [
+        3,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 3,
+          "source_number": 135,
+          "pinyin": "gāi",
+          "part_of_speech": "verb",
+          "source_translation": "should"
+        },
+        {
+          "level": 6,
+          "source_number": 413,
+          "pinyin": "gāi",
+          "part_of_speech": "代",
+          "source_translation": "that, such"
+        }
+      ]
+    },
+    {
+      "chinese": "转",
+      "levels": [
+        4,
+        6
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 970,
+          "pinyin": "zhuǎn",
+          "part_of_speech": "verb",
+          "source_translation": "to turn, to shift, to transfer"
+        },
+        {
+          "level": 6,
+          "source_number": 1769,
+          "pinyin": "zhuàn",
+          "part_of_speech": "动",
+          "source_translation": "to turn, to revolve"
+        }
+      ]
+    },
+    {
+      "chinese": "过去",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 50,
+          "pinyin": "guòqù",
+          "part_of_speech": "verb",
+          "source_translation": "to go over"
+        },
+        {
+          "level": 3,
+          "source_number": 160,
+          "pinyin": "guòqù",
+          "part_of_speech": "noun",
+          "source_translation": "past"
+        }
+      ]
+    },
+    {
+      "chinese": "还",
+      "levels": [
+        1,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 1,
+          "source_number": 67,
+          "pinyin": "hái",
+          "part_of_speech": null,
+          "source_translation": "assez • plutôt • passable • enplus • aussi • même • encore •inclus"
+        },
+        {
+          "level": 3,
+          "source_number": 178,
+          "pinyin": "huán",
+          "part_of_speech": "verb",
+          "source_translation": "to return, to give back"
+        }
+      ]
+    },
+    {
+      "chinese": "量",
+      "levels": [
+        4,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 4,
+          "source_number": 472,
+          "pinyin": "liáng",
+          "part_of_speech": "verb",
+          "source_translation": "to measure, to weigh"
+        },
+        {
+          "level": 5,
+          "source_number": 719,
+          "pinyin": "liàng",
+          "part_of_speech": "noun",
+          "source_translation": "quantity, amount"
+        }
+      ]
+    },
+    {
+      "chinese": "长",
+      "levels": [
+        2,
+        3
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 14,
+          "pinyin": "cháng",
+          "part_of_speech": "adjective",
+          "source_translation": "long"
+        },
+        {
+          "level": 3,
+          "source_number": 468,
+          "pinyin": "zhǎng",
+          "part_of_speech": "verb、suffix",
+          "source_translation": "to grow; suffix for head"
+        }
+      ]
+    },
+    {
+      "chinese": "面",
+      "levels": [
+        2,
+        5
+      ],
+      "occurrences": [
+        {
+          "level": 2,
+          "source_number": 103,
+          "pinyin": "miàn",
+          "part_of_speech": "suffix、(verb、noun、classifier)",
+          "source_translation": "suffix indicating a person with a certain characteristic; (to face; side, aspect; measure word for flat objects)"
+        },
+        {
+          "level": 5,
+          "source_number": 767,
+          "pinyin": "miàn",
+          "part_of_speech": "noun",
+          "source_translation": "side, aspect, surface"
+        }
+      ]
+    }
+  ],
+  "suspicious_differences_between_pdfs": [
+    {
+      "type": "source_and_language_change",
+      "details": "Le HSK 1 est un document français Chinesimple/Khanji School ; les HSK 2 à 6 sont des documents anglais Mandarin Zest."
+    },
+    {
+      "type": "missing_grammatical_column",
+      "details": "Le HSK 1 ne fournit pas de colonne de nature grammaticale ; les valeurs sont stockées à null."
+    },
+    {
+      "type": "part_of_speech_language_change",
+      "details": "Les HSK 2 à 5 emploient des catégories grammaticales anglaises, tandis que le HSK 6 emploie des abréviations chinoises ; toutes les valeurs source sont conservées."
+    },
+    {
+      "type": "unexpected_hsk1_count",
+      "details": "Le PDF HSK 1 est numéroté de 1 à 301, alors que les autres listes ont des totaux ronds (200, 500, 1000, 1600 et 1800). Aucune entrée n’a été supprimée ou réaffectée."
+    },
+    {
+      "type": "mixed_translation_languages_in_hsk1",
+      "details": "Le PDF français HSK 1 contient des traductions espagnoles pour 哪个, 那个 et 这个 ; ces traductions source sont conservées."
+    },
+    {
+      "type": "suspect_hsk1_source_glyphs",
+      "details": "Le PDF HSK 1 contient des glyphes parasites dans les traductions (notamment ʛ pour 超市 et ʓ pour 零) et un chiffre 5 après le pinyin de 小朋友. Les glyphes des traductions sont conservés ; le chiffre du pinyin est retiré et journalisé comme erreur d’extraction."
+    },
+    {
+      "type": "chinese_compatibility_glyphs",
+      "details": "Le HSK 1 emploie de nombreux glyphes CJK de compatibilité ou de radicaux (par exemple ⼋ et ⻋). Les mots chinois sont normalisés en Unicode ; leur niveau provient toujours exclusivement du PDF source."
+    },
+    {
+      "type": "numbered_homographs",
+      "details": "Plusieurs PDF ajoutent des indices numériques aux homographes (par exemple 花2, 称1 et 称2). Ces indices sont retirés du mot stocké et consignés dans normalization_actions."
+    },
+    {
+      "type": "missing_part_of_speech_values",
+      "details": "Certaines lignes des HSK 2 à 6 laissent la nature grammaticale vide dans la source. Elles sont stockées à null et listées dans words_without_part_of_speech."
+    },
+    {
+      "type": "invalid_hsk5_headword",
+      "details": "À l’entrée 683 du HSK 5, la couche texte du PDF donne « 劳verb » avec le pinyin láodòng et la traduction « labor, work; to work ». Le mot stocké est réparé en 劳动 et la valeur brute reste consignée dans les erreurs et normalisations."
+    }
+  ]
+}

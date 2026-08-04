@@ -153,6 +153,59 @@ async function click(selector) {
    })()`);
 }
 
+async function mouseClick(selector, options = {}) {
+   const encoded = JSON.stringify(selector);
+   const target = await evaluate(`(async () => {
+      const element = document.querySelector(${encoded});
+      if (!element) throw new Error('Missing element: ' + ${encoded});
+      element.scrollIntoView({ block: 'center', inline: 'center' });
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const rect = element.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const hit = document.elementFromPoint(x, y);
+      const style = getComputedStyle(element);
+      return {
+         x,
+         y,
+         width: rect.width,
+         height: rect.height,
+         disabled: !!element.disabled,
+         pointerEvents: style.pointerEvents,
+         visible: rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < innerHeight,
+         hitTarget: hit ? (hit.id || hit.tagName) : null,
+         receivesPointer: !!hit && (hit === element || element.contains(hit)),
+      };
+   })()`);
+   assert(target.visible, `Mouse target is not visible: ${selector}`);
+   assert(target.pointerEvents !== "none", `Mouse target has pointer-events:none: ${selector}`);
+   assert(target.receivesPointer, `Mouse target is overlapped: ${selector}; hit ${target.hitTarget}`);
+   if (!options.allowDisabled)
+      assert(!target.disabled, `Mouse target is disabled: ${selector}`);
+   await cdp.send("Input.dispatchMouseEvent", {
+      type: "mouseMoved",
+      x: target.x,
+      y: target.y,
+   });
+   await cdp.send("Input.dispatchMouseEvent", {
+      type: "mousePressed",
+      x: target.x,
+      y: target.y,
+      button: "left",
+      buttons: 1,
+      clickCount: 1,
+   });
+   await cdp.send("Input.dispatchMouseEvent", {
+      type: "mouseReleased",
+      x: target.x,
+      y: target.y,
+      button: "left",
+      buttons: 0,
+      clickCount: 1,
+   });
+   return target;
+}
+
 async function setValue(selector, value, eventName = "input") {
    const encodedSelector = JSON.stringify(selector);
    const encodedValue = JSON.stringify(value);
@@ -250,11 +303,17 @@ async function main() {
    const startup = await evaluate(`({
       title: document.title,
       nav: document.querySelectorAll('.nav button').length,
+      navLabels: [...document.querySelectorAll('.nav button')].map((button) =>
+         [...button.querySelectorAll('span')].map((span) => span.textContent.trim()).join(' '),
+      ),
       view: activeView,
-      emptyImport: !!document.querySelector('#btn-e-import'),
-      storageKeys: [DB_KEY, SESSION_KEY, BACKUP_KEY],
+      emptyAdd: !!document.querySelector('#btn-e-add'),
+      storageKeys: [DB_KEY, SESSION_KEY, BACKUP_KEY, COURSE_PROGRESS_KEY],
+      courseProgress,
       dictionaryRequests: performance.getEntriesByType('resource')
          .filter((item) => item.name.includes('/data/generated/dictionary/')).length,
+      hskRequests: performance.getEntriesByType('resource')
+         .filter((item) => item.name.includes('/data/generated/hsk/runtime/')).length,
       resourceRequests: performance.getEntriesByType('resource').length,
       resourceBytes: performance.getEntriesByType('resource')
          .reduce((sum, item) => sum + (item.encodedBodySize || 0), 0),
@@ -263,18 +322,254 @@ async function main() {
    })`);
    assert(startup.title.includes("Mò Studio"), "Unexpected page title");
    assert(startup.nav === 5 && startup.view === "learn", "Home navigation failed");
-   assert(startup.emptyImport, "Empty-state import action missing");
+   assert(startup.emptyAdd, "Empty-state create-card action missing");
+   assert(
+      startup.navLabels.includes("学 Parcours") && !startup.navLabels.some((label) => label.includes("Écouter")),
+      `Main navigation did not replace listening with Parcours: ${JSON.stringify(startup.navLabels)}`,
+   );
    assert(startup.dictionaryRequests === 0, "Dictionary data loaded during application startup");
+   assert(startup.hskRequests === 0, "HSK data loaded during application startup");
    assert(
       startup.storageKeys.join("|") ===
-         "mo-studio-v1|mo-studio-session|mo-studio-backup",
+         "mo-studio-v1|mo-studio-session|mo-studio-backup|mo-studio-course-progress-v1",
       "Storage keys changed",
+   );
+   assert(
+      startup.courseProgress.version === 1 && Object.keys(startup.courseProgress.levels).length === 0,
+      `Future course progress is not an empty isolated structure: ${JSON.stringify(startup.courseProgress)}`,
    );
    measurements.startup = startup;
    await assertNoDuplicateIds("Home startup");
    record(
       "startup and home",
-      `empty-state home rendered with zero dictionary-data startup requests; ${startup.resourceRequests} local resources / ${startup.resourceBytes} encoded bytes; load ${startup.loadMs?.toFixed(2)} ms`,
+      `empty-state home rendered with zero dictionary/HSK data startup requests; ${startup.resourceRequests} local resources / ${startup.resourceBytes} encoded bytes; load ${startup.loadMs?.toFixed(2)} ms`,
+   );
+
+   const emptyLearningState = await evaluate(
+      "JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units, settings: db.settings })",
+   );
+   for (const width of [360, 430, 1024]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", {
+         width,
+         height: 900,
+         deviceScaleFactor: 1,
+         mobile: width <= 430,
+      });
+      await evaluate("setView('learn', { fromHistory: true })");
+      const reviewEmpty = await evaluate(`({
+         text: document.querySelector('#view').textContent,
+         hasCreate: !!document.querySelector('#btn-e-add'),
+         hasFormat: !!document.querySelector('#btn-e-format'),
+         hasImport: !!document.querySelector('#btn-e-import'),
+         overflow: document.documentElement.scrollWidth > innerWidth,
+      })`);
+      assert(
+         reviewEmpty.hasCreate && !reviewEmpty.hasFormat && !reviewEmpty.hasImport &&
+            !reviewEmpty.text.includes("Voir le format JSON") && !reviewEmpty.text.includes("pack JSON") &&
+            !reviewEmpty.overflow,
+         `Réviser empty state is not clean at ${width}px: ${JSON.stringify(reviewEmpty)}`,
+      );
+
+      await click('.nav button[data-view="lib"]');
+      const cardsEmpty = await evaluate(`({
+         text: document.querySelector('#view').textContent,
+         hasCreate: !!document.querySelector('#btn-e-add'),
+         hasFormat: !!document.querySelector('#btn-e-format'),
+         hasImport: !!document.querySelector('#btn-e-import'),
+         overflow: document.documentElement.scrollWidth > innerWidth,
+      })`);
+      assert(
+         cardsEmpty.hasCreate && !cardsEmpty.hasFormat && !cardsEmpty.hasImport &&
+            !cardsEmpty.text.includes("Voir le format JSON") && !cardsEmpty.text.includes("pack JSON") &&
+            !cardsEmpty.overflow,
+         `Cartes empty state is not clean at ${width}px: ${JSON.stringify(cardsEmpty)}`,
+      );
+
+      await click('.nav button[data-view="path"]');
+      await waitFor(
+         () => evaluate("document.querySelectorAll('[data-path-level]').length === 6"),
+         `HSK manifest did not render at ${width}px`,
+         20_000,
+      );
+      const pathHome = await evaluate(`(() => {
+         const cards = [...document.querySelectorAll('[data-path-level]')];
+         return {
+            title: document.querySelector('#path-title')?.textContent,
+            continueTitle: document.querySelector('#path-continue-title')?.textContent,
+            levels: cards.map((card) => card.querySelector('.path-level-title').textContent),
+            counts: cards.map((card) => Number(card.dataset.pathLevelCount)),
+            total: document.querySelector('.path-continue')?.textContent,
+            overflow: document.documentElement.scrollWidth > innerWidth,
+         };
+      })()`);
+      assert(
+         pathHome.title === "学 · Parcours" && pathHome.continueTitle === "Explorer le vocabulaire HSK" &&
+            pathHome.levels.join("|") === "HSK 1|HSK 2|HSK 3|HSK 4|HSK 5|HSK 6" &&
+            pathHome.counts.join("|") === "301|200|499|1000|1600|1799" &&
+            pathHome.total.replace(/\s/gu, " ").includes("5 399 entrées") &&
+            !pathHome.overflow,
+         `Real HSK path is incomplete at ${width}px: ${JSON.stringify(pathHome)}`,
+      );
+      await mouseClick('[data-path-level="1"]');
+      await waitFor(
+         () => evaluate("document.querySelectorAll('[data-path-word-index]').length > 0"),
+         `HSK 1 vocabulary did not load at ${width}px`,
+         20_000,
+      );
+      const levelPage = await evaluate(`({
+         title: document.querySelector('#path-level-title')?.textContent,
+         total: Number(document.querySelector('[data-path-current-count]')?.textContent.replace(/\\s/g, '')),
+         filtered: document.querySelector('.path-filter-count')?.textContent,
+         rendered: document.querySelectorAll('[data-path-word-index]').length,
+         firstWord: document.querySelector('[data-path-word-index] .path-word-hanzi')?.textContent,
+         noLessons: document.querySelector('.path-scope-note')?.textContent,
+         back: document.querySelector('#path-level-back')?.textContent.trim(),
+         overflow: document.documentElement.scrollWidth > innerWidth,
+      })`);
+      assert(
+         levelPage.title === "HSK 1" && levelPage.total === 301 && levelPage.filtered.includes("301 entrées") &&
+            levelPage.rendered === 80 && levelPage.firstWord === "爱" &&
+            levelPage.noLessons.includes("aucune leçon") && levelPage.back === "← Retour" && !levelPage.overflow,
+         `HSK vocabulary list is incomplete at ${width}px: ${JSON.stringify(levelPage)}`,
+      );
+      const hskPathScreenshot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+      await writeFile(
+         path.join(screenshotDirectory, `hsk-path-${width}.png`),
+         Buffer.from(hskPathScreenshot.data, "base64"),
+      );
+      await setValue("#path-level-search", "爱");
+      const levelSearch = await waitFor(
+         () => evaluate(`(() => {
+            const rows = [...document.querySelectorAll('[data-path-word-index]')];
+            return rows.length === 1 ? {
+               word: rows[0].querySelector('.path-word-hanzi')?.textContent,
+               badge: rows[0].querySelector('[data-hsk-badge]')?.textContent,
+            } : null;
+         })()`),
+         `HSK level search failed at ${width}px`,
+      );
+      assert(
+         levelSearch.word === "爱" && levelSearch.badge === "HSK 1",
+         `HSK level filter returned the wrong entry at ${width}px: ${JSON.stringify(levelSearch)}`,
+      );
+      await mouseClick("#path-level-back");
+      assert(
+         await evaluate("document.querySelectorAll('[data-path-level]').length === 6"),
+         `HSK level page did not close at ${width}px`,
+      );
+
+      if (width === 1024) {
+         const expectedCounts = [301, 200, 499, 1000, 1600, 1799];
+         for (let level = 2; level <= 6; level++) {
+            await click(`[data-path-level="${level}"]`);
+            await waitFor(
+               () => evaluate(`pathLevelEntries.length === ${expectedCounts[level - 1]}`),
+               `HSK ${level} vocabulary did not load`,
+               20_000,
+            );
+            const loadedLevel = await evaluate(`({
+               title: document.querySelector('#path-level-title')?.textContent,
+               count: pathLevelEntries.length,
+               correctlyClassified: pathLevelEntries.every((entry) => entry.firstHskLevel === ${level}),
+               hasRows: document.querySelectorAll('[data-path-word-index]').length > 0,
+            })`);
+            assert(
+               loadedLevel.title === `HSK ${level}` && loadedLevel.count === expectedCounts[level - 1] &&
+                  loadedLevel.correctlyClassified && loadedLevel.hasRows,
+               `HSK ${level} progressive list failed: ${JSON.stringify(loadedLevel)}`,
+            );
+            await click("#path-level-back");
+         }
+      }
+
+      await click("#btn-settings");
+      const dataActions = await evaluate(`(() => {
+         const format = document.querySelector('#st-format');
+         return {
+            importLabel: document.querySelector('#st-import')?.textContent,
+            exportLabel: document.querySelector('#st-export')?.textContent,
+            formatLabel: format?.textContent,
+            underDataSection: !!format && format.closest('.sh-btns')?.previousElementSibling?.textContent === 'Données',
+         };
+      })()`);
+      assert(
+         dataActions.importLabel === "Importer" && dataActions.exportLabel === "Exporter" &&
+            dataActions.formatLabel === "Voir le format JSON" && dataActions.underDataSection,
+         `Settings data actions are incomplete at ${width}px: ${JSON.stringify(dataActions)}`,
+      );
+      await click("#st-close");
+      assert(
+         (await evaluate("JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units, settings: db.settings })")) ===
+            emptyLearningState,
+         `Parcours or empty-state checks changed learning data at ${width}px`,
+      );
+   }
+   record(
+      "empty states, Settings data actions, and real HSK path",
+      "Réviser/Cartes, Settings, six real HSK counts, progressive vocabulary lists, filtering, isolated progress, and layout passed at 360, 430, and 1024px",
+   );
+
+   await evaluate(`(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+         configurable: true,
+         value: {
+            writeText: async (text) => { window.__formatClipboardText = text; },
+         },
+      });
+   })()`);
+   await click("#btn-settings");
+   await click("#st-format");
+   const settingsFormatDialog = await evaluate(`(() => {
+      const sheet = document.querySelector('#sheet');
+      const minimal = JSON.parse(document.querySelector('#fmt-card-example').textContent);
+      const pack = JSON.parse(document.querySelector('#fmt-pack-example').textContent);
+      const text = sheet.textContent;
+      return {
+         role: sheet.getAttribute('role'),
+         modal: sheet.getAttribute('aria-modal'),
+         labelledBy: sheet.getAttribute('aria-labelledby'),
+         backgroundInert: document.querySelector('#view').inert && document.querySelector('.nav').inert,
+         hasRequired: text.includes('hz') && text.includes('fr'),
+         optionalFields: ['py', 'cat', 'unit', 'order', 'exHz', 'exPy', 'exFr', 'note']
+            .every((field) => text.includes(field)),
+         minimal,
+         pack,
+         buttons: !!document.querySelector('#fmt-copy') && !!document.querySelector('#fmt-close'),
+      };
+   })()`);
+   assert(
+      settingsFormatDialog.role === "dialog" && settingsFormatDialog.modal === "true" &&
+         settingsFormatDialog.labelledBy && settingsFormatDialog.backgroundInert,
+      `Settings format modal is not accessible: ${JSON.stringify(settingsFormatDialog)}`,
+   );
+   assert(
+      settingsFormatDialog.hasRequired && settingsFormatDialog.optionalFields &&
+         settingsFormatDialog.minimal[0].hz === "你好" && settingsFormatDialog.minimal[0].fr === "bonjour",
+      "Settings format modal does not document the real card contract",
+   );
+   assert(
+      settingsFormatDialog.pack.name && settingsFormatDialog.pack.units &&
+         Array.isArray(settingsFormatDialog.pack.cards) && settingsFormatDialog.buttons,
+      "Settings format modal does not include the complete pack example or controls",
+   );
+   await click("#fmt-copy");
+   await waitFor(() => evaluate("window.__formatClipboardText === FORMAT_PACK_EXAMPLE"), "Format example was not copied");
+   await evaluate(`navigator.clipboard.writeText = async () => { throw new Error('simulated clipboard denial'); }`);
+   await click("#fmt-copy");
+   await waitFor(
+      () => evaluate("document.querySelector('#toast').classList.contains('show') && document.querySelector('#toast').textContent.includes('Copie impossible')"),
+      "Clipboard failure did not produce a safe toast",
+   );
+   await click("#fmt-close");
+   assert(!(await evaluate("sheetOpen()")), "Settings format modal did not close with Fermer");
+   assert(
+      (await evaluate("JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units, settings: db.settings })")) ===
+         emptyLearningState,
+      "Viewing or copying the JSON format changed learning data",
+   );
+   record(
+      "Settings personal-card JSON format modal",
+      "Settings → Données opened the accessible contract modal; copy success, failure toast, and Fermer passed",
    );
 
    await setFileInput("#file-global", path.join(projectRoot, "hsk1.json"));
@@ -293,6 +588,7 @@ async function main() {
    assert(imported.units === 15 && imported.packs.includes("HSK 1"), "HSK pack/unit import failed");
    record("JSON import", "hsk1.json imported 150 cards, 15 units, and HSK 1 pack");
 
+   await click('.nav button[data-view="learn"]');
    await click("#btn-continue");
    await waitFor(() => evaluate("session.active && !!document.querySelector('.sess')"), "Smart review did not start");
    await click("#s-flip");
@@ -365,7 +661,7 @@ async function main() {
    assert(!(await evaluate("db.cards.some((card) => card.hz === '测试')")), "Card deletion failed");
    record("card create/edit/delete", "temporary card completed the full lifecycle");
 
-   await click('.nav button[data-view="listen"]');
+   await evaluate("setView('listen', { fromHistory: true })");
    assert(await evaluate("!!document.querySelector('#tone-play') && !!document.querySelector('#word-play')"), "Listening view failed");
    await evaluate(`(() => {
       window.__spoken = [];
@@ -389,6 +685,9 @@ async function main() {
    assert(await evaluate("document.querySelector('.qz-opts').dataset.done === '1'"), "Grammar quiz did not evaluate an answer");
    record("grammar", `${grammar.lessons} lesson panels and interactive quiz options rendered`);
 
+   const learningStateBeforeHskDictionary = await evaluate(
+      "JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units })",
+   );
    await click('.nav button[data-view="write"]');
    await setValue("#dq", "红");
    await click(".search-submit");
@@ -399,6 +698,15 @@ async function main() {
    );
    const searchResult = await evaluate("document.querySelector('#dresults .dict-result').textContent");
    assert(searchResult.includes("红"), "Incorrect search result");
+   const hskSearchBadge = await evaluate(`(() => {
+      const result = [...document.querySelectorAll('#dresults .dict-result')]
+         .find((item) => item.querySelector('[data-hsk-badge="5"]') && item.querySelector('.dict-result-hanzi b')?.textContent === '红');
+      return result ? { badge: result.querySelector('[data-hsk-badge="5"]').textContent, entryId: result.dataset.entryId } : null;
+   })()`);
+   assert(
+      hskSearchBadge?.badge === "HSK 5" && hskSearchBadge.entryId,
+      `Verified HSK badge missing from dictionary results: ${JSON.stringify(hskSearchBadge)}`,
+   );
    const coldSearchMetrics = await evaluate(`({
       durationMs: srch.search.durationMs,
       dictionaryBytes: performance.getEntriesByType('resource')
@@ -448,8 +756,16 @@ async function main() {
       `4x CPU: ${lowerEndSearch.engineDurationMs.toFixed(2)} ms search, ${lowerEndSearch.maximumEventLoopGapMs.toFixed(2)} ms maximum event-loop gap`,
    );
 
-   await click("#dresults .dict-result");
+   await click('#dresults .dict-result:has([data-hsk-badge="5"])');
    await waitFor(() => evaluate("!!document.querySelector('#dd-target')"), "Dictionary detail did not open");
+   const hskDetail = await evaluate(`({
+      badge: document.querySelector('.dd-entry [data-hsk-badge="5"]')?.textContent,
+      source: document.querySelector('.dd-hsk-source')?.textContent,
+   })`);
+   assert(
+      hskDetail.badge === "HSK 5" && hskDetail.source.includes("red"),
+      `HSK badge or source data missing from dictionary detail: ${JSON.stringify(hskDetail)}`,
+   );
    const lazyDetailChunkRequests = await evaluate(
       "performance.getEntriesByType('resource').filter((item) => item.name.includes('/entries/')).length",
    );
@@ -478,6 +794,53 @@ async function main() {
    );
    await click("#dd-close");
    await waitFor(() => evaluate("!!document.querySelector('#dq')"), "Search list did not return");
+
+   await setValue("#dq", "新能源");
+   await click(".search-submit");
+   await waitFor(
+      () => evaluate("!!document.querySelector('[data-entry-id=\"hsk:6:1466\"]')"),
+      "Source-only HSK word was not searchable",
+      30_000,
+   );
+   const sourceOnlySearch = await evaluate(`(() => {
+      const item = document.querySelector('[data-entry-id="hsk:6:1466"]');
+      return {
+         text: item?.textContent,
+         badge: item?.querySelector('[data-hsk-badge="6"]')?.textContent,
+         status: item?.querySelector('.hsk-source-status')?.textContent,
+      };
+   })()`);
+   assert(
+      sourceOnlySearch.text.includes("new energy") && sourceOnlySearch.badge === "HSK 6" &&
+         sourceOnlySearch.status === "Données HSK source",
+      `Source-only HSK search result is incomplete: ${JSON.stringify(sourceOnlySearch)}`,
+   );
+   await click('[data-entry-id="hsk:6:1466"]');
+   await waitFor(
+      () => evaluate("document.querySelector('.dd-entry')?.dataset.entryId === 'hsk:6:1466'"),
+      "Source-only HSK detail did not open",
+   );
+   const sourceOnlyDetail = await evaluate(`({
+      badge: document.querySelector('.dd-entry [data-hsk-badge="6"]')?.textContent,
+      translation: document.querySelector('.dd-hsk-source')?.textContent,
+      pinyin: document.querySelector('.dd-entry .cd-py')?.textContent,
+   })`);
+   assert(
+      sourceOnlyDetail.badge === "HSK 6" && sourceOnlyDetail.translation.includes("new energy") &&
+         sourceOnlyDetail.pinyin.includes("xīnméngyuán") === false && sourceOnlyDetail.pinyin.includes("xīnnéngyuán"),
+      `Source-only HSK detail is incomplete: ${JSON.stringify(sourceOnlyDetail)}`,
+   );
+   await click("#dd-close");
+   await waitFor(() => evaluate("!!document.querySelector('#dq')"), "HSK source detail did not return to search");
+   assert(
+      (await evaluate("JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units })")) ===
+         learningStateBeforeHskDictionary,
+      "HSK path, dictionary badges, or HSK source search changed cards, packs, favorites, or SRS fields",
+   );
+   record(
+      "HSK dictionary integration",
+      "linked HSK badge/detail and source-only search/detail passed without changing learning data",
+   );
 
    await setValue("#dq", "红绿蓝");
    await click(".search-submit");
@@ -635,7 +998,11 @@ async function main() {
    const historyScroll = await evaluate("window.scrollY");
    await click("#dresults .dict-result");
    await waitFor(() => evaluate("!!document.querySelector('#sheet .dd-entry')"), "History detail did not open", 20_000);
-   await new Promise((resolve) => setTimeout(resolve, 120));
+   await waitFor(
+      () => evaluate("!document.hasFocus() || document.activeElement?.id === 'dd-close-top'"),
+      "Dictionary detail close control did not receive focus",
+      2_000,
+   );
    const dialogState = await evaluate(`({
       activeId: document.activeElement?.id,
       documentFocused: document.hasFocus(),
@@ -723,13 +1090,54 @@ async function main() {
    await waitFor(() => evaluate("!sheetOpen()"), "Personal-card detail did not close", 20_000);
    record("complete dictionary detail", "definitions, sources, audio, add-card state, pinyin, character chips, strokes, and labelled English fallback passed");
 
+   const personalCardsBeforeTargetedFixes = await evaluate("JSON.stringify(db.cards)");
+   await evaluate(`(() => {
+      window.__strokeWriterAudit = { creates: [], animations: [] };
+      const originalCreate = HanziWriter.create.bind(HanziWriter);
+      HanziWriter.create = (target, character, options) => {
+         const writer = originalCreate(target, character, options);
+         window.__strokeWriterAudit.creates.push({ character, target: target.id });
+         const originalAnimate = writer.animateCharacter.bind(writer);
+         writer.animateCharacter = (...args) => {
+            window.__strokeWriterAudit.animations.push({ character, target: target.id });
+            return originalAnimate(...args);
+         };
+         return writer;
+      };
+      ddStrokeTab = 'animation';
+   })()`);
    await evaluate("launchDictionarySearch('你')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "你 search failed", 20_000);
    await click("#dresults .dict-result");
    await waitFor(
-      () => evaluate("ddCharacterData?.character === '你' && ddCharacterData.strokeCount === 7"),
+      () => evaluate("ddCharacterData?.character === '你' && ddCharacterData.strokeCount === 7 && window.__strokeWriterAudit.animations.length === 1"),
       "Real 你 stroke data did not load",
       20_000,
+   );
+   const firstAutoplay = await evaluate(`(() => ({
+      animations: window.__strokeWriterAudit.animations.slice(),
+      writerTarget: ddWriterTarget?.id,
+      animationSvgs: document.querySelectorAll('#dd-target svg').length,
+      workspaces: document.querySelectorAll('.stroke-workspace').length,
+      note: document.querySelector('#dd-note').textContent,
+   }))()`);
+   assert(
+      firstAutoplay.animations.length === 1 && firstAutoplay.animations[0].character === "你" &&
+         firstAutoplay.writerTarget === "dd-target" && firstAutoplay.animationSvgs === 1 &&
+         firstAutoplay.workspaces === 1 && firstAutoplay.note.includes("Lecture automatique"),
+      `Initial 你 autoplay or writer uniqueness failed: ${JSON.stringify(firstAutoplay)}`,
+   );
+   await setValue("#dd-speed", "1.35");
+   await evaluate("document.querySelector('#dd-speed').dispatchEvent(new Event('change', { bubbles: true }))");
+   await waitFor(() => evaluate("!!ddWriter && document.querySelectorAll('#dd-target svg').length === 1"), "Speed recreation did not leave one writer");
+   assert(
+      (await evaluate("window.__strokeWriterAudit.animations.length")) === 1,
+      "Changing stroke speed restarted autoplay",
+   );
+   await click("#dd-anim");
+   await waitFor(
+      () => evaluate("window.__strokeWriterAudit.animations.length === 2"),
+      "Manual Rejouer did not animate",
    );
    await click('[data-stroke-tab="steps"]');
    await waitFor(
@@ -741,6 +1149,17 @@ async function main() {
       source: ddCharacterData.sourcePackage + '@' + ddCharacterData.sourceVersion,
       count: ddCharacterData.strokeCount,
       medians: ddCharacterData.medians.length,
+      grid: (() => {
+         const panel = document.querySelector('#dd-gallery .stroke-panel');
+         const border = panel.querySelector('.stroke-grid-border');
+         const center = panel.querySelector('.stroke-grid-center');
+         const diagonal = panel.querySelector('.stroke-grid-diagonal');
+         const style = (element) => {
+            const computed = getComputedStyle(element);
+            return { opacity: Number(computed.opacity), width: parseFloat(computed.strokeWidth) };
+         };
+         return { border: style(border), center: style(center), diagonal: style(diagonal) };
+      })(),
       panels: [...document.querySelectorAll('#dd-gallery .stroke-panel')].map((panel, panelIndex) => ({
          completed: panel.querySelectorAll('.stroke-complete').length,
          current: panel.querySelectorAll('.stroke-current').length,
@@ -753,6 +1172,13 @@ async function main() {
    }))()`);
    assert(niGallery.source === "hanzi-writer-data@2.0.1", "Unpinned 你 stroke source");
    assert(niGallery.count === 7 && niGallery.medians === 7 && niGallery.panels.length === 7, "Incorrect real 你 stroke count");
+   assert(
+      niGallery.grid.border.width <= 1.1 && niGallery.grid.border.opacity <= 0.4 &&
+         niGallery.grid.center.width < 1 && niGallery.grid.center.opacity <= 0.3 &&
+         niGallery.grid.diagonal.width < niGallery.grid.center.width &&
+         niGallery.grid.diagonal.opacity < niGallery.grid.center.opacity,
+      `Stroke gallery grid is still too strong: ${JSON.stringify(niGallery.grid)}`,
+   );
    niGallery.panels.forEach((panel, index) => {
       assert(panel.completed === index, `你 panel ${index + 1} lost completed strokes`);
       assert(panel.current === 1, `你 panel ${index + 1} does not have exactly one red stroke`);
@@ -817,21 +1243,71 @@ async function main() {
    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
    await new Promise((resolve) => setTimeout(resolve, 500));
    assert((await evaluate("document.querySelector('#dd-gallery').scrollLeft")) > 20, "Mobile gallery swipe did not scroll");
-   const mobileGalleryScreenshot = path.join(screenshotDirectory, "stroke-gallery-360.png");
+   const mobileGalleryScreenshot = path.join(screenshotDirectory, "stroke-gallery-ni-360.png");
    const mobileGalleryImage = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
    await writeFile(mobileGalleryScreenshot, Buffer.from(mobileGalleryImage.data, "base64"));
    await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
-   await cdp.send("Emulation.setDeviceMetricsOverride", {
-      width: 1024,
-      height: 900,
-      deviceScaleFactor: 1,
-      mobile: false,
-   });
-   const desktopGalleryScreenshot = path.join(screenshotDirectory, "stroke-gallery-1024.png");
-   const desktopGalleryImage = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
-   await writeFile(desktopGalleryScreenshot, Buffer.from(desktopGalleryImage.data, "base64"));
+   for (const width of [430, 1024]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", {
+         width,
+         height: 900,
+         deviceScaleFactor: 1,
+         mobile: width <= 430,
+      });
+      await evaluate("document.querySelector('#dd-gallery').scrollIntoView({ block: 'center' })");
+      const image = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+      await writeFile(
+         path.join(screenshotDirectory, `stroke-gallery-ni-${width}.png`),
+         Buffer.from(image.data, "base64"),
+      );
+   }
+   for (const sample of [
+      { character: "红", name: "hong" },
+      { character: "蓝", name: "lan" },
+   ]) {
+      await evaluate(`loadDDChar(${JSON.stringify(sample.character)}, ['红', '蓝'])`);
+      await waitFor(
+         () => evaluate(`ddCharacterData?.character === ${JSON.stringify(sample.character)} && document.querySelectorAll('#dd-gallery .stroke-current').length > 0`),
+         `${sample.character} gallery did not render`,
+         20_000,
+      );
+      for (const width of [360, 430, 1024]) {
+         await cdp.send("Emulation.setDeviceMetricsOverride", {
+            width,
+            height: 900,
+            deviceScaleFactor: 1,
+            mobile: width <= 430,
+         });
+         await evaluate(`(() => {
+            const gallery = document.querySelector('#dd-gallery');
+            gallery.scrollLeft = 0;
+            gallery.scrollIntoView({ block: 'center' });
+            gallery.dispatchEvent(new Event('scroll'));
+         })()`);
+         const sampleStyles = await evaluate(`(() => {
+            const panel = document.querySelector('#dd-gallery .stroke-panel');
+            return {
+               current: getComputedStyle(panel.querySelector('.stroke-current')).fill,
+               centerOpacity: Number(getComputedStyle(panel.querySelector('.stroke-grid-center')).opacity),
+               diagonalOpacity: Number(getComputedStyle(panel.querySelector('.stroke-grid-diagonal')).opacity),
+               overflow: document.documentElement.scrollWidth > innerWidth,
+            };
+         })()`);
+         assert(
+            sampleStyles.current === "rgb(166, 37, 32)" &&
+               sampleStyles.diagonalOpacity < sampleStyles.centerOpacity && !sampleStyles.overflow,
+            `${sample.character} gallery styles failed at ${width}px: ${JSON.stringify(sampleStyles)}`,
+         );
+         const image = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+         await writeFile(
+            path.join(screenshotDirectory, `stroke-gallery-${sample.name}-${width}.png`),
+            Buffer.from(image.data, "base64"),
+         );
+      }
+   }
    record("cumulative 你 gallery", "7 real panels; cumulative black/red/grey paths, labels, final character, focus and keyboard navigation passed");
-   record("stroke-gallery mobile swipe", `360px touch swipe and 1024px grid captured in ${screenshotDirectory}`);
+   record("subtle stroke-gallery grid", `你, 红 and 蓝 passed at 360px, 430px and 1024px; screenshots captured in ${screenshotDirectory}`);
+   record("stroke-gallery mobile swipe", "360px touch swipe advanced the gallery");
 
    const loaderCoverage = await evaluate(`(async () => {
       const supported = {};
@@ -883,12 +1359,33 @@ async function main() {
 
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "你 detail did not close", 20_000);
+   const wordAnimationStart = await evaluate("window.__strokeWriterAudit.animations.length");
+   await evaluate("ddStrokeTab = 'animation'");
    await evaluate("launchDictionarySearch('你好')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "你好 search failed", 20_000);
    await click("#dresults .dict-result");
-   await waitFor(() => evaluate("ddCharacterData?.character === '你'"), "你好 first character did not load", 20_000);
-   if (!(await evaluate("document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected') === 'true'")))
-      await click('[data-stroke-tab="steps"]');
+   await waitFor(
+      () => evaluate(`ddCharacterData?.character === '你' && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 1}`),
+      "你好 first character did not autoplay",
+      20_000,
+   );
+   await click("#dd-picker .hzchip:nth-child(2)");
+   await waitFor(
+      () => evaluate(`ddChar === '好' && ddCharacterData?.strokeCount === 6 && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 2}`),
+      "你好 character-chip autoplay failed",
+      20_000,
+   );
+   assert(
+      await evaluate("document.querySelectorAll('#dd-target svg').length === 1 && ddWriterTarget?.id === 'dd-target'"),
+      "你好 character switch created duplicate animation writers",
+   );
+   await click('[data-stroke-tab="steps"]');
+   await click("#dd-picker .hzchip:nth-child(1)");
+   await waitFor(
+      () => evaluate("ddChar === '你' && document.querySelectorAll('#dd-gallery .stroke-panel').length === 7"),
+      "你好 first-character gallery switch failed",
+      20_000,
+   );
    await click("#dd-picker .hzchip:nth-child(2)");
    await waitFor(
       () => evaluate("ddChar === '好' && ddCharacterData?.strokeCount === 6 && document.querySelectorAll('#dd-gallery .stroke-panel').length === 6"),
@@ -896,21 +1393,43 @@ async function main() {
       20_000,
    );
    assert(await evaluate("document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected') === 'true'"), "Character switch lost the selected stroke tab");
+   await click('[data-stroke-tab="animation"]');
+   await waitFor(
+      () => evaluate(`window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 3}`),
+      "Pending selected-character autoplay did not start on the Animation tab",
+   );
+   const rapidAnimationStart = await evaluate("window.__strokeWriterAudit.animations.length");
    const rapidSwitch = await evaluate(`(async () => {
       loadDDChar('你', ['你', '好', '谢']);
       loadDDChar('好', ['你', '好', '谢']);
       await loadDDChar('谢', ['你', '好', '谢']);
       await new Promise((resolve) => setTimeout(resolve, 100));
-      return { character: ddChar, dataCharacter: ddCharacterData?.character, workspaces: document.querySelectorAll('.stroke-workspace').length };
+      return {
+         character: ddChar,
+         dataCharacter: ddCharacterData?.character,
+         workspaces: document.querySelectorAll('.stroke-workspace').length,
+         writerSvgs: document.querySelectorAll('#dd-target svg').length,
+         animations: window.__strokeWriterAudit.animations.slice(${rapidAnimationStart}),
+      };
    })()`);
-   assert(rapidSwitch.character === "谢" && rapidSwitch.dataCharacter === "谢" && rapidSwitch.workspaces === 1, "Rapid switching left stale character state");
-   record("multi-character stroke tabs", "你好 chips preserved Étapes, preloaded the next character, and rapid switching ended cleanly on 谢");
+   assert(
+      rapidSwitch.character === "谢" && rapidSwitch.dataCharacter === "谢" &&
+         rapidSwitch.workspaces === 1 && rapidSwitch.writerSvgs === 1 &&
+         rapidSwitch.animations.length === 1 && rapidSwitch.animations[0].character === "谢",
+      `Rapid switching left stale character or autoplay state: ${JSON.stringify(rapidSwitch)}`,
+   );
+   record("multi-character stroke tabs and autoplay", "你好 autoplayed each selection once, preserved Étapes, and rapid switching animated only the final 谢 writer");
 
    await cdp.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
    });
-   await click('[data-stroke-tab="animation"]');
+   const reducedAnimationStart = await evaluate("window.__strokeWriterAudit.animations.length");
+   await evaluate("loadDDChar('好', ['你', '好', '谢'])");
    await waitFor(() => evaluate("document.querySelector('#dd-note')?.textContent.includes('aucune lecture automatique')"), "Reduced-motion state missing", 20_000);
+   assert(
+      await evaluate(`window.__strokeWriterAudit.animations.length === ${reducedAnimationStart} && document.querySelectorAll('#dd-target svg').length === 1`),
+      "Reduced motion autoplayed or duplicated the writer",
+   );
    await cdp.send("Emulation.setEmulatedMedia", { features: [] });
    await click('[data-stroke-tab="practice"]');
    await click("#dd-quiz");
@@ -982,12 +1501,156 @@ async function main() {
       "Repeated detail open/close leaked stroke UI state",
    );
    record("repeated stroke open/close", `four detail lifecycles released the writer, SVG surface, focus dialog and ${repeatedStrokeLifecycle.documentListenerAdds} document listeners`);
-   await evaluate("launchDictionarySearch('红绿蓝黑白灰棕')");
-   await waitFor(() => evaluate("!!document.querySelector('#btn-seq')"), "Seven-character sequence action missing", 20_000);
-   await click("#btn-seq");
-   await waitFor(() => evaluate("seq?.chars.length === 7 && !!document.querySelector('#seq-character-strip')"), "Seven-character viewer failed", 20_000);
-   await assertNoDuplicateIds("Seven-character sequence viewer");
-   assert((await evaluate("document.querySelectorAll('#seq-character-strip button').length")) === 7, "Clickable seven-character strip is incomplete");
+   for (const width of [360, 430, 1024]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", {
+         width,
+         height: 900,
+         deviceScaleFactor: 1,
+         mobile: width <= 430,
+      });
+      await evaluate(`(() => {
+         if (seq) teardownSequence();
+         srch.q = '';
+         srch.mode = 'landing';
+         srch.search = null;
+         ddStrokeTab = 'animation';
+         setView('write', { fromHistory: true });
+      })()`);
+      await setValue("#dq", "红绿蓝黑白灰棕");
+      await mouseClick(".search-submit");
+      await waitFor(
+         () => evaluate("!!document.querySelector('#btn-seq')"),
+         `Seven-character sequence action missing at ${width}px`,
+         20_000,
+      );
+      const sequenceAnimationStart = await evaluate("window.__strokeWriterAudit.animations.length");
+      await mouseClick("#btn-seq");
+      await waitFor(
+         () => evaluate(`seq?.chars.length === 7 && ddChar === '红' && window.__strokeWriterAudit.animations.length === ${sequenceAnimationStart + 1}`),
+         `Seven-character viewer or initial autoplay failed at ${width}px`,
+         20_000,
+      );
+      await assertNoDuplicateIds(`Seven-character sequence viewer at ${width}px`);
+      assert(
+         (await evaluate("document.querySelectorAll('#seq-character-strip button').length")) === 7,
+         `Clickable seven-character strip is incomplete at ${width}px`,
+      );
+      assert(
+         await evaluate("seq.index === 0 && document.querySelector('#seq-prev').disabled && document.querySelector('.s-count').textContent.trim() === '1 / 7'"),
+         `Sequence previous control is not disabled at position 1 / 7 at ${width}px`,
+      );
+
+      await mouseClick('#seq-character-strip button[data-i="2"]');
+      await waitFor(
+         () => evaluate(`seq.index === 2 && ddChar === '蓝' && ddCharacterData?.character === '蓝' && window.__strokeWriterAudit.animations.length === ${sequenceAnimationStart + 2}`),
+         `Direct sequence move to 蓝 failed at ${width}px`,
+         20_000,
+      );
+      const blueSequenceState = await evaluate(`(() => ({
+         position: document.querySelector('.s-count').textContent.trim(),
+         currentChip: document.querySelector('#seq-character-strip [aria-current=true]').textContent,
+         pinyin: document.querySelector('.seq-card .pinyin')?.textContent || '',
+         meaning: document.querySelector('.seq-card .fr').textContent,
+         previousDisabled: document.querySelector('#seq-prev').disabled,
+         strokeTab: ddStrokeTab,
+         historyIndex: history.state.sequenceIndex,
+      }))()`);
+      assert(
+         blueSequenceState.position === "3 / 7" && blueSequenceState.currentChip === "蓝" &&
+            blueSequenceState.pinyin && blueSequenceState.meaning && !blueSequenceState.previousDisabled &&
+            blueSequenceState.strokeTab === "animation" && blueSequenceState.historyIndex === 2,
+         `蓝 sequence state is incomplete at ${width}px: ${JSON.stringify(blueSequenceState)}`,
+      );
+
+      const firstPreviousTarget = await mouseClick("#seq-prev");
+      await waitFor(
+         () => evaluate(`seq.index === 1 && ddChar === '绿' && ddCharacterData?.character === '绿' && window.__strokeWriterAudit.animations.length === ${sequenceAnimationStart + 3}`),
+         `Visible Previous mouse click did not move from 蓝 to 绿 at ${width}px`,
+         20_000,
+      );
+      const greenSequenceState = await evaluate(`(() => ({
+         position: document.querySelector('.s-count').textContent.trim(),
+         currentChip: document.querySelector('#seq-character-strip [aria-current=true]').textContent,
+         pinyin: document.querySelector('.seq-card .pinyin')?.textContent || '',
+         meaning: document.querySelector('.seq-card .fr').textContent,
+         previousDisabled: document.querySelector('#seq-prev').disabled,
+         strokeTab: ddStrokeTab,
+         historyIndex: history.state.sequenceIndex,
+      }))()`);
+      assert(
+         greenSequenceState.position === "2 / 7" && greenSequenceState.currentChip === "绿" &&
+            greenSequenceState.pinyin && greenSequenceState.meaning && !greenSequenceState.previousDisabled &&
+            greenSequenceState.strokeTab === "animation" && greenSequenceState.historyIndex === 1 &&
+            (greenSequenceState.pinyin !== blueSequenceState.pinyin || greenSequenceState.meaning !== blueSequenceState.meaning),
+         `绿 sequence state did not fully update at ${width}px: ${JSON.stringify(greenSequenceState)}`,
+      );
+
+      const secondPreviousTarget = await mouseClick("#seq-prev");
+      await waitFor(
+         () => evaluate(`seq.index === 0 && ddChar === '红' && ddCharacterData?.character === '红' && window.__strokeWriterAudit.animations.length === ${sequenceAnimationStart + 4}`),
+         `Visible Previous mouse click did not move from 绿 to 红 at ${width}px`,
+         20_000,
+      );
+      const redSequenceState = await evaluate(`(() => ({
+         position: document.querySelector('.s-count').textContent.trim(),
+         currentChip: document.querySelector('#seq-character-strip [aria-current=true]').textContent,
+         previousDisabled: document.querySelector('#seq-prev').disabled,
+         historyIndex: history.state.sequenceIndex,
+         writerSvgs: document.querySelectorAll('#dd-target svg').length,
+         animations: window.__strokeWriterAudit.animations.slice(${sequenceAnimationStart}).map((item) => item.character),
+      }))()`);
+      assert(
+         redSequenceState.position === "1 / 7" && redSequenceState.currentChip === "红" &&
+            redSequenceState.previousDisabled && redSequenceState.historyIndex === 0 &&
+            redSequenceState.writerSvgs === 1 && redSequenceState.animations.join("") === "红蓝绿红",
+         `Required 蓝 → 绿 → 红 Previous scenario failed at ${width}px: ${JSON.stringify(redSequenceState)}`,
+      );
+      const disabledPreviousState = await evaluate(`(() => {
+         const button = document.querySelector('#seq-prev');
+         return { disabled: button.disabled, pointerEvents: getComputedStyle(button).pointerEvents };
+      })()`);
+      assert(
+         disabledPreviousState.disabled && disabledPreviousState.pointerEvents === "none" &&
+            (await evaluate("seq.index === 0 && ddChar === '红'")),
+         `Previous did not enter its non-interactive disabled state at ${width}px: ${JSON.stringify(disabledPreviousState)}`,
+      );
+      assert(
+         firstPreviousTarget.receivesPointer && secondPreviousTarget.receivesPointer &&
+            firstPreviousTarget.pointerEvents !== "none" && secondPreviousTarget.pointerEvents !== "none",
+         `Previous was overlapped or rejected pointer events at ${width}px`,
+      );
+      assert(
+         (await evaluate("JSON.stringify(db.cards)")) === personalCardsBeforeTargetedFixes,
+         `Sequence navigation changed personal-card or SRS data at ${width}px`,
+      );
+      record(
+         `visible Previous button ${width}px`,
+         "real mouse hit-testing passed; 蓝 3/7 → 绿 2/7 → 红 1/7 and disabled state held",
+      );
+      if (width !== 1024) {
+         await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))");
+         await waitFor(() => evaluate("!seq"), `Sequence did not close at ${width}px`, 20_000);
+      }
+   }
+   await click('[data-stroke-tab="steps"]');
+   await click("#seq-next");
+   await waitFor(
+      () => evaluate("seq.index === 1 && ddChar === '绿' && document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected') === 'true'"),
+      "Sequence Next failed or lost the selected stroke tab",
+      20_000,
+   );
+   await click('#seq-character-strip button[data-i="3"]');
+   await waitFor(() => evaluate("seq.index === 3 && ddChar === '黑'"), "Direct sequence selection failed", 20_000);
+   await evaluate(`(() => {
+      const target = document.querySelector('#seq-flash');
+      target.dispatchEvent(new PointerEvent('pointerdown', { clientX: 240, clientY: 90, bubbles: true }));
+      target.dispatchEvent(new PointerEvent('pointerup', { clientX: 100, clientY: 92, bubbles: true }));
+   })()`);
+   await waitFor(() => evaluate("seq.index === 4 && ddChar === '白'"), "Seven-character sequence swipe failed", 20_000);
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))");
+   await waitFor(() => evaluate("seq.index === 3 && ddChar === '黑'"), "Sequence keyboard ArrowLeft failed", 20_000);
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))");
+   await waitFor(() => evaluate("seq.index === 4 && ddChar === '白'"), "Sequence keyboard ArrowRight failed", 20_000);
    await click('#seq-character-strip button[data-i="6"]');
    await waitFor(() => evaluate("seq.index === 6 && ddChar === '棕'"), "Direct sequence jump to 棕 failed", 20_000);
    assert((await evaluate("document.querySelector('.s-count').textContent.trim()")) === "7 / 7", "Sequence position indicator is wrong");
@@ -997,7 +1660,11 @@ async function main() {
    await waitFor(() => evaluate("seq?.index === 6 && ddChar === '棕'"), "Browser Forward did not restore sequence position", 20_000);
    await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))");
    await waitFor(() => evaluate("seq.index === 5 && ddChar === '灰'"), "Sequence keyboard ArrowLeft failed", 20_000);
-   record("complete seven-character sequence", "direct strip jump, position, shared tabs, Browser Back/Forward and keyboard navigation passed");
+   assert(
+      (await evaluate("JSON.stringify(db.cards)")) === personalCardsBeforeTargetedFixes,
+      "Stroke, gallery, or sequence fixes changed personal-card or SRS data",
+   );
+   record("complete seven-character sequence", "蓝 → 绿 → 红 previous navigation, Next, direct chips, swipe, both arrow keys, shared tabs and Browser Back/Forward passed");
    await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))");
    await waitFor(() => evaluate("!seq"), "Sequence Escape failed", 20_000);
 

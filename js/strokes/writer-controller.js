@@ -6,8 +6,18 @@ let ddChar = null;
 let ddCharacterData = null;
 let ddStrokeTab = "animation";
 let ddWriterToken = 0;
+let ddCharacterLoadToken = 0;
 let ddWorkspaceCharacters = [];
 let ddWriterDocumentListeners = [];
+let ddAutoplaySelectionKey = null;
+let ddAutoplayPending = false;
+let ddAutoplayLoadToken = 0;
+
+function resetStrokeAutoplaySelection() {
+   ddAutoplaySelectionKey = null;
+   ddAutoplayPending = false;
+   ddAutoplayLoadToken = 0;
+}
 
 function removeDDWriterDocumentListeners() {
    ddWriterDocumentListeners.forEach(({ type, listener, options }) =>
@@ -101,6 +111,9 @@ function strokeBoxHtml() {
 
 function destroyDDWriter() {
    ddWriterToken++;
+   if (ddWriter && typeof ddWriter.cancelAnimation === "function") {
+      try { ddWriter.cancelAnimation(); } catch (error) {}
+   }
    if (ddWriter && typeof ddWriter.cancelQuiz === "function") {
       try { ddWriter.cancelQuiz(); } catch (error) {}
    }
@@ -111,6 +124,7 @@ function destroyDDWriter() {
 }
 
 function destroyStrokeWorkspace() {
+   ddCharacterLoadToken++;
    destroyDDWriter();
    ddChar = null;
    ddCharacterData = null;
@@ -192,10 +206,33 @@ function createDDWriter(mode) {
       setStrokeWorkspaceMessage("dd-practice-note", "Appuie sur Commencer, puis trace trait par trait.");
    } else {
       const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const shouldAutoplay =
+         ddAutoplayPending && ddAutoplayLoadToken === ddCharacterLoadToken;
+      if (shouldAutoplay) ddAutoplayPending = false;
       setStrokeWorkspaceMessage(
          "dd-note",
-         reduced ? "Mouvement réduit activé · aucune lecture automatique." : `${ddCharacterData.strokeCount} traits réels.`,
+         reduced
+            ? "Mouvement réduit activé · aucune lecture automatique."
+            : shouldAutoplay
+              ? "Lecture automatique des traits dans l’ordre réel."
+              : `${ddCharacterData.strokeCount} traits réels.`,
       );
+      if (shouldAutoplay && !reduced) {
+         const writer = ddWriter;
+         const token = ddWriterToken;
+         try {
+            const animation = writer.animateCharacter();
+            if (animation && typeof animation.catch === "function") {
+               animation.catch(() => {
+                  if (token === ddWriterToken && writer === ddWriter)
+                     setStrokeWorkspaceMessage("dd-note", "Animation indisponible pour ce caractère.");
+               });
+            }
+         } catch (error) {
+            if (token === ddWriterToken && writer === ddWriter)
+               setStrokeWorkspaceMessage("dd-note", "Animation indisponible pour ce caractère.");
+         }
+      }
    }
 }
 
@@ -291,9 +328,18 @@ function wireStrokeWorkspace() {
    });
 }
 
-async function loadDDChar(character, characters) {
+async function loadDDChar(character, characters, options) {
+   const settings = options || {};
+   const selectionKey = String(
+      settings.selectionKey == null ? character : settings.selectionKey,
+   );
    destroyDDWriter();
-   const token = ++ddWriterToken;
+   const token = ++ddCharacterLoadToken;
+   if (selectionKey !== ddAutoplaySelectionKey) {
+      ddAutoplaySelectionKey = selectionKey;
+      ddAutoplayPending = true;
+   }
+   ddAutoplayLoadToken = token;
    ddChar = character;
    ddCharacterData = null;
    ddWorkspaceCharacters = Array.isArray(characters) ? characters.slice() : [character];
@@ -307,11 +353,16 @@ async function loadDDChar(character, characters) {
    if ($("dd-gallery")) $("dd-gallery").innerHTML = '<div class="dictionary-loading"><span class="ink-loader"></span></div>';
    try {
       const data = await loadStrokeCharacterData(character);
-      if (token !== ddWriterToken || ddChar !== character || !document.querySelector(".stroke-workspace")) return;
+      if (
+         token !== ddCharacterLoadToken ||
+         ddChar !== character ||
+         !document.querySelector(".stroke-workspace")
+      ) return;
       ddCharacterData = data;
       renderActiveStrokeTab();
    } catch (error) {
-      if (token !== ddWriterToken || ddChar !== character) return;
+      if (token !== ddCharacterLoadToken || ddChar !== character) return;
+      ddAutoplayPending = false;
       renderStrokeGalleryError(character, error);
       setStrokeWorkspaceMessage("dd-note", "Animation indisponible · aucune donnée inventée.");
       setupFreehandPractice("Données réelles indisponibles · entraînement libre sans modèle inventé.");

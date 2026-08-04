@@ -25,8 +25,9 @@ function strokeGallerySettings() {
 function strokeGridSvg() {
    return (
       '<g class="stroke-grid-lines" aria-hidden="true">' +
-      '<rect x="16" y="16" width="992" height="992" rx="24"></rect>' +
-      '<path d="M16 512H1008 M512 16V1008 M16 16L1008 1008 M1008 16L16 1008"></path>' +
+      '<rect class="stroke-grid-border" x="16" y="16" width="992" height="992" rx="24"></rect>' +
+      '<path class="stroke-grid-center" d="M16 512H1008 M512 16V1008"></path>' +
+      '<path class="stroke-grid-diagonal" d="M16 16L1008 1008 M1008 16L16 1008"></path>' +
       "</g>"
    );
 }

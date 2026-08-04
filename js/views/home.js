@@ -111,20 +111,15 @@
                '<section class="card pad empty">' +
                '<div class="empty-hz">学</div>' +
                '<h2 class="empty-t">Ta collection est vide</h2>' +
-               '<p class="empty-p">Importe un pack JSON (HSK 1, HSK 2…) ou crée ta première carte. Le format des fichiers est documenté juste en dessous.</p>' +
+               '<p class="empty-p">Crée ta première carte pour commencer à construire ta collection.</p>' +
                '<div class="empty-btns">' +
-               '<button class="btn primary" id="btn-e-import">Importer un pack JSON</button>' +
-               '<button class="btn" id="btn-e-add">Créer une carte</button>' +
-               '<button class="btn ghost" id="btn-e-format">Voir le format JSON</button>' +
+               '<button class="btn primary" id="btn-e-add">Créer une carte</button>' +
                "</div></section>"
             );
          }
          function wireEmpty() {
-            if ($("btn-e-import"))
-               $("btn-e-import").onclick = () => $("file-global").click();
             if ($("btn-e-add"))
                $("btn-e-add").onclick = () => openCardForm(null);
-            if ($("btn-e-format")) $("btn-e-format").onclick = openFormatSheet;
          }
 
          function renderLearn() {

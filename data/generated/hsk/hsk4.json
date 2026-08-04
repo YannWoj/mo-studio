@@ -1,0 +1,7002 @@
+[
+  {
+    "chinese": "啊",
+    "pinyin": "ā",
+    "hsk_level": 4,
+    "part_of_speech": "interjection",
+    "source_translation": "ah, oh"
+  },
+  {
+    "chinese": "爱情",
+    "pinyin": "àiqíng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "love"
+  },
+  {
+    "chinese": "爱心",
+    "pinyin": "àixīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "compassion, caring"
+  },
+  {
+    "chinese": "安检",
+    "pinyin": "ānjiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "security check, to conduct security check"
+  },
+  {
+    "chinese": "安排",
+    "pinyin": "ānpái",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to arrange"
+  },
+  {
+    "chinese": "按",
+    "pinyin": "àn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、preposition",
+    "source_translation": "to press, to push; according to"
+  },
+  {
+    "chinese": "按时",
+    "pinyin": "ànshí",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "on time, on schedule"
+  },
+  {
+    "chinese": "按照",
+    "pinyin": "ànzhào",
+    "hsk_level": 4,
+    "part_of_speech": "preposition",
+    "source_translation": "according to, in accordance with"
+  },
+  {
+    "chinese": "白酒",
+    "pinyin": "báijiǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "liquor, spirit"
+  },
+  {
+    "chinese": "办公",
+    "pinyin": "bàngōng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to handle official business, to work"
+  },
+  {
+    "chinese": "办理",
+    "pinyin": "bànlǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to handle, to process"
+  },
+  {
+    "chinese": "办事",
+    "pinyin": "bànshì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to handle matters, to take care of things"
+  },
+  {
+    "chinese": "棒",
+    "pinyin": "bàng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(noun)",
+    "source_translation": "great, excellent; (stick, club)"
+  },
+  {
+    "chinese": "保护",
+    "pinyin": "bǎohù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to protect"
+  },
+  {
+    "chinese": "保证",
+    "pinyin": "bǎozhèng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to guarantee, to ensure; guarantee, assurance"
+  },
+  {
+    "chinese": "抱",
+    "pinyin": "bào",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to hold, to embrace, to hug"
+  },
+  {
+    "chinese": "报考",
+    "pinyin": "bàokǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to apply for an exam, to register for a test"
+  },
+  {
+    "chinese": "报名",
+    "pinyin": "bàomíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to sign up, to register"
+  },
+  {
+    "chinese": "抱歉",
+    "pinyin": "bàoqiàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "sorry, apologetic"
+  },
+  {
+    "chinese": "背",
+    "pinyin": "bēi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to carry on the back"
+  },
+  {
+    "chinese": "背包",
+    "pinyin": "bēibāo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "backpack"
+  },
+  {
+    "chinese": "北部",
+    "pinyin": "běibù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "northern part, north"
+  },
+  {
+    "chinese": "倍",
+    "pinyin": "bèi",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word meaning times, -fold"
+  },
+  {
+    "chinese": "本科",
+    "pinyin": "běnkē",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "undergraduate program"
+  },
+  {
+    "chinese": "本来",
+    "pinyin": "běnlái",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "original, former; originally, actually"
+  },
+  {
+    "chinese": "笨",
+    "pinyin": "bèn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "stupid, foolish"
+  },
+  {
+    "chinese": "鼻子",
+    "pinyin": "bízi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "nose"
+  },
+  {
+    "chinese": "笔试",
+    "pinyin": "bǐshì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "written test, to take a written exam"
+  },
+  {
+    "chinese": "毕业",
+    "pinyin": "bìyè",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to graduate"
+  },
+  {
+    "chinese": "毕业生",
+    "pinyin": "bìyèshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "graduate"
+  },
+  {
+    "chinese": "便于",
+    "pinyin": "biànyú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be convenient for, to facilitate"
+  },
+  {
+    "chinese": "标准",
+    "pinyin": "biāozhǔn",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "standard; standard, typical"
+  },
+  {
+    "chinese": "表",
+    "pinyin": "biǎo",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb)",
+    "source_translation": "watch, meter, table, form; (to express)"
+  },
+  {
+    "chinese": "表格",
+    "pinyin": "biǎogé",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "form, table"
+  },
+  {
+    "chinese": "表示",
+    "pinyin": "biǎoshì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to express, to indicate, to show"
+  },
+  {
+    "chinese": "表现",
+    "pinyin": "biǎoxiàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to show, to display, to perform"
+  },
+  {
+    "chinese": "表扬",
+    "pinyin": "biǎoyáng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to praise, to commend"
+  },
+  {
+    "chinese": "饼干",
+    "pinyin": "bǐnggān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "biscuit, cracker"
+  },
+  {
+    "chinese": "并",
+    "pinyin": "bìng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb、conjunction",
+    "source_translation": "to combine, to merge; actually, indeed; and, also"
+  },
+  {
+    "chinese": "并且",
+    "pinyin": "bìngqiě",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "and, moreover, furthermore"
+  },
+  {
+    "chinese": "播放",
+    "pinyin": "bōfàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to broadcast, to play"
+  },
+  {
+    "chinese": "博士",
+    "pinyin": "bóshì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "doctor"
+  },
+  {
+    "chinese": "不必",
+    "pinyin": "búbì",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "need not, not necessary"
+  },
+  {
+    "chinese": "不便",
+    "pinyin": "búbiàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "inconvenient; to be short of money"
+  },
+  {
+    "chinese": "不断",
+    "pinyin": "búduàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "continuous, unceasing; continuously, constantly"
+  },
+  {
+    "chinese": "不够",
+    "pinyin": "búgòu",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "not enough, insufficient; not sufficiently"
+  },
+  {
+    "chinese": "不过",
+    "pinyin": "búguò",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction、(adverb)",
+    "source_translation": "but, however; (only, merely)"
+  },
+  {
+    "chinese": "不论",
+    "pinyin": "búlùn",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "no matter, regardless"
+  },
+  {
+    "chinese": "步",
+    "pinyin": "bù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "step, pace"
+  },
+  {
+    "chinese": "部",
+    "pinyin": "bù",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "department, part; measure word for books, machines, etc."
+  },
+  {
+    "chinese": "不得不",
+    "pinyin": "bùdébù",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "have to, cannot but"
+  },
+  {
+    "chinese": "部分",
+    "pinyin": "bùfen",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "part, portion"
+  },
+  {
+    "chinese": "不管",
+    "pinyin": "bùguǎn",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "no matter, regardless of"
+  },
+  {
+    "chinese": "不光",
+    "pinyin": "bùguāng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、conjunction",
+    "source_translation": "not only; not only... (but also)"
+  },
+  {
+    "chinese": "不仅",
+    "pinyin": "bùjǐn",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "not only"
+  },
+  {
+    "chinese": "不满",
+    "pinyin": "bùmǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "dissatisfied, displeased"
+  },
+  {
+    "chinese": "部门",
+    "pinyin": "bùmén",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "department, unit"
+  },
+  {
+    "chinese": "不如",
+    "pinyin": "bùrú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "not as good as, inferior to"
+  },
+  {
+    "chinese": "擦",
+    "pinyin": "cā",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to wipe, to rub"
+  },
+  {
+    "chinese": "猜",
+    "pinyin": "cāi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to guess"
+  },
+  {
+    "chinese": "材料",
+    "pinyin": "cáiliào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "material, data"
+  },
+  {
+    "chinese": "参观",
+    "pinyin": "cānguān",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to visit, to tour"
+  },
+  {
+    "chinese": "参赛",
+    "pinyin": "cānsài",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to enter a competition"
+  },
+  {
+    "chinese": "餐厅",
+    "pinyin": "cāntīng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "restaurant, dining hall"
+  },
+  {
+    "chinese": "操场",
+    "pinyin": "cāochǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "playground"
+  },
+  {
+    "chinese": "厕所",
+    "pinyin": "cèsuǒ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "toilet, restroom"
+  },
+  {
+    "chinese": "查看",
+    "pinyin": "chákàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to check, to view"
+  },
+  {
+    "chinese": "茶叶",
+    "pinyin": "cháyè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "tea leaf"
+  },
+  {
+    "chinese": "查找",
+    "pinyin": "cházhǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to search for, to look up"
+  },
+  {
+    "chinese": "差点儿",
+    "pinyin": "chàdiǎnr",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "poor, not good enough; almost, nearly"
+  },
+  {
+    "chinese": "产生",
+    "pinyin": "chǎnshēng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to produce, to generate, to arise"
+  },
+  {
+    "chinese": "厂",
+    "pinyin": "chǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "factory, plant"
+  },
+  {
+    "chinese": "场",
+    "pinyin": "chǎng",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for events, performances, etc."
+  },
+  {
+    "chinese": "超过",
+    "pinyin": "chāoguò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to exceed, to surpass"
+  },
+  {
+    "chinese": "车速",
+    "pinyin": "chēsù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "vehicle speed"
+  },
+  {
+    "chinese": "车位",
+    "pinyin": "chēwèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "parking space"
+  },
+  {
+    "chinese": "城",
+    "pinyin": "chéng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "city, town"
+  },
+  {
+    "chinese": "乘",
+    "pinyin": "chéng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to ride, to take, to multiply"
+  },
+  {
+    "chinese": "成功",
+    "pinyin": "chénggōng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to succeed; successful"
+  },
+  {
+    "chinese": "乘客",
+    "pinyin": "chéngkè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "passenger"
+  },
+  {
+    "chinese": "诚实",
+    "pinyin": "chéngshí",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "honest"
+  },
+  {
+    "chinese": "成为",
+    "pinyin": "chéngwéi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to become"
+  },
+  {
+    "chinese": "乘坐",
+    "pinyin": "chéngzuò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to ride, to take transportation"
+  },
+  {
+    "chinese": "吃惊",
+    "pinyin": "chījīng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be startled, to be shocked"
+  },
+  {
+    "chinese": "迟",
+    "pinyin": "chí",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "late, delayed"
+  },
+  {
+    "chinese": "重",
+    "pinyin": "chóng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、(verb)",
+    "source_translation": "again, once more; (to repeat)"
+  },
+  {
+    "chinese": "重新",
+    "pinyin": "chóngxīn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "again, anew"
+  },
+  {
+    "chinese": "出差",
+    "pinyin": "chūchāi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to go on a business trip"
+  },
+  {
+    "chinese": "出口",
+    "pinyin": "chūkǒu",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb)",
+    "source_translation": "exit; (to export)"
+  },
+  {
+    "chinese": "出现",
+    "pinyin": "chūxiàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to appear, to emerge"
+  },
+  {
+    "chinese": "出行",
+    "pinyin": "chūxíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to travel, to go out"
+  },
+  {
+    "chinese": "出租",
+    "pinyin": "chūzū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to rent out"
+  },
+  {
+    "chinese": "厨房",
+    "pinyin": "chúfáng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "kitchen"
+  },
+  {
+    "chinese": "厨师",
+    "pinyin": "chúshī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "chef, cook"
+  },
+  {
+    "chinese": "窗",
+    "pinyin": "chuāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "window"
+  },
+  {
+    "chinese": "窗户",
+    "pinyin": "chuānghu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "window"
+  },
+  {
+    "chinese": "吹",
+    "pinyin": "chuī",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to blow"
+  },
+  {
+    "chinese": "词语",
+    "pinyin": "cíyǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "word, phrase"
+  },
+  {
+    "chinese": "此",
+    "pinyin": "cǐ",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun",
+    "source_translation": "this"
+  },
+  {
+    "chinese": "此次",
+    "pinyin": "cǐcì",
+    "hsk_level": 4,
+    "part_of_speech": null,
+    "source_translation": "this time"
+  },
+  {
+    "chinese": "此外",
+    "pinyin": "cǐwài",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "besides, in addition, moreover"
+  },
+  {
+    "chinese": "从此",
+    "pinyin": "cóngcǐ",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "from then on, since then"
+  },
+  {
+    "chinese": "从来",
+    "pinyin": "cónglái",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "always, at all times"
+  },
+  {
+    "chinese": "从中",
+    "pinyin": "cóngzhōng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "from among, from it"
+  },
+  {
+    "chinese": "粗",
+    "pinyin": "cū",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "coarse, rough, thick"
+  },
+  {
+    "chinese": "粗心",
+    "pinyin": "cūxīn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "careless"
+  },
+  {
+    "chinese": "村",
+    "pinyin": "cūn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "village"
+  },
+  {
+    "chinese": "存",
+    "pinyin": "cún",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to store, to keep, to exist"
+  },
+  {
+    "chinese": "错过",
+    "pinyin": "cuòguò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to miss, to let slip"
+  },
+  {
+    "chinese": "错误",
+    "pinyin": "cuòwù",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "wrong, mistaken; mistake, error"
+  },
+  {
+    "chinese": "答应",
+    "pinyin": "dāying",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to agree, to promise, to reply"
+  },
+  {
+    "chinese": "答",
+    "pinyin": "dá",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to answer, to reply"
+  },
+  {
+    "chinese": "答案",
+    "pinyin": "dá’àn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "answer, solution"
+  },
+  {
+    "chinese": "达到",
+    "pinyin": "dádào",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to reach, to achieve"
+  },
+  {
+    "chinese": "打招呼",
+    "pinyin": "dǎzhāohu",
+    "hsk_level": 4,
+    "part_of_speech": null,
+    "source_translation": "to greet, to say hello"
+  },
+  {
+    "chinese": "打败",
+    "pinyin": "dǎbài",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to defeat, to beat"
+  },
+  {
+    "chinese": "打工",
+    "pinyin": "dǎgōng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to work a temporary job"
+  },
+  {
+    "chinese": "打扰",
+    "pinyin": "dǎrǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to disturb, to bother"
+  },
+  {
+    "chinese": "打印",
+    "pinyin": "dǎyìn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to print"
+  },
+  {
+    "chinese": "打印机",
+    "pinyin": "dǎyìnjī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "printer"
+  },
+  {
+    "chinese": "打折",
+    "pinyin": "dǎzhé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to give a discount"
+  },
+  {
+    "chinese": "打针",
+    "pinyin": "dǎzhēn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to get an injection, to receive a shot"
+  },
+  {
+    "chinese": "大巴",
+    "pinyin": "dàbā",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "large bus, coach"
+  },
+  {
+    "chinese": "大大",
+    "pinyin": "dàdà",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "greatly, significantly"
+  },
+  {
+    "chinese": "大夫",
+    "pinyin": "dàifu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "doctor (medical)"
+  },
+  {
+    "chinese": "大量",
+    "pinyin": "dàliàng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "large quantity, a large amount"
+  },
+  {
+    "chinese": "大赛",
+    "pinyin": "dàsài",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "major competition, grand contest"
+  },
+  {
+    "chinese": "大厅",
+    "pinyin": "dàtīng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "hall, lobby"
+  },
+  {
+    "chinese": "大约",
+    "pinyin": "dàyuē",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "approximately, about"
+  },
+  {
+    "chinese": "大自然",
+    "pinyin": "dàzìrán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "nature, the natural world"
+  },
+  {
+    "chinese": "待",
+    "pinyin": "dāi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to stay"
+  },
+  {
+    "chinese": "戴",
+    "pinyin": "dài",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to wear, to put on"
+  },
+  {
+    "chinese": "袋子",
+    "pinyin": "dàizi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "bag, sack"
+  },
+  {
+    "chinese": "单位",
+    "pinyin": "dānwèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "unit, department"
+  },
+  {
+    "chinese": "当",
+    "pinyin": "dāng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、preposition",
+    "source_translation": "to serve as, to be; at the time of"
+  },
+  {
+    "chinese": "当时",
+    "pinyin": "dāngshí",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "at that time, then"
+  },
+  {
+    "chinese": "刀",
+    "pinyin": "dāo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "knife"
+  },
+  {
+    "chinese": "导游",
+    "pinyin": "dǎoyóu",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "tour guide; to guide"
+  },
+  {
+    "chinese": "倒",
+    "pinyin": "dào",
+    "hsk_level": 4,
+    "part_of_speech": "verb、(adverb)",
+    "source_translation": "to fall, to collapse; (however, but)"
+  },
+  {
+    "chinese": "道",
+    "pinyin": "dào",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "path, way, method; measure word for long objects"
+  },
+  {
+    "chinese": "到底",
+    "pinyin": "dàodǐ",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "finally, after all, to the end"
+  },
+  {
+    "chinese": "到来",
+    "pinyin": "dàolái",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to arrive"
+  },
+  {
+    "chinese": "道路",
+    "pinyin": "dàolù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "road, path"
+  },
+  {
+    "chinese": "道歉",
+    "pinyin": "dàoqiàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to apologize"
+  },
+  {
+    "chinese": "得意",
+    "pinyin": "déyì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "proud, complacent"
+  },
+  {
+    "chinese": "登机",
+    "pinyin": "dēngjī",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to board a plane"
+  },
+  {
+    "chinese": "等",
+    "pinyin": "děng",
+    "hsk_level": 4,
+    "part_of_speech": "auxiliary、(noun、classifier)",
+    "source_translation": "and so on, etc.; (class, grade; measure word)"
+  },
+  {
+    "chinese": "等到",
+    "pinyin": "děngdào",
+    "hsk_level": 4,
+    "part_of_speech": "preposition",
+    "source_translation": "until, by the time"
+  },
+  {
+    "chinese": "低",
+    "pinyin": "dī",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "low; to lower"
+  },
+  {
+    "chinese": "低价",
+    "pinyin": "dījià",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "low price"
+  },
+  {
+    "chinese": "低温",
+    "pinyin": "dīwēn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "low temperature"
+  },
+  {
+    "chinese": "低于",
+    "pinyin": "dīyú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be lower than"
+  },
+  {
+    "chinese": "底",
+    "pinyin": "dǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "bottom, base"
+  },
+  {
+    "chinese": "底下",
+    "pinyin": "dǐxia",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "below, underneath"
+  },
+  {
+    "chinese": "地球",
+    "pinyin": "dìqiú",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "earth"
+  },
+  {
+    "chinese": "地址",
+    "pinyin": "dìzhǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "address"
+  },
+  {
+    "chinese": "点名",
+    "pinyin": "diǎnmíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to call the roll, to mention by name"
+  },
+  {
+    "chinese": "点头",
+    "pinyin": "diǎntóu",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to nod"
+  },
+  {
+    "chinese": "电动车",
+    "pinyin": "diàndòngchē",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "electric vehicle, e-bike"
+  },
+  {
+    "chinese": "电视剧",
+    "pinyin": "diànshìjù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "TV drama"
+  },
+  {
+    "chinese": "掉",
+    "pinyin": "diào",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to fall, to drop"
+  },
+  {
+    "chinese": "调查",
+    "pinyin": "diàochá",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to investigate"
+  },
+  {
+    "chinese": "订",
+    "pinyin": "dìng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to order, to book"
+  },
+  {
+    "chinese": "定",
+    "pinyin": "dìng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to fix, to set, to determine"
+  },
+  {
+    "chinese": "东部",
+    "pinyin": "dōngbù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "eastern part"
+  },
+  {
+    "chinese": "动车",
+    "pinyin": "dòngchē",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "high-speed train"
+  },
+  {
+    "chinese": "动作",
+    "pinyin": "dòngzuò",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "movement, action"
+  },
+  {
+    "chinese": "读者",
+    "pinyin": "dúzhě",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "reader"
+  },
+  {
+    "chinese": "堵车",
+    "pinyin": "dǔchē",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "traffic jam"
+  },
+  {
+    "chinese": "度假",
+    "pinyin": "dùjià",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to go on vacation"
+  },
+  {
+    "chinese": "肚子",
+    "pinyin": "dùzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "belly, stomach"
+  },
+  {
+    "chinese": "短信",
+    "pinyin": "duǎnxìn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "text message"
+  },
+  {
+    "chinese": "队",
+    "pinyin": "duì",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(classifier)",
+    "source_translation": "team, squad; (measure word for teams)"
+  },
+  {
+    "chinese": "对方",
+    "pinyin": "duìfāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "the other party, counterpart"
+  },
+  {
+    "chinese": "对面",
+    "pinyin": "duìmiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "opposite side"
+  },
+  {
+    "chinese": "对于",
+    "pinyin": "duìyú",
+    "hsk_level": 4,
+    "part_of_speech": "preposition",
+    "source_translation": "regarding, concerning"
+  },
+  {
+    "chinese": "队员",
+    "pinyin": "duìyuán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "team member"
+  },
+  {
+    "chinese": "队长",
+    "pinyin": "duìzhǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "team leader"
+  },
+  {
+    "chinese": "顿",
+    "pinyin": "dùn",
+    "hsk_level": 4,
+    "part_of_speech": "classifier、(verb)",
+    "source_translation": "measure word for meals, scolding; (to pause)"
+  },
+  {
+    "chinese": "多么",
+    "pinyin": "duōme",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "how, so, what"
+  },
+  {
+    "chinese": "多数",
+    "pinyin": "duōshù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "majority"
+  },
+  {
+    "chinese": "多样",
+    "pinyin": "duōyàng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "diverse, varied"
+  },
+  {
+    "chinese": "而",
+    "pinyin": "ér",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "but, and, yet"
+  },
+  {
+    "chinese": "儿童",
+    "pinyin": "értóng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "child"
+  },
+  {
+    "chinese": "发出",
+    "pinyin": "fāchū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to send out, to issue"
+  },
+  {
+    "chinese": "发送",
+    "pinyin": "fāsòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to send"
+  },
+  {
+    "chinese": "法",
+    "pinyin": "fǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "law"
+  },
+  {
+    "chinese": "法律",
+    "pinyin": "fǎlǜ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "law"
+  },
+  {
+    "chinese": "翻译",
+    "pinyin": "fānyì",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to translate; translation"
+  },
+  {
+    "chinese": "烦",
+    "pinyin": "fán",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "annoyed, vexed; to bother"
+  },
+  {
+    "chinese": "烦恼",
+    "pinyin": "fánnǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "worried, distressed"
+  },
+  {
+    "chinese": "反对",
+    "pinyin": "fǎnduì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to oppose, to be against"
+  },
+  {
+    "chinese": "方面",
+    "pinyin": "fāngmiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "aspect, side"
+  },
+  {
+    "chinese": "方式",
+    "pinyin": "fāngshì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "way, method"
+  },
+  {
+    "chinese": "房东",
+    "pinyin": "fángdōng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "landlord"
+  },
+  {
+    "chinese": "房租",
+    "pinyin": "fángzū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "rent"
+  },
+  {
+    "chinese": "放弃",
+    "pinyin": "fàngqì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to give up"
+  },
+  {
+    "chinese": "放松",
+    "pinyin": "fàngsōng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to relax"
+  },
+  {
+    "chinese": "费",
+    "pinyin": "fèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "fee, expense; to spend"
+  },
+  {
+    "chinese": "费用",
+    "pinyin": "fèiyong",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "cost, expense"
+  },
+  {
+    "chinese": "分数",
+    "pinyin": "fēnshù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "score, grade, fraction"
+  },
+  {
+    "chinese": "分为",
+    "pinyin": "fēnwéi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be divided into"
+  },
+  {
+    "chinese": "份",
+    "pinyin": "fèn",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for copies, shares"
+  },
+  {
+    "chinese": "丰富",
+    "pinyin": "fēngfù",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "rich, abundant"
+  },
+  {
+    "chinese": "风景",
+    "pinyin": "fēngjǐng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "scenery, landscape"
+  },
+  {
+    "chinese": "否则",
+    "pinyin": "fǒuzé",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "otherwise, if not"
+  },
+  {
+    "chinese": "幅",
+    "pinyin": "fú",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for paintings, photos, etc."
+  },
+  {
+    "chinese": "符合",
+    "pinyin": "fúhé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to conform to, to match"
+  },
+  {
+    "chinese": "付",
+    "pinyin": "fù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to pay"
+  },
+  {
+    "chinese": "父母",
+    "pinyin": "fùmǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "parents"
+  },
+  {
+    "chinese": "父女",
+    "pinyin": "fùnǚ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "father and daughter"
+  },
+  {
+    "chinese": "父亲",
+    "pinyin": "fùqīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "father"
+  },
+  {
+    "chinese": "复印",
+    "pinyin": "fùyìn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to photocopy, to duplicate"
+  },
+  {
+    "chinese": "复杂",
+    "pinyin": "fùzá",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "complicated, complex"
+  },
+  {
+    "chinese": "负责",
+    "pinyin": "fùzé",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to be responsible; responsible"
+  },
+  {
+    "chinese": "负责人",
+    "pinyin": "fùzérén",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "person in charge"
+  },
+  {
+    "chinese": "父子",
+    "pinyin": "fùzǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "father and son"
+  },
+  {
+    "chinese": "改",
+    "pinyin": "gǎi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to change, to alter"
+  },
+  {
+    "chinese": "改变",
+    "pinyin": "gǎibiàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to change"
+  },
+  {
+    "chinese": "干",
+    "pinyin": "gān",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(noun)",
+    "source_translation": "dry; (dried food)"
+  },
+  {
+    "chinese": "干杯",
+    "pinyin": "gānbēi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to toast, cheers"
+  },
+  {
+    "chinese": "赶",
+    "pinyin": "gǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to hurry, to catch up"
+  },
+  {
+    "chinese": "敢",
+    "pinyin": "gǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to dare"
+  },
+  {
+    "chinese": "感",
+    "pinyin": "gǎn",
+    "hsk_level": 4,
+    "part_of_speech": "suffix",
+    "source_translation": "sense, feeling, as suffix"
+  },
+  {
+    "chinese": "感动",
+    "pinyin": "gǎndòng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "moved, touched; to move, to touch"
+  },
+  {
+    "chinese": "赶紧",
+    "pinyin": "gǎnjǐn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "quickly, promptly"
+  },
+  {
+    "chinese": "感觉",
+    "pinyin": "gǎnjué",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "feeling, sense; to feel"
+  },
+  {
+    "chinese": "赶快",
+    "pinyin": "gǎnkuài",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "quickly, at once"
+  },
+  {
+    "chinese": "感情",
+    "pinyin": "gǎnqíng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "emotion, feeling"
+  },
+  {
+    "chinese": "感人",
+    "pinyin": "gǎnrén",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "touching, moving"
+  },
+  {
+    "chinese": "赶上",
+    "pinyin": "gǎnshàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to catch up, to keep up with"
+  },
+  {
+    "chinese": "感受",
+    "pinyin": "gǎnshòu",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "feeling, experience; to feel"
+  },
+  {
+    "chinese": "感谢",
+    "pinyin": "gǎnxiè",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to thank"
+  },
+  {
+    "chinese": "干活儿",
+    "pinyin": "gànhuór",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to work"
+  },
+  {
+    "chinese": "钢琴",
+    "pinyin": "gāngqín",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "piano"
+  },
+  {
+    "chinese": "高价",
+    "pinyin": "gāojià",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "high price"
+  },
+  {
+    "chinese": "高考",
+    "pinyin": "gāokǎo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Gaokao, college entrance examination"
+  },
+  {
+    "chinese": "高速",
+    "pinyin": "gāosù",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "high speed"
+  },
+  {
+    "chinese": "高温",
+    "pinyin": "gāowēn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "high temperature"
+  },
+  {
+    "chinese": "高于",
+    "pinyin": "gāoyú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "higher than, above"
+  },
+  {
+    "chinese": "胳膊",
+    "pinyin": "gēbo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "arm"
+  },
+  {
+    "chinese": "歌声",
+    "pinyin": "gēshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "sound of singing, song"
+  },
+  {
+    "chinese": "歌手",
+    "pinyin": "gēshǒu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "singer"
+  },
+  {
+    "chinese": "各",
+    "pinyin": "gè",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun、adverb",
+    "source_translation": "each, every; respectively"
+  },
+  {
+    "chinese": "各地",
+    "pinyin": "gèdì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "various places"
+  },
+  {
+    "chinese": "各个",
+    "pinyin": "gègè",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun、adverb",
+    "source_translation": "each, every; one by one"
+  },
+  {
+    "chinese": "各位",
+    "pinyin": "gèwèi",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun",
+    "source_translation": "everyone, all (respectful)"
+  },
+  {
+    "chinese": "各种",
+    "pinyin": "gèzhǒng",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun",
+    "source_translation": "various kinds, all kinds"
+  },
+  {
+    "chinese": "更加",
+    "pinyin": "gèngjiā",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "more, even more"
+  },
+  {
+    "chinese": "工厂",
+    "pinyin": "gōngchǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "factory"
+  },
+  {
+    "chinese": "功夫",
+    "pinyin": "gōngfu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "kung fu, skill, effort"
+  },
+  {
+    "chinese": "公共",
+    "pinyin": "gōnggòng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "public, common"
+  },
+  {
+    "chinese": "功课",
+    "pinyin": "gōngkè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "schoolwork, homework"
+  },
+  {
+    "chinese": "公里",
+    "pinyin": "gōnglǐ",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "kilometer"
+  },
+  {
+    "chinese": "公路",
+    "pinyin": "gōnglù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "highway, road"
+  },
+  {
+    "chinese": "工人",
+    "pinyin": "gōngrén",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "worker"
+  },
+  {
+    "chinese": "工资",
+    "pinyin": "gōngzī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "wage, salary"
+  },
+  {
+    "chinese": "共",
+    "pinyin": "gòng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "together, in total"
+  },
+  {
+    "chinese": "共同",
+    "pinyin": "gòngtóng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "common, joint"
+  },
+  {
+    "chinese": "够",
+    "pinyin": "gòu",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "enough; sufficiently"
+  },
+  {
+    "chinese": "购买",
+    "pinyin": "gòumǎi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to purchase"
+  },
+  {
+    "chinese": "购物",
+    "pinyin": "gòuwù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to shop"
+  },
+  {
+    "chinese": "估计",
+    "pinyin": "gūjì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to estimate, to guess"
+  },
+  {
+    "chinese": "姑娘",
+    "pinyin": "gūniang",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "girl"
+  },
+  {
+    "chinese": "鼓励",
+    "pinyin": "gǔlì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to encourage"
+  },
+  {
+    "chinese": "顾客",
+    "pinyin": "gùkè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "customer"
+  },
+  {
+    "chinese": "故意",
+    "pinyin": "gùyì",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "deliberately, on purpose"
+  },
+  {
+    "chinese": "挂",
+    "pinyin": "guà",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to hang, to suspend"
+  },
+  {
+    "chinese": "关键",
+    "pinyin": "guānjiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "crux; key, crucial"
+  },
+  {
+    "chinese": "观看",
+    "pinyin": "guānkàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to watch, to view"
+  },
+  {
+    "chinese": "观众",
+    "pinyin": "guānzhòng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "audience"
+  },
+  {
+    "chinese": "管",
+    "pinyin": "guǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、(noun、classifier)",
+    "source_translation": "control, manage, care about, bother with; (pipe, tube); (measure word for tubular objects)"
+  },
+  {
+    "chinese": "管理",
+    "pinyin": "guǎnlǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "manage"
+  },
+  {
+    "chinese": "光",
+    "pinyin": "guāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective、verb、adverb",
+    "source_translation": "light, rayl smooth, shiny, used up; bare, expose; only, merely, solely"
+  },
+  {
+    "chinese": "广播",
+    "pinyin": "guǎngbō",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "broadcast, air; radio broadcast, boradcasting"
+  },
+  {
+    "chinese": "广告",
+    "pinyin": "guǎnggào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "advertisement"
+  },
+  {
+    "chinese": "逛",
+    "pinyin": "guàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "stroll, roam, browse, shop around"
+  },
+  {
+    "chinese": "规定",
+    "pinyin": "guīdìng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "stipulate, prescribe, set rules; regulation, rule, stipulation"
+  },
+  {
+    "chinese": "国籍",
+    "pinyin": "guójí",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "nationality"
+  },
+  {
+    "chinese": "国际",
+    "pinyin": "guójì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "international; world"
+  },
+  {
+    "chinese": "果汁",
+    "pinyin": "guǒzhī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "fruit juice"
+  },
+  {
+    "chinese": "过程",
+    "pinyin": "guòchéng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "process"
+  },
+  {
+    "chinese": "海洋",
+    "pinyin": "hǎiyáng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ocean, sea"
+  },
+  {
+    "chinese": "害羞",
+    "pinyin": "hàixiū",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "shy, bshful"
+  },
+  {
+    "chinese": "寒假",
+    "pinyin": "hánjià",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "the winter vacation"
+  },
+  {
+    "chinese": "寒冷",
+    "pinyin": "hánlěng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "cold, frigid, chilly"
+  },
+  {
+    "chinese": "喊",
+    "pinyin": "hǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "shout"
+  },
+  {
+    "chinese": "汗",
+    "pinyin": "hàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "sweat"
+  },
+  {
+    "chinese": "航班",
+    "pinyin": "hángbān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "flight"
+  },
+  {
+    "chinese": "好处",
+    "pinyin": "hǎochù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "benefit"
+  },
+  {
+    "chinese": "好好",
+    "pinyin": "hǎohǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "good, nice, proper; well, thoroughly, serious, all out"
+  },
+  {
+    "chinese": "好笑",
+    "pinyin": "hǎoxiào",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "funny, ridiculous"
+  },
+  {
+    "chinese": "合格",
+    "pinyin": "hégé",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "qualified"
+  },
+  {
+    "chinese": "盒子",
+    "pinyin": "hézi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "box"
+  },
+  {
+    "chinese": "红包",
+    "pinyin": "hóngbāo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "red envelope, red packet"
+  },
+  {
+    "chinese": "厚",
+    "pinyin": "hòu",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "thick"
+  },
+  {
+    "chinese": "后悔",
+    "pinyin": "hòuhuǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "regret"
+  },
+  {
+    "chinese": "忽然",
+    "pinyin": "hūrán",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "suddenly"
+  },
+  {
+    "chinese": "互联网",
+    "pinyin": "hùliánwǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Internet"
+  },
+  {
+    "chinese": "护士",
+    "pinyin": "hùshi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "nurse"
+  },
+  {
+    "chinese": "互相",
+    "pinyin": "hùxiāng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "each other"
+  },
+  {
+    "chinese": "话剧",
+    "pinyin": "huàjù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "drama"
+  },
+  {
+    "chinese": "怀疑",
+    "pinyin": "huáiyí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "doubt"
+  },
+  {
+    "chinese": "坏处",
+    "pinyin": "huàichù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "disadvantage, harm"
+  },
+  {
+    "chinese": "环保",
+    "pinyin": "huánbǎo",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "environmental protection; environmentally friendly, green"
+  },
+  {
+    "chinese": "换乘",
+    "pinyin": "huànchéng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "transfer, change"
+  },
+  {
+    "chinese": "回复",
+    "pinyin": "huífù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "reply"
+  },
+  {
+    "chinese": "回信",
+    "pinyin": "huíxìn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "reply to a letter, write backl; reply letter, response"
+  },
+  {
+    "chinese": "回忆",
+    "pinyin": "huíyì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "memory"
+  },
+  {
+    "chinese": "会员",
+    "pinyin": "huìyuán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "membership"
+  },
+  {
+    "chinese": "活",
+    "pinyin": "huó",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective、noun",
+    "source_translation": "live; alive, living, flexible; work, job, livelihood"
+  },
+  {
+    "chinese": "活动",
+    "pinyin": "huódòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "move, exercise, beactive; activity, event, exercise"
+  },
+  {
+    "chinese": "活泼",
+    "pinyin": "huópō",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "lively"
+  },
+  {
+    "chinese": "火",
+    "pinyin": "huǒ",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "fire; urgent, popular, hot"
+  },
+  {
+    "chinese": "货",
+    "pinyin": "huò",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "goods, commodity, money"
+  },
+  {
+    "chinese": "获得",
+    "pinyin": "huòdé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "get"
+  },
+  {
+    "chinese": "获奖",
+    "pinyin": "huòjiǎng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "win a prize, receive an award"
+  },
+  {
+    "chinese": "获取",
+    "pinyin": "huòqǔ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "gain, obtain"
+  },
+  {
+    "chinese": "基本",
+    "pinyin": "jīběn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "basic, fundamental, essential; basically, essentially, on the whole"
+  },
+  {
+    "chinese": "基本上",
+    "pinyin": "jīběnshàng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "basically"
+  },
+  {
+    "chinese": "基础",
+    "pinyin": "jīchǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Basics"
+  },
+  {
+    "chinese": "激动",
+    "pinyin": "jīdòng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "excited, agitated, emotionally moved; to excite, to agitate, to move (emotionally)"
+  },
+  {
+    "chinese": "积极",
+    "pinyin": "jījí",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "positive"
+  },
+  {
+    "chinese": "积累",
+    "pinyin": "jīlěi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to accumulate, to build up, to amass"
+  },
+  {
+    "chinese": "及时",
+    "pinyin": "jíshí",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "timely, prompt, in time; without delay, promptly, in a timely manner"
+  },
+  {
+    "chinese": "即使",
+    "pinyin": "jíshǐ",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "even if"
+  },
+  {
+    "chinese": "既",
+    "pinyin": "jì",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、conjunction",
+    "source_translation": "already, since; both ... and ..., as well as (used in the pattern 既 ... 又 / 也 ...)"
+  },
+  {
+    "chinese": "寄",
+    "pinyin": "jì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "send"
+  },
+  {
+    "chinese": "计划",
+    "pinyin": "jìhuà",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "plan, project, program, scheme; to plan, to map out, to intend"
+  },
+  {
+    "chinese": "既然",
+    "pinyin": "jìrán",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "since"
+  },
+  {
+    "chinese": "技术",
+    "pinyin": "jìshù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "technology"
+  },
+  {
+    "chinese": "继续",
+    "pinyin": "jìxù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "continue"
+  },
+  {
+    "chinese": "记者",
+    "pinyin": "jìzhě",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "reporter"
+  },
+  {
+    "chinese": "加班",
+    "pinyin": "jiābān",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "work overtime"
+  },
+  {
+    "chinese": "家具",
+    "pinyin": "jiājù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "furniture"
+  },
+  {
+    "chinese": "加快",
+    "pinyin": "jiākuài",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "speed up, accelerate"
+  },
+  {
+    "chinese": "加强",
+    "pinyin": "jiāqiáng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "strengthen, reinforce"
+  },
+  {
+    "chinese": "加入",
+    "pinyin": "jiārù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "add, mix, join, become a member"
+  },
+  {
+    "chinese": "加上",
+    "pinyin": "jiāshàng",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "plus, add, with the addition of"
+  },
+  {
+    "chinese": "家庭",
+    "pinyin": "jiātíng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "family"
+  },
+  {
+    "chinese": "家乡",
+    "pinyin": "jiāxiāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "hometown"
+  },
+  {
+    "chinese": "加油",
+    "pinyin": "jiāyóu",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "oil, refuel, make an all-out effort"
+  },
+  {
+    "chinese": "加油站",
+    "pinyin": "jiāyóuzhàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "gas station"
+  },
+  {
+    "chinese": "家长",
+    "pinyin": "jiāzhǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "parent, the head of the family"
+  },
+  {
+    "chinese": "假",
+    "pinyin": "jiǎ",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "false, fake"
+  },
+  {
+    "chinese": "价格",
+    "pinyin": "jiàgé",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "price"
+  },
+  {
+    "chinese": "价钱",
+    "pinyin": "jiàqián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "price"
+  },
+  {
+    "chinese": "假日",
+    "pinyin": "jiàrì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "holiday, day off, vacation"
+  },
+  {
+    "chinese": "减",
+    "pinyin": "jiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to reduce, to decrease, to subtract, to lessen"
+  },
+  {
+    "chinese": "减轻",
+    "pinyin": "jiǎnqīng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lighten, to ease, to alleviate, to reduce (burden, weight, pressure)"
+  },
+  {
+    "chinese": "减少",
+    "pinyin": "jiǎnshǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to reduce, to decrease, to cut down, to diminish"
+  },
+  {
+    "chinese": "健身",
+    "pinyin": "jiànshēn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to exercise, to work out, to keep fit, to engage in fitness activities"
+  },
+  {
+    "chinese": "健身房",
+    "pinyin": "jiànshēnfáng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "gym"
+  },
+  {
+    "chinese": "建议",
+    "pinyin": "jiànyì",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to suggest, to propose, to recommend; suggestion, proposal, recommendation"
+  },
+  {
+    "chinese": "江",
+    "pinyin": "jiāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "river"
+  },
+  {
+    "chinese": "将",
+    "pinyin": "jiāng",
+    "hsk_level": 4,
+    "part_of_speech": "preposition、adverb",
+    "source_translation": "with, by (used to introduce the object of a verb, similar to 把 ); will, shall, be about to"
+  },
+  {
+    "chinese": "将来",
+    "pinyin": "jiānglái",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "future"
+  },
+  {
+    "chinese": "将要",
+    "pinyin": "jiāngyào",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "will, be going to, be about to"
+  },
+  {
+    "chinese": "奖",
+    "pinyin": "jiǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb)",
+    "source_translation": "prize, award, reward; to award, to reward, to praise"
+  },
+  {
+    "chinese": "奖金",
+    "pinyin": "jiǎngjīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "bonus, prize money, cash award"
+  },
+  {
+    "chinese": "奖学金",
+    "pinyin": "jiǎngxuéjīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "scholarship, fellowship"
+  },
+  {
+    "chinese": "降",
+    "pinyin": "jiàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to fall, to drop, to descend, to lower"
+  },
+  {
+    "chinese": "降低",
+    "pinyin": "jiàngdī",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to reduce, to lower, to bring down"
+  },
+  {
+    "chinese": "降价",
+    "pinyin": "jiàngjià",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to descend, to land, to touch down"
+  },
+  {
+    "chinese": "降落",
+    "pinyin": "jiàngluò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to descend, to land, to touch down"
+  },
+  {
+    "chinese": "降温",
+    "pinyin": "jiàngwēn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to cool down, to lower the temperature"
+  },
+  {
+    "chinese": "交",
+    "pinyin": "jiāo",
+    "hsk_level": 4,
+    "part_of_speech": "verb、(noun)",
+    "source_translation": "to hand in, to submit; to meet, to cross; to make friends with; friend, acquaintance, relationship"
+  },
+  {
+    "chinese": "骄傲",
+    "pinyin": "jiāo’ào",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "proud, arrogant, conceited; pride, arrogance"
+  },
+  {
+    "chinese": "交警",
+    "pinyin": "jiāojǐng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "traffic police"
+  },
+  {
+    "chinese": "交流",
+    "pinyin": "jiāoliú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "communicate"
+  },
+  {
+    "chinese": "郊区",
+    "pinyin": "jiāoqū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "suburb"
+  },
+  {
+    "chinese": "交通",
+    "pinyin": "jiāotōng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "traffic"
+  },
+  {
+    "chinese": "教练",
+    "pinyin": "jiàoliàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "coach"
+  },
+  {
+    "chinese": "教师",
+    "pinyin": "jiàoshī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "teacher"
+  },
+  {
+    "chinese": "教授",
+    "pinyin": "jiàoshòu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "professor"
+  },
+  {
+    "chinese": "教学",
+    "pinyin": "jiàoxué",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "teach"
+  },
+  {
+    "chinese": "教育",
+    "pinyin": "jiàoyù",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "education; to educate"
+  },
+  {
+    "chinese": "叫作",
+    "pinyin": "jiàozuò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "be called, be known as"
+  },
+  {
+    "chinese": "街道",
+    "pinyin": "jiēdào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "street"
+  },
+  {
+    "chinese": "接受",
+    "pinyin": "jiēshòu",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "accept"
+  },
+  {
+    "chinese": "接着",
+    "pinyin": "jiēzhe",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "to continue, to follow, to catch; then, next, subsequently"
+  },
+  {
+    "chinese": "结果",
+    "pinyin": "jiéguǒ",
+    "hsk_level": 4,
+    "part_of_speech": "noun、conjunction",
+    "source_translation": "result, outcome, consequence; as a result, consequently, in the end"
+  },
+  {
+    "chinese": "节假日",
+    "pinyin": "jiéjiàrì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "festivals and holidays, holiday season"
+  },
+  {
+    "chinese": "节约",
+    "pinyin": "jiéyuē",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to save, to economize, to conserve"
+  },
+  {
+    "chinese": "结账",
+    "pinyin": "jiézhàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to pay the bill, to settle an account, to check out"
+  },
+  {
+    "chinese": "解释",
+    "pinyin": "jiěshì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to explain, to interpret, to account for"
+  },
+  {
+    "chinese": "今后",
+    "pinyin": "jīnhòu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "from now on, in the future, henceforth"
+  },
+  {
+    "chinese": "仅",
+    "pinyin": "jǐn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "only, merely, solely"
+  },
+  {
+    "chinese": "尽管",
+    "pinyin": "jǐnguǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、conjunction",
+    "source_translation": "feel free to, not hesitate to (often in the pattern 尽 + verb); 管 although, even though, despite"
+  },
+  {
+    "chinese": "仅仅",
+    "pinyin": "jǐnjǐn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "only, merely, barely, simply"
+  },
+  {
+    "chinese": "紧张",
+    "pinyin": "jǐnzhāng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "nervous, tense, strained, in short supply"
+  },
+  {
+    "chinese": "进入",
+    "pinyin": "jìnrù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to enter, to access, to be admitted to"
+  },
+  {
+    "chinese": "进行",
+    "pinyin": "jìnxíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to carry out, to conduct, to proceed with, to undertake"
+  },
+  {
+    "chinese": "禁止",
+    "pinyin": "jìnzhǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to prohibit, to forbid, to ban"
+  },
+  {
+    "chinese": "精彩",
+    "pinyin": "jīngcǎi",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "brilliant, splendid, wonderful, exciting"
+  },
+  {
+    "chinese": "经济",
+    "pinyin": "jīngjì",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(adjective)",
+    "source_translation": "economy, economics; economical, affordable"
+  },
+  {
+    "chinese": "京剧",
+    "pinyin": "jīngjù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Beijing opera"
+  },
+  {
+    "chinese": "经历",
+    "pinyin": "jīnglì",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to experience, to go through; experience, past, history"
+  },
+  {
+    "chinese": "经验",
+    "pinyin": "jīngyàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "experience"
+  },
+  {
+    "chinese": "警察",
+    "pinyin": "jǐngchá",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "police"
+  },
+  {
+    "chinese": "景点",
+    "pinyin": "jǐngdiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "scenic spot, tourist attraction, point of interest"
+  },
+  {
+    "chinese": "景区",
+    "pinyin": "jǐngqū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "scenic area, tourist attraction zone"
+  },
+  {
+    "chinese": "景色",
+    "pinyin": "jǐngsè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "scenery"
+  },
+  {
+    "chinese": "竟然",
+    "pinyin": "jìngrán",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "unexpectedly"
+  },
+  {
+    "chinese": "竞争",
+    "pinyin": "jìngzhēng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "compete"
+  },
+  {
+    "chinese": "镜子",
+    "pinyin": "jìngzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "mirror"
+  },
+  {
+    "chinese": "究竟",
+    "pinyin": "jiūjìng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、(noun)",
+    "source_translation": "actually, exactly, after all (used for emphasis in questions); the outcome, the details of a situation"
+  },
+  {
+    "chinese": "就是",
+    "pinyin": "jiùshì",
+    "hsk_level": 4,
+    "part_of_speech": "auxiliary、adverb、conjunction",
+    "source_translation": "precisely, exactly (used for emphasis); only, merely, simply; even if, even (as in 就 是 ... 也 ...)"
+  },
+  {
+    "chinese": "举",
+    "pinyin": "jǔ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to raise, to lift; to hold (an event); to give (an example); to recommend"
+  },
+  {
+    "chinese": "举办",
+    "pinyin": "jǔbàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to hold, to host, to organize (an event, activity)"
+  },
+  {
+    "chinese": "举例",
+    "pinyin": "jǔlì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to give an example, to illustrate with an example"
+  },
+  {
+    "chinese": "举行",
+    "pinyin": "jǔxíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to hold, to convene, to conduct (a ceremony, meeting, event)"
+  },
+  {
+    "chinese": "聚",
+    "pinyin": "jù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to gather, to assemble, to get together"
+  },
+  {
+    "chinese": "聚餐",
+    "pinyin": "jùcān",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to have a dinner together, to dine together"
+  },
+  {
+    "chinese": "聚会",
+    "pinyin": "jùhuì",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to get together, to meet, to gather; party, gathering, meeting"
+  },
+  {
+    "chinese": "拒绝",
+    "pinyin": "jùjué",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to refuse, to reject, to decline"
+  },
+  {
+    "chinese": "距离",
+    "pinyin": "jùlí",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to be away from, to be at a distance from; distance, gap"
+  },
+  {
+    "chinese": "剧院",
+    "pinyin": "jùyuàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "theater, opera house, playhouse"
+  },
+  {
+    "chinese": "开玩笑",
+    "pinyin": "kāiwánxiào",
+    "hsk_level": 4,
+    "part_of_speech": null,
+    "source_translation": "make fun of"
+  },
+  {
+    "chinese": "看法",
+    "pinyin": "kànfǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "view"
+  },
+  {
+    "chinese": "烤",
+    "pinyin": "kǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to bake, to roast, to grill, to toast"
+  },
+  {
+    "chinese": "考虑",
+    "pinyin": "kǎolǜ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to consider, to think over, to contemplate"
+  },
+  {
+    "chinese": "考生",
+    "pinyin": "kǎoshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "examinee"
+  },
+  {
+    "chinese": "棵",
+    "pinyin": "kē",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for trees, plants, and other similar objects"
+  },
+  {
+    "chinese": "科技",
+    "pinyin": "kējì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "science and technology"
+  },
+  {
+    "chinese": "科学",
+    "pinyin": "kēxué",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "science; scientific"
+  },
+  {
+    "chinese": "咳",
+    "pinyin": "ké",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to cough"
+  },
+  {
+    "chinese": "咳嗽",
+    "pinyin": "késou",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to cough"
+  },
+  {
+    "chinese": "可惜",
+    "pinyin": "kěxī",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "regrettable, unfortunate, a pity"
+  },
+  {
+    "chinese": "克",
+    "pinyin": "kè",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "gram"
+  },
+  {
+    "chinese": "课程",
+    "pinyin": "kèchéng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "curriculum"
+  },
+  {
+    "chinese": "客气",
+    "pinyin": "kèqi",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "polite, courteous; to be polite, to say polite remarks"
+  },
+  {
+    "chinese": "课堂",
+    "pinyin": "kètáng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "classroom"
+  },
+  {
+    "chinese": "客厅",
+    "pinyin": "kètīng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "living room, parlor"
+  },
+  {
+    "chinese": "肯定",
+    "pinyin": "kěndìng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective、adverb",
+    "source_translation": "to be certain, to be sure, to affirm; positive, affirmative, definite; surely, certainly, definitely"
+  },
+  {
+    "chinese": "空",
+    "pinyin": "kōng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(adverb)",
+    "source_translation": "empty, vacant, hollow; ( vain, in for nothing )"
+  },
+  {
+    "chinese": "空气",
+    "pinyin": "kōngqì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "atmosphere, air"
+  },
+  {
+    "chinese": "恐怕",
+    "pinyin": "kǒngpà",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "to fear, to be afraid; I’m afraid, perhaps, maybe"
+  },
+  {
+    "chinese": "空",
+    "pinyin": "kòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective、noun",
+    "source_translation": "to leave empty, to make time, to free up; empty, free, unoccupied; free time, empty space"
+  },
+  {
+    "chinese": "口语",
+    "pinyin": "kǒuyǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "spoken language"
+  },
+  {
+    "chinese": "苦",
+    "pinyin": "kǔ",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "bitter"
+  },
+  {
+    "chinese": "快餐",
+    "pinyin": "kuàicān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "fast food"
+  },
+  {
+    "chinese": "快递",
+    "pinyin": "kuàidì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "express delivery"
+  },
+  {
+    "chinese": "快速",
+    "pinyin": "kuàisù",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "fast, high-speed"
+  },
+  {
+    "chinese": "困",
+    "pinyin": "kùn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(verb)",
+    "source_translation": "sleepy, tired; ( trap, to confine to )"
+  },
+  {
+    "chinese": "困难",
+    "pinyin": "kùnnan",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "difficult, hard; difficulty, trouble"
+  },
+  {
+    "chinese": "拉",
+    "pinyin": "lā",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to pull, to drag, to draw"
+  },
+  {
+    "chinese": "垃圾",
+    "pinyin": "lājī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "garbage, trash, rubbish"
+  },
+  {
+    "chinese": "辣",
+    "pinyin": "là",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "hot, spicy"
+  },
+  {
+    "chinese": "来不及",
+    "pinyin": "láibují",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "there’s not enough time, it’s too late"
+  },
+  {
+    "chinese": "来得及",
+    "pinyin": "láidejí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "there’s still time, can make it in time"
+  },
+  {
+    "chinese": "懒",
+    "pinyin": "lǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "lazy, idle"
+  },
+  {
+    "chinese": "浪费",
+    "pinyin": "làngfèi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to waste, to squander"
+  },
+  {
+    "chinese": "浪漫",
+    "pinyin": "làngmàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "romantic"
+  },
+  {
+    "chinese": "老虎",
+    "pinyin": "lǎohǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "tiger"
+  },
+  {
+    "chinese": "老家",
+    "pinyin": "lǎojiā",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "hometown, home state"
+  },
+  {
+    "chinese": "老年",
+    "pinyin": "lǎonián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "elderly"
+  },
+  {
+    "chinese": "老是",
+    "pinyin": "lǎoshì",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "always, constantly"
+  },
+  {
+    "chinese": "冷静",
+    "pinyin": "lěngjìng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "calm, cool-headed"
+  },
+  {
+    "chinese": "理发",
+    "pinyin": "lǐfà",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to have a haircut, to cut hair"
+  },
+  {
+    "chinese": "理解",
+    "pinyin": "lǐjiě",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to understand, to comprehend"
+  },
+  {
+    "chinese": "礼貌",
+    "pinyin": "lǐmào",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "courtesy, politeness; polite"
+  },
+  {
+    "chinese": "理想",
+    "pinyin": "lǐxiǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "ideal, dream; ideal"
+  },
+  {
+    "chinese": "厉害",
+    "pinyin": "lìhai",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "severe, fierce, impressive, excellent"
+  },
+  {
+    "chinese": "力气",
+    "pinyin": "lìqi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "strength, physical power"
+  },
+  {
+    "chinese": "例如",
+    "pinyin": "lìrú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "for example, such as"
+  },
+  {
+    "chinese": "例子",
+    "pinyin": "lìzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "example, instance"
+  },
+  {
+    "chinese": "俩",
+    "pinyin": "liǎ",
+    "hsk_level": 4,
+    "part_of_speech": "number-classifier",
+    "source_translation": "two, both"
+  },
+  {
+    "chinese": "连",
+    "pinyin": "lián",
+    "hsk_level": 4,
+    "part_of_speech": "preposition、(verb、adverb)",
+    "source_translation": "used to introduce the object of a verb, linking; (even, including); (to connect, to link)"
+  },
+  {
+    "chinese": "联系",
+    "pinyin": "liánxì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to contact, to connect"
+  },
+  {
+    "chinese": "凉",
+    "pinyin": "liáng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "cool, cold"
+  },
+  {
+    "chinese": "量",
+    "pinyin": "liáng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to measure, to weigh"
+  },
+  {
+    "chinese": "两",
+    "pinyin": "liǎng",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for vehicles, animals, etc."
+  },
+  {
+    "chinese": "亮",
+    "pinyin": "liàng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "bright, light; to shine, to show"
+  },
+  {
+    "chinese": "列",
+    "pinyin": "liè",
+    "hsk_level": 4,
+    "part_of_speech": "verb、classifier",
+    "source_translation": "to arrange in a row, to list; measure word for rows or lines"
+  },
+  {
+    "chinese": "零下",
+    "pinyin": "língxià",
+    "hsk_level": 4,
+    "part_of_speech": null,
+    "source_translation": "below zero"
+  },
+  {
+    "chinese": "零花钱",
+    "pinyin": "línghuāqián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "pocket money, spending money"
+  },
+  {
+    "chinese": "零钱",
+    "pinyin": "língqián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "change, small denominations of money"
+  },
+  {
+    "chinese": "零食",
+    "pinyin": "língshí",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "snacks, between-meal nibbles"
+  },
+  {
+    "chinese": "另",
+    "pinyin": "lìng",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun、(adverb)",
+    "source_translation": "other, another; (separately, otherwise)"
+  },
+  {
+    "chinese": "另外",
+    "pinyin": "lìngwài",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun、adverb、conjunction",
+    "source_translation": "other, else; in addition, moreover; besides, furthermore"
+  },
+  {
+    "chinese": "留",
+    "pinyin": "liú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to stay, to remain, to keep"
+  },
+  {
+    "chinese": "流",
+    "pinyin": "liú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to flow, to circulate"
+  },
+  {
+    "chinese": "流利",
+    "pinyin": "liúlì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "fluent, smooth"
+  },
+  {
+    "chinese": "留下",
+    "pinyin": "liúxia",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to leave behind, to remain"
+  },
+  {
+    "chinese": "流行",
+    "pinyin": "liúxíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be popular, to be in fashion, to spread"
+  },
+  {
+    "chinese": "路过",
+    "pinyin": "lùguò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to pass by, to go by"
+  },
+  {
+    "chinese": "旅馆",
+    "pinyin": "lǚguǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "hotel, inn"
+  },
+  {
+    "chinese": "旅客",
+    "pinyin": "lǚkè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "traveler, passenger"
+  },
+  {
+    "chinese": "旅行",
+    "pinyin": "lǚxíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to travel"
+  },
+  {
+    "chinese": "律师",
+    "pinyin": "lǜshī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "lawyer, attorney"
+  },
+  {
+    "chinese": "乱",
+    "pinyin": "luàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "messy, disorderly; arbitrarily, recklessly"
+  },
+  {
+    "chinese": "落",
+    "pinyin": "luò",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to fall, to drop, to land"
+  },
+  {
+    "chinese": "麻烦",
+    "pinyin": "máfan",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb、noun",
+    "source_translation": "troublesome, annoying; to trouble, to bother; trouble, inconvenience"
+  },
+  {
+    "chinese": "馒头",
+    "pinyin": "mántou",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "steamed bun, mantou"
+  },
+  {
+    "chinese": "满",
+    "pinyin": "mǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "full, filled; to fill"
+  },
+  {
+    "chinese": "毛巾",
+    "pinyin": "máojīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "towel"
+  },
+  {
+    "chinese": "毛衣",
+    "pinyin": "máoyī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "sweater, woolen garment"
+  },
+  {
+    "chinese": "帽子",
+    "pinyin": "màozi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "hat, cap"
+  },
+  {
+    "chinese": "美",
+    "pinyin": "měi",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "beautiful, pretty"
+  },
+  {
+    "chinese": "美好",
+    "pinyin": "měihǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "beautiful, splendid"
+  },
+  {
+    "chinese": "美景",
+    "pinyin": "měijǐng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "beautiful scenery"
+  },
+  {
+    "chinese": "美丽",
+    "pinyin": "měilì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "beautiful, lovely"
+  },
+  {
+    "chinese": "美食",
+    "pinyin": "měishí",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "delicious food, cuisine"
+  },
+  {
+    "chinese": "梦",
+    "pinyin": "mèng",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "dream; to dream"
+  },
+  {
+    "chinese": "梦想",
+    "pinyin": "mèngxiǎng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to dream; dream"
+  },
+  {
+    "chinese": "密码",
+    "pinyin": "mìmǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "password, PIN code"
+  },
+  {
+    "chinese": "免费",
+    "pinyin": "miǎnfèi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "free of charge, to be free"
+  },
+  {
+    "chinese": "面对",
+    "pinyin": "miànduì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to face, to confront"
+  },
+  {
+    "chinese": "面试",
+    "pinyin": "miànshì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "interview, audition; to interview"
+  },
+  {
+    "chinese": "秒",
+    "pinyin": "miǎo",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "second, unit of time"
+  },
+  {
+    "chinese": "民族",
+    "pinyin": "mínzú",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ethnic group, nationality"
+  },
+  {
+    "chinese": "末",
+    "pinyin": "mò",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "end, last"
+  },
+  {
+    "chinese": "母女",
+    "pinyin": "mǔnǚ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "mother and daughter"
+  },
+  {
+    "chinese": "母亲",
+    "pinyin": "mǔqīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "mother"
+  },
+  {
+    "chinese": "母子",
+    "pinyin": "mǔzǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "mother and son"
+  },
+  {
+    "chinese": "目标",
+    "pinyin": "mùbiāo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "goal, target, objective"
+  },
+  {
+    "chinese": "目的",
+    "pinyin": "mùdì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "purpose, aim, goal"
+  },
+  {
+    "chinese": "目的地",
+    "pinyin": "mùdìdì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "destination"
+  },
+  {
+    "chinese": "目前",
+    "pinyin": "mùqián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "currently, at present"
+  },
+  {
+    "chinese": "耐心",
+    "pinyin": "nàixīn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "patient; patience"
+  },
+  {
+    "chinese": "南部",
+    "pinyin": "nánbù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "southern part, south"
+  },
+  {
+    "chinese": "难道",
+    "pinyin": "nándào",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "could it be that...?"
+  },
+  {
+    "chinese": "男士",
+    "pinyin": "nánshì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "man, gentleman"
+  },
+  {
+    "chinese": "难受",
+    "pinyin": "nánshòu",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "uncomfortable, painful, hard to bear"
+  },
+  {
+    "chinese": "难忘",
+    "pinyin": "nánwàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "unforgettable, to be hard to forget"
+  },
+  {
+    "chinese": "男性",
+    "pinyin": "nánxìng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "male, masculine"
+  },
+  {
+    "chinese": "内",
+    "pinyin": "nèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "inside, within"
+  },
+  {
+    "chinese": "内容",
+    "pinyin": "nèiróng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "content, substance"
+  },
+  {
+    "chinese": "内心",
+    "pinyin": "nèixīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "heart, inner self"
+  },
+  {
+    "chinese": "能否",
+    "pinyin": "néngfǒu",
+    "hsk_level": 4,
+    "part_of_speech": null,
+    "source_translation": "whether or not, can or cannot"
+  },
+  {
+    "chinese": "能够",
+    "pinyin": "nénggòu",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "can, be able to, be capable of"
+  },
+  {
+    "chinese": "能力",
+    "pinyin": "nénglì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ability, capability, capacity"
+  },
+  {
+    "chinese": "嗯",
+    "pinyin": "ǹg",
+    "hsk_level": 4,
+    "part_of_speech": "interjection",
+    "source_translation": "uh-huh, hmm"
+  },
+  {
+    "chinese": "年底",
+    "pinyin": "niándǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "end of the year"
+  },
+  {
+    "chinese": "年龄",
+    "pinyin": "niánlíng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "age"
+  },
+  {
+    "chinese": "农村",
+    "pinyin": "nóngcūn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "rural area, countryside"
+  },
+  {
+    "chinese": "弄",
+    "pinyin": "nòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to do, to handle, to mess with"
+  },
+  {
+    "chinese": "女性",
+    "pinyin": "nǚxìng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "female, feminine"
+  },
+  {
+    "chinese": "暖和",
+    "pinyin": "nuǎnhuo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "warm; to warm up"
+  },
+  {
+    "chinese": "偶尔",
+    "pinyin": "ǒu’ěr",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、adjective",
+    "source_translation": "occasionally, sometimes; occasional"
+  },
+  {
+    "chinese": "拍",
+    "pinyin": "pāi",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to pat, to clap, to take (a photo); beat, rhythm"
+  },
+  {
+    "chinese": "排",
+    "pinyin": "pái",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun、classifier",
+    "source_translation": "to line up, to arrange; row, line; measure word for rows"
+  },
+  {
+    "chinese": "牌",
+    "pinyin": "pái",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "card, brand, plaque, sign"
+  },
+  {
+    "chinese": "排队",
+    "pinyin": "páiduì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to line up, to queue up"
+  },
+  {
+    "chinese": "排球",
+    "pinyin": "páiqiú",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "volleyball"
+  },
+  {
+    "chinese": "牌子",
+    "pinyin": "páizi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "brand, sign, label"
+  },
+  {
+    "chinese": "判断",
+    "pinyin": "pànduàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to judge, to determine"
+  },
+  {
+    "chinese": "陪",
+    "pinyin": "péi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to accompany, to keep someone company"
+  },
+  {
+    "chinese": "批评",
+    "pinyin": "pīpíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to criticize"
+  },
+  {
+    "chinese": "皮肤",
+    "pinyin": "pífū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "skin"
+  },
+  {
+    "chinese": "脾气",
+    "pinyin": "píqi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "temperament, disposition, temper"
+  },
+  {
+    "chinese": "皮鞋",
+    "pinyin": "píxié",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "leather shoes"
+  },
+  {
+    "chinese": "篇",
+    "pinyin": "piān",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "measure word for essays, articles, papers; piece, sheet"
+  },
+  {
+    "chinese": "片",
+    "pinyin": "piàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "piece, slice, area; measure word for flat objects"
+  },
+  {
+    "chinese": "乒乓球",
+    "pinyin": "pīngpāngqiú",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "table tennis, ping-pong"
+  },
+  {
+    "chinese": "平常",
+    "pinyin": "píngcháng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "ordinary, usual; usually, ordinarily"
+  },
+  {
+    "chinese": "破",
+    "pinyin": "pò",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "broken, damaged; to break, to ruin"
+  },
+  {
+    "chinese": "葡萄",
+    "pinyin": "pútao",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "grape"
+  },
+  {
+    "chinese": "葡萄酒",
+    "pinyin": "pútaojiǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "wine, grape wine"
+  },
+  {
+    "chinese": "普遍",
+    "pinyin": "pǔbiàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "widespread, universal, common"
+  },
+  {
+    "chinese": "普通",
+    "pinyin": "pǔtōng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "ordinary, common"
+  },
+  {
+    "chinese": "普通话",
+    "pinyin": "pǔtōnghuà",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Mandarin Chinese, standard Chinese"
+  },
+  {
+    "chinese": "期",
+    "pinyin": "qī",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "period, phase; measure word for issues, semesters, etc."
+  },
+  {
+    "chinese": "期末",
+    "pinyin": "qīmò",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "end of term, end of semester"
+  },
+  {
+    "chinese": "期中",
+    "pinyin": "qīzhōng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "midterm, middle of the term"
+  },
+  {
+    "chinese": "其次",
+    "pinyin": "qícì",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun",
+    "source_translation": "next, secondly, then"
+  },
+  {
+    "chinese": "其中",
+    "pinyin": "qízhōng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "among them, inside"
+  },
+  {
+    "chinese": "起到",
+    "pinyin": "qǐdào",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to play the role of, to function as, to act as"
+  },
+  {
+    "chinese": "气",
+    "pinyin": "qì",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "air, gas, breath; to anger, to make angry"
+  },
+  {
+    "chinese": "气候",
+    "pinyin": "qìhòu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "climate"
+  },
+  {
+    "chinese": "汽水",
+    "pinyin": "qìshuǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "soda, soft drink"
+  },
+  {
+    "chinese": "气温",
+    "pinyin": "qìwēn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "air temperature"
+  },
+  {
+    "chinese": "千克",
+    "pinyin": "qiānkè",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "kilogram"
+  },
+  {
+    "chinese": "千万",
+    "pinyin": "qiānwàn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "ten million, by all means, absolutely"
+  },
+  {
+    "chinese": "签证",
+    "pinyin": "qiānzhèng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "visa; to issue a visa"
+  },
+  {
+    "chinese": "前方",
+    "pinyin": "qiánfāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ahead, front"
+  },
+  {
+    "chinese": "前后",
+    "pinyin": "qiánhòu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "front and back, around, about"
+  },
+  {
+    "chinese": "强",
+    "pinyin": "qiáng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "strong, powerful"
+  },
+  {
+    "chinese": "敲",
+    "pinyin": "qiāo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to knock, to tap, to strike"
+  },
+  {
+    "chinese": "桥",
+    "pinyin": "qiáo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "bridge"
+  },
+  {
+    "chinese": "巧",
+    "pinyin": "qiǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "skillful, clever, opportune"
+  },
+  {
+    "chinese": "巧克力",
+    "pinyin": "qiǎokèlì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "chocolate"
+  },
+  {
+    "chinese": "亲戚",
+    "pinyin": "qīnqi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "relative, relative family member"
+  },
+  {
+    "chinese": "琴",
+    "pinyin": "qín",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "musical instrument, piano, etc."
+  },
+  {
+    "chinese": "轻",
+    "pinyin": "qīng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "light, not heavy, gentle, easy"
+  },
+  {
+    "chinese": "青年",
+    "pinyin": "qīngnián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "youth, young people"
+  },
+  {
+    "chinese": "轻松",
+    "pinyin": "qīngsōng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "relaxed, light, easy"
+  },
+  {
+    "chinese": "情况",
+    "pinyin": "qíngkuàng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "situation, circumstance"
+  },
+  {
+    "chinese": "庆祝",
+    "pinyin": "qìngzhù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to celebrate"
+  },
+  {
+    "chinese": "球队",
+    "pinyin": "qiúduì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "sports team, ball team"
+  },
+  {
+    "chinese": "球迷",
+    "pinyin": "qiúmí",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "fan, sports enthusiast"
+  },
+  {
+    "chinese": "区",
+    "pinyin": "qū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "district, area, region"
+  },
+  {
+    "chinese": "区别",
+    "pinyin": "qūbié",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "difference; to distinguish, to differ"
+  },
+  {
+    "chinese": "取",
+    "pinyin": "qǔ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to take, to get, to obtain"
+  },
+  {
+    "chinese": "取得",
+    "pinyin": "qǔdé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to obtain, to gain"
+  },
+  {
+    "chinese": "取消",
+    "pinyin": "qǔxiāo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to cancel, to call off"
+  },
+  {
+    "chinese": "全",
+    "pinyin": "quán",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "whole, entire; completely, entirely"
+  },
+  {
+    "chinese": "全部",
+    "pinyin": "quánbù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "all, the whole thing"
+  },
+  {
+    "chinese": "全都",
+    "pinyin": "quándōu",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "all, entirely"
+  },
+  {
+    "chinese": "全球",
+    "pinyin": "quánqiú",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "the whole world, global"
+  },
+  {
+    "chinese": "全身",
+    "pinyin": "quánshēn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "whole body"
+  },
+  {
+    "chinese": "缺",
+    "pinyin": "quē",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lack, to be short of"
+  },
+  {
+    "chinese": "缺点",
+    "pinyin": "quēdiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "shortcoming, defect"
+  },
+  {
+    "chinese": "缺少",
+    "pinyin": "quēshǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lack, to be short of"
+  },
+  {
+    "chinese": "却",
+    "pinyin": "què",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "but, yet, however"
+  },
+  {
+    "chinese": "确实",
+    "pinyin": "quèshí",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "indeed, really"
+  },
+  {
+    "chinese": "然而",
+    "pinyin": "rán’ér",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "however, but"
+  },
+  {
+    "chinese": "热闹",
+    "pinyin": "rènao",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb、noun",
+    "source_translation": "lively, bustling; to liven up; lively atmosphere"
+  },
+  {
+    "chinese": "人生",
+    "pinyin": "rénshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "life"
+  },
+  {
+    "chinese": "人数",
+    "pinyin": "rénshù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "number of people"
+  },
+  {
+    "chinese": "人员",
+    "pinyin": "rényuán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "personnel, staff"
+  },
+  {
+    "chinese": "任何",
+    "pinyin": "rènhé",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun",
+    "source_translation": "any, whatever"
+  },
+  {
+    "chinese": "任务",
+    "pinyin": "rènwu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "task, assignment, mission"
+  },
+  {
+    "chinese": "扔",
+    "pinyin": "rēng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to throw, to toss"
+  },
+  {
+    "chinese": "仍",
+    "pinyin": "réng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "still, yet"
+  },
+  {
+    "chinese": "仍然",
+    "pinyin": "réngrán",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "still, yet"
+  },
+  {
+    "chinese": "日常",
+    "pinyin": "rìcháng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "daily, everyday"
+  },
+  {
+    "chinese": "日记",
+    "pinyin": "rìjì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "diary"
+  },
+  {
+    "chinese": "日期",
+    "pinyin": "rìqī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "date"
+  },
+  {
+    "chinese": "日子",
+    "pinyin": "rìzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "day, life, time"
+  },
+  {
+    "chinese": "入",
+    "pinyin": "rù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to enter, to go in"
+  },
+  {
+    "chinese": "入口",
+    "pinyin": "rùkǒu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "entrance"
+  },
+  {
+    "chinese": "入学",
+    "pinyin": "rùxué",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to enter school, to enroll"
+  },
+  {
+    "chinese": "入住",
+    "pinyin": "rùzhù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to check in, to move in"
+  },
+  {
+    "chinese": "散步",
+    "pinyin": "sànbù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to take a walk, to stroll"
+  },
+  {
+    "chinese": "扫码",
+    "pinyin": "sǎomǎ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to scan a code"
+  },
+  {
+    "chinese": "森林",
+    "pinyin": "sēnlín",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "forest"
+  },
+  {
+    "chinese": "商量",
+    "pinyin": "shāngliang",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to discuss, to consult"
+  },
+  {
+    "chinese": "商品",
+    "pinyin": "shāngpǐn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "product, commodity"
+  },
+  {
+    "chinese": "伤心",
+    "pinyin": "shāngxīn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "sad, heartbroken"
+  },
+  {
+    "chinese": "上门",
+    "pinyin": "shàngmén",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to visit, to go to someone’s house"
+  },
+  {
+    "chinese": "稍",
+    "pinyin": "shāo",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "a little, slightly"
+  },
+  {
+    "chinese": "稍微",
+    "pinyin": "shāowēi",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "a little, slightly"
+  },
+  {
+    "chinese": "少见",
+    "pinyin": "shǎojiàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "rare, seldom seen"
+  },
+  {
+    "chinese": "少量",
+    "pinyin": "shǎoliàng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "small amount, a little"
+  },
+  {
+    "chinese": "少数",
+    "pinyin": "shǎoshù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "minority, small number"
+  },
+  {
+    "chinese": "少年",
+    "pinyin": "shàonián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "juvenile, teenager, youth"
+  },
+  {
+    "chinese": "社会",
+    "pinyin": "shèhuì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "society, community"
+  },
+  {
+    "chinese": "摄氏度",
+    "pinyin": "shèshìdù",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "degrees Celsius"
+  },
+  {
+    "chinese": "身",
+    "pinyin": "shēn",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "body, oneself; measure word for clothes"
+  },
+  {
+    "chinese": "深",
+    "pinyin": "shēn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(adverb)",
+    "source_translation": "deep, profound; (deeply, late)"
+  },
+  {
+    "chinese": "身份证",
+    "pinyin": "shēnfènzhèng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ID card, identification card"
+  },
+  {
+    "chinese": "申请",
+    "pinyin": "shēnqǐng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to apply, to file an application"
+  },
+  {
+    "chinese": "甚至",
+    "pinyin": "shènzhì",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "even, so much as that"
+  },
+  {
+    "chinese": "生",
+    "pinyin": "shēng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to give birth, to produce, to grow"
+  },
+  {
+    "chinese": "生",
+    "pinyin": "shēng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(adverb)",
+    "source_translation": "raw, uncooked, unripe; ( very, extremely, terribly )"
+  },
+  {
+    "chinese": "生命",
+    "pinyin": "shēngmìng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "life"
+  },
+  {
+    "chinese": "生意",
+    "pinyin": "shēngyi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "business, trade"
+  },
+  {
+    "chinese": "省",
+    "pinyin": "shěng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "province"
+  },
+  {
+    "chinese": "剩",
+    "pinyin": "shèng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be left over, to remain"
+  },
+  {
+    "chinese": "失败",
+    "pinyin": "shībài",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to fail; failed, unsuccessful"
+  },
+  {
+    "chinese": "师傅",
+    "pinyin": "shīfu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "master, skilled worker, respectful address for a tradesperson"
+  },
+  {
+    "chinese": "失去",
+    "pinyin": "shīqù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lose, to be lost"
+  },
+  {
+    "chinese": "师生",
+    "pinyin": "shīshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "teacher and student, teachers and students"
+  },
+  {
+    "chinese": "失望",
+    "pinyin": "shīwàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to be disappointed, to lose hope; disappointed"
+  },
+  {
+    "chinese": "十分",
+    "pinyin": "shífēn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "very, extremely, fully"
+  },
+  {
+    "chinese": "实际",
+    "pinyin": "shíjì",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "reality, actuality; actual, practical"
+  },
+  {
+    "chinese": "时间表",
+    "pinyin": "shíjiānbiǎo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "schedule, timetable"
+  },
+  {
+    "chinese": "实际上",
+    "pinyin": "shíjìshàng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "actually, in fact"
+  },
+  {
+    "chinese": "食品",
+    "pinyin": "shípǐn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "food, provisions"
+  },
+  {
+    "chinese": "食堂",
+    "pinyin": "shítáng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "cafeteria, dining hall"
+  },
+  {
+    "chinese": "食物",
+    "pinyin": "shíwù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "food"
+  },
+  {
+    "chinese": "实在",
+    "pinyin": "shízài",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "honest, reliable; really, indeed"
+  },
+  {
+    "chinese": "十字路口",
+    "pinyin": "shízìlùkǒu",
+    "hsk_level": 4,
+    "part_of_speech": null,
+    "source_translation": "intersection, crossroads"
+  },
+  {
+    "chinese": "使",
+    "pinyin": "shǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to make, to cause, to use"
+  },
+  {
+    "chinese": "使馆",
+    "pinyin": "shǐguǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "embassy"
+  },
+  {
+    "chinese": "使用",
+    "pinyin": "shǐyòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to use, to employ"
+  },
+  {
+    "chinese": "市场",
+    "pinyin": "shìchǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "market, marketplace"
+  },
+  {
+    "chinese": "是否",
+    "pinyin": "shìfǒu",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "whether or not, if"
+  },
+  {
+    "chinese": "适合",
+    "pinyin": "shìhé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to suit, to fit, to be suitable"
+  },
+  {
+    "chinese": "世纪",
+    "pinyin": "shìjì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "century"
+  },
+  {
+    "chinese": "视频",
+    "pinyin": "shìpín",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "video, video clip"
+  },
+  {
+    "chinese": "市区",
+    "pinyin": "shìqū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "urban area, city center"
+  },
+  {
+    "chinese": "试题",
+    "pinyin": "shìtí",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "test questions, exam paper"
+  },
+  {
+    "chinese": "适应",
+    "pinyin": "shìyìng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to adapt, to fit, to suit"
+  },
+  {
+    "chinese": "收费",
+    "pinyin": "shōufèi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to charge a fee, to collect payment"
+  },
+  {
+    "chinese": "收入",
+    "pinyin": "shōurù",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to receive, to take in; income, revenue"
+  },
+  {
+    "chinese": "收拾",
+    "pinyin": "shōushi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to put in order, to tidy up, to pack"
+  },
+  {
+    "chinese": "收听",
+    "pinyin": "shōutīng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to listen in, to tune in"
+  },
+  {
+    "chinese": "首",
+    "pinyin": "shǒu",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for songs, poems, etc."
+  },
+  {
+    "chinese": "首都",
+    "pinyin": "shǒudū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "capital"
+  },
+  {
+    "chinese": "首先",
+    "pinyin": "shǒuxiān",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、pronoun",
+    "source_translation": "first, firstly; first of all"
+  },
+  {
+    "chinese": "受不了",
+    "pinyin": "shòubuliǎo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be unable to bear, to be unable to stand"
+  },
+  {
+    "chinese": "售票员",
+    "pinyin": "shòupiàoyuán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ticket seller, conductor"
+  },
+  {
+    "chinese": "受伤",
+    "pinyin": "shòushāng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be injured, to get hurt"
+  },
+  {
+    "chinese": "输",
+    "pinyin": "shū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lose, to be defeated; to transport"
+  },
+  {
+    "chinese": "熟",
+    "pinyin": "shú/shóu",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "ripe, cooked, mature"
+  },
+  {
+    "chinese": "熟悉",
+    "pinyin": "shúxi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be familiar with, to know well"
+  },
+  {
+    "chinese": "暑假",
+    "pinyin": "shǔjià",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "summer vacation"
+  },
+  {
+    "chinese": "数",
+    "pinyin": "shù",
+    "hsk_level": 4,
+    "part_of_speech": "noun、number",
+    "source_translation": "number, figure; several, a few"
+  },
+  {
+    "chinese": "数量",
+    "pinyin": "shùliàng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "quantity, amount"
+  },
+  {
+    "chinese": "树林",
+    "pinyin": "shùlín",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "woods, forest"
+  },
+  {
+    "chinese": "数字",
+    "pinyin": "shùzì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "digit, figure, number"
+  },
+  {
+    "chinese": "帅",
+    "pinyin": "shuài",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "handsome, good-looking"
+  },
+  {
+    "chinese": "顺便",
+    "pinyin": "shùnbiàn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "conveniently, in passing"
+  },
+  {
+    "chinese": "顺利",
+    "pinyin": "shùnlì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "smooth, successful, going well"
+  },
+  {
+    "chinese": "顺序",
+    "pinyin": "shùnxù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "order, sequence"
+  },
+  {
+    "chinese": "说法",
+    "pinyin": "shuōfǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "way of saying something, version, statement"
+  },
+  {
+    "chinese": "说明",
+    "pinyin": "shuōmíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to explain, to clarify; explanation, instructions"
+  },
+  {
+    "chinese": "说明书",
+    "pinyin": "shuōmíngshū",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "instruction manual, user guide, explanatory booklet"
+  },
+  {
+    "chinese": "硕士",
+    "pinyin": "shuòshì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "master"
+  },
+  {
+    "chinese": "死",
+    "pinyin": "sǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective、(adverb)",
+    "source_translation": "to die, to be dead; dead, extreme; extremely, to death"
+  },
+  {
+    "chinese": "速度",
+    "pinyin": "sùdù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "speed"
+  },
+  {
+    "chinese": "塑料",
+    "pinyin": "sùliào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "plastic"
+  },
+  {
+    "chinese": "酸",
+    "pinyin": "suān",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "sour, tart"
+  },
+  {
+    "chinese": "酸奶",
+    "pinyin": "suānnǎi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "yogurt"
+  },
+  {
+    "chinese": "算",
+    "pinyin": "suàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "to calculate, to count; considered, at last"
+  },
+  {
+    "chinese": "随便",
+    "pinyin": "suíbiàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective、conjunction",
+    "source_translation": "to do as one pleases, casual; casual, informal; anyway, whatever"
+  },
+  {
+    "chinese": "随着",
+    "pinyin": "suízhe",
+    "hsk_level": 4,
+    "part_of_speech": "preposition",
+    "source_translation": "along with, following"
+  },
+  {
+    "chinese": "孙女",
+    "pinyin": "sūnnǚ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "granddaughter"
+  },
+  {
+    "chinese": "孙子",
+    "pinyin": "sūnzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "grandson"
+  },
+  {
+    "chinese": "所有",
+    "pinyin": "suǒyǒu",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(verb、noun)",
+    "source_translation": "all, every; (to possess, to own; possessions, belongings)"
+  },
+  {
+    "chinese": "台",
+    "pinyin": "tái",
+    "hsk_level": 4,
+    "part_of_speech": "classifier、(noun)",
+    "source_translation": "measure word for machines, vehicles, etc.; (platform, stage)"
+  },
+  {
+    "chinese": "抬",
+    "pinyin": "tái",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lift, to raise"
+  },
+  {
+    "chinese": "抬头",
+    "pinyin": "táitóu",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to raise one’s head, to look up"
+  },
+  {
+    "chinese": "态度",
+    "pinyin": "tàidù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "attitude, manner"
+  },
+  {
+    "chinese": "弹",
+    "pinyin": "tán",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to play , to spring"
+  },
+  {
+    "chinese": "谈",
+    "pinyin": "tán",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to talk, to discuss"
+  },
+  {
+    "chinese": "汤",
+    "pinyin": "tāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "soup"
+  },
+  {
+    "chinese": "躺",
+    "pinyin": "tǎng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lie down"
+  },
+  {
+    "chinese": "趟",
+    "pinyin": "tàng",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for trips, journeys"
+  },
+  {
+    "chinese": "讨论",
+    "pinyin": "tǎolùn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to discuss, to talk over"
+  },
+  {
+    "chinese": "讨厌",
+    "pinyin": "tǎoyàn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "disgusting, annoying; to dislike, to loathe"
+  },
+  {
+    "chinese": "特点",
+    "pinyin": "tèdiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "characteristic, feature"
+  },
+  {
+    "chinese": "提",
+    "pinyin": "tí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to carry, to lift, to mention, to bring up"
+  },
+  {
+    "chinese": "提出",
+    "pinyin": "tíchū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to put forward, to propose, to raise"
+  },
+  {
+    "chinese": "提到",
+    "pinyin": "tídào",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to mention, to refer to"
+  },
+  {
+    "chinese": "提供",
+    "pinyin": "tígōng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to provide, to supply, to offer"
+  },
+  {
+    "chinese": "提前",
+    "pinyin": "tíqián",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to advance, to move up, to do something ahead of time"
+  },
+  {
+    "chinese": "提醒",
+    "pinyin": "tíxǐng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to remind, to alert"
+  },
+  {
+    "chinese": "体检",
+    "pinyin": "tǐjiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to undergo a physical examination, to have a medical checkup"
+  },
+  {
+    "chinese": "体温",
+    "pinyin": "tǐwēn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "body temperature"
+  },
+  {
+    "chinese": "体重",
+    "pinyin": "tǐzhòng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "body weight"
+  },
+  {
+    "chinese": "填写",
+    "pinyin": "tiánxiě",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to fill in, to complete (a form)"
+  },
+  {
+    "chinese": "条件",
+    "pinyin": "tiáojiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "condition, requirement, terms"
+  },
+  {
+    "chinese": "听力",
+    "pinyin": "tīnglì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "listening ability, hearing"
+  },
+  {
+    "chinese": "听众",
+    "pinyin": "tīngzhòng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "audience, listeners"
+  },
+  {
+    "chinese": "停",
+    "pinyin": "tíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to stop, to halt"
+  },
+  {
+    "chinese": "停车",
+    "pinyin": "tíngchē",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to park, to stop a vehicle"
+  },
+  {
+    "chinese": "停车场",
+    "pinyin": "tíngchēchǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "parking lot"
+  },
+  {
+    "chinese": "停止",
+    "pinyin": "tíngzhǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to stop, to cease"
+  },
+  {
+    "chinese": "通",
+    "pinyin": "tōng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective、(classifier)",
+    "source_translation": "to go through, to be open; to lead to, to connect; (measure word for whole sets)"
+  },
+  {
+    "chinese": "通过",
+    "pinyin": "tōngguò",
+    "hsk_level": 4,
+    "part_of_speech": "verb、preposition",
+    "source_translation": "to pass through, to go through; by means of"
+  },
+  {
+    "chinese": "通知",
+    "pinyin": "tōngzhī",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to notify, to inform; notice, notification"
+  },
+  {
+    "chinese": "童年",
+    "pinyin": "tóngnián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "childhood"
+  },
+  {
+    "chinese": "同时",
+    "pinyin": "tóngshí",
+    "hsk_level": 4,
+    "part_of_speech": "noun、conjunction",
+    "source_translation": "at the same time; meanwhile, moreover"
+  },
+  {
+    "chinese": "同样",
+    "pinyin": "tóngyàng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "same, similar"
+  },
+  {
+    "chinese": "桶",
+    "pinyin": "tǒng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "bucket, barrel"
+  },
+  {
+    "chinese": "痛",
+    "pinyin": "tòng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(adverb)",
+    "source_translation": "painful, sore; (extremely, bitterly)"
+  },
+  {
+    "chinese": "头痛",
+    "pinyin": "tóutòng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "headache"
+  },
+  {
+    "chinese": "图",
+    "pinyin": "tú",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb)",
+    "source_translation": "picture, drawing, diagram; (to plan, to scheme)"
+  },
+  {
+    "chinese": "图片",
+    "pinyin": "túpiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "picture, image, photograph"
+  },
+  {
+    "chinese": "土",
+    "pinyin": "tǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(adjective)",
+    "source_translation": "earth, soil, land; (rustic, unrefined)"
+  },
+  {
+    "chinese": "推",
+    "pinyin": "tuī",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to push, to shove"
+  },
+  {
+    "chinese": "推迟",
+    "pinyin": "tuīchí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to postpone, to delay"
+  },
+  {
+    "chinese": "推出",
+    "pinyin": "tuīchū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to launch, to push out, to introduce"
+  },
+  {
+    "chinese": "脱",
+    "pinyin": "tuō",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to take off, to shed"
+  },
+  {
+    "chinese": "袜子",
+    "pinyin": "wàzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "socks"
+  },
+  {
+    "chinese": "外出",
+    "pinyin": "wàichū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to go out, to leave home"
+  },
+  {
+    "chinese": "外套",
+    "pinyin": "wàitào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "coat, jacket"
+  },
+  {
+    "chinese": "完全",
+    "pinyin": "wánquán",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "complete, total; completely, absolutely"
+  },
+  {
+    "chinese": "晚安",
+    "pinyin": "wǎn’ān",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "good night"
+  },
+  {
+    "chinese": "晚餐",
+    "pinyin": "wǎncān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "dinner, supper"
+  },
+  {
+    "chinese": "网购",
+    "pinyin": "wǎnggòu",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to shop online"
+  },
+  {
+    "chinese": "往往",
+    "pinyin": "wǎngwǎng",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "often, frequently"
+  },
+  {
+    "chinese": "网页",
+    "pinyin": "wǎngyè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "webpage"
+  },
+  {
+    "chinese": "网友",
+    "pinyin": "wǎngyǒu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "netizen, internet user"
+  },
+  {
+    "chinese": "网址",
+    "pinyin": "wǎngzhǐ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "website URL, web address"
+  },
+  {
+    "chinese": "危险",
+    "pinyin": "wēixiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "dangerous; danger"
+  },
+  {
+    "chinese": "为",
+    "pinyin": "wéi",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to do, to act, to serve as"
+  },
+  {
+    "chinese": "味",
+    "pinyin": "wèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "taste, flavor"
+  },
+  {
+    "chinese": "味道",
+    "pinyin": "wèidào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "taste, flavor"
+  },
+  {
+    "chinese": "卫生",
+    "pinyin": "wèishēng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、noun",
+    "source_translation": "hygiene, sanitation; clean, hygienic"
+  },
+  {
+    "chinese": "温度",
+    "pinyin": "wēndù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "temperature"
+  },
+  {
+    "chinese": "闻",
+    "pinyin": "wén",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to smell, to sniff"
+  },
+  {
+    "chinese": "文件",
+    "pinyin": "wénjiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "document, file"
+  },
+  {
+    "chinese": "文章",
+    "pinyin": "wénzhāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "essay, article"
+  },
+  {
+    "chinese": "文字",
+    "pinyin": "wénzì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "writing, character"
+  },
+  {
+    "chinese": "污染",
+    "pinyin": "wūrǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "contaminated"
+  },
+  {
+    "chinese": "无",
+    "pinyin": "wú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to lack, to not have"
+  },
+  {
+    "chinese": "无法",
+    "pinyin": "wúfǎ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "unable, incapable"
+  },
+  {
+    "chinese": "无聊",
+    "pinyin": "wúliáo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "boring, dull"
+  },
+  {
+    "chinese": "无论",
+    "pinyin": "wúlùn",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "no matter what, regardless"
+  },
+  {
+    "chinese": "午餐",
+    "pinyin": "wǔcān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "lunch"
+  },
+  {
+    "chinese": "误会",
+    "pinyin": "wùhuì",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to misunderstand; misunderstanding"
+  },
+  {
+    "chinese": "吸",
+    "pinyin": "xī",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to suck, to inhale, to absorb"
+  },
+  {
+    "chinese": "西部",
+    "pinyin": "xībù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "western region, west part"
+  },
+  {
+    "chinese": "西红柿",
+    "pinyin": "xīhóngshì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "tomato"
+  },
+  {
+    "chinese": "吸引",
+    "pinyin": "xīyǐn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to attract"
+  },
+  {
+    "chinese": "细",
+    "pinyin": "xì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "thin, fine, detailed"
+  },
+  {
+    "chinese": "细心",
+    "pinyin": "xìxīn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "careful, attentive"
+  },
+  {
+    "chinese": "下降",
+    "pinyin": "xiàjiàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to decline, to drop, to go down"
+  },
+  {
+    "chinese": "鲜",
+    "pinyin": "xiān",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "fresh"
+  },
+  {
+    "chinese": "鲜花",
+    "pinyin": "xiānhuā",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "fresh flower"
+  },
+  {
+    "chinese": "咸",
+    "pinyin": "xián",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "salty"
+  },
+  {
+    "chinese": "现金",
+    "pinyin": "xiànjīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "cash"
+  },
+  {
+    "chinese": "羡慕",
+    "pinyin": "xiànmù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to envy, to admire"
+  },
+  {
+    "chinese": "线上",
+    "pinyin": "xiànshàng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "online, on the internet"
+  },
+  {
+    "chinese": "线下",
+    "pinyin": "xiànxià",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "offline"
+  },
+  {
+    "chinese": "现有",
+    "pinyin": "xiànyǒu",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "existing, currently available; to have currently"
+  },
+  {
+    "chinese": "香",
+    "pinyin": "xiāng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "fragrant"
+  },
+  {
+    "chinese": "相比",
+    "pinyin": "xiāngbǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to compare with, to contrast"
+  },
+  {
+    "chinese": "相反",
+    "pinyin": "xiāngfǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、conjunction",
+    "source_translation": "opposite, contrary; on the contrary"
+  },
+  {
+    "chinese": "相互",
+    "pinyin": "xiānghù",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "mutual, each other"
+  },
+  {
+    "chinese": "相同",
+    "pinyin": "xiāngtóng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "same, identical"
+  },
+  {
+    "chinese": "详细",
+    "pinyin": "xiángxì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "detailed, thorough"
+  },
+  {
+    "chinese": "响",
+    "pinyin": "xiǎng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to make a sound, to ring; loud"
+  },
+  {
+    "chinese": "想法",
+    "pinyin": "xiǎngfǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "thought, idea, opinion"
+  },
+  {
+    "chinese": "项",
+    "pinyin": "xiàng",
+    "hsk_level": 4,
+    "part_of_speech": "classifier",
+    "source_translation": "measure word for projects, items"
+  },
+  {
+    "chinese": "消息",
+    "pinyin": "xiāoxi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "news, message, information"
+  },
+  {
+    "chinese": "小吃",
+    "pinyin": "xiǎochī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "snack, light meal"
+  },
+  {
+    "chinese": "小伙子",
+    "pinyin": "xiǎohuǒzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "young man, lad"
+  },
+  {
+    "chinese": "小说",
+    "pinyin": "xiǎoshuō",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "novel, fiction"
+  },
+  {
+    "chinese": "小组",
+    "pinyin": "xiǎozǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "small group, team"
+  },
+  {
+    "chinese": "效果",
+    "pinyin": "xiàoguǒ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "effect, result"
+  },
+  {
+    "chinese": "笑话",
+    "pinyin": "xiàohua",
+    "hsk_level": 4,
+    "part_of_speech": "noun、verb",
+    "source_translation": "joke, laughter; to joke, to laugh at"
+  },
+  {
+    "chinese": "血",
+    "pinyin": "xiě",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "blood"
+  },
+  {
+    "chinese": "心",
+    "pinyin": "xīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "heart"
+  },
+  {
+    "chinese": "辛苦",
+    "pinyin": "xīnkǔ",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "hard, laborious; to work hard, to toil"
+  },
+  {
+    "chinese": "心情",
+    "pinyin": "xīnqíng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "mood, feeling"
+  },
+  {
+    "chinese": "信号",
+    "pinyin": "xìnhào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "signal"
+  },
+  {
+    "chinese": "信息",
+    "pinyin": "xìnxī",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "information, message"
+  },
+  {
+    "chinese": "信心",
+    "pinyin": "xìnxīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "confidence, faith"
+  },
+  {
+    "chinese": "兴奋",
+    "pinyin": "xīngfèn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "excited, thrilled; to excite, to get excited"
+  },
+  {
+    "chinese": "星星",
+    "pinyin": "xīngxing",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "star"
+  },
+  {
+    "chinese": "醒",
+    "pinyin": "xǐng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to wake up, to sober up"
+  },
+  {
+    "chinese": "性",
+    "pinyin": "xìng",
+    "hsk_level": 4,
+    "part_of_speech": "suffix",
+    "source_translation": "suffix meaning nature, character, quality"
+  },
+  {
+    "chinese": "性别",
+    "pinyin": "xìngbié",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "gender, sex"
+  },
+  {
+    "chinese": "幸福",
+    "pinyin": "xìngfú",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "happiness; happy, blissful"
+  },
+  {
+    "chinese": "性格",
+    "pinyin": "xìnggé",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "character"
+  },
+  {
+    "chinese": "兄弟",
+    "pinyin": "xiōngdì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "brothers"
+  },
+  {
+    "chinese": "熊",
+    "pinyin": "xióng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "bear"
+  },
+  {
+    "chinese": "修",
+    "pinyin": "xiū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to repair, to fix"
+  },
+  {
+    "chinese": "修理",
+    "pinyin": "xiūlǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to repair, to fix"
+  },
+  {
+    "chinese": "许多",
+    "pinyin": "xǔduō",
+    "hsk_level": 4,
+    "part_of_speech": "number",
+    "source_translation": "many, numerous"
+  },
+  {
+    "chinese": "学费",
+    "pinyin": "xuéfèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "tuition fee"
+  },
+  {
+    "chinese": "学院",
+    "pinyin": "xuéyuàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "college, academy, institute"
+  },
+  {
+    "chinese": "压",
+    "pinyin": "yā",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to press, to push down, to weigh down"
+  },
+  {
+    "chinese": "压力",
+    "pinyin": "yālì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "pressure, stress"
+  },
+  {
+    "chinese": "牙膏",
+    "pinyin": "yágāo",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "toothpaste"
+  },
+  {
+    "chinese": "亚洲",
+    "pinyin": "Yàzhōu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Asia"
+  },
+  {
+    "chinese": "烟",
+    "pinyin": "yān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "cigarette, smoke, mist"
+  },
+  {
+    "chinese": "盐",
+    "pinyin": "yán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "salt"
+  },
+  {
+    "chinese": "严格",
+    "pinyin": "yángé",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、verb",
+    "source_translation": "strict, stringent; to restrict strictly"
+  },
+  {
+    "chinese": "研究",
+    "pinyin": "yánjiū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to research, to study"
+  },
+  {
+    "chinese": "研究生",
+    "pinyin": "yánjiūshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "graduate student, postgraduate"
+  },
+  {
+    "chinese": "严重",
+    "pinyin": "yánzhòng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "serious, severe, grave"
+  },
+  {
+    "chinese": "演",
+    "pinyin": "yǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to act, to perform, to play"
+  },
+  {
+    "chinese": "演唱",
+    "pinyin": "yǎnchàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to sing, to perform vocally"
+  },
+  {
+    "chinese": "演出",
+    "pinyin": "yǎnchū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to perform, to put on a show"
+  },
+  {
+    "chinese": "眼镜",
+    "pinyin": "yǎnjìng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "eyeglasses, glasses"
+  },
+  {
+    "chinese": "眼前",
+    "pinyin": "yǎnqián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "before one’s eyes, at the moment"
+  },
+  {
+    "chinese": "演员",
+    "pinyin": "yǎnyuán",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "actor, performer"
+  },
+  {
+    "chinese": "阳光",
+    "pinyin": "yángguāng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "sunlight, sunshine"
+  },
+  {
+    "chinese": "养成",
+    "pinyin": "yǎngchéng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to develop, to cultivate, to form"
+  },
+  {
+    "chinese": "样子",
+    "pinyin": "yàngzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "appearance, look, manner"
+  },
+  {
+    "chinese": "邀请",
+    "pinyin": "yāoqǐng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to invite"
+  },
+  {
+    "chinese": "要是",
+    "pinyin": "yàoshi",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "if, suppose"
+  },
+  {
+    "chinese": "钥匙",
+    "pinyin": "yàoshi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "key"
+  },
+  {
+    "chinese": "也许",
+    "pinyin": "yěxǔ",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "maybe, perhaps"
+  },
+  {
+    "chinese": "夜",
+    "pinyin": "yè",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "night; measure word for segments of the night"
+  },
+  {
+    "chinese": "夜晚",
+    "pinyin": "yèwǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "night, evening"
+  },
+  {
+    "chinese": "叶子",
+    "pinyin": "yèzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Leaf"
+  },
+  {
+    "chinese": "一切",
+    "pinyin": "yíqiè",
+    "hsk_level": 4,
+    "part_of_speech": "pronoun",
+    "source_translation": "everything"
+  },
+  {
+    "chinese": "已",
+    "pinyin": "yǐ",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "already"
+  },
+  {
+    "chinese": "以内",
+    "pinyin": "yǐnèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "within"
+  },
+  {
+    "chinese": "意见",
+    "pinyin": "yìjiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "opinion"
+  },
+  {
+    "chinese": "一生",
+    "pinyin": "yìshēng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "lifetime, all one’s life"
+  },
+  {
+    "chinese": "艺术",
+    "pinyin": "yìshù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "art"
+  },
+  {
+    "chinese": "因此",
+    "pinyin": "yīncǐ",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "therefore"
+  },
+  {
+    "chinese": "引起",
+    "pinyin": "yǐnqǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "cause"
+  },
+  {
+    "chinese": "印象",
+    "pinyin": "yìnxiàng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "impression"
+  },
+  {
+    "chinese": "赢",
+    "pinyin": "yíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "win"
+  },
+  {
+    "chinese": "赢得",
+    "pinyin": "yíngdé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "gain, win"
+  },
+  {
+    "chinese": "应聘",
+    "pinyin": "yìngpìn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to apply for a job, to respond to a job advertisement"
+  },
+  {
+    "chinese": "勇敢",
+    "pinyin": "yǒnggǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "brave, courageous"
+  },
+  {
+    "chinese": "永远",
+    "pinyin": "yǒngyuǎn",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、noun",
+    "source_translation": "forever, always; eternity, forever"
+  },
+  {
+    "chinese": "用来",
+    "pinyin": "yònglái",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be used for, to serve as"
+  },
+  {
+    "chinese": "用于",
+    "pinyin": "yòngyú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be used for, to be applied to"
+  },
+  {
+    "chinese": "优点",
+    "pinyin": "yōudiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "advantage, merit, strong point"
+  },
+  {
+    "chinese": "幽默",
+    "pinyin": "yōumò",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "humorous"
+  },
+  {
+    "chinese": "优秀",
+    "pinyin": "yōuxiù",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "excellent, outstanding"
+  },
+  {
+    "chinese": "由",
+    "pinyin": "yóu",
+    "hsk_level": 4,
+    "part_of_speech": "preposition",
+    "source_translation": "by, through, from, because of"
+  },
+  {
+    "chinese": "油",
+    "pinyin": "yóu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "oil, fat, grease"
+  },
+  {
+    "chinese": "尤其",
+    "pinyin": "yóuqí",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "especially, particularly"
+  },
+  {
+    "chinese": "游玩",
+    "pinyin": "yóuwán",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to play, to have fun, to go sightseeing"
+  },
+  {
+    "chinese": "由于",
+    "pinyin": "yóuyú",
+    "hsk_level": 4,
+    "part_of_speech": "preposition、conjunction",
+    "source_translation": "because of, due to; owing to"
+  },
+  {
+    "chinese": "友好",
+    "pinyin": "yǒuhǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "friendly"
+  },
+  {
+    "chinese": "友情",
+    "pinyin": "yǒuqíng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "friendship"
+  },
+  {
+    "chinese": "有趣",
+    "pinyin": "yǒuqù",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "interesting, enjoyable, fun"
+  },
+  {
+    "chinese": "有效",
+    "pinyin": "yǒuxiào",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "effective, to be effective"
+  },
+  {
+    "chinese": "友谊",
+    "pinyin": "yǒuyì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "friendship"
+  },
+  {
+    "chinese": "有着",
+    "pinyin": "yǒuzhe",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to have, to possess"
+  },
+  {
+    "chinese": "愉快",
+    "pinyin": "yúkuài",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "pleasant, cheerful"
+  },
+  {
+    "chinese": "于是",
+    "pinyin": "yúshì",
+    "hsk_level": 4,
+    "part_of_speech": "conjunction",
+    "source_translation": "therefore, hence, so"
+  },
+  {
+    "chinese": "与",
+    "pinyin": "yǔ",
+    "hsk_level": 4,
+    "part_of_speech": "preposition、conjunction",
+    "source_translation": "with, and"
+  },
+  {
+    "chinese": "语法",
+    "pinyin": "yǔfǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "grammar"
+  },
+  {
+    "chinese": "预习",
+    "pinyin": "yùxí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to preview, to prepare"
+  },
+  {
+    "chinese": "原来",
+    "pinyin": "yuánlái",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective、adverb",
+    "source_translation": "original, former; originally, actually"
+  },
+  {
+    "chinese": "原谅",
+    "pinyin": "yuánliàng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to forgive, to excuse, to pardon"
+  },
+  {
+    "chinese": "原因",
+    "pinyin": "yuányīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "cause, reason"
+  },
+  {
+    "chinese": "远离",
+    "pinyin": "yuǎnlí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to stay away from, to keep away from"
+  },
+  {
+    "chinese": "院长",
+    "pinyin": "yuànzhǎng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "dean, head of a college or institute"
+  },
+  {
+    "chinese": "院子",
+    "pinyin": "yuànzi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "courtyard, yard"
+  },
+  {
+    "chinese": "约",
+    "pinyin": "yuē",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adverb",
+    "source_translation": "to make an appointment, to arrange; about, approximately"
+  },
+  {
+    "chinese": "约会",
+    "pinyin": "yuēhuì",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to date, to meet up; date, appointment"
+  },
+  {
+    "chinese": "月饼",
+    "pinyin": "yuèbing",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "mooncake"
+  },
+  {
+    "chinese": "阅读",
+    "pinyin": "yuèdú",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to read, to read aloud"
+  },
+  {
+    "chinese": "月份",
+    "pinyin": "yuèfèn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "month"
+  },
+  {
+    "chinese": "云",
+    "pinyin": "yún",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "cloud"
+  },
+  {
+    "chinese": "允许",
+    "pinyin": "yǔnxǔ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to permit, to allow, to give permission"
+  },
+  {
+    "chinese": "杂志",
+    "pinyin": "zázhì",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "magazine"
+  },
+  {
+    "chinese": "再次",
+    "pinyin": "zàicì",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "once again, once more"
+  },
+  {
+    "chinese": "再说",
+    "pinyin": "zàishuō",
+    "hsk_level": 4,
+    "part_of_speech": "verb、conjunction",
+    "source_translation": "to put off, to postpone; besides, moreover"
+  },
+  {
+    "chinese": "暂时",
+    "pinyin": "zànshí",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "temporary, for the time being"
+  },
+  {
+    "chinese": "暂停",
+    "pinyin": "zàntíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to suspend, to pause"
+  },
+  {
+    "chinese": "早餐",
+    "pinyin": "zǎocān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "breakfast"
+  },
+  {
+    "chinese": "早晨",
+    "pinyin": "zǎochen",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "morning"
+  },
+  {
+    "chinese": "责任",
+    "pinyin": "zérèn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "responsibility, duty"
+  },
+  {
+    "chinese": "增加",
+    "pinyin": "zēngjiā",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to increase, to add, to raise"
+  },
+  {
+    "chinese": "增长",
+    "pinyin": "zēngzhǎng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to increase, to grow, to rise"
+  },
+  {
+    "chinese": "招聘",
+    "pinyin": "zhāopìn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to recruit, to hire"
+  },
+  {
+    "chinese": "着",
+    "pinyin": "zháo",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to touch, to get to, to catch (fire)"
+  },
+  {
+    "chinese": "着火",
+    "pinyin": "zháohuǒ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to catch fire, to ignite"
+  },
+  {
+    "chinese": "者",
+    "pinyin": "zhě",
+    "hsk_level": 4,
+    "part_of_speech": "auxiliary",
+    "source_translation": "suffix meaning person, one who"
+  },
+  {
+    "chinese": "真正",
+    "pinyin": "zhēnzhèng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "true, genuine; truly, indeed"
+  },
+  {
+    "chinese": "整",
+    "pinyin": "zhěng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "whole, complete, entire"
+  },
+  {
+    "chinese": "整个",
+    "pinyin": "zhěnggè",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "whole, entire, all"
+  },
+  {
+    "chinese": "整理",
+    "pinyin": "zhěnglǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to arrange, to put in order, to tidy up"
+  },
+  {
+    "chinese": "证",
+    "pinyin": "zhèng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "certificate, proof, evidence"
+  },
+  {
+    "chinese": "正常",
+    "pinyin": "zhèngcháng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "normal, regular, proper"
+  },
+  {
+    "chinese": "正好",
+    "pinyin": "zhènghǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、adverb",
+    "source_translation": "exactly right, just in time; coincidentally"
+  },
+  {
+    "chinese": "证件",
+    "pinyin": "zhèngjiàn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "ID card, credentials, identification papers"
+  },
+  {
+    "chinese": "证明",
+    "pinyin": "zhèngmíng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to prove, to demonstrate; proof, certificate"
+  },
+  {
+    "chinese": "正确",
+    "pinyin": "zhèngquè",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "correct, right, accurate"
+  },
+  {
+    "chinese": "正式",
+    "pinyin": "zhèngshì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "formal, official"
+  },
+  {
+    "chinese": "之",
+    "pinyin": "zhī",
+    "hsk_level": 4,
+    "part_of_speech": "auxiliary",
+    "source_translation": "auxiliary word (classical)"
+  },
+  {
+    "chinese": "支持",
+    "pinyin": "zhīchí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to support, to back"
+  },
+  {
+    "chinese": "支付",
+    "pinyin": "zhīfù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to pay (money)"
+  },
+  {
+    "chinese": "之后",
+    "pinyin": "zhīhòu",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "after, later, behind"
+  },
+  {
+    "chinese": "之间",
+    "pinyin": "zhījiān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "between, among"
+  },
+  {
+    "chinese": "之前",
+    "pinyin": "zhīqián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "before, prior to"
+  },
+  {
+    "chinese": "知识",
+    "pinyin": "zhīshi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "knowledge"
+  },
+  {
+    "chinese": "之中",
+    "pinyin": "zhīzhōng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "among, inside"
+  },
+  {
+    "chinese": "值",
+    "pinyin": "zhí",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to be worth, to be equal in value; valuable, worthwhile"
+  },
+  {
+    "chinese": "值得",
+    "pinyin": "zhídé",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to be worth, to deserve"
+  },
+  {
+    "chinese": "直接",
+    "pinyin": "zhíjiē",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "direct, straightforward"
+  },
+  {
+    "chinese": "植物",
+    "pinyin": "zhíwù",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "plant, vegetation"
+  },
+  {
+    "chinese": "职业",
+    "pinyin": "zhíyè",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "occupation, profession"
+  },
+  {
+    "chinese": "指",
+    "pinyin": "zhǐ",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to point to, to indicate"
+  },
+  {
+    "chinese": "指出",
+    "pinyin": "zhǐchū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to point out, to indicate"
+  },
+  {
+    "chinese": "只好",
+    "pinyin": "zhǐhǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "have to, be forced to"
+  },
+  {
+    "chinese": "纸巾",
+    "pinyin": "zhǐjīn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "tissue paper, napkin"
+  },
+  {
+    "chinese": "质量",
+    "pinyin": "zhìliàng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "quality"
+  },
+  {
+    "chinese": "至少",
+    "pinyin": "zhìshǎo",
+    "hsk_level": 4,
+    "part_of_speech": "adverb",
+    "source_translation": "at least"
+  },
+  {
+    "chinese": "中餐",
+    "pinyin": "zhōngcān",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "Chinese food, Chinese meal"
+  },
+  {
+    "chinese": "中年",
+    "pinyin": "zhōngnián",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "middle age"
+  },
+  {
+    "chinese": "种",
+    "pinyin": "zhòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to plant, to grow"
+  },
+  {
+    "chinese": "重",
+    "pinyin": "zhòng",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "weight, importance; heavy, important"
+  },
+  {
+    "chinese": "重点",
+    "pinyin": "zhòngdiǎn",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adverb",
+    "source_translation": "key point, emphasis; mainly, emphatically"
+  },
+  {
+    "chinese": "重视",
+    "pinyin": "zhòngshì",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to pay attention to, to value"
+  },
+  {
+    "chinese": "周围",
+    "pinyin": "zhōuwéi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "around, surrounding"
+  },
+  {
+    "chinese": "主意",
+    "pinyin": "zhǔyi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "idea, thought, plan"
+  },
+  {
+    "chinese": "祝",
+    "pinyin": "zhù",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to wish, to express good wishes"
+  },
+  {
+    "chinese": "祝贺",
+    "pinyin": "zhùhè",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to congratulate, to offer congratulations"
+  },
+  {
+    "chinese": "著名",
+    "pinyin": "zhùmíng",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "famous, well-known"
+  },
+  {
+    "chinese": "专门",
+    "pinyin": "zhuānmén",
+    "hsk_level": 4,
+    "part_of_speech": "adverb、adjective",
+    "source_translation": "specially, specifically; special"
+  },
+  {
+    "chinese": "专业",
+    "pinyin": "zhuānyè",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective",
+    "source_translation": "specialty, major; professional, specialized"
+  },
+  {
+    "chinese": "转",
+    "pinyin": "zhuǎn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to turn, to shift, to transfer"
+  },
+  {
+    "chinese": "转发",
+    "pinyin": "zhuǎnfā",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to forward (a message), to retweet"
+  },
+  {
+    "chinese": "转机",
+    "pinyin": "zhuǎnjī",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to transfer (flight), to change planes"
+  },
+  {
+    "chinese": "赚",
+    "pinyin": "zhuàn",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to earn, to make a profit"
+  },
+  {
+    "chinese": "装",
+    "pinyin": "zhuāng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to load, to pack, to pretend, to install"
+  },
+  {
+    "chinese": "准",
+    "pinyin": "zhǔn",
+    "hsk_level": 4,
+    "part_of_speech": "adjective、(adverb)",
+    "source_translation": "accurate, exact, standard; (definitely, certainly)"
+  },
+  {
+    "chinese": "准确",
+    "pinyin": "zhǔnquè",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "accurate, precise"
+  },
+  {
+    "chinese": "准时",
+    "pinyin": "zhǔnshí",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "on time, punctual"
+  },
+  {
+    "chinese": "资料",
+    "pinyin": "zīliào",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "materials, data, information"
+  },
+  {
+    "chinese": "仔细",
+    "pinyin": "zǐxì",
+    "hsk_level": 4,
+    "part_of_speech": "adjective",
+    "source_translation": "careful, attentive, meticulous"
+  },
+  {
+    "chinese": "自",
+    "pinyin": "zì",
+    "hsk_level": 4,
+    "part_of_speech": "preposition",
+    "source_translation": "from, since, oneself"
+  },
+  {
+    "chinese": "自然",
+    "pinyin": "zìrán",
+    "hsk_level": 4,
+    "part_of_speech": "noun、adjective、adverb",
+    "source_translation": "nature; natural; naturally, of course"
+  },
+  {
+    "chinese": "自习",
+    "pinyin": "zìxí",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to study on one’s own"
+  },
+  {
+    "chinese": "自信",
+    "pinyin": "zìxìn",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun、adjective",
+    "source_translation": "to believe in oneself; self-confidence, confidence; confident"
+  },
+  {
+    "chinese": "自学",
+    "pinyin": "zìxué",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to teach oneself, to self-study"
+  },
+  {
+    "chinese": "总结",
+    "pinyin": "zǒngjié",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "to summarize, to sum up; summary"
+  },
+  {
+    "chinese": "租",
+    "pinyin": "zū",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to rent, to hire"
+  },
+  {
+    "chinese": "组",
+    "pinyin": "zǔ",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb、classifier)",
+    "source_translation": "group, team; (to organize; measure word for groups)"
+  },
+  {
+    "chinese": "最终",
+    "pinyin": "zuìzhōng",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "final, ultimate"
+  },
+  {
+    "chinese": "尊重",
+    "pinyin": "zūnzhòng",
+    "hsk_level": 4,
+    "part_of_speech": "verb、adjective",
+    "source_translation": "to respect, to value; respected"
+  },
+  {
+    "chinese": "左右",
+    "pinyin": "zuǒyòu",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb)",
+    "source_translation": "about, around, left and right; (to control)"
+  },
+  {
+    "chinese": "座",
+    "pinyin": "zuò",
+    "hsk_level": 4,
+    "part_of_speech": "noun、classifier",
+    "source_translation": "seat, place; measure word for seats"
+  },
+  {
+    "chinese": "做法",
+    "pinyin": "zuòfǎ",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "way of doing things, practice"
+  },
+  {
+    "chinese": "作家",
+    "pinyin": "zuòjiā",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "writer, author"
+  },
+  {
+    "chinese": "做梦",
+    "pinyin": "zuòmèng",
+    "hsk_level": 4,
+    "part_of_speech": "verb",
+    "source_translation": "to dream, to have a dream"
+  },
+  {
+    "chinese": "作品",
+    "pinyin": "zuòpǐn",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "work, composition, creation"
+  },
+  {
+    "chinese": "作为",
+    "pinyin": "zuòwéi",
+    "hsk_level": 4,
+    "part_of_speech": "verb、preposition",
+    "source_translation": "to act as, to serve as; as, being"
+  },
+  {
+    "chinese": "座位",
+    "pinyin": "zuòwèi",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "seat"
+  },
+  {
+    "chinese": "作文",
+    "pinyin": "zuòwén",
+    "hsk_level": 4,
+    "part_of_speech": "verb、noun",
+    "source_translation": "composition; to write a composition"
+  },
+  {
+    "chinese": "作用",
+    "pinyin": "zuòyòng",
+    "hsk_level": 4,
+    "part_of_speech": "noun、(verb)",
+    "source_translation": "function, role; (to serve as, to play a role)"
+  },
+  {
+    "chinese": "作者",
+    "pinyin": "zuòzhě",
+    "hsk_level": 4,
+    "part_of_speech": "noun",
+    "source_translation": "author, writer"
+  }
+]

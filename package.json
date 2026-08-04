@@ -1,7 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "prepare:hanzi-data": "node scripts/prepare-hanzi-data.mjs"
+    "prepare:hanzi-data": "node scripts/prepare-hanzi-data.mjs",
+    "build:hsk-runtime": "node scripts/build-hsk-runtime.mjs",
+    "build:portable": "node scripts/build-portable.mjs",
+    "test:data": "node tests/search-normalization.test.cjs && node tests/hsk-runtime.test.cjs",
+    "test:browser": "node tests/browser-regression.mjs"
   },
   "dependencies": {
     "hanzi-writer": "3.7.3",

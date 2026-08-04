@@ -891,7 +891,7 @@
             inset: 0;
             margin: auto;
          }
-         .ghost {
+         .mizi > .ghost {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1020,18 +1020,25 @@
    width: 100%;
    height: 100%;
 }
-.stroke-grid-lines rect,
-.stroke-grid-lines path {
+.stroke-grid-lines > * {
    fill: none;
-   stroke: #b99857;
-   stroke-width: 5;
-   stroke-dasharray: 18 15;
-   opacity: 0.55;
+   stroke: #9f7b39;
    vector-effect: non-scaling-stroke;
 }
-.stroke-grid-lines rect {
+.stroke-grid-center {
+   stroke-width: 0.8;
+   stroke-dasharray: 18 15;
+   opacity: 0.25;
+}
+.stroke-grid-diagonal {
+   stroke-width: 0.65;
+   stroke-dasharray: 14 18;
+   opacity: 0.13;
+}
+.stroke-grid-border {
+   stroke-width: 1;
    stroke-dasharray: none;
-   opacity: 0.75;
+   opacity: 0.34;
 }
 .stroke-path {
    stroke: none;
@@ -1549,6 +1556,30 @@
 .dd-definitions.english {
    color: var(--ink-soft);
 }
+.dd-hsk-source {
+   display: grid;
+   gap: 8px;
+   margin: 16px 0;
+   padding: 12px 14px;
+   border: 1px solid color-mix(in srgb, var(--seal) 30%, var(--line));
+   border-radius: 11px;
+   background: color-mix(in srgb, var(--seal) 5%, var(--card-2));
+}
+.dd-hsk-source .eyebrow {
+   margin: 0 0 2px;
+}
+.dd-hsk-source-item + .dd-hsk-source-item {
+   padding-top: 8px;
+   border-top: 1px solid var(--line-soft);
+}
+.dd-hsk-translation {
+   margin: 2px 0;
+   overflow-wrap: anywhere;
+   color: var(--ink-soft);
+}
+.dd-hsk-source-item small {
+   color: var(--ink-faint);
+}
 .dd-card-actions {
    display: grid;
    gap: 10px;
@@ -1773,6 +1804,320 @@
             color: var(--ink-soft);
             font-weight: 600;
          }
+
+/* ---------- parcours ---------- */
+.path-page {
+   padding-top: 10px;
+}
+
+.path-header {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   margin: 6px 0 18px;
+}
+
+.path-header .v-t,
+.path-level-header .v-t {
+   margin: 0;
+}
+
+.path-mark {
+   display: grid;
+   flex: 0 0 54px;
+   width: 54px;
+   height: 54px;
+   place-items: center;
+   border-radius: 15px;
+   background: var(--seal);
+   color: var(--card-2);
+   font: 30px var(--serif);
+}
+
+.path-continue h3 {
+   font-family: var(--disp);
+   font-size: 20px;
+}
+
+.path-continue p,
+.path-level-note {
+   color: var(--ink-soft);
+}
+
+.path-continue p {
+   margin-top: 5px;
+}
+
+.path-levels {
+   display: grid;
+   gap: 10px;
+}
+
+.path-level {
+   display: flex;
+   width: 100%;
+   min-height: 88px;
+   align-items: center;
+   justify-content: space-between;
+   gap: 18px;
+   padding: 17px 18px;
+   text-align: left;
+}
+
+.path-level > span:first-child {
+   display: flex;
+   flex-direction: column;
+   min-width: 0;
+}
+
+.path-level-title {
+   flex: 0 0 auto;
+   color: var(--seal);
+   font: 600 24px var(--disp);
+}
+
+.path-level-order {
+   color: var(--ink-faint);
+   font-size: 11px;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+}
+
+.path-level-note {
+   max-width: 290px;
+   font-size: 13.5px;
+   line-height: 1.35;
+   text-align: right;
+}
+
+.path-level-note b {
+   display: block;
+   color: var(--ink);
+   font: 600 20px var(--disp);
+}
+
+.path-level-header {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   margin: 6px 0 18px;
+}
+
+.path-level-header .btn {
+   min-height: 44px;
+   padding-inline: 8px;
+}
+
+.path-loading {
+   display: flex;
+   min-height: 92px;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+   color: var(--ink-soft);
+}
+
+.path-error {
+   padding: 20px;
+}
+
+.path-scope-note {
+   margin: -8px 0 14px;
+   color: var(--ink-faint);
+   font-size: 12px;
+}
+
+.path-vocabulary {
+   overflow: hidden;
+}
+
+.path-level-tools {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) auto;
+   gap: 5px 12px;
+   align-items: end;
+   padding: 16px;
+   border-bottom: 1px solid var(--line-soft);
+   background: color-mix(in srgb, var(--card-2) 68%, transparent);
+}
+
+.path-level-tools label {
+   grid-column: 1 / -1;
+   color: var(--ink-soft);
+   font-size: 13px;
+   font-weight: 600;
+}
+
+.path-filter-count {
+   padding-bottom: 10px;
+   color: var(--ink-faint);
+   font-size: 12px;
+   white-space: nowrap;
+}
+
+.path-word-list {
+   display: grid;
+}
+
+.path-word {
+   display: grid;
+   grid-template-columns: minmax(76px, auto) minmax(0, 1fr) auto;
+   gap: 12px;
+   align-items: center;
+   min-height: 78px;
+   padding: 12px 15px;
+   border-bottom: 1px solid var(--line-soft);
+   text-align: left;
+}
+
+.path-word:hover,
+.path-word:focus-visible {
+   background: var(--card-2);
+}
+
+.path-word-hanzi {
+   color: var(--ink);
+   font: 500 25px var(--serif);
+}
+
+.path-word-main {
+   display: flex;
+   min-width: 0;
+   flex-direction: column;
+}
+
+.path-word-pinyin {
+   font-size: 14px;
+}
+
+.path-word-translation {
+   overflow-wrap: anywhere;
+   color: var(--ink-soft);
+   font-size: 13px;
+   line-height: 1.35;
+}
+
+.path-word-meta {
+   margin-top: 3px;
+   color: var(--ink-faint);
+   font-size: 10.5px;
+}
+
+.path-word-badges {
+   display: flex;
+   max-width: 120px;
+   flex-direction: column;
+   align-items: flex-end;
+   gap: 4px;
+}
+
+.hsk-badge,
+.path-word-status {
+   display: inline-flex;
+   align-items: center;
+   width: fit-content;
+   border: 1px solid color-mix(in srgb, var(--seal) 48%, var(--line));
+   border-radius: 999px;
+   background: color-mix(in srgb, var(--seal) 9%, var(--card-2));
+   color: var(--lacquer);
+   font-family: var(--ui);
+   font-size: 10.5px;
+   font-style: normal;
+   font-weight: 600;
+   line-height: 1;
+   padding: 5px 7px;
+   white-space: nowrap;
+}
+
+.path-word-status {
+   max-width: 120px;
+   border-color: var(--line);
+   background: var(--card-2);
+   color: var(--ink-faint);
+   font-size: 9px;
+   line-height: 1.15;
+   text-align: right;
+   white-space: normal;
+}
+
+.path-word-status.status-source-only,
+.hsk-source-status {
+   border-color: color-mix(in srgb, var(--gold) 62%, var(--line));
+   color: color-mix(in srgb, var(--gold) 72%, var(--ink));
+}
+
+.path-no-results {
+   min-height: 180px;
+   padding: 36px 20px;
+   color: var(--ink-soft);
+   text-align: center;
+}
+
+.path-more {
+   padding: 14px;
+   text-align: center;
+}
+
+@media (min-width: 700px) {
+   .path-levels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (max-width: 480px) {
+   .path-header {
+      align-items: flex-start;
+   }
+
+   .path-level {
+      min-height: 82px;
+      padding: 14px;
+   }
+
+   .path-level-title {
+      font-size: 22px;
+   }
+
+   .path-level-note {
+      max-width: 145px;
+      font-size: 11.5px;
+   }
+
+   .path-level-header {
+      align-items: flex-start;
+   }
+
+   .path-level-header .muted {
+      line-height: 1.3;
+   }
+
+   .path-level-tools {
+      grid-template-columns: 1fr;
+   }
+
+   .path-filter-count {
+      padding-bottom: 0;
+   }
+
+   .path-word {
+      grid-template-columns: minmax(68px, auto) minmax(0, 1fr);
+      gap: 10px;
+      padding-inline: 12px;
+   }
+
+   .path-word-badges {
+      grid-column: 2;
+      max-width: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+   }
+
+   .path-word-status {
+      max-width: none;
+      text-align: left;
+   }
+}
 
 /* ---------- sheet, toast, nav ---------- */
          #sheet {
@@ -2168,8 +2513,8 @@
          <button data-view="write" aria-pressed="false">
             <span class="n-hz">查</span><span class="n-lab">Rechercher</span>
          </button>
-         <button data-view="listen" aria-pressed="false">
-            <span class="n-hz">听</span><span class="n-lab">Écouter</span>
+         <button data-view="path" aria-pressed="false">
+            <span class="n-hz">学</span><span class="n-lab">Parcours</span>
          </button>
          <button data-view="grammar" aria-pressed="false">
             <span class="n-hz">法</span><span class="n-lab">Grammaire</span>
@@ -2183,21 +2528,6 @@
          accept=".json,application/json"
          hidden
       />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2570,6 +2900,355 @@ if (typeof module !== "undefined" && module.exports) {
 
 "use strict";
 
+const HSK_RUNTIME_SCHEMA_VERSION = 1;
+const HSK_RESULT_LIMIT = 48;
+const HSK_RUNTIME_ROOT = (() => {
+   const portable =
+      typeof document !== "undefined" &&
+      /\/dist\/[^/]+\.html$/u.test(new URL(document.baseURI).pathname);
+   return new URL(
+      portable ? "../data/generated/hsk/runtime/" : "data/generated/hsk/runtime/",
+      typeof document === "undefined" ? "http://localhost/" : document.baseURI,
+   ).href;
+})();
+
+const hskDataState = {
+   manifest: null,
+   searchEntries: null,
+   entriesById: new Map(),
+   entriesByDictionaryId: new Map(),
+   levels: new Map(),
+   error: null,
+};
+
+function hskRuntimeUrl(relativePath) {
+   return new URL(relativePath, HSK_RUNTIME_ROOT).href;
+}
+
+async function fetchHskJson(relativePath) {
+   const response = await fetch(hskRuntimeUrl(relativePath), { cache: "default" });
+   if (!response.ok) throw new Error(relativePath + " · HTTP " + response.status);
+   try {
+      return await response.json();
+   } catch (error) {
+      throw new Error(relativePath + " · JSON HSK invalide");
+   }
+}
+
+function validateHskPayload(payload, label) {
+   if (
+      !payload ||
+      payload.schemaVersion !== HSK_RUNTIME_SCHEMA_VERSION ||
+      !Array.isArray(payload.fields) ||
+      !Array.isArray(payload.entries)
+   ) {
+      throw new Error(label + " · données HSK incompatibles");
+   }
+   return payload;
+}
+
+function decodeHskPayload(payload) {
+   const indexes = Object.fromEntries(payload.fields.map((field, index) => [field, index]));
+   const required = [
+      "hskEntryId",
+      "chinese",
+      "pinyin",
+      "hskLevel",
+      "firstHskLevel",
+      "sourceLevels",
+      "sourceTranslation",
+      "dictionaryEntryId",
+      "dictionaryLinkStatus",
+   ];
+   if (required.some((field) => indexes[field] == null)) {
+      throw new Error("Champs HSK requis absents.");
+   }
+   return payload.entries.map((row) => ({
+      hskEntryId: row[indexes.hskEntryId],
+      chinese: row[indexes.chinese],
+      pinyin: row[indexes.pinyin],
+      hskLevel: Number(row[indexes.hskLevel]),
+      firstHskLevel: Number(row[indexes.firstHskLevel]),
+      sourceLevels: row[indexes.sourceLevels] || [],
+      partOfSpeech: row[indexes.partOfSpeech] ?? null,
+      sourceTranslation: row[indexes.sourceTranslation] || "",
+      dictionaryEntryId: row[indexes.dictionaryEntryId] || null,
+      dictionaryLinkStatus: row[indexes.dictionaryLinkStatus],
+      senseId: row[indexes.senseId] || null,
+      baseDictionaryLinkStatus:
+         row[indexes.baseDictionaryLinkStatus] || row[indexes.dictionaryLinkStatus],
+      selectedDictionaryPronunciation:
+         row[indexes.selectedPronunciationMarked] ||
+         row[indexes.selectedPronunciationNumbered] ||
+         row[indexes.selectedPronunciationPlain]
+            ? {
+                 marked: row[indexes.selectedPronunciationMarked] || "",
+                 numbered: row[indexes.selectedPronunciationNumbered] || "",
+                 plain: row[indexes.selectedPronunciationPlain] || "",
+              }
+            : null,
+   }));
+}
+
+async function loadHskManifest() {
+   if (hskDataState.manifest) return hskDataState.manifest;
+   try {
+      const manifest = await fetchHskJson("manifest.json");
+      if (
+         !manifest ||
+         manifest.format !== "mo-studio-hsk-runtime" ||
+         manifest.schemaVersion !== HSK_RUNTIME_SCHEMA_VERSION ||
+         manifest.totalEntries !== 5399 ||
+         !manifest.countsByFirstHskLevel ||
+         !manifest.searchIndex ||
+         !manifest.levelPathTemplate
+      ) {
+         throw new Error("Manifeste HSK absent, corrompu ou incompatible.");
+      }
+      hskDataState.manifest = manifest;
+      return manifest;
+   } catch (error) {
+      hskDataState.error = error;
+      throw error;
+   }
+}
+
+function indexHskEntries(entries) {
+   for (const entry of entries) {
+      hskDataState.entriesById.set(entry.hskEntryId, entry);
+      if (!entry.dictionaryEntryId) continue;
+      if (!hskDataState.entriesByDictionaryId.has(entry.dictionaryEntryId))
+         hskDataState.entriesByDictionaryId.set(entry.dictionaryEntryId, []);
+      const linked = hskDataState.entriesByDictionaryId.get(entry.dictionaryEntryId);
+      if (!linked.some((item) => item.hskEntryId === entry.hskEntryId)) linked.push(entry);
+   }
+}
+
+async function loadHskSearchIndex() {
+   if (hskDataState.searchEntries) return hskDataState.searchEntries;
+   const manifest = await loadHskManifest();
+   const payload = validateHskPayload(
+      await fetchHskJson(manifest.searchIndex),
+      manifest.searchIndex,
+   );
+   const entries = decodeHskPayload(payload);
+   if (entries.length !== manifest.totalEntries)
+      throw new Error("Index HSK incomplet.");
+   hskDataState.searchEntries = entries;
+   indexHskEntries(entries);
+   return entries;
+}
+
+async function loadHskLevel(level) {
+   const numericLevel = Number(level);
+   if (!Number.isInteger(numericLevel) || numericLevel < 1 || numericLevel > 6)
+      throw new Error("Niveau HSK invalide.");
+   if (hskDataState.levels.has(numericLevel)) return hskDataState.levels.get(numericLevel);
+   const manifest = await loadHskManifest();
+   const relativePath = manifest.levelPathTemplate.replace("{level}", numericLevel);
+   const payload = validateHskPayload(await fetchHskJson(relativePath), relativePath);
+   const entries = decodeHskPayload(payload);
+   const expected = Number(manifest.countsByFirstHskLevel[numericLevel]);
+   if (
+      payload.level !== numericLevel ||
+      entries.length !== expected ||
+      entries.some((entry) => entry.firstHskLevel !== numericLevel)
+   ) {
+      throw new Error(`Fragment HSK ${numericLevel} incohérent.`);
+   }
+   hskDataState.levels.set(numericLevel, entries);
+   indexHskEntries(entries);
+   return entries;
+}
+
+function hskMetadata(entry) {
+   return {
+      hskEntryId: entry.hskEntryId,
+      level: entry.firstHskLevel,
+      firstHskLevel: entry.firstHskLevel,
+      sourceLevels: entry.sourceLevels,
+      sourcePinyin: entry.pinyin,
+      sourceTranslation: entry.sourceTranslation,
+      partOfSpeech: entry.partOfSpeech,
+      dictionaryLinkStatus: entry.dictionaryLinkStatus,
+      baseDictionaryLinkStatus: entry.baseDictionaryLinkStatus,
+      senseId: entry.senseId,
+   };
+}
+
+function verifiedHskLevels(entry) {
+   return Array.from(
+      new Set(
+         (Array.isArray(entry && entry.hskVerified) ? entry.hskVerified : [])
+            .map((item) => Number(item.firstHskLevel ?? item.level))
+            .filter((level) => Number.isInteger(level) && level >= 1 && level <= 6),
+      ),
+   ).sort((left, right) => left - right);
+}
+
+function hskLinkStatusLabel(status) {
+   if (status === "source-only") return "Données HSK source";
+   if (status === "ambiguous") return "Liaison dictionnaire ambiguë";
+   if (status === "normalized-pinyin") return "Pinyin normalisé";
+   if (status === "duplicate-sense") return "Sens HSK distinct";
+   return "Liaison exacte";
+}
+
+function attachHskMetadata(dictionaryEntry, explicitEntries) {
+   if (!dictionaryEntry) return dictionaryEntry;
+   const linked = explicitEntries || hskDataState.entriesByDictionaryId.get(dictionaryEntry.id) || [];
+   if (linked.length) dictionaryEntry.hskVerified = linked.map(hskMetadata);
+   return dictionaryEntry;
+}
+
+function hskSourceAsDictionaryEntry(entry) {
+   const marked = normalizeVisibleWhitespace(entry.pinyin);
+   const isFrenchSource = entry.firstHskLevel === 1;
+   return {
+      id: entry.hskEntryId,
+      simplified: entry.chinese,
+      traditional: entry.chinese,
+      entryType: Array.from(entry.chinese).length === 1 ? "character" : "word",
+      pinyin: marked
+         ? [
+              {
+                 marked,
+                 numbered: entry.selectedDictionaryPronunciation?.numbered || "",
+                 plain: normalizePinyinPlain(entry.pinyin),
+              },
+           ]
+         : [],
+      definitionsFr: isFrenchSource && entry.sourceTranslation ? [entry.sourceTranslation] : [],
+      definitionsEn: !isFrenchSource && entry.sourceTranslation ? [entry.sourceTranslation] : [],
+      sources: ["Liste HSK source"],
+      sourceRefs: [],
+      hskLegacy: [],
+      hsk30: [],
+      hskVerified: [hskMetadata(entry)],
+      frequencyRank: null,
+      characters: Array.from(entry.chinese).filter((character) => HAN_PATTERN.test(character)),
+      dictionaryEntryId: entry.dictionaryEntryId,
+      dictionaryLinkStatus: entry.dictionaryLinkStatus,
+      hskSourceEntry: entry,
+      __hskSource: true,
+   };
+}
+
+function hskEntryMatchesQuery(entry, query) {
+   if (!query || !query.valid) return false;
+   if (query.type.startsWith("hanzi"))
+      return entry.chinese.includes(query.hanzi);
+   if (query.type.startsWith("pinyin")) {
+      const plain = normalizePinyinPlain(entry.pinyin);
+      return plain === query.plain || plain.startsWith(query.plain);
+   }
+   if (query.type === "translation") {
+      const translation = normalizeTranslation(entry.sourceTranslation);
+      return query.tokens.every((token) =>
+         translation.split(" ").some((word) => word === token || word.startsWith(token)),
+      );
+   }
+   return false;
+}
+
+function compareHskSourceMatches(left, right, query) {
+   const leftExact = query.type.startsWith("hanzi") && left.chinese === query.hanzi;
+   const rightExact = query.type.startsWith("hanzi") && right.chinese === query.hanzi;
+   return (
+      Number(rightExact) - Number(leftExact) ||
+      left.firstHskLevel - right.firstHskLevel ||
+      left.chinese.localeCompare(right.chinese, "zh") ||
+      left.hskEntryId.localeCompare(right.hskEntryId)
+   );
+}
+
+async function searchHskEntries(rawQuery, limit) {
+   const entries = await loadHskSearchIndex();
+   const query = classifySearchQuery(rawQuery);
+   if (!query.valid) return [];
+   return entries
+      .filter((entry) => hskEntryMatchesQuery(entry, query))
+      .sort((left, right) => compareHskSourceMatches(left, right, query))
+      .slice(0, limit || HSK_RESULT_LIMIT);
+}
+
+async function mergeHskSearchResults(response, rawQuery) {
+   if (!response || !response.query || !response.query.valid) return response;
+   const matches = await searchHskEntries(rawQuery, HSK_RESULT_LIMIT);
+   const results = response.results || [];
+   const dictionaryResultsById = new Map();
+   results.forEach((item) => {
+      attachHskMetadata(item.entry);
+      dictionaryResultsById.set(item.entry.id, item);
+   });
+
+   const addedHskIds = new Set();
+   for (const hskEntry of matches) {
+      const dictionaryResult = hskEntry.dictionaryEntryId
+         ? dictionaryResultsById.get(hskEntry.dictionaryEntryId)
+         : null;
+      if (dictionaryResult) {
+         attachHskMetadata(
+            dictionaryResult.entry,
+            hskDataState.entriesByDictionaryId.get(hskEntry.dictionaryEntryId),
+         );
+         continue;
+      }
+      if (addedHskIds.has(hskEntry.hskEntryId)) continue;
+      addedHskIds.add(hskEntry.hskEntryId);
+      const entry = hskSourceAsDictionaryEntry(hskEntry);
+      results.push({
+         entry,
+         rank: rankDictionaryEntry(entry, response.query, {
+            englishFallback: response.englishFallback || hskEntry.firstHskLevel > 1,
+         }),
+      });
+   }
+
+   results.forEach((item) => {
+      item.rank = rankDictionaryEntry(item.entry, response.query, {
+         englishFallback: response.englishFallback || !!item.entry.__hskSource,
+      });
+   });
+   results.sort(compareRankedDictionaryEntries);
+   response.results = results;
+   response.hskMatches = matches.length;
+   return response;
+}
+
+async function loadHskEntryById(hskEntryId) {
+   if (hskDataState.entriesById.has(hskEntryId))
+      return hskDataState.entriesById.get(hskEntryId);
+   await loadHskSearchIndex();
+   return hskDataState.entriesById.get(hskEntryId) || null;
+}
+
+async function loadHskSearchDetailEntry(entryId) {
+   if (!String(entryId).startsWith("hsk:")) {
+      const dictionaryEntry = await loadDictionaryEntryById(entryId);
+      return attachHskMetadata(dictionaryEntry);
+   }
+   const hskEntry = await loadHskEntryById(entryId);
+   return hskEntry ? hskSourceAsDictionaryEntry(hskEntry) : null;
+}
+
+async function openHskVocabularyEntry(entry) {
+   if (entry.dictionaryEntryId) {
+      try {
+         const dictionaryEntry = await loadDictionaryEntryById(entry.dictionaryEntryId);
+         if (dictionaryEntry) {
+            openDictDetail(attachHskMetadata(dictionaryEntry, [entry]));
+            return;
+         }
+      } catch (error) {
+         /* La fiche HSK source reste disponible si le dictionnaire détaillé échoue. */
+      }
+   }
+   openDictDetail(hskSourceAsDictionaryEntry(entry));
+}
+
+"use strict";
+
 /* ================= audio ================= */
          let voices = [];
          function refreshVoices() {
@@ -2851,6 +3530,46 @@ if (typeof module !== "undefined" && module.exports) {
 
 "use strict";
 
+/* ================= progression des futurs parcours ================= */
+const COURSE_PROGRESS_KEY = "mo-studio-course-progress-v1";
+
+function emptyCourseProgress() {
+   return {
+      version: 1,
+      levels: {},
+   };
+}
+
+function loadCourseProgress() {
+   try {
+      const stored = JSON.parse(localStorage.getItem(COURSE_PROGRESS_KEY));
+      if (
+         stored &&
+         stored.version === 1 &&
+         stored.levels &&
+         typeof stored.levels === "object" &&
+         !Array.isArray(stored.levels)
+      ) {
+         return stored;
+      }
+   } catch (error) {
+      /* Un parcours vide reste disponible si son stockage est illisible. */
+   }
+   return emptyCourseProgress();
+}
+
+function saveCourseProgress() {
+   try {
+      localStorage.setItem(COURSE_PROGRESS_KEY, JSON.stringify(courseProgress));
+   } catch (error) {
+      toast("Impossible d’enregistrer la progression du parcours.");
+   }
+}
+
+let courseProgress = loadCourseProgress();
+
+"use strict";
+
 /* ================= navigation ================= */
          let activeView = "learn";
          let session = { active: false };
@@ -2883,6 +3602,7 @@ if (typeof module !== "undefined" && module.exports) {
             if (activeView === "learn") renderLearn();
             else if (activeView === "lib") renderLib();
             else if (activeView === "write") renderSearch();
+            else if (activeView === "path") renderPath();
             else if (activeView === "listen") renderListen();
             else renderGrammar();
          }
@@ -3018,20 +3738,15 @@ if (typeof module !== "undefined" && module.exports) {
                '<section class="card pad empty">' +
                '<div class="empty-hz">学</div>' +
                '<h2 class="empty-t">Ta collection est vide</h2>' +
-               '<p class="empty-p">Importe un pack JSON (HSK 1, HSK 2…) ou crée ta première carte. Le format des fichiers est documenté juste en dessous.</p>' +
+               '<p class="empty-p">Crée ta première carte pour commencer à construire ta collection.</p>' +
                '<div class="empty-btns">' +
-               '<button class="btn primary" id="btn-e-import">Importer un pack JSON</button>' +
-               '<button class="btn" id="btn-e-add">Créer une carte</button>' +
-               '<button class="btn ghost" id="btn-e-format">Voir le format JSON</button>' +
+               '<button class="btn primary" id="btn-e-add">Créer une carte</button>' +
                "</div></section>"
             );
          }
          function wireEmpty() {
-            if ($("btn-e-import"))
-               $("btn-e-import").onclick = () => $("file-global").click();
             if ($("btn-e-add"))
                $("btn-e-add").onclick = () => openCardForm(null);
-            if ($("btn-e-format")) $("btn-e-format").onclick = openFormatSheet;
          }
 
          function renderLearn() {
@@ -3329,6 +4044,245 @@ if (typeof module !== "undefined" && module.exports) {
                );
             $("btn-packs").onclick = openPacksSheet;
          }
+
+"use strict";
+
+/* ================= parcours HSK (学) ================= */
+const PATH_PAGE_SIZE = 80;
+let openPathLevel = null;
+let pathRenderToken = 0;
+let pathLevelEntries = [];
+let pathLevelFilter = "";
+let pathLevelVisible = PATH_PAGE_SIZE;
+
+function pathLevelCount(manifest, level) {
+   return Number(manifest.countsByFirstHskLevel[level] || 0);
+}
+
+function pathLevelCardHtml(manifest, level) {
+   const count = pathLevelCount(manifest, level);
+   return (
+      '<button class="card path-level" type="button" data-path-level="' +
+      level +
+      '" data-path-level-count="' +
+      count +
+      '"><span><span class="path-level-title">HSK ' +
+      level +
+      '</span><span class="path-level-order">Premier niveau HSK</span></span>' +
+      '<span class="path-level-note"><b>' +
+      count.toLocaleString("fr-FR") +
+      "</b> entrées de vocabulaire</span></button>"
+   );
+}
+
+function wirePathHome() {
+   document.querySelectorAll("[data-path-level]").forEach((button) => {
+      button.onclick = () => {
+         openPathLevel = Number(button.dataset.pathLevel);
+         pathLevelFilter = "";
+         pathLevelVisible = PATH_PAGE_SIZE;
+         renderPath();
+         window.scrollTo(0, 0);
+      };
+   });
+}
+
+async function renderPathHome(token) {
+   const root = $("view");
+   root.innerHTML =
+      '<section class="path-page" aria-labelledby="path-title">' +
+      '<header class="path-header"><div class="path-mark">学</div><div><h2 class="v-t" id="path-title">学 · Parcours</h2>' +
+      '<p class="muted">Vocabulaire officiel HSK 1 à 6, classé par premier niveau.</p></div></header>' +
+      '<section class="card pad path-loading" role="status"><span class="ink-loader" aria-hidden="true"></span><span>Chargement des niveaux HSK…</span></section></section>';
+   try {
+      const manifest = await loadHskManifest();
+      if (token !== pathRenderToken || activeView !== "path" || openPathLevel != null) return;
+      root.innerHTML =
+         '<section class="path-page" aria-labelledby="path-title">' +
+         '<header class="path-header"><div class="path-mark">学</div><div><h2 class="v-t" id="path-title">学 · Parcours</h2>' +
+         '<p class="muted">Vocabulaire officiel HSK 1 à 6, classé par premier niveau.</p></div></header>' +
+         '<section class="card pad path-continue" aria-labelledby="path-continue-title">' +
+         '<h3 id="path-continue-title">Explorer le vocabulaire HSK</h3>' +
+         '<p><b>' +
+         manifest.totalEntries.toLocaleString("fr-FR") +
+         " entrées</b> disponibles. Les leçons et exercices ne sont pas encore créés.</p></section>" +
+         '<div class="path-levels" aria-label="Niveaux HSK">' +
+         [1, 2, 3, 4, 5, 6].map((level) => pathLevelCardHtml(manifest, level)).join("") +
+         "</div></section>";
+      wirePathHome();
+   } catch (error) {
+      if (token !== pathRenderToken) return;
+      root.innerHTML =
+         '<section class="path-page"><header class="path-header"><div class="path-mark">学</div><div><h2 class="v-t" id="path-title">学 · Parcours</h2></div></header>' +
+         '<section class="card pad path-error" role="alert"><b>Données HSK indisponibles.</b><p>' +
+         esc(error.message) +
+         '</p><button class="btn" id="path-retry" type="button">Réessayer</button></section></section>';
+      $("path-retry").onclick = () => renderPath();
+   }
+}
+
+function pathStatusBadge(entry) {
+   const status = entry.dictionaryLinkStatus;
+   if (!["ambiguous", "source-only", "duplicate-sense"].includes(status)) return "";
+   return (
+      '<span class="path-word-status status-' +
+      esc(status) +
+      '">' +
+      esc(hskLinkStatusLabel(status)) +
+      "</span>"
+   );
+}
+
+function pathVocabularyRowHtml(entry, index) {
+   const sourceLevels = Array.isArray(entry.sourceLevels) ? entry.sourceLevels : [];
+   return (
+      '<button class="path-word" type="button" data-path-word-index="' +
+      index +
+      '" data-hsk-entry-id="' +
+      esc(entry.hskEntryId) +
+      '"><span class="path-word-hanzi">' +
+      esc(entry.chinese) +
+      '</span><span class="path-word-main"><span class="path-word-pinyin">' +
+      colorPinyin(entry.pinyin) +
+      '</span><span class="path-word-translation">' +
+      esc(entry.sourceTranslation) +
+      "</span>" +
+      (entry.partOfSpeech || sourceLevels.length > 1
+         ? '<small class="path-word-meta">' +
+           (entry.partOfSpeech ? esc(entry.partOfSpeech) : "") +
+           (entry.partOfSpeech && sourceLevels.length > 1 ? " · " : "") +
+           (sourceLevels.length > 1 ? "niveaux source " + sourceLevels.map(esc).join(", ") : "") +
+           "</small>"
+         : "") +
+      '</span><span class="path-word-badges"><span class="hsk-badge hsk-level-' +
+      entry.firstHskLevel +
+      '" data-hsk-badge="' +
+      entry.firstHskLevel +
+      '">HSK ' +
+      entry.firstHskLevel +
+      "</span>" +
+      pathStatusBadge(entry) +
+      "</span></button>"
+   );
+}
+
+function filteredPathEntries() {
+   const visible = normalizeVisibleWhitespace(pathLevelFilter).toLowerCase();
+   if (!visible) return pathLevelEntries;
+   const plain = normalizePinyinPlain(visible);
+   const translation = normalizeTranslation(visible);
+   return pathLevelEntries.filter(
+      (entry) =>
+         entry.chinese.includes(visible) ||
+         (plain && normalizePinyinPlain(entry.pinyin).includes(plain)) ||
+         (translation && normalizeTranslation(entry.sourceTranslation).includes(translation)),
+   );
+}
+
+function wirePathVocabulary(filtered) {
+   const search = $("path-level-search");
+   if (search) {
+      search.oninput = () => {
+         pathLevelFilter = search.value;
+         pathLevelVisible = PATH_PAGE_SIZE;
+         renderPathVocabulary();
+      };
+   }
+   document.querySelectorAll("[data-path-word-index]").forEach((button) => {
+      button.onclick = async () => {
+         const entry = filtered[Number(button.dataset.pathWordIndex)];
+         if (!entry) return;
+         openSheet(
+            '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche…</b></div>',
+         );
+         await openHskVocabularyEntry(entry);
+      };
+   });
+   if ($("path-show-more"))
+      $("path-show-more").onclick = () => {
+         pathLevelVisible += PATH_PAGE_SIZE;
+         renderPathVocabulary();
+      };
+}
+
+function renderPathVocabulary() {
+   const target = $("path-vocabulary");
+   if (!target) return;
+   const filtered = filteredPathEntries();
+   const visible = filtered.slice(0, pathLevelVisible);
+   target.innerHTML =
+      '<div class="path-level-tools"><label for="path-level-search">Filtrer ce niveau</label>' +
+      '<input class="search" id="path-level-search" type="search" placeholder="汉字, pinyin ou traduction…" value="' +
+      esc(pathLevelFilter) +
+      '"><span class="path-filter-count" aria-live="polite">' +
+      filtered.length.toLocaleString("fr-FR") +
+      (filtered.length > 1 ? " entrées" : " entrée") +
+      "</span></div>" +
+      (visible.length
+         ? '<div class="path-word-list" data-path-word-list>' +
+           visible.map(pathVocabularyRowHtml).join("") +
+           "</div>"
+         : '<div class="path-no-results"><p>Aucun mot dans ce niveau pour cette recherche.</p></div>') +
+      (visible.length < filtered.length
+         ? '<div class="path-more"><button class="btn ghost" id="path-show-more" type="button">Afficher ' +
+           Math.min(PATH_PAGE_SIZE, filtered.length - visible.length).toLocaleString("fr-FR") +
+           " entrées de plus</button></div>"
+         : "");
+   const search = $("path-level-search");
+   if (search && pathLevelFilter) {
+      search.focus({ preventScroll: true });
+      search.setSelectionRange(search.value.length, search.value.length);
+   }
+   wirePathVocabulary(filtered);
+}
+
+function renderPathLevelFrame(level, count) {
+   $("view").innerHTML =
+      '<section class="path-page path-level-page" aria-labelledby="path-level-title">' +
+      '<header class="path-level-header"><button class="btn ghost" id="path-level-back" type="button">← Retour</button>' +
+      '<div><h2 class="v-t" id="path-level-title">HSK ' +
+      level +
+      '</h2><p class="muted"><span data-path-current-count>' +
+      count.toLocaleString("fr-FR") +
+      "</span> entrées classées par <code>firstHskLevel</code></p></div></header>" +
+      '<p class="path-scope-note">Vocabulaire uniquement · aucune leçon ni aucun exercice.</p>' +
+      '<section class="card path-vocabulary" id="path-vocabulary"><div class="path-loading" role="status"><span class="ink-loader"></span><span>Chargement du vocabulaire…</span></div></section></section>';
+   $("path-level-back").onclick = () => {
+      openPathLevel = null;
+      pathLevelEntries = [];
+      pathLevelFilter = "";
+      renderPath();
+      window.scrollTo(0, 0);
+   };
+}
+
+async function renderPathLevel(level, token) {
+   try {
+      const manifest = await loadHskManifest();
+      if (token !== pathRenderToken || activeView !== "path" || openPathLevel !== level) return;
+      renderPathLevelFrame(level, pathLevelCount(manifest, level));
+      const entries = await loadHskLevel(level);
+      if (token !== pathRenderToken || activeView !== "path" || openPathLevel !== level) return;
+      pathLevelEntries = entries;
+      renderPathVocabulary();
+   } catch (error) {
+      if (token !== pathRenderToken) return;
+      const target = $("path-vocabulary");
+      if (target)
+         target.innerHTML =
+            '<div class="path-error" role="alert"><b>Vocabulaire indisponible.</b><p>' +
+            esc(error.message) +
+            '</p><button class="btn" id="path-level-retry">Réessayer</button></div>';
+      if ($("path-level-retry")) $("path-level-retry").onclick = () => renderPath();
+   }
+}
+
+function renderPath() {
+   document.body.classList.remove("in-seq");
+   const token = ++pathRenderToken;
+   if (openPathLevel == null) renderPathHome(token);
+   else renderPathLevel(openPathLevel, token);
+}
 
 "use strict";
 
@@ -5156,6 +6110,9 @@ function entryHanziLength(entry) {
 
 function verifiedHskLevel(entry) {
    const levels = [
+      ...(Array.isArray(entry.hskVerified)
+         ? entry.hskVerified.map((item) => item.firstHskLevel ?? item.level)
+         : []),
       ...(Array.isArray(entry.hskLegacy) ? entry.hskLegacy : []),
       ...(Array.isArray(entry.hsk30) ? entry.hsk30 : []),
    ].filter((value) => Number.isFinite(Number(value)));
@@ -5822,6 +6779,20 @@ function dictionaryResultDefinition(entry) {
 }
 
 function verifiedResultHskBadge(entry) {
+   const verified = verifiedHskLevels(entry);
+   if (verified.length)
+      return verified
+         .map(
+            (level) =>
+               '<i class="b hsk-badge hsk-level-' +
+               level +
+               '" data-hsk-badge="' +
+               level +
+               '">HSK ' +
+               esc(level) +
+               "</i>",
+         )
+         .join("");
    if (entry.hskLegacy && entry.hskLegacy.length)
       return '<i class="b u">HSK ' + esc(entry.hskLegacy[0]) + "</i>";
    if (entry.hsk30 && entry.hsk30.length)
@@ -5834,7 +6805,7 @@ function dictionaryResultHtml(item, index) {
    const definition = dictionaryResultDefinition(entry);
    const traditional = entry.traditional !== entry.simplified ? entry.traditional : "";
    return (
-      '<button class="dict-result" data-result-index="' + index + '">' +
+      '<button class="dict-result" data-result-index="' + index + '" data-entry-id="' + esc(entry.id) + '">' +
       '<span class="dict-result-hanzi"><b>' + esc(entry.simplified) + "</b>" +
       (traditional ? '<small>繁 · ' + esc(traditional) + "</small>" : "") +
       "</span>" +
@@ -5845,6 +6816,11 @@ function dictionaryResultHtml(item, index) {
       '<span class="row-badges"><i class="b u">' +
       (entry.entryType === "character" ? "caractère" : "mot") +
       "</i>" + verifiedResultHskBadge(entry) +
+      (entry.__hskSource
+         ? '<i class="b hsk-source-status">' +
+           esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
+           "</i>"
+         : "") +
       (entry.personalCard ? '<i class="b jade">carte</i>' : "") +
       (Number.isFinite(entry.frequencyRank) ? '<i class="b u">fréq. ' + esc(entry.frequencyRank) + "</i>" : "") +
       "</span></button>"
@@ -6018,6 +6994,11 @@ async function launchDictionarySearch(value, options) {
             if (target) target.textContent = message;
          },
       });
+      try {
+         await mergeHskSearchResults(response, srch.q);
+      } catch (hskError) {
+         response.hskError = hskError.message;
+      }
       srch.search = response;
       srch.mode = "results";
       if (response.query.valid) rememberRecentSearch(srch.q);
@@ -6026,7 +7007,7 @@ async function launchDictionarySearch(value, options) {
       if (srch.pendingDetailId) {
          const entryId = srch.pendingDetailId;
          srch.pendingDetailId = null;
-         const entry = await loadDictionaryEntryById(entryId);
+          const entry = await loadHskSearchDetailEntry(entryId);
          if (entry) openSearchDictionaryDetail(entry, false);
       }
    } catch (error) {
@@ -6051,14 +7032,14 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
          '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche complète…</b></div>',
       );
       try {
-         entry = (await loadDictionaryEntryById(entry.id)) || entry;
+         entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
       } catch (error) {
          closeSheet();
          toast("Fiche détaillée indisponible hors ligne.");
          return;
       }
    }
-   openDictDetail(entry, { fromSearch: true });
+   openDictDetail(attachHskMetadata(entry), { fromSearch: true });
 }
 
 function closeSearchDictionaryDetail() {
@@ -6096,7 +7077,7 @@ function restoreSearchHistory(state) {
       renderDictionaryResults();
       requestAnimationFrame(() => window.scrollTo(0, srch.scrollY));
       if (srch.pendingDetailId)
-         loadDictionaryEntryById(srch.pendingDetailId).then((entry) => {
+         loadHskSearchDetailEntry(srch.pendingDetailId).then((entry) => {
             srch.pendingDetailId = null;
             if (entry) openSearchDictionaryDetail(entry, false);
          });
@@ -6341,8 +7322,9 @@ function strokeGallerySettings() {
 function strokeGridSvg() {
    return (
       '<g class="stroke-grid-lines" aria-hidden="true">' +
-      '<rect x="16" y="16" width="992" height="992" rx="24"></rect>' +
-      '<path d="M16 512H1008 M512 16V1008 M16 16L1008 1008 M1008 16L16 1008"></path>' +
+      '<rect class="stroke-grid-border" x="16" y="16" width="992" height="992" rx="24"></rect>' +
+      '<path class="stroke-grid-center" d="M16 512H1008 M512 16V1008"></path>' +
+      '<path class="stroke-grid-diagonal" d="M16 16L1008 1008 M1008 16L16 1008"></path>' +
       "</g>"
    );
 }
@@ -6550,8 +7532,18 @@ let ddChar = null;
 let ddCharacterData = null;
 let ddStrokeTab = "animation";
 let ddWriterToken = 0;
+let ddCharacterLoadToken = 0;
 let ddWorkspaceCharacters = [];
 let ddWriterDocumentListeners = [];
+let ddAutoplaySelectionKey = null;
+let ddAutoplayPending = false;
+let ddAutoplayLoadToken = 0;
+
+function resetStrokeAutoplaySelection() {
+   ddAutoplaySelectionKey = null;
+   ddAutoplayPending = false;
+   ddAutoplayLoadToken = 0;
+}
 
 function removeDDWriterDocumentListeners() {
    ddWriterDocumentListeners.forEach(({ type, listener, options }) =>
@@ -6645,6 +7637,9 @@ function strokeBoxHtml() {
 
 function destroyDDWriter() {
    ddWriterToken++;
+   if (ddWriter && typeof ddWriter.cancelAnimation === "function") {
+      try { ddWriter.cancelAnimation(); } catch (error) {}
+   }
    if (ddWriter && typeof ddWriter.cancelQuiz === "function") {
       try { ddWriter.cancelQuiz(); } catch (error) {}
    }
@@ -6655,6 +7650,7 @@ function destroyDDWriter() {
 }
 
 function destroyStrokeWorkspace() {
+   ddCharacterLoadToken++;
    destroyDDWriter();
    ddChar = null;
    ddCharacterData = null;
@@ -6736,10 +7732,33 @@ function createDDWriter(mode) {
       setStrokeWorkspaceMessage("dd-practice-note", "Appuie sur Commencer, puis trace trait par trait.");
    } else {
       const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const shouldAutoplay =
+         ddAutoplayPending && ddAutoplayLoadToken === ddCharacterLoadToken;
+      if (shouldAutoplay) ddAutoplayPending = false;
       setStrokeWorkspaceMessage(
          "dd-note",
-         reduced ? "Mouvement réduit activé · aucune lecture automatique." : `${ddCharacterData.strokeCount} traits réels.`,
+         reduced
+            ? "Mouvement réduit activé · aucune lecture automatique."
+            : shouldAutoplay
+              ? "Lecture automatique des traits dans l’ordre réel."
+              : `${ddCharacterData.strokeCount} traits réels.`,
       );
+      if (shouldAutoplay && !reduced) {
+         const writer = ddWriter;
+         const token = ddWriterToken;
+         try {
+            const animation = writer.animateCharacter();
+            if (animation && typeof animation.catch === "function") {
+               animation.catch(() => {
+                  if (token === ddWriterToken && writer === ddWriter)
+                     setStrokeWorkspaceMessage("dd-note", "Animation indisponible pour ce caractère.");
+               });
+            }
+         } catch (error) {
+            if (token === ddWriterToken && writer === ddWriter)
+               setStrokeWorkspaceMessage("dd-note", "Animation indisponible pour ce caractère.");
+         }
+      }
    }
 }
 
@@ -6835,9 +7854,18 @@ function wireStrokeWorkspace() {
    });
 }
 
-async function loadDDChar(character, characters) {
+async function loadDDChar(character, characters, options) {
+   const settings = options || {};
+   const selectionKey = String(
+      settings.selectionKey == null ? character : settings.selectionKey,
+   );
    destroyDDWriter();
-   const token = ++ddWriterToken;
+   const token = ++ddCharacterLoadToken;
+   if (selectionKey !== ddAutoplaySelectionKey) {
+      ddAutoplaySelectionKey = selectionKey;
+      ddAutoplayPending = true;
+   }
+   ddAutoplayLoadToken = token;
    ddChar = character;
    ddCharacterData = null;
    ddWorkspaceCharacters = Array.isArray(characters) ? characters.slice() : [character];
@@ -6851,11 +7879,16 @@ async function loadDDChar(character, characters) {
    if ($("dd-gallery")) $("dd-gallery").innerHTML = '<div class="dictionary-loading"><span class="ink-loader"></span></div>';
    try {
       const data = await loadStrokeCharacterData(character);
-      if (token !== ddWriterToken || ddChar !== character || !document.querySelector(".stroke-workspace")) return;
+      if (
+         token !== ddCharacterLoadToken ||
+         ddChar !== character ||
+         !document.querySelector(".stroke-workspace")
+      ) return;
       ddCharacterData = data;
       renderActiveStrokeTab();
    } catch (error) {
-      if (token !== ddWriterToken || ddChar !== character) return;
+      if (token !== ddCharacterLoadToken || ddChar !== character) return;
+      ddAutoplayPending = false;
       renderStrokeGalleryError(character, error);
       setStrokeWorkspaceMessage("dd-note", "Animation indisponible · aucune donnée inventée.");
       setupFreehandPractice("Données réelles indisponibles · entraînement libre sans modèle inventé.");
@@ -6919,11 +7952,51 @@ function uniqueDetailValues(values) {
 
 function verifiedHskBadges(entry) {
    const output = [];
+   verifiedHskLevels(entry).forEach((level) =>
+      output.push(
+         '<span class="cd-cat hsk-badge hsk-level-' +
+            level +
+            '" data-hsk-badge="' +
+            level +
+            '">HSK ' +
+            esc(level) +
+            "</span>",
+      ),
+   );
    if (Array.isArray(entry.hskLegacy))
       entry.hskLegacy.forEach((level) => output.push('<span class="cd-cat">HSK historique ' + esc(level) + "</span>"));
    if (Array.isArray(entry.hsk30))
       entry.hsk30.forEach((level) => output.push('<span class="cd-cat">HSK 3.0 ' + esc(level) + "</span>"));
    return output.join("");
+}
+
+function dictionaryHskSourceHtml(entry) {
+   const values = Array.isArray(entry.hskVerified) ? entry.hskVerified : [];
+   if (!values.length) return "";
+   return (
+      '<section class="dd-hsk-source"><div class="eyebrow">Données HSK source</div>' +
+      values
+         .map(
+            (item) =>
+               '<div class="dd-hsk-source-item"><div><b>HSK ' +
+               esc(item.firstHskLevel ?? item.level) +
+               "</b> · " +
+               colorPinyin(item.sourcePinyin || "") +
+               "</div>" +
+               (item.sourceTranslation
+                  ? '<p class="dd-hsk-translation">' + esc(item.sourceTranslation) + "</p>"
+                  : "") +
+               '<small>' +
+               (item.partOfSpeech ? esc(item.partOfSpeech) + " · " : "") +
+               esc(hskLinkStatusLabel(item.dictionaryLinkStatus)) +
+               (Array.isArray(item.sourceLevels) && item.sourceLevels.length > 1
+                  ? " · niveaux source " + item.sourceLevels.map(esc).join(", ")
+                  : "") +
+               "</small></div>",
+         )
+         .join("") +
+      "</section>"
+   );
 }
 
 function dictionaryDefinitionsHtml(entry) {
@@ -6964,8 +8037,11 @@ function findPersonalCardForEntry(entry) {
 }
 
 function openDictDetail(rawEntry, options) {
-   const entry = normalizeDetailEntry(rawEntry);
+   const entry = attachHskMetadata(normalizeDetailEntry(rawEntry));
    const settings = options || {};
+   const currentDetail = document.querySelector("#sheet.open .dd-entry");
+   if (!currentDetail || currentDetail.dataset.entryId !== String(entry.id))
+      resetStrokeAutoplaySelection();
    const card = findPersonalCardForEntry(entry);
    const characters = uniqueDetailValues(
       Array.from(entry.simplified).filter((character) => HAN_PATTERN.test(character)),
@@ -6986,6 +8062,7 @@ function openDictDetail(rawEntry, options) {
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
          dictionaryDefinitionsHtml(entry) +
+         dictionaryHskSourceHtml(entry) +
          (card
             ? cardActionsHtml(card)
             : '<section class="dd-card-actions" aria-label="Carte personnelle"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></section>') +
@@ -7059,7 +8136,11 @@ async function renderDictionaryRelatedWords(character, token) {
 function wireDictDetail(entry, characters, card, token, options) {
    if (characters.length) wireStrokeWorkspace();
    const selectCharacter = (character) => {
-      loadDDChar(character, characters);
+      const selectionKey =
+         options && typeof options.strokeSelectionKey === "function"
+            ? options.strokeSelectionKey(character)
+            : character;
+      loadDDChar(character, characters, { selectionKey });
       renderDictionaryRelatedWords(character, token);
    };
    if (characters.length) {
@@ -7150,6 +8231,7 @@ function openSequence(characters, options) {
    const settings = options || {};
    const list = Array.from(characters || []).filter((character) => /^\p{Script=Han}$/u.test(character));
    if (list.length < 2) return toast("La séquence demande au moins deux caractères Han réels.");
+   resetStrokeAutoplaySelection();
    destroyStrokeWorkspace();
    seq = {
       chars: list,
@@ -7198,6 +8280,11 @@ function setSequenceIndex(index, focusStrip) {
    });
 }
 
+function moveSequence(delta) {
+   if (!seq) return;
+   setSequenceIndex(seq.index + delta);
+}
+
 function setupSwipe(element, onLeft, onRight) {
    if (!element) return;
    let x0 = null;
@@ -7228,7 +8315,8 @@ async function renderSequence() {
    destroyStrokeWorkspace();
    const current = seq;
    const token = ++current.renderToken;
-   const character = current.chars[current.index];
+   const index = current.index;
+   const character = current.chars[index];
    $("view").innerHTML =
       '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
       esc(character) + "…</b></div></section>";
@@ -7240,8 +8328,8 @@ async function renderSequence() {
    $("view").innerHTML =
       '<section class="sess"><div class="s-top"><button class="s-x" id="seq-exit" aria-label="Quitter la séquence">✕</button>' +
       '<div class="s-scope">Séquence · ' + esc(current.chars.join("")) + '</div><div class="s-count" aria-live="polite">' +
-      (current.index + 1) + " / " + current.chars.length + "</div></div>" +
-      '<div class="s-bar"><i style="width:' + (((current.index + 1) / current.chars.length) * 100).toFixed(1) + '%"></i></div>' +
+      (index + 1) + " / " + current.chars.length + "</div></div>" +
+      '<div class="s-bar"><i style="width:' + (((index + 1) / current.chars.length) * 100).toFixed(1) + '%"></i></div>' +
       '<nav class="seq-character-strip" id="seq-character-strip" aria-label="Caractères de la séquence">' +
       current.chars.map((item, index) =>
          '<button class="chip hzchip" type="button" data-i="' + index + '" data-character="' + esc(item) +
@@ -7259,16 +8347,18 @@ async function renderSequence() {
       (card
          ? cardActionsHtml(card)
          : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à mes cartes</button></div>') +
-      '</div><div class="s-foot"><button class="btn ghost" id="seq-prev"' +
-      (current.index === 0 ? " disabled" : "") + ">← préc.</button>" +
-      '<button class="btn primary" id="seq-next">' +
-      (current.index >= current.chars.length - 1 ? "Terminer 完" : "suivant →") +
+      '</div><div class="s-foot"><button class="btn ghost" id="seq-prev" type="button"' +
+      (index === 0 ? " disabled" : "") + ">← préc.</button>" +
+      '<button class="btn primary" id="seq-next" type="button">' +
+      (index >= current.chars.length - 1 ? "Terminer 完" : "suivant →") +
       "</button></div></section>";
-   wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {});
+   wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
+      strokeSelectionKey: () => `sequence:${index}:${character}`,
+   });
    $("seq-exit").onclick = () => closeSequence();
-   $("seq-prev").onclick = () => setSequenceIndex(current.index - 1);
+   $("seq-prev").onclick = () => moveSequence(-1);
    $("seq-next").onclick = () => {
-      if (current.index < current.chars.length - 1) setSequenceIndex(current.index + 1);
+      if (seq && seq.index < seq.chars.length - 1) moveSequence(1);
       else closeSequence();
    };
    document.querySelectorAll("#seq-character-strip [data-i]").forEach((button) => {
@@ -7276,10 +8366,10 @@ async function renderSequence() {
    });
    setupSwipe(
       $("seq-flash"),
-      () => setSequenceIndex(current.index + 1),
-      () => setSequenceIndex(current.index - 1),
+      () => moveSequence(1),
+      () => moveSequence(-1),
    );
-   const nextCharacter = current.chars[current.index + 1];
+   const nextCharacter = current.chars[index + 1];
    if (nextCharacter) {
       preloadStrokeCharacterData(nextCharacter);
       seqEntry(nextCharacter).catch(() => null);
@@ -8145,9 +9235,9 @@ async function renderSequence() {
                   "> Tracer les caractères</label>" +
                   '<div class="eyebrow">Données</div>' +
                   '<div class="sh-btns">' +
-                  '<button class="btn" id="st-export">Exporter</button>' +
                   '<button class="btn" id="st-import">Importer</button>' +
-                  '<button class="btn ghost" id="st-format">Format JSON</button>' +
+                  '<button class="btn" id="st-export">Exporter</button>' +
+                  '<button class="btn ghost" id="st-format">Voir le format JSON</button>' +
                   '<button class="btn ghost" id="st-dictionary-sources">Sources du dictionnaire</button>' +
                   "</div>" +
                   (backup
@@ -8436,31 +9526,41 @@ async function renderSequence() {
                     : "Rien à ajouter — tout existait déjà.",
             );
          }
-         const FORMAT_EXAMPLE =
-            '{\n  "version": 2,\n  "name": "HSK 2",\n  "units": { "1": "Ma première unité" },\n  "cards": [\n    {\n      "hz": "唱歌",\n      "py": "chang4 ge1",\n      "fr": "chanter",\n      "cat": "Verbes",\n      "unit": 1,\n      "order": 1,\n      "exHz": "我喜欢唱歌。",\n      "exPy": "wo3 xi3 huan5 chang4 ge1.",\n      "exFr": "J\'aime chanter.",\n      "note": ""\n    }\n  ]\n}';
+         const FORMAT_CARD_EXAMPLE =
+            '[\n  {\n    "hz": "你好",\n    "fr": "bonjour"\n  }\n]';
+         const FORMAT_PACK_EXAMPLE =
+            '{\n  "name": "Mes premières expressions",\n  "units": {\n    "1": "Salutations"\n  },\n  "cards": [\n    {\n      "hz": "你好",\n      "fr": "bonjour",\n      "py": "ni3 hao3",\n      "cat": "Expressions",\n      "unit": 1,\n      "order": 1,\n      "exHz": "你好！很高兴认识你。",\n      "exPy": "ni3 hao3! hen3 gao1 xing4 ren4 shi5 ni3.",\n      "exFr": "Bonjour ! Ravi de te rencontrer.",\n      "note": "Formule de salutation courante."\n    }\n  ]\n}';
+
+         async function copyFormatExample() {
+            try {
+               if (!navigator.clipboard || !navigator.clipboard.writeText)
+                  throw new Error("Clipboard unavailable");
+               await navigator.clipboard.writeText(FORMAT_PACK_EXAMPLE);
+               toast("Exemple copié.");
+            } catch (error) {
+               toast("Copie impossible ici — sélectionne le texte à la main.");
+            }
+         }
+
          function openFormatSheet() {
             openSheet(
                '<h3 class="sh-t">Format JSON des packs</h3>' +
-                  "<p class=\"sh-p\"><b>hz</b> et <b>fr</b> sont obligatoires. <b>py</b> accepte les tons en chiffres (ai4) ou en accents (ài). <b>cat</b>, <b>exHz</b>, <b>exPy</b>, <b>exFr</b>, <b>note</b> sont optionnels. <b>unit</b> + <b>order</b> définissent l'ordre d'apprentissage (les nouvelles cartes arrivent dans cet ordre), et <b>units</b> donne un nom à chaque unité. Le champ <b>name</b> crée le pack automatiquement à l'import.</p>" +
-                  '<pre class="fmt" id="fmt-pre">' +
-                  esc(FORMAT_EXAMPLE) +
+                  '<p class="sh-p">Chaque carte demande les champs <code>hz</code> et <code>fr</code>. Les champs <code>py</code>, <code>cat</code>, <code>unit</code>, <code>order</code>, <code>exHz</code>, <code>exPy</code>, <code>exFr</code> et <code>note</code> sont optionnels. Le pinyin accepte les tons en chiffres (<code>ni3</code>) ou en accents (<code>nǐ</code>).</p>' +
+                  '<div class="eyebrow">Exemple minimal valide</div>' +
+                  '<pre class="fmt" id="fmt-card-example">' +
+                  esc(FORMAT_CARD_EXAMPLE) +
+                  "</pre>" +
+                  '<p class="sh-p">Un pack peut regrouper les cartes dans <code>cards</code>, porter un <code>name</code> et nommer ses unités avec <code>units</code>. <code>unit</code> et <code>order</code> fixent alors l’ordre d’apprentissage.</p>' +
+                  '<div class="eyebrow">Exemple de pack</div>' +
+                  '<pre class="fmt" id="fmt-pack-example">' +
+                  esc(FORMAT_PACK_EXAMPLE) +
                   "</pre>" +
                   '<div class="sh-btns">' +
                   '<button class="btn" id="fmt-copy">Copier l\'exemple</button>' +
-                  '<button class="btn ghost" id="fmt-close">Fermer</button>' +
+                  '<button class="btn ghost" id="fmt-close" data-sheet-close>Fermer</button>' +
                   "</div>",
             );
-            $("fmt-copy").onclick = () => {
-               const done = () => toast("Exemple copié.");
-               if (navigator.clipboard && navigator.clipboard.writeText)
-                  navigator.clipboard
-                     .writeText(FORMAT_EXAMPLE)
-                     .then(done, () => toast("Copie impossible ici."));
-               else
-                  toast(
-                     "Copie impossible ici — sélectionne le texte à la main.",
-                  );
-            };
+            $("fmt-copy").onclick = copyFormatExample;
             $("fmt-close").onclick = closeSheet;
          }
 
@@ -8491,9 +9591,11 @@ async function renderSequence() {
             });
             document.body.style.overflow = "hidden";
             const focusSheet = () => {
-               const focusTarget = o.querySelector(
-                  "[data-sheet-close], button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
-               );
+               const focusTarget =
+                  o.querySelector("[data-sheet-close]") ||
+                  o.querySelector(
+                     "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+                  );
                if (focusTarget) focusTarget.focus({ preventScroll: true });
             };
             focusSheet();

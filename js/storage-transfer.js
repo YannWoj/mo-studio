@@ -158,30 +158,40 @@
                     : "Rien à ajouter — tout existait déjà.",
             );
          }
-         const FORMAT_EXAMPLE =
-            '{\n  "version": 2,\n  "name": "HSK 2",\n  "units": { "1": "Ma première unité" },\n  "cards": [\n    {\n      "hz": "唱歌",\n      "py": "chang4 ge1",\n      "fr": "chanter",\n      "cat": "Verbes",\n      "unit": 1,\n      "order": 1,\n      "exHz": "我喜欢唱歌。",\n      "exPy": "wo3 xi3 huan5 chang4 ge1.",\n      "exFr": "J\'aime chanter.",\n      "note": ""\n    }\n  ]\n}';
+         const FORMAT_CARD_EXAMPLE =
+            '[\n  {\n    "hz": "你好",\n    "fr": "bonjour"\n  }\n]';
+         const FORMAT_PACK_EXAMPLE =
+            '{\n  "name": "Mes premières expressions",\n  "units": {\n    "1": "Salutations"\n  },\n  "cards": [\n    {\n      "hz": "你好",\n      "fr": "bonjour",\n      "py": "ni3 hao3",\n      "cat": "Expressions",\n      "unit": 1,\n      "order": 1,\n      "exHz": "你好！很高兴认识你。",\n      "exPy": "ni3 hao3! hen3 gao1 xing4 ren4 shi5 ni3.",\n      "exFr": "Bonjour ! Ravi de te rencontrer.",\n      "note": "Formule de salutation courante."\n    }\n  ]\n}';
+
+         async function copyFormatExample() {
+            try {
+               if (!navigator.clipboard || !navigator.clipboard.writeText)
+                  throw new Error("Clipboard unavailable");
+               await navigator.clipboard.writeText(FORMAT_PACK_EXAMPLE);
+               toast("Exemple copié.");
+            } catch (error) {
+               toast("Copie impossible ici — sélectionne le texte à la main.");
+            }
+         }
+
          function openFormatSheet() {
             openSheet(
                '<h3 class="sh-t">Format JSON des packs</h3>' +
-                  "<p class=\"sh-p\"><b>hz</b> et <b>fr</b> sont obligatoires. <b>py</b> accepte les tons en chiffres (ai4) ou en accents (ài). <b>cat</b>, <b>exHz</b>, <b>exPy</b>, <b>exFr</b>, <b>note</b> sont optionnels. <b>unit</b> + <b>order</b> définissent l'ordre d'apprentissage (les nouvelles cartes arrivent dans cet ordre), et <b>units</b> donne un nom à chaque unité. Le champ <b>name</b> crée le pack automatiquement à l'import.</p>" +
-                  '<pre class="fmt" id="fmt-pre">' +
-                  esc(FORMAT_EXAMPLE) +
+                  '<p class="sh-p">Chaque carte demande les champs <code>hz</code> et <code>fr</code>. Les champs <code>py</code>, <code>cat</code>, <code>unit</code>, <code>order</code>, <code>exHz</code>, <code>exPy</code>, <code>exFr</code> et <code>note</code> sont optionnels. Le pinyin accepte les tons en chiffres (<code>ni3</code>) ou en accents (<code>nǐ</code>).</p>' +
+                  '<div class="eyebrow">Exemple minimal valide</div>' +
+                  '<pre class="fmt" id="fmt-card-example">' +
+                  esc(FORMAT_CARD_EXAMPLE) +
+                  "</pre>" +
+                  '<p class="sh-p">Un pack peut regrouper les cartes dans <code>cards</code>, porter un <code>name</code> et nommer ses unités avec <code>units</code>. <code>unit</code> et <code>order</code> fixent alors l’ordre d’apprentissage.</p>' +
+                  '<div class="eyebrow">Exemple de pack</div>' +
+                  '<pre class="fmt" id="fmt-pack-example">' +
+                  esc(FORMAT_PACK_EXAMPLE) +
                   "</pre>" +
                   '<div class="sh-btns">' +
                   '<button class="btn" id="fmt-copy">Copier l\'exemple</button>' +
-                  '<button class="btn ghost" id="fmt-close">Fermer</button>' +
+                  '<button class="btn ghost" id="fmt-close" data-sheet-close>Fermer</button>' +
                   "</div>",
             );
-            $("fmt-copy").onclick = () => {
-               const done = () => toast("Exemple copié.");
-               if (navigator.clipboard && navigator.clipboard.writeText)
-                  navigator.clipboard
-                     .writeText(FORMAT_EXAMPLE)
-                     .then(done, () => toast("Copie impossible ici."));
-               else
-                  toast(
-                     "Copie impossible ici — sélectionne le texte à la main.",
-                  );
-            };
+            $("fmt-copy").onclick = copyFormatExample;
             $("fmt-close").onclick = closeSheet;
          }
