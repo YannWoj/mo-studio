@@ -111,17 +111,22 @@ function moveSequence(delta) {
    setSequenceIndex(seq.index + delta);
 }
 
-function setupSwipe(element, onLeft, onRight) {
+function setupSwipe(element, onLeft, onRight, options) {
    if (!element) return;
+   const settings = options || {};
    const ignoredTarget =
-      "button, input, textarea, select, [contenteditable='true'], canvas, .stroke-gallery, .stroke-focus";
+      "button, input, textarea, select, a, [contenteditable='true'], .stroke-focus";
    let pointerId = null;
    let startX = 0;
    let startY = 0;
    let currentX = 0;
    let currentY = 0;
    let horizontalGesture = false;
-   let suppressClick = false;
+   let transitioning = false;
+   const disabled = () =>
+      typeof settings.disabled === "function" && settings.disabled();
+   const setOffset = (value) =>
+      element.style.setProperty("--character-swipe-offset", value + "px");
    const clearSelection = () => {
       const selection = window.getSelection && window.getSelection();
       if (selection && selection.rangeCount) selection.removeAllRanges();
@@ -133,28 +138,46 @@ function setupSwipe(element, onLeft, onRight) {
       const qualifies =
          horizontalGesture && Math.abs(deltaX) >= 54 &&
          Math.abs(deltaX) > Math.abs(deltaY) * 1.45;
-      if (horizontalGesture) clearSelection();
-      element.classList.remove("is-pointer-swiping");
+      if (horizontalGesture || Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4)
+         clearSelection();
       const finishedPointerId = pointerId;
       pointerId = null;
       horizontalGesture = false;
       try {
          if (element.hasPointerCapture(finishedPointerId)) element.releasePointerCapture(finishedPointerId);
       } catch (error) {}
-      if (qualifies && navigate) {
-         suppressClick = true;
-         if (deltaX < 0) onLeft();
-         else onRight();
-      }
-      if (suppressClick)
+      const direction = deltaX < 0 ? "left" : "right";
+      const canNavigate =
+         qualifies && navigate && !disabled() &&
+         (!settings.canNavigate || settings.canNavigate(direction));
+      if (canNavigate) {
+         transitioning = true;
+         element.classList.remove("is-pointer-swiping");
+         element.classList.add("is-swipe-committing");
+         setOffset(direction === "left" ? -28 : 28);
          setTimeout(() => {
-            suppressClick = false;
-         }, 0);
+            if (direction === "left") onLeft();
+            else onRight();
+            element.classList.remove("is-swipe-committing");
+            element.classList.add("is-swipe-resetting");
+            setOffset(0);
+            transitioning = false;
+            setTimeout(() => {
+               element.classList.remove("is-swipe-resetting");
+            }, 130);
+         }, 80);
+      } else {
+         element.classList.remove("is-pointer-swiping");
+         element.classList.add("is-swipe-resetting");
+         setOffset(0);
+         setTimeout(() => element.classList.remove("is-swipe-resetting"), 130);
+      }
    };
    element.addEventListener("pointerdown", (event) => {
-      if (pointerId != null || !event.isPrimary) return;
+      if (pointerId != null || transitioning || !event.isPrimary || disabled()) return;
       if (event.pointerType === "mouse" && event.button !== 0) return;
-      if (event.target.closest(ignoredTarget)) return;
+      const blocked = event.target.closest(ignoredTarget);
+      if (blocked && !event.target.closest(".stroke-panel")) return;
       pointerId = event.pointerId;
       startX = currentX = event.clientX;
       startY = currentY = event.clientY;
@@ -172,7 +195,11 @@ function setupSwipe(element, onLeft, onRight) {
          clearSelection();
          try { element.setPointerCapture(pointerId); } catch (error) {}
       }
-      if (horizontalGesture) event.preventDefault();
+      if (horizontalGesture) {
+         setOffset(Math.max(-28, Math.min(28, deltaX * 0.18)));
+         clearSelection();
+         event.preventDefault();
+      }
    });
    element.addEventListener("pointerup", (event) => {
       if (pointerId == null || event.pointerId !== pointerId) return;
@@ -184,16 +211,6 @@ function setupSwipe(element, onLeft, onRight) {
    element.addEventListener("pointercancel", (event) => finish(event, false));
    element.addEventListener("lostpointercapture", (event) => finish(event, false));
    element.addEventListener("dragstart", (event) => event.preventDefault());
-   element.addEventListener(
-      "click",
-      (event) => {
-         if (!suppressClick) return;
-         suppressClick = false;
-         event.preventDefault();
-         event.stopPropagation();
-      },
-      true,
-   );
 }
 
 async function renderSequence() {

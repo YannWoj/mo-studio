@@ -409,7 +409,7 @@
    min-height: 132px;
    margin: 14px 0 6px;
    padding: 16px;
-   border: 1px solid var(--line-soft);
+   border: 1px solid color-mix(in srgb, var(--seal) 46%, var(--line-soft));
    border-radius: 14px;
    background: var(--card-2);
    box-shadow: 0 5px 15px rgba(23, 20, 15, 0.06);
@@ -456,6 +456,10 @@
    background: var(--seal);
    color: var(--card-2);
    box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+}
+#dd-picker .hzchip:disabled {
+   cursor: default;
+   opacity: 0.58;
 }
 #dd-character-interaction .character-nav-button:focus-visible,
 #dd-picker .hzchip:focus-visible {

@@ -450,6 +450,17 @@ async function renderDictionaryRelatedWords(character, token) {
    }
 }
 
+function updateDictionaryPagingMode() {
+   const locked = ddStrokeTab === "practice";
+   const interaction = $("dd-character-interaction");
+   if (interaction)
+      interaction.classList.toggle("is-practice-paging-locked", locked);
+   document.querySelectorAll("#dd-picker .hzchip").forEach((button) => {
+      button.disabled = locked;
+      button.setAttribute("aria-disabled", String(locked));
+   });
+}
+
 function wireDictDetail(entry, characters, card, token, options) {
    if (characters.length) wireStrokeWorkspace();
    let selectedCharacterIndex = 0;
@@ -482,13 +493,17 @@ function wireDictDetail(entry, characters, card, token, options) {
    };
    const moveCharacter = (delta) => {
       const nextIndex = selectedCharacterIndex + delta;
-      if (nextIndex < 0 || nextIndex >= characters.length) return;
+      if (nextIndex < 0 || nextIndex >= characters.length) return false;
       selectCharacter(nextIndex);
+      return true;
    };
    if (characters.length) {
       selectCharacter(0);
       document.querySelectorAll("#dd-picker .hzchip").forEach((button) => {
-         button.onclick = () => selectCharacter(Number(button.dataset.i));
+         button.onclick = () => {
+            if (ddStrokeTab === "practice") return;
+            selectCharacter(Number(button.dataset.i));
+         };
       });
       if ($("dd-character-prev")) $("dd-character-prev").onclick = () => moveCharacter(-1);
       if ($("dd-character-next")) $("dd-character-next").onclick = () => moveCharacter(1);
@@ -496,7 +511,15 @@ function wireDictDetail(entry, characters, card, token, options) {
          $("dd-character-interaction"),
          () => moveCharacter(1),
          () => moveCharacter(-1),
+         {
+            disabled: () => ddStrokeTab === "practice",
+            canNavigate: (direction) =>
+               direction === "left"
+                  ? selectedCharacterIndex < characters.length - 1
+                  : selectedCharacterIndex > 0,
+         },
       );
+      updateDictionaryPagingMode();
    }
    if (card) {
       if ($("dd-fav"))

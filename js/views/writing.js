@@ -116,14 +116,26 @@ function writingGridButtonsHtml(prefs) {
    };
    return WRITING_GRIDS.map(
       (grid) =>
-         '<button class="chip writing-grid-button" type="button" data-writing-grid="' +
+         '<button class="writing-grid-option" type="button" data-writing-grid="' +
          grid +
          '" aria-pressed="' +
          String(prefs.grid === grid) +
-         '">' +
+         '"><span class="writing-grid-preview" data-grid-preview="' +
+         grid +
+         '" aria-hidden="true"></span><span class="writing-grid-name">' +
          labels[grid] +
-         "</button>",
+         "</span></button>",
    ).join("");
+}
+
+function writingGridSelectorHtml(prefs) {
+   return (
+      '<section class="writing-grid-selector" aria-labelledby="writing-grid-title">' +
+      '<div class="writing-grid-selector-head"><h3 id="writing-grid-title">Grille du papier</h3><span>Le dessin reste intact</span></div>' +
+      '<div class="writing-grid-options">' +
+      writingGridButtonsHtml(prefs) +
+      "</div></section>"
+   );
 }
 
 function writingToolbarHtml(prefs) {
@@ -158,10 +170,7 @@ function writingToolbarHtml(prefs) {
       '">Gomme</button><button class="btn sm" id="writing-undo" type="button">Annuler</button>' +
       '<button class="btn sm" id="writing-redo" type="button">Rétablir</button>' +
       '<button class="btn sm danger" id="writing-clear" type="button">Tout effacer</button>' +
-      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div>' +
-      '<div class="writing-grid-tools"><div class="eyebrow">Grille du papier</div><div class="chips">' +
-      writingGridButtonsHtml(prefs) +
-      "</div></div></section>"
+      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div></section>'
    );
 }
 
@@ -185,6 +194,7 @@ function renderWriting() {
       ">" +
       esc(character) +
       '</div><canvas id="writing-canvas" aria-label="Zone de dessin" tabindex="0"></canvas></div>' +
+      writingGridSelectorHtml(prefs) +
       '<p class="writing-note">Le tracé reste sur cet appareil pendant cette visite. Aucune reconnaissance d’écriture n’est effectuée.</p></section></section>';
    wireWritingView();
 }

@@ -256,6 +256,8 @@ function activateStrokeTab(tab, focus) {
    });
    destroyDDWriter();
    renderActiveStrokeTab();
+   if (typeof updateDictionaryPagingMode === "function")
+      updateDictionaryPagingMode();
 }
 
 function wireStrokeWorkspace() {

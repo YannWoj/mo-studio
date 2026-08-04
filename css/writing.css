@@ -167,6 +167,7 @@
 }
 
 .writing-ink-tools {
+   flex-wrap: wrap;
    justify-content: space-between;
 }
 
@@ -177,8 +178,8 @@
 }
 
 .writing-color {
-   width: 28px;
-   height: 28px;
+   width: 44px;
+   height: 44px;
    border: 2px solid var(--card);
    border-radius: 50%;
    background: var(--writing-color);
@@ -191,8 +192,8 @@
 
 .writing-color-custom {
    display: grid;
-   width: 32px;
-   height: 32px;
+   width: 44px;
+   height: 44px;
    overflow: hidden;
    border: 1px solid var(--line);
    border-radius: 50%;
@@ -218,6 +219,7 @@
 
 .writing-width {
    display: grid;
+   flex: 1 1 150px;
    min-width: 150px;
    grid-template-columns: 1fr auto;
    gap: 0 8px;
@@ -234,6 +236,10 @@
    margin-top: 11px;
 }
 
+.writing-action-tools .btn {
+   min-height: 44px;
+}
+
 .writing-tool[aria-pressed="true"] {
    border-color: var(--ink);
    background: var(--ink);
@@ -244,14 +250,6 @@
    margin-left: auto;
 }
 
-.writing-grid-tools .eyebrow {
-   margin: 12px 0 7px;
-}
-
-.writing-grid-button {
-   border-radius: 9px;
-}
-
 .writing-surface {
    --writing-grid-size: 96px;
    position: relative;
@@ -259,6 +257,110 @@
    overflow: hidden;
    background-color: #f5eedf;
    background-position: -1px -1px;
+}
+
+.writing-grid-selector {
+   padding: 13px;
+   border-top: 1px solid var(--line);
+   background: linear-gradient(135deg, var(--card), var(--card-2));
+}
+
+.writing-grid-selector-head {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   gap: 10px;
+   margin-bottom: 9px;
+}
+
+.writing-grid-selector-head h3 {
+   font: 600 18px var(--disp);
+}
+
+.writing-grid-selector-head span {
+   color: var(--ink-faint);
+   font-size: 11px;
+}
+
+.writing-grid-options {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 8px;
+}
+
+.writing-grid-option {
+   display: grid;
+   min-width: 0;
+   min-height: 76px;
+   grid-template-columns: 48px minmax(0, 1fr);
+   align-items: center;
+   gap: 8px;
+   padding: 8px;
+   border: 1px solid var(--line);
+   border-radius: 11px;
+   background: color-mix(in srgb, var(--card-2) 78%, transparent);
+   text-align: left;
+   transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.writing-grid-option:hover,
+.writing-grid-option:focus-visible,
+.writing-grid-option[aria-pressed="true"] {
+   border-color: var(--seal);
+   box-shadow: 0 3px 11px rgba(158, 43, 37, 0.12);
+}
+
+.writing-grid-option:active {
+   transform: scale(0.98);
+}
+
+.writing-grid-option[aria-pressed="true"] {
+   background: color-mix(in srgb, var(--seal) 7%, var(--card-2));
+}
+
+.writing-grid-preview {
+   display: block;
+   width: 48px;
+   height: 48px;
+   border: 1px solid color-mix(in srgb, var(--seal) 34%, var(--line));
+   border-radius: 8px;
+   background-color: #f5eedf;
+   background-position: -1px -1px;
+   box-shadow: inset 0 0 8px rgba(23, 20, 15, 0.04);
+}
+
+.writing-grid-preview[data-grid-preview="square"] {
+   background-image:
+      linear-gradient(to right, rgba(74, 65, 50, 0.18) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(74, 65, 50, 0.18) 1px, transparent 1px);
+   background-size: 16px 16px;
+}
+
+.writing-grid-preview[data-grid-preview="tian"] {
+   background-image:
+      linear-gradient(to right, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(to right, transparent 49%, rgba(158, 43, 37, 0.16) 49%, rgba(158, 43, 37, 0.16) 51%, transparent 51%),
+      linear-gradient(to bottom, transparent 49%, rgba(158, 43, 37, 0.16) 49%, rgba(158, 43, 37, 0.16) 51%, transparent 51%);
+   background-size: 48px 48px;
+}
+
+.writing-grid-preview[data-grid-preview="mi"] {
+   background-image:
+      linear-gradient(to right, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(45deg, transparent 49%, rgba(158, 43, 37, 0.15) 49%, rgba(158, 43, 37, 0.15) 51%, transparent 51%),
+      linear-gradient(-45deg, transparent 49%, rgba(158, 43, 37, 0.15) 49%, rgba(158, 43, 37, 0.15) 51%, transparent 51%);
+   background-size: 48px 48px;
+}
+
+.writing-grid-name {
+   min-width: 0;
+   color: var(--ink-soft);
+   font-size: 12px;
+   font-weight: 600;
+   line-height: 1.2;
+   overflow-wrap: anywhere;
 }
 
 .writing-surface[data-grid="blank"] {
@@ -387,14 +489,12 @@ body.writing-fullscreen-open {
       margin-left: 0;
    }
 
-   .writing-grid-tools .chips {
-      display: grid;
+   .writing-grid-options {
       grid-template-columns: repeat(2, minmax(0, 1fr));
    }
 
-   .writing-grid-button {
-      padding-inline: 7px;
-      font-size: 12px;
+   .writing-grid-option {
+      min-height: 68px;
    }
 
    .writing-surface {

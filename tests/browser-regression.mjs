@@ -307,6 +307,38 @@ async function touchScroll(selector, distance = 180) {
    return { ...point, scrollY: await evaluate("window.scrollY") };
 }
 
+async function touchScrollContainer(selector, containerSelector, distance = 180) {
+   const encodedSelector = JSON.stringify(selector);
+   const encodedContainer = JSON.stringify(containerSelector);
+   const point = await evaluate(`(async () => {
+      const element = document.querySelector(${encodedSelector});
+      const container = document.querySelector(${encodedContainer});
+      if (!element || !container) throw new Error('Missing touch-scroll target or container');
+      container.scrollTop = 0;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const rect = element.getBoundingClientRect();
+      return {
+         x: Math.max(24, Math.min(innerWidth - 24, rect.left + rect.width / 2)),
+         y: Math.max(180, Math.min(innerHeight - 180, rect.top + Math.min(rect.height * 0.5, 220))),
+      };
+   })()`);
+   await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [{ x: point.x, y: point.y, id: 7, radiusX: 5, radiusY: 5, force: 1 }],
+   });
+   await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x: point.x + 2, y: point.y - distance / 2, id: 7, radiusX: 5, radiusY: 5, force: 1 }],
+   });
+   await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x: point.x + 3, y: point.y - distance, id: 7, radiusX: 5, radiusY: 5, force: 1 }],
+   });
+   await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+   await new Promise((resolve) => setTimeout(resolve, 220));
+   return evaluate(`document.querySelector(${encodedContainer}).scrollTop`);
+}
+
 async function setValue(selector, value, eventName = "input") {
    const encodedSelector = JSON.stringify(selector);
    const encodedValue = JSON.stringify(value);
@@ -426,8 +458,21 @@ async function main() {
    assert(startup.emptyAdd, "Empty-state create-card action missing");
    assert(
       startup.navLabels.join("|") ===
-         "学 Parcours|库 Mes mots|写 Écrire|查 Rechercher|复 Réviser",
+         "学 Parcours|写 Écrire|查 Rechercher|库 Mes mots|复 Réviser",
       `Main navigation order is incorrect: ${JSON.stringify(startup.navLabels)}`,
+   );
+   await evaluate("document.querySelector('.nav button').focus({ preventScroll: true })");
+   const keyboardNavigationOrder = [];
+   for (let index = 0; index < 5; index++) {
+      keyboardNavigationOrder.push(await evaluate("document.activeElement?.dataset?.view || ''"));
+      if (index < 4) {
+         await cdp.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "Tab", code: "Tab", windowsVirtualKeyCode: 9 });
+         await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Tab", code: "Tab", windowsVirtualKeyCode: 9 });
+      }
+   }
+   assert(
+      keyboardNavigationOrder.join("|") === "path|write|search|lib|learn",
+      `Keyboard navigation order is incorrect: ${JSON.stringify(keyboardNavigationOrder)}`,
    );
    assert(startup.dictionaryRequests === 0, "Dictionary data loaded during application startup");
    assert(startup.hskRequests === 0, "HSK data loaded during application startup");
@@ -957,7 +1002,7 @@ async function main() {
    assert(await evaluate("seq.index === 1"), "Sequence next navigation failed");
    await waitFor(() => evaluate("!!document.querySelector('#seq-flash')"), "Second sequence entry did not load", 20_000);
    await pointerGesture("#seq-flash", { deltaX: -120, deltaY: 2, pointerType: "touch" });
-   assert(await evaluate("seq.index === 2"), "Sequence swipe navigation failed");
+   await waitFor(() => evaluate("seq.index === 2"), "Sequence swipe navigation failed", 20_000);
    await waitFor(() => evaluate("!!document.querySelector('#seq-exit')"), "Third sequence entry did not load", 20_000);
    await click("#seq-exit");
    record("multi-character sequence", "shared chevrons and Pointer Events advanced three characters");
@@ -1177,8 +1222,9 @@ async function main() {
          completeDetail.ordered.workspace < completeDetail.ordered.related,
       `Dictionary detail priority is wrong: ${JSON.stringify(completeDetail.ordered)}`,
    );
+   await click('[data-stroke-tab="animation"]');
    await click("#dd-picker .hzchip:nth-child(2)");
-   assert(await evaluate("ddChar === '好'"), "Selecting a character chip did not update the stroke area");
+   await waitFor(() => evaluate("ddChar === '好'"), "Selecting a character chip did not update the stroke area", 20_000);
    await evaluate("history.back()");
    await waitFor(() => evaluate("!sheetOpen() && !!document.querySelector('#dresults .dict-result')"), "Browser Back did not restore results", 20_000);
    assert((await evaluate("document.querySelector('#dq').value")) === "你好", "Browser Back lost the query");
@@ -1504,6 +1550,8 @@ async function main() {
       const nav = document.querySelector('#dd-character-nav').getBoundingClientRect();
       const previousRect = previous.getBoundingClientRect();
       const nextRect = next.getBoundingClientRect();
+      const studyCard = document.querySelector('#dd-character-study-card');
+      const studyCardRect = studyCard.getBoundingClientRect();
       return {
          position: document.querySelector('#dd-character-position').textContent.trim(),
          previousDisabled: previous.disabled,
@@ -1514,6 +1562,7 @@ async function main() {
          currentChip: document.querySelector('#dd-picker [aria-current=true]')?.textContent,
          previousSize: [previousRect.width, previousRect.height],
          nextSize: [nextRect.width, nextRect.height],
+         edgeInsets: [Math.abs(previousRect.left - studyCardRect.left), Math.abs(nextRect.right - studyCardRect.right)],
          insideViewport: nav.left >= 0 && nav.right <= innerWidth,
          noOverflow: document.querySelector('.sheet-card').scrollWidth <= document.querySelector('.sheet-card').clientWidth,
          studyCharacter: document.querySelector('.dd-character-study-hanzi')?.textContent.trim(),
@@ -1524,7 +1573,8 @@ async function main() {
             !!document.querySelector('#dd-character-addcard')?.dataset.entryId,
          navigationSvgCount: document.querySelectorAll('#dd-character-nav svg').length,
          definitionSelectable: getComputedStyle(document.querySelector('.dd-definitions')).userSelect !== 'none',
-         interactionUnselectable: getComputedStyle(document.querySelector('#dd-character-interaction')).userSelect === 'none',
+         gestureCardUnselectable: getComputedStyle(studyCard).userSelect === 'none',
+         translationSelectable: getComputedStyle(document.querySelector('.dd-character-study-translation')).userSelect !== 'none',
          tabsUnselectable: getComputedStyle(document.querySelector('.stroke-tabs')).userSelect === 'none',
          pickerUnselectable: getComputedStyle(document.querySelector('#dd-picker')).userSelect === 'none',
          nativeDragPrevented: !document.querySelector('#dd-character-interaction').dispatchEvent(
@@ -1540,22 +1590,24 @@ async function main() {
          initialWordNavigation.studyCharacter === "你" && initialWordNavigation.studyPinyin &&
          initialWordNavigation.studyTranslation && initialWordNavigation.studyAudio === "你" &&
          initialWordNavigation.cardActionReady && initialWordNavigation.navigationSvgCount === 2 &&
-         initialWordNavigation.definitionSelectable && initialWordNavigation.interactionUnselectable &&
+         initialWordNavigation.definitionSelectable && initialWordNavigation.gestureCardUnselectable &&
+         initialWordNavigation.translationSelectable &&
          initialWordNavigation.tabsUnselectable && initialWordNavigation.pickerUnselectable &&
          initialWordNavigation.nativeDragPrevented,
       `你好 initial character navigation is wrong: ${JSON.stringify(initialWordNavigation)}`,
    );
    assert(
-      initialWordNavigation.previousSize.every((size) => size >= 44) &&
+         initialWordNavigation.previousSize.every((size) => size >= 44) &&
          initialWordNavigation.nextSize.every((size) => size >= 44) &&
+         initialWordNavigation.edgeInsets.every((inset) => inset <= 18) &&
          initialWordNavigation.insideViewport && initialWordNavigation.noOverflow,
       `你好 character controls are not usable at 360px: ${JSON.stringify(initialWordNavigation)}`,
    );
 
-   await mouseClick("#dd-character-next");
+   await mouseDrag(".dd-character-study-hanzi", -155, 2);
    await waitFor(
       () => evaluate(`ddChar === '好' && ddCharacterData?.strokeCount === 6 && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 2} && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy') === 'false' && document.querySelector('.dd-character-study-hanzi')?.textContent.trim() === '好'`),
-      "你好 Next did not load 好",
+      "你好 mouse drag started on the large character did not load 好",
       20_000,
    );
    assert(
@@ -1617,7 +1669,7 @@ async function main() {
       "你好 character-chip selection failed",
       20_000,
    );
-   const dictionarySwipeRight = await pointerGesture("#dd-character-interaction", {
+   const dictionarySwipeRight = await pointerGesture(".dd-character-study-card", {
       deltaX: 155,
       deltaY: 2,
       pointerType: "touch",
@@ -1628,7 +1680,7 @@ async function main() {
       "你好 mobile swipe right failed",
       20_000,
    );
-   const dictionarySwipeLeft = await pointerGesture("#dd-character-interaction", {
+   const dictionarySwipeLeft = await pointerGesture(".dd-character-study-hanzi", {
       deltaX: -155,
       deltaY: 2,
       pointerType: "touch",
@@ -1639,7 +1691,13 @@ async function main() {
       "你好 mobile swipe left failed",
       20_000,
    );
-   const smallDictionaryGesture = await pointerGesture("#dd-character-interaction", {
+   const simpleDictionaryTap = await pointerGesture(".dd-character-study-hanzi", {
+      deltaX: 0,
+      deltaY: 0,
+      pointerType: "touch",
+      pointerId: 50,
+   });
+   const smallDictionaryGesture = await pointerGesture(".dd-character-study-card", {
       deltaX: 22,
       deltaY: 2,
       pointerType: "touch",
@@ -1648,9 +1706,10 @@ async function main() {
    await new Promise((resolve) => setTimeout(resolve, 120));
    assert(
       (await evaluate("ddChar === '好'")) && dictionarySwipeRight.selection === "" &&
-         dictionarySwipeLeft.selection === "" && smallDictionaryGesture.selection === "" &&
+         dictionarySwipeLeft.selection === "" && simpleDictionaryTap.selection === "" &&
+         smallDictionaryGesture.selection === "" &&
          (await evaluate("window.getSelection().toString() === ''")),
-      "Dictionary swipe selected text or a small movement changed character",
+      "Dictionary swipe selected text or a tap/small movement changed character",
    );
    const verticalDictionaryGesture = await pointerGesture("#dd-character-interaction", {
       deltaX: 5,
@@ -1663,6 +1722,33 @@ async function main() {
          (await evaluate("ddChar === '好' && getComputedStyle(document.querySelector('#dd-character-interaction')).touchAction === 'pan-y'")),
       "Dictionary swipe blocked a vertical mobile gesture",
    );
+   const dictionaryTouchScrollTop = await touchScrollContainer(
+      ".dd-character-study-hanzi",
+      ".sheet-card",
+      150,
+   );
+   assert(
+      dictionaryTouchScrollTop > 0 && (await evaluate("ddChar === '好'")),
+      `A vertical touch begun on the character did not scroll the sheet: ${dictionaryTouchScrollTop}`,
+   );
+   const animationGridSwipe = await pointerGesture("#dd-target", {
+      deltaX: 155,
+      deltaY: 2,
+      pointerType: "pen",
+      pointerId: 55,
+   });
+   await waitFor(
+      () => evaluate(`ddChar === '你' && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 9}`),
+      "你好 stylus swipe started on the animation grid failed",
+      20_000,
+   );
+   const animationModePagingCount = await evaluate("window.__strokeWriterAudit.animations.length");
+   assert(
+      animationGridSwipe.selection === "" && (await evaluate("window.getSelection().toString() === ''")),
+      "Animation-grid swipe left an accidental text selection",
+   );
+   await evaluate("document.querySelector('.sheet-card').scrollTop = 0");
+   await new Promise((resolve) => setTimeout(resolve, 120));
    const characterNavigationScreenshot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
    await writeFile(
       path.join(screenshotDirectory, "dictionary-character-navigation-360.png"),
@@ -1685,8 +1771,60 @@ async function main() {
       "你好 character-chip gallery switch failed",
       20_000,
    );
+   await pointerGesture("#dd-gallery .stroke-panel", {
+      deltaX: 155,
+      deltaY: 2,
+      pointerType: "touch",
+      pointerId: 56,
+   });
+   await waitFor(
+      () => evaluate("ddChar === '你' && document.querySelectorAll('#dd-gallery .stroke-panel').length === 7"),
+      "Étapes swipe did not return to 你",
+      20_000,
+   );
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))");
+   await waitFor(
+      () => evaluate("ddChar === '好' && document.querySelectorAll('#dd-gallery .stroke-panel').length === 6"),
+      "Étapes keyboard navigation did not advance to 好",
+      20_000,
+   );
+   await click("#dd-picker .hzchip:nth-child(1)");
+   await waitFor(() => evaluate("ddChar === '你'"), "Étapes character chip did not return to 你", 20_000);
+   await click("#dd-character-next");
+   await waitFor(() => evaluate("ddChar === '好'"), "Étapes chevron did not advance to 好", 20_000);
    assert(await evaluate("document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected') === 'true'"), "Character switch lost the selected stroke tab");
    await click('[data-stroke-tab="practice"]');
+   const practicePagingState = await evaluate(`({
+      locked: document.querySelector('#dd-character-interaction').classList.contains('is-practice-paging-locked'),
+      chipsDisabled: [...document.querySelectorAll('#dd-picker .hzchip')].every((button) => button.disabled && button.getAttribute('aria-disabled') === 'true'),
+      writerCount: document.querySelectorAll('#dd-practice-target svg').length,
+      character: ddChar,
+   })`);
+   assert(
+      practicePagingState.locked && practicePagingState.chipsDisabled &&
+         practicePagingState.writerCount === 1 && practicePagingState.character === "好",
+      `S'entraîner did not lock non-chevron paging: ${JSON.stringify(practicePagingState)}`,
+   );
+   const practiceSwipe = await pointerGesture("#dd-practice-target", {
+      deltaX: 155,
+      deltaY: 2,
+      pointerType: "touch",
+      pointerId: 57,
+   });
+   const practiceTrace = await pointerGesture("#dd-practice-target", {
+      deltaX: 34,
+      deltaY: 48,
+      pointerType: "pen",
+      pointerId: 58,
+   });
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))");
+   await click("#dd-picker .hzchip:nth-child(1)");
+   await new Promise((resolve) => setTimeout(resolve, 160));
+   assert(
+      (await evaluate("ddChar === '好' && document.querySelectorAll('#dd-practice-target svg').length === 1")) &&
+         practiceSwipe.selection === "" && practiceTrace.selection === "",
+      "S'entraîner interpreted swipe, keyboard, chip, or tracing input as character navigation",
+   );
    await click("#dd-character-prev");
    await waitFor(
       () => evaluate("ddChar === '你' && ddCharacterData?.character === '你' && ddWriterTarget?.id === 'dd-practice-target'"),
@@ -1701,7 +1839,7 @@ async function main() {
    );
    await click('[data-stroke-tab="animation"]');
    await waitFor(
-      () => evaluate(`window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 9}`),
+      () => evaluate(`window.__strokeWriterAudit.animations.length === ${animationModePagingCount + 1}`),
       "Pending selected-character autoplay did not start on the Animation tab",
    );
    await cdp.send("Emulation.setDeviceMetricsOverride", {
@@ -1769,6 +1907,48 @@ async function main() {
 
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "你好 detail did not close", 20_000);
+   await evaluate("ddStrokeTab = 'animation'; openDictDetail(normalizeDetailEntry({ hz: '你好吗', py: 'nǐ hǎo ma', fr: 'comment vas-tu ?' }))");
+   await waitFor(
+      () => evaluate("ddCharacterData?.character === '你' && document.querySelectorAll('#dd-picker .hzchip').length === 3"),
+      "你好吗 dictionary detail did not load",
+      20_000,
+   );
+   assert(
+      await evaluate("document.querySelector('#dd-character-prev').disabled && !document.querySelector('#dd-character-next').disabled && document.querySelector('#dd-character-position').textContent.trim() === '你 · 1 / 3'"),
+      "你好吗 initial chevron state is wrong",
+   );
+   await click("#dd-character-prev");
+   assert(await evaluate("ddChar === '你'"), "Disabled 你好吗 previous chevron changed character");
+   await click("#dd-character-next");
+   await waitFor(() => evaluate("ddChar === '好'"), "你好吗 did not advance to 好", 20_000);
+   await click("#dd-character-next");
+   await waitFor(
+      () => evaluate("ddChar === '吗' && document.querySelector('#dd-character-next').disabled && !document.querySelector('#dd-character-prev').disabled"),
+      "你好吗 final chevron state is wrong",
+      20_000,
+   );
+   await click("#dd-character-next");
+   assert(await evaluate("ddChar === '吗'"), "Disabled 你好吗 next chevron changed character");
+   await pointerGesture(".dd-character-study-hanzi", {
+      deltaX: 155,
+      deltaY: 2,
+      pointerType: "touch",
+      pointerId: 59,
+   });
+   await waitFor(() => evaluate("ddChar === '好'"), "你好吗 reverse swipe did not return to 好", 20_000);
+   await pointerGesture(".dd-character-study-card", {
+      deltaX: 155,
+      deltaY: 2,
+      pointerType: "touch",
+      pointerId: 60,
+   });
+   await waitFor(
+      () => evaluate("ddChar === '你' && document.querySelector('#dd-character-prev').disabled && !document.querySelector('#dd-character-next').disabled"),
+      "你好吗 reverse navigation did not return to the first character",
+      20_000,
+   );
+   await click("#dd-close");
+   await waitFor(() => evaluate("!sheetOpen()"), "你好吗 detail did not close", 20_000);
    await evaluate("ddStrokeTab = 'animation'; openDictDetail(normalizeDetailEntry({ hz: '人', py: 'rén', fr: 'personne' }))");
    await waitFor(
       () => evaluate("ddCharacterData?.character === '人' && !!document.querySelector('#dd-character-nav')"),
@@ -2652,6 +2832,29 @@ async function main() {
          initialWritingWord.fullscreen,
       `你好 writing route failed: ${JSON.stringify(initialWritingWord)}`,
    );
+   const writingStructure = await evaluate(`(() => {
+      const surface = document.querySelector('#writing-surface');
+      const selector = document.querySelector('.writing-grid-selector');
+      const note = document.querySelector('.writing-note');
+      return {
+         surfaceBeforeSelector: !!(surface.compareDocumentPosition(selector) & Node.DOCUMENT_POSITION_FOLLOWING),
+         selectorBeforeNote: !!(selector.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING),
+         visualOrder: surface.getBoundingClientRect().top < selector.getBoundingClientRect().top,
+         optionCount: document.querySelectorAll('.writing-grid-option').length,
+         previewCount: document.querySelectorAll('.writing-grid-preview').length,
+         actionToolsTouchable: [...document.querySelectorAll('.writing-action-tools .btn')].every((button) => button.getBoundingClientRect().height >= 44),
+         colorsTouchable: [...document.querySelectorAll('.writing-color, .writing-color-custom')].every((button) => {
+            const rect = button.getBoundingClientRect();
+            return rect.width >= 44 && rect.height >= 44;
+         }),
+      };
+   })()`);
+   assert(
+      writingStructure.surfaceBeforeSelector && writingStructure.selectorBeforeNote && writingStructure.visualOrder &&
+         writingStructure.optionCount === 4 && writingStructure.previewCount === 4 &&
+         writingStructure.actionToolsTouchable && writingStructure.colorsTouchable,
+      `Writing canvas/grid structure is wrong: ${JSON.stringify(writingStructure)}`,
+   );
    await click("#writing-next");
    assert(
       (await evaluate("document.querySelector('#writing-position').textContent.trim()")) === "好 · 2 / 2",
@@ -2712,15 +2915,20 @@ async function main() {
       (await evaluate("writingState.free.actions.at(-1).type")) === "clear",
       "Redo did not restore Tout effacer",
    );
+   await click("#writing-undo");
+   const drawingBeforeGridChange = await evaluate("JSON.stringify(writingState.free.actions)");
    await click('[data-writing-grid="mi"]');
    const writingPreferencesState = await evaluate(`({
       grid: document.querySelector('#writing-surface').dataset.grid,
       storedGrid: JSON.parse(localStorage.getItem(DB_KEY)).settings.writingBoard.grid,
       canvasTouchAction: getComputedStyle(document.querySelector('#writing-canvas')).touchAction,
+      drawing: JSON.stringify(writingState.free.actions),
+      activeGrid: document.querySelector('.writing-grid-option[aria-pressed=true]')?.dataset.writingGrid,
    })`);
    assert(
       writingPreferencesState.grid === "mi" && writingPreferencesState.storedGrid === "mi" &&
-         writingPreferencesState.canvasTouchAction === "none",
+         writingPreferencesState.canvasTouchAction === "none" && writingPreferencesState.activeGrid === "mi" &&
+         writingPreferencesState.drawing === drawingBeforeGridChange,
       `Writing grid or touch behavior failed: ${JSON.stringify(writingPreferencesState)}`,
    );
    await click("#writing-fullscreen");
@@ -2751,20 +2959,36 @@ async function main() {
       const writingLayout = await evaluate(`(() => {
          const canvas = document.querySelector('#writing-canvas');
          const rect = canvas.getBoundingClientRect();
+         const surface = document.querySelector('#writing-surface');
+         const selector = document.querySelector('.writing-grid-selector');
+         const note = document.querySelector('.writing-note');
+         const selectorRect = selector.getBoundingClientRect();
          return {
             overflow: document.documentElement.scrollWidth > innerWidth,
             nav: [...document.querySelectorAll('.nav button')].map((button) =>
                button.querySelector('.n-hz').textContent.trim() + ' ' + button.querySelector('.n-lab').textContent.trim()
             ),
             navFits: [...document.querySelectorAll('.nav button')].every((button) => button.scrollWidth <= button.clientWidth + 1),
+            activeRoute: document.querySelector('.nav button[aria-pressed=true]')?.dataset.view,
             crisp: Math.abs(canvas.width - Math.round(rect.width * devicePixelRatio)) <= 1 &&
                Math.abs(canvas.height - Math.round(rect.height * devicePixelRatio)) <= 1,
+            surfaceBeforeSelector: !!(surface.compareDocumentPosition(selector) & Node.DOCUMENT_POSITION_FOLLOWING) &&
+               surface.getBoundingClientRect().top < selectorRect.top,
+            selectorBeforeNote: !!(selector.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING),
+            selectorInside: selectorRect.left >= 0 && selectorRect.right <= innerWidth,
+            gridColumnCount: getComputedStyle(document.querySelector('.writing-grid-options')).gridTemplateColumns.split(' ').length,
+            gridOptionsTouchable: [...document.querySelectorAll('.writing-grid-option')].every((option) => {
+               const optionRect = option.getBoundingClientRect();
+               return optionRect.width >= 44 && optionRect.height >= 44;
+            }),
          };
       })()`);
       assert(
-         !writingLayout.overflow && writingLayout.navFits && writingLayout.crisp &&
+         !writingLayout.overflow && writingLayout.navFits && writingLayout.activeRoute === "write" && writingLayout.crisp &&
+            writingLayout.surfaceBeforeSelector && writingLayout.selectorBeforeNote && writingLayout.selectorInside &&
+            writingLayout.gridOptionsTouchable && writingLayout.gridColumnCount === (width < 900 ? 2 : 4) &&
             writingLayout.nav.join("|") ===
-               "学 Parcours|库 Mes mots|写 Écrire|查 Rechercher|复 Réviser",
+               "学 Parcours|写 Écrire|查 Rechercher|库 Mes mots|复 Réviser",
          `Writing/navigation layout failed at ${width}px: ${JSON.stringify(writingLayout)}`,
       );
    }

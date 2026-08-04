@@ -1068,8 +1068,6 @@
 
 .character-swipe-zone {
    touch-action: pan-y;
-   user-select: none;
-   -webkit-user-select: none;
    -webkit-user-drag: none;
 }
 .character-swipe-zone:not(:has(input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus)) {
@@ -1077,6 +1075,36 @@
 }
 .character-swipe-zone.is-pointer-swiping {
    cursor: grabbing;
+}
+.character-swipe-zone.is-practice-paging-locked {
+   cursor: default;
+}
+.dd-character-interaction .dd-character-study-card,
+.dd-character-interaction .stroke-workspace {
+   transform: translateX(var(--character-swipe-offset, 0));
+   transition: transform 130ms ease-out;
+   will-change: transform;
+}
+.dd-character-interaction.is-pointer-swiping .dd-character-study-card,
+.dd-character-interaction.is-pointer-swiping .stroke-workspace {
+   transition: none;
+}
+.dd-character-interaction.is-swipe-committing .dd-character-study-card,
+.dd-character-interaction.is-swipe-committing .stroke-workspace {
+   opacity: 0.9;
+}
+.dd-character-study-card,
+.dd-character-interaction .stroke-workspace,
+.dd-character-interaction > .eyebrow,
+.character-nav,
+#dd-picker {
+   user-select: none;
+   -webkit-user-select: none;
+}
+.dd-character-study-translation,
+.dd-related {
+   user-select: text;
+   -webkit-user-select: text;
 }
 .character-swipe-zone *,
 .character-nav *,
@@ -1159,6 +1187,38 @@
    font: 600 15px var(--ui);
    text-align: center;
    white-space: nowrap;
+}
+
+#dd-character-nav {
+   grid-template-columns: 48px minmax(92px, 1fr) 48px;
+   width: 100%;
+   margin: 8px 0 14px;
+   padding: 2px 1px;
+   border: 0;
+   background: transparent;
+   box-shadow: none;
+}
+
+#dd-character-nav .character-nav-button {
+   width: 44px;
+   height: 44px;
+   border-color: color-mix(in srgb, var(--seal) 32%, var(--line));
+   border-radius: 50%;
+   background: color-mix(in srgb, var(--card-2) 86%, transparent);
+   box-shadow: 0 4px 12px rgba(23, 20, 15, 0.1);
+   backdrop-filter: blur(5px);
+}
+
+#dd-character-nav .character-nav-button:last-child {
+   justify-self: end;
+}
+
+#dd-character-nav .character-nav-position {
+   justify-self: center;
+   padding: 7px 13px;
+   border: 1px solid var(--line-soft);
+   border-radius: 999px;
+   background: color-mix(in srgb, var(--card-2) 82%, transparent);
 }
 .stroke-panel {
    position: relative;
@@ -1817,7 +1877,7 @@
    min-height: 132px;
    margin: 14px 0 6px;
    padding: 16px;
-   border: 1px solid var(--line-soft);
+   border: 1px solid color-mix(in srgb, var(--seal) 46%, var(--line-soft));
    border-radius: 14px;
    background: var(--card-2);
    box-shadow: 0 5px 15px rgba(23, 20, 15, 0.06);
@@ -1864,6 +1924,10 @@
    background: var(--seal);
    color: var(--card-2);
    box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+}
+#dd-picker .hzchip:disabled {
+   cursor: default;
+   opacity: 0.58;
 }
 #dd-character-interaction .character-nav-button:focus-visible,
 #dd-picker .hzchip:focus-visible {
@@ -2671,6 +2735,7 @@
 }
 
 .writing-ink-tools {
+   flex-wrap: wrap;
    justify-content: space-between;
 }
 
@@ -2681,8 +2746,8 @@
 }
 
 .writing-color {
-   width: 28px;
-   height: 28px;
+   width: 44px;
+   height: 44px;
    border: 2px solid var(--card);
    border-radius: 50%;
    background: var(--writing-color);
@@ -2695,8 +2760,8 @@
 
 .writing-color-custom {
    display: grid;
-   width: 32px;
-   height: 32px;
+   width: 44px;
+   height: 44px;
    overflow: hidden;
    border: 1px solid var(--line);
    border-radius: 50%;
@@ -2722,6 +2787,7 @@
 
 .writing-width {
    display: grid;
+   flex: 1 1 150px;
    min-width: 150px;
    grid-template-columns: 1fr auto;
    gap: 0 8px;
@@ -2738,6 +2804,10 @@
    margin-top: 11px;
 }
 
+.writing-action-tools .btn {
+   min-height: 44px;
+}
+
 .writing-tool[aria-pressed="true"] {
    border-color: var(--ink);
    background: var(--ink);
@@ -2748,14 +2818,6 @@
    margin-left: auto;
 }
 
-.writing-grid-tools .eyebrow {
-   margin: 12px 0 7px;
-}
-
-.writing-grid-button {
-   border-radius: 9px;
-}
-
 .writing-surface {
    --writing-grid-size: 96px;
    position: relative;
@@ -2763,6 +2825,110 @@
    overflow: hidden;
    background-color: #f5eedf;
    background-position: -1px -1px;
+}
+
+.writing-grid-selector {
+   padding: 13px;
+   border-top: 1px solid var(--line);
+   background: linear-gradient(135deg, var(--card), var(--card-2));
+}
+
+.writing-grid-selector-head {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   gap: 10px;
+   margin-bottom: 9px;
+}
+
+.writing-grid-selector-head h3 {
+   font: 600 18px var(--disp);
+}
+
+.writing-grid-selector-head span {
+   color: var(--ink-faint);
+   font-size: 11px;
+}
+
+.writing-grid-options {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 8px;
+}
+
+.writing-grid-option {
+   display: grid;
+   min-width: 0;
+   min-height: 76px;
+   grid-template-columns: 48px minmax(0, 1fr);
+   align-items: center;
+   gap: 8px;
+   padding: 8px;
+   border: 1px solid var(--line);
+   border-radius: 11px;
+   background: color-mix(in srgb, var(--card-2) 78%, transparent);
+   text-align: left;
+   transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.writing-grid-option:hover,
+.writing-grid-option:focus-visible,
+.writing-grid-option[aria-pressed="true"] {
+   border-color: var(--seal);
+   box-shadow: 0 3px 11px rgba(158, 43, 37, 0.12);
+}
+
+.writing-grid-option:active {
+   transform: scale(0.98);
+}
+
+.writing-grid-option[aria-pressed="true"] {
+   background: color-mix(in srgb, var(--seal) 7%, var(--card-2));
+}
+
+.writing-grid-preview {
+   display: block;
+   width: 48px;
+   height: 48px;
+   border: 1px solid color-mix(in srgb, var(--seal) 34%, var(--line));
+   border-radius: 8px;
+   background-color: #f5eedf;
+   background-position: -1px -1px;
+   box-shadow: inset 0 0 8px rgba(23, 20, 15, 0.04);
+}
+
+.writing-grid-preview[data-grid-preview="square"] {
+   background-image:
+      linear-gradient(to right, rgba(74, 65, 50, 0.18) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(74, 65, 50, 0.18) 1px, transparent 1px);
+   background-size: 16px 16px;
+}
+
+.writing-grid-preview[data-grid-preview="tian"] {
+   background-image:
+      linear-gradient(to right, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(to right, transparent 49%, rgba(158, 43, 37, 0.16) 49%, rgba(158, 43, 37, 0.16) 51%, transparent 51%),
+      linear-gradient(to bottom, transparent 49%, rgba(158, 43, 37, 0.16) 49%, rgba(158, 43, 37, 0.16) 51%, transparent 51%);
+   background-size: 48px 48px;
+}
+
+.writing-grid-preview[data-grid-preview="mi"] {
+   background-image:
+      linear-gradient(to right, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(158, 43, 37, 0.24) 1px, transparent 1px),
+      linear-gradient(45deg, transparent 49%, rgba(158, 43, 37, 0.15) 49%, rgba(158, 43, 37, 0.15) 51%, transparent 51%),
+      linear-gradient(-45deg, transparent 49%, rgba(158, 43, 37, 0.15) 49%, rgba(158, 43, 37, 0.15) 51%, transparent 51%);
+   background-size: 48px 48px;
+}
+
+.writing-grid-name {
+   min-width: 0;
+   color: var(--ink-soft);
+   font-size: 12px;
+   font-weight: 600;
+   line-height: 1.2;
+   overflow-wrap: anywhere;
 }
 
 .writing-surface[data-grid="blank"] {
@@ -2891,14 +3057,12 @@ body.writing-fullscreen-open {
       margin-left: 0;
    }
 
-   .writing-grid-tools .chips {
-      display: grid;
+   .writing-grid-options {
       grid-template-columns: repeat(2, minmax(0, 1fr));
    }
 
-   .writing-grid-button {
-      padding-inline: 7px;
-      font-size: 12px;
+   .writing-grid-option {
+      min-height: 68px;
    }
 
    .writing-surface {
@@ -3313,14 +3477,14 @@ body.writing-fullscreen-open {
          <button data-view="path" aria-pressed="false">
             <span class="n-hz">学</span><span class="n-lab">Parcours</span>
          </button>
-         <button data-view="lib" aria-pressed="false">
-            <span class="n-hz">库</span><span class="n-lab">Mes mots</span>
-         </button>
          <button data-view="write" aria-pressed="false">
             <span class="n-hz">写</span><span class="n-lab">Écrire</span>
          </button>
          <button data-view="search" aria-pressed="false">
             <span class="n-hz">查</span><span class="n-lab">Rechercher</span>
+         </button>
+         <button data-view="lib" aria-pressed="false">
+            <span class="n-hz">库</span><span class="n-lab">Mes mots</span>
          </button>
          <button data-view="learn" aria-pressed="true">
             <span class="n-hz">复</span><span class="n-lab">Réviser</span>
@@ -5298,14 +5462,26 @@ function writingGridButtonsHtml(prefs) {
    };
    return WRITING_GRIDS.map(
       (grid) =>
-         '<button class="chip writing-grid-button" type="button" data-writing-grid="' +
+         '<button class="writing-grid-option" type="button" data-writing-grid="' +
          grid +
          '" aria-pressed="' +
          String(prefs.grid === grid) +
-         '">' +
+         '"><span class="writing-grid-preview" data-grid-preview="' +
+         grid +
+         '" aria-hidden="true"></span><span class="writing-grid-name">' +
          labels[grid] +
-         "</button>",
+         "</span></button>",
    ).join("");
+}
+
+function writingGridSelectorHtml(prefs) {
+   return (
+      '<section class="writing-grid-selector" aria-labelledby="writing-grid-title">' +
+      '<div class="writing-grid-selector-head"><h3 id="writing-grid-title">Grille du papier</h3><span>Le dessin reste intact</span></div>' +
+      '<div class="writing-grid-options">' +
+      writingGridButtonsHtml(prefs) +
+      "</div></section>"
+   );
 }
 
 function writingToolbarHtml(prefs) {
@@ -5340,10 +5516,7 @@ function writingToolbarHtml(prefs) {
       '">Gomme</button><button class="btn sm" id="writing-undo" type="button">Annuler</button>' +
       '<button class="btn sm" id="writing-redo" type="button">Rétablir</button>' +
       '<button class="btn sm danger" id="writing-clear" type="button">Tout effacer</button>' +
-      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div>' +
-      '<div class="writing-grid-tools"><div class="eyebrow">Grille du papier</div><div class="chips">' +
-      writingGridButtonsHtml(prefs) +
-      "</div></div></section>"
+      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div></section>'
    );
 }
 
@@ -5367,6 +5540,7 @@ function renderWriting() {
       ">" +
       esc(character) +
       '</div><canvas id="writing-canvas" aria-label="Zone de dessin" tabindex="0"></canvas></div>' +
+      writingGridSelectorHtml(prefs) +
       '<p class="writing-note">Le tracé reste sur cet appareil pendant cette visite. Aucune reconnaissance d’écriture n’est effectuée.</p></section></section>';
    wireWritingView();
 }
@@ -9232,6 +9406,8 @@ function activateStrokeTab(tab, focus) {
    });
    destroyDDWriter();
    renderActiveStrokeTab();
+   if (typeof updateDictionaryPagingMode === "function")
+      updateDictionaryPagingMode();
 }
 
 function wireStrokeWorkspace() {
@@ -9816,6 +9992,17 @@ async function renderDictionaryRelatedWords(character, token) {
    }
 }
 
+function updateDictionaryPagingMode() {
+   const locked = ddStrokeTab === "practice";
+   const interaction = $("dd-character-interaction");
+   if (interaction)
+      interaction.classList.toggle("is-practice-paging-locked", locked);
+   document.querySelectorAll("#dd-picker .hzchip").forEach((button) => {
+      button.disabled = locked;
+      button.setAttribute("aria-disabled", String(locked));
+   });
+}
+
 function wireDictDetail(entry, characters, card, token, options) {
    if (characters.length) wireStrokeWorkspace();
    let selectedCharacterIndex = 0;
@@ -9848,13 +10035,17 @@ function wireDictDetail(entry, characters, card, token, options) {
    };
    const moveCharacter = (delta) => {
       const nextIndex = selectedCharacterIndex + delta;
-      if (nextIndex < 0 || nextIndex >= characters.length) return;
+      if (nextIndex < 0 || nextIndex >= characters.length) return false;
       selectCharacter(nextIndex);
+      return true;
    };
    if (characters.length) {
       selectCharacter(0);
       document.querySelectorAll("#dd-picker .hzchip").forEach((button) => {
-         button.onclick = () => selectCharacter(Number(button.dataset.i));
+         button.onclick = () => {
+            if (ddStrokeTab === "practice") return;
+            selectCharacter(Number(button.dataset.i));
+         };
       });
       if ($("dd-character-prev")) $("dd-character-prev").onclick = () => moveCharacter(-1);
       if ($("dd-character-next")) $("dd-character-next").onclick = () => moveCharacter(1);
@@ -9862,7 +10053,15 @@ function wireDictDetail(entry, characters, card, token, options) {
          $("dd-character-interaction"),
          () => moveCharacter(1),
          () => moveCharacter(-1),
+         {
+            disabled: () => ddStrokeTab === "practice",
+            canNavigate: (direction) =>
+               direction === "left"
+                  ? selectedCharacterIndex < characters.length - 1
+                  : selectedCharacterIndex > 0,
+         },
       );
+      updateDictionaryPagingMode();
    }
    if (card) {
       if ($("dd-fav"))
@@ -10017,17 +10216,22 @@ function moveSequence(delta) {
    setSequenceIndex(seq.index + delta);
 }
 
-function setupSwipe(element, onLeft, onRight) {
+function setupSwipe(element, onLeft, onRight, options) {
    if (!element) return;
+   const settings = options || {};
    const ignoredTarget =
-      "button, input, textarea, select, [contenteditable='true'], canvas, .stroke-gallery, .stroke-focus";
+      "button, input, textarea, select, a, [contenteditable='true'], .stroke-focus";
    let pointerId = null;
    let startX = 0;
    let startY = 0;
    let currentX = 0;
    let currentY = 0;
    let horizontalGesture = false;
-   let suppressClick = false;
+   let transitioning = false;
+   const disabled = () =>
+      typeof settings.disabled === "function" && settings.disabled();
+   const setOffset = (value) =>
+      element.style.setProperty("--character-swipe-offset", value + "px");
    const clearSelection = () => {
       const selection = window.getSelection && window.getSelection();
       if (selection && selection.rangeCount) selection.removeAllRanges();
@@ -10039,28 +10243,46 @@ function setupSwipe(element, onLeft, onRight) {
       const qualifies =
          horizontalGesture && Math.abs(deltaX) >= 54 &&
          Math.abs(deltaX) > Math.abs(deltaY) * 1.45;
-      if (horizontalGesture) clearSelection();
-      element.classList.remove("is-pointer-swiping");
+      if (horizontalGesture || Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4)
+         clearSelection();
       const finishedPointerId = pointerId;
       pointerId = null;
       horizontalGesture = false;
       try {
          if (element.hasPointerCapture(finishedPointerId)) element.releasePointerCapture(finishedPointerId);
       } catch (error) {}
-      if (qualifies && navigate) {
-         suppressClick = true;
-         if (deltaX < 0) onLeft();
-         else onRight();
-      }
-      if (suppressClick)
+      const direction = deltaX < 0 ? "left" : "right";
+      const canNavigate =
+         qualifies && navigate && !disabled() &&
+         (!settings.canNavigate || settings.canNavigate(direction));
+      if (canNavigate) {
+         transitioning = true;
+         element.classList.remove("is-pointer-swiping");
+         element.classList.add("is-swipe-committing");
+         setOffset(direction === "left" ? -28 : 28);
          setTimeout(() => {
-            suppressClick = false;
-         }, 0);
+            if (direction === "left") onLeft();
+            else onRight();
+            element.classList.remove("is-swipe-committing");
+            element.classList.add("is-swipe-resetting");
+            setOffset(0);
+            transitioning = false;
+            setTimeout(() => {
+               element.classList.remove("is-swipe-resetting");
+            }, 130);
+         }, 80);
+      } else {
+         element.classList.remove("is-pointer-swiping");
+         element.classList.add("is-swipe-resetting");
+         setOffset(0);
+         setTimeout(() => element.classList.remove("is-swipe-resetting"), 130);
+      }
    };
    element.addEventListener("pointerdown", (event) => {
-      if (pointerId != null || !event.isPrimary) return;
+      if (pointerId != null || transitioning || !event.isPrimary || disabled()) return;
       if (event.pointerType === "mouse" && event.button !== 0) return;
-      if (event.target.closest(ignoredTarget)) return;
+      const blocked = event.target.closest(ignoredTarget);
+      if (blocked && !event.target.closest(".stroke-panel")) return;
       pointerId = event.pointerId;
       startX = currentX = event.clientX;
       startY = currentY = event.clientY;
@@ -10078,7 +10300,11 @@ function setupSwipe(element, onLeft, onRight) {
          clearSelection();
          try { element.setPointerCapture(pointerId); } catch (error) {}
       }
-      if (horizontalGesture) event.preventDefault();
+      if (horizontalGesture) {
+         setOffset(Math.max(-28, Math.min(28, deltaX * 0.18)));
+         clearSelection();
+         event.preventDefault();
+      }
    });
    element.addEventListener("pointerup", (event) => {
       if (pointerId == null || event.pointerId !== pointerId) return;
@@ -10090,16 +10316,6 @@ function setupSwipe(element, onLeft, onRight) {
    element.addEventListener("pointercancel", (event) => finish(event, false));
    element.addEventListener("lostpointercapture", (event) => finish(event, false));
    element.addEventListener("dragstart", (event) => event.preventDefault());
-   element.addEventListener(
-      "click",
-      (event) => {
-         if (!suppressClick) return;
-         suppressClick = false;
-         event.preventDefault();
-         event.stopPropagation();
-      },
-      true,
-   );
 }
 
 async function renderSequence() {
@@ -11492,6 +11708,12 @@ async function renderSequence() {
                         : e.key === "ArrowRight"
                           ? $("dd-character-next")
                           : null;
+                  if (
+                     characterButton &&
+                     typeof ddStrokeTab !== "undefined" &&
+                     ddStrokeTab === "practice"
+                  )
+                     return;
                   if (characterButton && !characterButton.disabled) {
                      e.preventDefault();
                      characterButton.click();

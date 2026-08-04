@@ -64,6 +64,12 @@
                         : e.key === "ArrowRight"
                           ? $("dd-character-next")
                           : null;
+                  if (
+                     characterButton &&
+                     typeof ddStrokeTab !== "undefined" &&
+                     ddStrokeTab === "practice"
+                  )
+                     return;
                   if (characterButton && !characterButton.disabled) {
                      e.preventDefault();
                      characterButton.click();

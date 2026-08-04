@@ -148,8 +148,6 @@
 
 .character-swipe-zone {
    touch-action: pan-y;
-   user-select: none;
-   -webkit-user-select: none;
    -webkit-user-drag: none;
 }
 .character-swipe-zone:not(:has(input:focus, textarea:focus, select:focus, [contenteditable="true"]:focus)) {
@@ -157,6 +155,36 @@
 }
 .character-swipe-zone.is-pointer-swiping {
    cursor: grabbing;
+}
+.character-swipe-zone.is-practice-paging-locked {
+   cursor: default;
+}
+.dd-character-interaction .dd-character-study-card,
+.dd-character-interaction .stroke-workspace {
+   transform: translateX(var(--character-swipe-offset, 0));
+   transition: transform 130ms ease-out;
+   will-change: transform;
+}
+.dd-character-interaction.is-pointer-swiping .dd-character-study-card,
+.dd-character-interaction.is-pointer-swiping .stroke-workspace {
+   transition: none;
+}
+.dd-character-interaction.is-swipe-committing .dd-character-study-card,
+.dd-character-interaction.is-swipe-committing .stroke-workspace {
+   opacity: 0.9;
+}
+.dd-character-study-card,
+.dd-character-interaction .stroke-workspace,
+.dd-character-interaction > .eyebrow,
+.character-nav,
+#dd-picker {
+   user-select: none;
+   -webkit-user-select: none;
+}
+.dd-character-study-translation,
+.dd-related {
+   user-select: text;
+   -webkit-user-select: text;
 }
 .character-swipe-zone *,
 .character-nav *,
@@ -239,6 +267,38 @@
    font: 600 15px var(--ui);
    text-align: center;
    white-space: nowrap;
+}
+
+#dd-character-nav {
+   grid-template-columns: 48px minmax(92px, 1fr) 48px;
+   width: 100%;
+   margin: 8px 0 14px;
+   padding: 2px 1px;
+   border: 0;
+   background: transparent;
+   box-shadow: none;
+}
+
+#dd-character-nav .character-nav-button {
+   width: 44px;
+   height: 44px;
+   border-color: color-mix(in srgb, var(--seal) 32%, var(--line));
+   border-radius: 50%;
+   background: color-mix(in srgb, var(--card-2) 86%, transparent);
+   box-shadow: 0 4px 12px rgba(23, 20, 15, 0.1);
+   backdrop-filter: blur(5px);
+}
+
+#dd-character-nav .character-nav-button:last-child {
+   justify-self: end;
+}
+
+#dd-character-nav .character-nav-position {
+   justify-self: center;
+   padding: 7px 13px;
+   border: 1px solid var(--line-soft);
+   border-radius: 999px;
+   background: color-mix(in srgb, var(--card-2) 82%, transparent);
 }
 .stroke-panel {
    position: relative;
