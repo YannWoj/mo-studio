@@ -30,12 +30,14 @@
             },
          });
          function normalizeCard(c, keepId) {
-            // nettoie une carte (import ou stockage) ; hz + fr obligatoires
+            // Une carte personnelle exige uniquement les caractères chinois. Les
+            // champs manquants restent explicitement incomplets : ils ne sont
+            // jamais inventés pendant un import.
             if (!c || typeof c !== "object") return null;
-            const hz = String(c.hz || "").trim();
-            const fr = String(c.fr || "").trim();
-            if (!hz || !fr) return null;
-            let py = String(c.py || "").trim();
+            const hz = String(c.hz || c.chinese || "").trim();
+            const fr = String(c.fr || c.translation || "").trim();
+            if (!hz) return null;
+            let py = String(c.py || c.pinyin || "").trim();
             if (/[0-9]/.test(py)) py = numToAccent(py);
             let exPy = String(c.exPy || "").trim();
             if (/[0-9]/.test(exPy)) exPy = numToAccent(exPy);
@@ -48,7 +50,15 @@
                exHz: String(c.exHz || "").trim(),
                exPy,
                exFr: String(c.exFr || "").trim(),
-               note: String(c.note || "").trim(),
+               note: String(c.note || c.notes || "").trim(),
+               tags: Array.isArray(c.tags)
+                  ? Array.from(new Set(c.tags.map((tag) => String(tag).trim()).filter(Boolean)))
+                  : typeof c.tags === "string"
+                    ? c.tags.split(/[;,]/).map((tag) => tag.trim()).filter(Boolean)
+                    : [],
+               difficult: !!c.difficult,
+               incomplete: c.incomplete == null ? !py || !fr : !!c.incomplete,
+               senseId: c.senseId ? String(c.senseId) : "",
                unit:
                   Number.isFinite(+c.unit) && c.unit !== "" && c.unit != null
                      ? +c.unit
@@ -64,6 +74,12 @@
                acquired: !!c.acquired,
                due: typeof c.due === "number" ? c.due : null,
                created: typeof c.created === "number" ? c.created : Date.now(),
+               updated: typeof c.updated === "number" ? c.updated : Date.now(),
+               lastReviewed:
+                  typeof c.lastReviewed === "number" ? c.lastReviewed : null,
+               reviewHistory: Array.isArray(c.reviewHistory)
+                  ? c.reviewHistory.filter((item) => item && typeof item === "object")
+                  : [],
             };
          }
          const cardKey = (c) =>
@@ -105,11 +121,25 @@
                              .filter(Boolean)
                         : [],
                      packs: Array.isArray(d.packs)
-                        ? d.packs.filter(
-                             (p) =>
-                                p && p.id && p.name && Array.isArray(p.cardIds),
-                          )
+                        ? d.packs.filter((p) => p && p.id && p.name).map((p) => ({
+                             id: String(p.id),
+                             name: String(p.name),
+                             description: String(p.description || ""),
+                             cardIds: Array.isArray(p.cardIds) ? p.cardIds.map(String) : [],
+                             created: typeof p.created === "number" ? p.created : Date.now(),
+                             updated: typeof p.updated === "number" ? p.updated : Date.now(),
+                          }))
                         : [],
+                     categories: Array.isArray(d.categories)
+                        ? d.categories.filter((c) => c && c.id && c.packId && c.name)
+                        : [],
+                     memberships: Array.isArray(d.memberships)
+                        ? d.memberships.filter((m) => m && m.cardId && m.categoryId)
+                        : [],
+                     personalLibraryUpdated:
+                        typeof d.personalLibraryUpdated === "number"
+                           ? d.personalLibraryUpdated
+                           : 0,
                      units:
                         d.units &&
                         typeof d.units === "object" &&
@@ -128,17 +158,25 @@
             return {
                cards: [],
                packs: [],
+               categories: [],
+               memberships: [],
+               personalLibraryUpdated: 0,
                units: {},
                settings: defaultSettings(),
             };
          }
          let db = load();
          function save() {
+            if (typeof ensurePersonalLibraryShape === "function")
+               ensurePersonalLibraryShape();
+            db.personalLibraryUpdated = Date.now();
             try {
                localStorage.setItem(DB_KEY, JSON.stringify(db));
             } catch (e) {
                toast("Impossible d'enregistrer (stockage plein ?).");
             }
+            if (typeof schedulePersonalLibraryPersist === "function")
+               schedulePersonalLibraryPersist();
          }
          function makeBackup() {
             try {
@@ -148,6 +186,8 @@
                      ts: Date.now(),
                      cards: db.cards,
                      packs: db.packs,
+                     categories: db.categories,
+                     memberships: db.memberships,
                      units: db.units,
                   }),
                );

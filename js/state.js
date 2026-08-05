@@ -37,5 +37,11 @@
             else c.lvl = Math.min(MAXLVL, Math.max(3, (c.lvl || 0) + 2));
             c.due = now() + iv[g];
             if (g === "again" || g === "hard") c.acquired = false;
+            c.lastReviewed = now();
+            if (!Array.isArray(c.reviewHistory)) c.reviewHistory = [];
+            c.reviewHistory.push({ at: c.lastReviewed, grade: g, level: c.lvl, due: c.due });
+            if (c.reviewHistory.length > 500)
+               c.reviewHistory = c.reviewHistory.slice(-500);
+            c.updated = now();
             save();
          }

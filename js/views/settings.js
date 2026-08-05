@@ -186,6 +186,8 @@
                      .map((c) => normalizeCard(c, true))
                      .filter(Boolean);
                   db.packs = Array.isArray(b.packs) ? b.packs : [];
+                  db.categories = Array.isArray(b.categories) ? b.categories : [];
+                  db.memberships = Array.isArray(b.memberships) ? b.memberships : [];
                   db.units =
                      b.units && typeof b.units === "object" ? b.units : {};
                   session = { active: false };
@@ -206,6 +208,8 @@
                makeBackup();
                db.cards = [];
                db.packs = [];
+               db.categories = [];
+               db.memberships = [];
                db.units = {};
                hub = {
                   flt: "all",

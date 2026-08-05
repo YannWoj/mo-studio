@@ -1,7 +1,8 @@
 "use strict";
 
 /* ================= initialisation ================= */
-         function init() {
+         async function init() {
+            await personalLibraryInit();
             refreshVoices();
             document
                .querySelectorAll(".nav button")

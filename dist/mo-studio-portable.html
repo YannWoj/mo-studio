@@ -3400,6 +3400,574 @@ body.writing-fullscreen-open {
             margin: 0;
          }
 
+/* Packs, sous-catégories et sélection de révision */
+.library-page,
+.review-page {
+   display: grid;
+   gap: 16px;
+}
+
+.library-page button,
+.review-page button {
+   min-height: 44px;
+}
+
+.library-head,
+.pack-detail-title,
+.word-list-title,
+.review-section-title,
+.review-launch {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+}
+
+.library-head .v-t,
+.pack-detail-title h3,
+.word-list-title h3,
+.review-scope h3,
+.review-categories h3 {
+   margin: 0;
+}
+
+.library-head .eyebrow,
+.review-heading .eyebrow {
+   margin: 0 0 4px;
+}
+
+.lib-import-main {
+   min-width: 178px;
+}
+
+.library-toolbar,
+.tile-actions,
+.selection-tools {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+}
+
+.lib-breadcrumb {
+   display: flex;
+   min-height: 44px;
+   align-items: center;
+   gap: 8px;
+   overflow: hidden;
+   color: var(--ink-soft);
+   font-size: 14px;
+}
+
+.lib-breadcrumb strong,
+.lib-crumb {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.lib-crumb {
+   min-height: 44px;
+   color: var(--lacquer);
+   text-decoration: underline;
+   text-underline-offset: 3px;
+}
+
+.pack-grid {
+   display: grid;
+   gap: 14px;
+}
+
+.pack-tile,
+.category-tile,
+.word-tools,
+.review-scope,
+.review-categories,
+.review-launch {
+   border: 1px solid var(--line);
+   border-radius: 15px;
+   background: var(--card);
+   box-shadow: 0 6px 20px rgba(23, 20, 15, 0.06);
+}
+
+.pack-tile,
+.category-tile {
+   padding: 14px;
+}
+
+.pack-open,
+.category-open {
+   display: flex;
+   width: 100%;
+   min-height: 58px;
+   align-items: center;
+   gap: 13px;
+   text-align: left;
+}
+
+.pack-copy,
+.category-open > span:first-child {
+   display: grid;
+   min-width: 0;
+   flex: 1;
+   gap: 3px;
+}
+
+.pack-copy strong,
+.category-open strong {
+   overflow: hidden;
+   font: 600 19px var(--disp);
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.pack-copy span,
+.category-open small {
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+
+.pack-mark {
+   display: grid;
+   width: 46px;
+   height: 46px;
+   flex: 0 0 46px;
+   place-items: center;
+   border-radius: 12px;
+   background: var(--lacquer);
+   color: var(--card-2);
+   font: 25px var(--serif);
+}
+
+.pack-mark.large {
+   width: 64px;
+   height: 64px;
+   margin: 0 auto;
+   font-size: 34px;
+}
+
+.due-pill {
+   flex: none;
+   padding: 6px 10px;
+   border: 1px solid var(--gold);
+   border-radius: 999px;
+   color: var(--ink-soft);
+   font-size: 12px;
+}
+
+.tile-actions {
+   justify-content: flex-end;
+   margin-top: 10px;
+   padding-top: 10px;
+   border-top: 1px solid var(--line-soft);
+}
+
+.category-list {
+   display: grid;
+   gap: 10px;
+}
+
+.lib-empty {
+   padding: 34px 20px;
+   text-align: center;
+}
+
+.lib-empty h3 {
+   margin: 12px 0 5px;
+   font-family: var(--disp);
+}
+
+.lib-empty p,
+.review-section-title p {
+   margin: 0;
+   color: var(--ink-soft);
+   font-size: 14px;
+}
+
+.word-tools {
+   display: grid;
+   gap: 11px;
+   padding: 14px;
+}
+
+.word-list {
+   display: grid;
+   gap: 8px;
+}
+
+.word-select-row {
+   display: grid;
+   grid-template-columns: 48px minmax(0, 1fr);
+   overflow: hidden;
+   border: 1px solid var(--line-soft);
+   border-radius: 13px;
+   background: var(--card);
+}
+
+.word-check {
+   display: grid;
+   min-width: 48px;
+   min-height: 64px;
+   place-items: center;
+   border-right: 1px solid var(--line-soft);
+}
+
+.word-check input,
+.review-choice input,
+.ck input {
+   width: 20px;
+   height: 20px;
+   accent-color: var(--lacquer);
+}
+
+.word-open {
+   display: grid;
+   min-width: 0;
+   min-height: 64px;
+   grid-template-columns: minmax(58px, auto) minmax(0, 1fr) auto;
+   align-items: center;
+   gap: 12px;
+   padding: 9px 12px;
+   text-align: left;
+}
+
+.word-open .row-mid,
+.word-open .row-py,
+.word-open .row-fr {
+   display: block;
+   min-width: 0;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.word-open .row-py em,
+.word-open .row-fr em {
+   color: var(--lacquer);
+   font-style: normal;
+}
+
+.word-open .row-badges {
+   display: flex;
+   max-width: 185px;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+   gap: 4px;
+}
+
+.bulk-bar {
+   position: sticky;
+   z-index: 4;
+   top: 70px;
+   display: flex;
+   min-height: 56px;
+   align-items: center;
+   gap: 8px;
+   padding: 8px 10px;
+   border: 1px solid var(--line);
+   border-radius: 14px;
+   background: color-mix(in srgb, var(--paper-2) 94%, transparent);
+   box-shadow: 0 8px 25px rgba(23, 20, 15, 0.13);
+   backdrop-filter: blur(10px);
+}
+
+.bulk-bar strong {
+   flex: 1;
+   font-size: 13px;
+}
+
+.lib-no-results {
+   padding: 28px;
+   color: var(--ink-soft);
+   text-align: center;
+}
+
+.category-check-groups {
+   display: grid;
+   gap: 10px;
+   max-height: 240px;
+   overflow: auto;
+}
+
+.category-check-groups fieldset,
+.import-options {
+   display: grid;
+   gap: 7px;
+   margin: 10px 0 0;
+   padding: 12px;
+   border: 1px solid var(--line-soft);
+   border-radius: 12px;
+}
+
+.category-check-groups legend,
+.import-options legend {
+   padding: 0 5px;
+   color: var(--ink-soft);
+   font-size: 12px;
+   font-weight: 600;
+   letter-spacing: .06em;
+   text-transform: uppercase;
+}
+
+.import-source-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 8px;
+   margin: 14px 0;
+}
+
+.import-source-grid .btn:last-child {
+   grid-column: 1 / -1;
+}
+
+.import-paste {
+   min-height: 180px;
+   resize: vertical;
+   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+   font-size: 12px;
+   line-height: 1.45;
+}
+
+.import-stats,
+.review-live {
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   gap: 1px;
+   overflow: hidden;
+   margin: 14px 0;
+   border: 1px solid var(--line);
+   border-radius: 13px;
+   background: var(--line);
+}
+
+.import-stats > div,
+.review-live > div {
+   min-width: 0;
+   padding: 11px 6px;
+   background: var(--card);
+   text-align: center;
+}
+
+.import-stats b,
+.import-stats span,
+.review-live b,
+.review-live span {
+   display: block;
+}
+
+.import-stats b,
+.review-live b {
+   font: 600 20px var(--disp);
+}
+
+.import-stats span,
+.review-live span {
+   color: var(--ink-faint);
+   font-size: 10px;
+   line-height: 1.2;
+   text-transform: uppercase;
+}
+
+.import-error {
+   margin: 12px 0;
+   padding: 12px;
+   border: 1px solid var(--lacquer);
+   border-radius: 11px;
+   background: rgba(158, 43, 37, .07);
+   color: var(--lacquer);
+   font-size: 13px;
+}
+
+.import-error ul {
+   margin-bottom: 0;
+   padding-left: 18px;
+}
+
+.import-loading {
+   width: 34px;
+   height: 34px;
+   margin: 22px auto;
+   border: 2px solid var(--line);
+   border-top-color: var(--lacquer);
+   border-radius: 50%;
+   animation: library-spin .8s linear infinite;
+}
+
+@keyframes library-spin { to { transform: rotate(360deg); } }
+
+.export-pack-list {
+   display: grid;
+   max-height: 280px;
+   overflow: auto;
+   gap: 5px;
+   margin: 12px 0;
+}
+
+.review-layout {
+   display: grid;
+   gap: 14px;
+}
+
+.review-scope,
+.review-categories {
+   padding: 16px;
+}
+
+.review-choice-grid {
+   display: grid;
+   gap: 7px;
+   margin-top: 12px;
+}
+
+.review-choice {
+   display: flex;
+   min-height: 58px;
+   align-items: center;
+   gap: 11px;
+   padding: 8px 10px;
+   border: 1px solid var(--line-soft);
+   border-radius: 11px;
+   background: var(--card-2);
+}
+
+.review-choice:has(input:checked) {
+   border-color: var(--lacquer);
+   box-shadow: inset 3px 0 var(--lacquer);
+}
+
+.review-choice span,
+.review-choice strong,
+.review-choice small {
+   display: block;
+}
+
+.review-choice span {
+   min-width: 0;
+}
+
+.review-choice strong {
+   font-size: 14px;
+}
+
+.review-choice small {
+   margin-top: 2px;
+   color: var(--ink-faint);
+   font-size: 12px;
+}
+
+.review-pack-select {
+   margin-top: 12px;
+}
+
+.review-tree {
+   display: grid;
+   gap: 10px;
+   margin-top: 12px;
+}
+
+.review-tree-pack {
+   overflow: hidden;
+   border: 1px solid var(--line-soft);
+   border-radius: 11px;
+}
+
+.review-tree-pack-head {
+   display: flex;
+   min-height: 50px;
+   align-items: center;
+   justify-content: space-between;
+   gap: 8px;
+   padding: 5px 9px;
+   background: var(--card-2);
+}
+
+.review-category-check {
+   display: flex;
+   min-height: 46px;
+   align-items: center;
+   gap: 9px;
+   padding: 6px 12px 6px 24px;
+   border-top: 1px solid var(--line-soft);
+}
+
+.review-category-check span {
+   margin-left: auto;
+   color: var(--ink-faint);
+   font-size: 12px;
+}
+
+.review-live {
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   margin: 0;
+}
+
+.review-launch {
+   padding: 12px;
+}
+
+.review-launch > div {
+   min-width: 150px;
+}
+
+.review-launch .f-lab {
+   margin: 0;
+}
+
+.review-compat {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   overflow: hidden;
+   clip-path: inset(50%);
+}
+
+.sr-only {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+   .pack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+   .review-layout { grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); align-items: start; }
+   .review-choice-grid { grid-template-columns: 1fr 1fr; }
+   .category-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+   .library-head,
+   .pack-detail-title,
+   .word-list-title,
+   .review-launch { align-items: stretch; flex-direction: column; }
+   .lib-import-main,
+   .review-launch .btn,
+   .review-launch > div { width: 100%; }
+   .library-toolbar > .btn { flex: 1 1 140px; }
+   .pack-open { flex-wrap: wrap; }
+   .pack-copy { flex-basis: calc(100% - 64px); }
+   .due-pill { margin-left: 59px; }
+   .word-open { grid-template-columns: 58px minmax(0, 1fr); }
+   .word-open .row-badges { grid-column: 1 / -1; max-width: none; justify-content: flex-start; }
+   .bulk-bar { top: 62px; flex-wrap: wrap; }
+   .bulk-bar strong { flex-basis: 100%; }
+   .import-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+   .review-live { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 380px) {
+   .library-page,
+   .review-page { gap: 12px; }
+   .tile-actions .btn { flex: 1 1 44%; }
+   .selection-tools .btn { flex: 1 1 46%; }
+   .import-source-grid { grid-template-columns: 1fr; }
+   .import-source-grid .btn:last-child { grid-column: auto; }
+   .word-select-row { grid-template-columns: 44px minmax(0, 1fr); }
+   .word-check { min-width: 44px; }
+   .word-open { gap: 7px; padding: 8px; }
+}
+
 /* ---------- animations & desktop ---------- */
          @keyframes inkIn {
             from {
@@ -3498,14 +4066,6 @@ body.writing-fullscreen-open {
          accept=".json,application/json"
          hidden
       />
-
-
-
-
-
-
-
-
 
 
       <script>
@@ -4282,6 +4842,12 @@ async function openHskVocabularyEntry(entry) {
             else c.lvl = Math.min(MAXLVL, Math.max(3, (c.lvl || 0) + 2));
             c.due = now() + iv[g];
             if (g === "again" || g === "hard") c.acquired = false;
+            c.lastReviewed = now();
+            if (!Array.isArray(c.reviewHistory)) c.reviewHistory = [];
+            c.reviewHistory.push({ at: c.lastReviewed, grade: g, level: c.lvl, due: c.due });
+            if (c.reviewHistory.length > 500)
+               c.reviewHistory = c.reviewHistory.slice(-500);
+            c.updated = now();
             save();
          }
 
@@ -4317,12 +4883,14 @@ async function openHskVocabularyEntry(entry) {
             },
          });
          function normalizeCard(c, keepId) {
-            // nettoie une carte (import ou stockage) ; hz + fr obligatoires
+            // Une carte personnelle exige uniquement les caractères chinois. Les
+            // champs manquants restent explicitement incomplets : ils ne sont
+            // jamais inventés pendant un import.
             if (!c || typeof c !== "object") return null;
-            const hz = String(c.hz || "").trim();
-            const fr = String(c.fr || "").trim();
-            if (!hz || !fr) return null;
-            let py = String(c.py || "").trim();
+            const hz = String(c.hz || c.chinese || "").trim();
+            const fr = String(c.fr || c.translation || "").trim();
+            if (!hz) return null;
+            let py = String(c.py || c.pinyin || "").trim();
             if (/[0-9]/.test(py)) py = numToAccent(py);
             let exPy = String(c.exPy || "").trim();
             if (/[0-9]/.test(exPy)) exPy = numToAccent(exPy);
@@ -4335,7 +4903,15 @@ async function openHskVocabularyEntry(entry) {
                exHz: String(c.exHz || "").trim(),
                exPy,
                exFr: String(c.exFr || "").trim(),
-               note: String(c.note || "").trim(),
+               note: String(c.note || c.notes || "").trim(),
+               tags: Array.isArray(c.tags)
+                  ? Array.from(new Set(c.tags.map((tag) => String(tag).trim()).filter(Boolean)))
+                  : typeof c.tags === "string"
+                    ? c.tags.split(/[;,]/).map((tag) => tag.trim()).filter(Boolean)
+                    : [],
+               difficult: !!c.difficult,
+               incomplete: c.incomplete == null ? !py || !fr : !!c.incomplete,
+               senseId: c.senseId ? String(c.senseId) : "",
                unit:
                   Number.isFinite(+c.unit) && c.unit !== "" && c.unit != null
                      ? +c.unit
@@ -4351,6 +4927,12 @@ async function openHskVocabularyEntry(entry) {
                acquired: !!c.acquired,
                due: typeof c.due === "number" ? c.due : null,
                created: typeof c.created === "number" ? c.created : Date.now(),
+               updated: typeof c.updated === "number" ? c.updated : Date.now(),
+               lastReviewed:
+                  typeof c.lastReviewed === "number" ? c.lastReviewed : null,
+               reviewHistory: Array.isArray(c.reviewHistory)
+                  ? c.reviewHistory.filter((item) => item && typeof item === "object")
+                  : [],
             };
          }
          const cardKey = (c) =>
@@ -4392,11 +4974,25 @@ async function openHskVocabularyEntry(entry) {
                              .filter(Boolean)
                         : [],
                      packs: Array.isArray(d.packs)
-                        ? d.packs.filter(
-                             (p) =>
-                                p && p.id && p.name && Array.isArray(p.cardIds),
-                          )
+                        ? d.packs.filter((p) => p && p.id && p.name).map((p) => ({
+                             id: String(p.id),
+                             name: String(p.name),
+                             description: String(p.description || ""),
+                             cardIds: Array.isArray(p.cardIds) ? p.cardIds.map(String) : [],
+                             created: typeof p.created === "number" ? p.created : Date.now(),
+                             updated: typeof p.updated === "number" ? p.updated : Date.now(),
+                          }))
                         : [],
+                     categories: Array.isArray(d.categories)
+                        ? d.categories.filter((c) => c && c.id && c.packId && c.name)
+                        : [],
+                     memberships: Array.isArray(d.memberships)
+                        ? d.memberships.filter((m) => m && m.cardId && m.categoryId)
+                        : [],
+                     personalLibraryUpdated:
+                        typeof d.personalLibraryUpdated === "number"
+                           ? d.personalLibraryUpdated
+                           : 0,
                      units:
                         d.units &&
                         typeof d.units === "object" &&
@@ -4415,17 +5011,25 @@ async function openHskVocabularyEntry(entry) {
             return {
                cards: [],
                packs: [],
+               categories: [],
+               memberships: [],
+               personalLibraryUpdated: 0,
                units: {},
                settings: defaultSettings(),
             };
          }
          let db = load();
          function save() {
+            if (typeof ensurePersonalLibraryShape === "function")
+               ensurePersonalLibraryShape();
+            db.personalLibraryUpdated = Date.now();
             try {
                localStorage.setItem(DB_KEY, JSON.stringify(db));
             } catch (e) {
                toast("Impossible d'enregistrer (stockage plein ?).");
             }
+            if (typeof schedulePersonalLibraryPersist === "function")
+               schedulePersonalLibraryPersist();
          }
          function makeBackup() {
             try {
@@ -4435,6 +5039,8 @@ async function openHskVocabularyEntry(entry) {
                      ts: Date.now(),
                      cards: db.cards,
                      packs: db.packs,
+                     categories: db.categories,
+                     memberships: db.memberships,
                      units: db.units,
                   }),
                );
@@ -4515,6 +5121,746 @@ async function openHskVocabularyEntry(entry) {
             };
             renderSession();
          }
+
+"use strict";
+
+/* ================= bibliothèque personnelle IndexedDB ================= */
+const PERSONAL_DB_NAME = "mo-studio-personal-library";
+const PERSONAL_DB_VERSION = 1;
+const PERSONAL_SCHEMA_VERSION = 3;
+let personalDbHandle = null;
+let personalPersistTimer = 0;
+let personalPersistChain = Promise.resolve();
+
+function uniqueStrings(values) {
+   return Array.from(new Set((values || []).map(String).filter(Boolean)));
+}
+
+function normalizePinyinIdentity(value) {
+   let normalized = String(value || "").replace(/u:/gi, "ü");
+   if (/[0-9]/.test(normalized)) normalized = numToAccent(normalized);
+   return flatten(normalized);
+}
+
+function normalizeMeaningIdentity(value) {
+   return flatten(String(value || ""));
+}
+
+function personalCardKey(card) {
+   return [
+      String(card.hz || card.chinese || "").trim(),
+      normalizePinyinIdentity(card.py || card.pinyin),
+      String(normalizeMeaningIdentity(card.fr || card.translation) || card.senseId || "").trim(),
+   ].join("§");
+}
+
+function categoryById(id) {
+   return db.categories.find((category) => category.id === id) || null;
+}
+
+function categoriesForPack(packId) {
+   return db.categories.filter((category) => category.packId === packId);
+}
+
+function categoryCardIds(categoryId) {
+   return uniqueStrings(
+      db.memberships
+         .filter((membership) => membership.categoryId === categoryId)
+         .map((membership) => membership.cardId),
+   );
+}
+
+function cardsForCategory(categoryId) {
+   const ids = new Set(categoryCardIds(categoryId));
+   return db.cards.filter((card) => ids.has(card.id));
+}
+
+function packCardIds(packId) {
+   const categoryIds = new Set(categoriesForPack(packId).map((category) => category.id));
+   return uniqueStrings(
+      db.memberships
+         .filter((membership) => categoryIds.has(membership.categoryId))
+         .map((membership) => membership.cardId),
+   );
+}
+
+function cardsForPack(packId) {
+   const ids = new Set(packCardIds(packId));
+   return db.cards.filter((card) => ids.has(card.id));
+}
+
+function categoriesForCard(cardId) {
+   const ids = new Set(
+      db.memberships
+         .filter((membership) => membership.cardId === cardId)
+         .map((membership) => membership.categoryId),
+   );
+   return db.categories.filter((category) => ids.has(category.id));
+}
+
+function syncLegacyPackCardIds() {
+   db.packs.forEach((pack) => {
+      pack.cardIds = packCardIds(pack.id);
+   });
+}
+
+function ensurePersonalLibraryShape() {
+   if (!Array.isArray(db.categories)) db.categories = [];
+   if (!Array.isArray(db.memberships)) db.memberships = [];
+   if (!Array.isArray(db.packs)) db.packs = [];
+   if (!Array.isArray(db.cards)) db.cards = [];
+
+   const cardIds = new Set(db.cards.map((card) => String(card.id)));
+   const validPacks = new Set(db.packs.map((pack) => String(pack.id)));
+   db.categories = db.categories
+      .filter((category) => category && category.id && validPacks.has(String(category.packId)))
+      .map((category) => ({
+         id: String(category.id),
+         packId: String(category.packId),
+         name: String(category.name || "Sans titre").trim() || "Sans titre",
+         created: typeof category.created === "number" ? category.created : Date.now(),
+         updated: typeof category.updated === "number" ? category.updated : Date.now(),
+      }));
+
+   // Migration idempotente des anciens packs plats. Une catégorie historique
+   // n'est créée que lorsqu'une appartenance n'existe pas encore.
+   db.packs.forEach((pack) => {
+      pack.id = String(pack.id);
+      pack.name = String(pack.name || "Pack sans titre").trim() || "Pack sans titre";
+      pack.description = String(pack.description || "");
+      const legacyIds = uniqueStrings(pack.cardIds).filter((id) => cardIds.has(id));
+      legacyIds.forEach((cardId) => {
+         const alreadyLinked = db.memberships.some((membership) => {
+            const category = categoryById(membership.categoryId);
+            return membership.cardId === cardId && category && category.packId === pack.id;
+         });
+         if (alreadyLinked) return;
+         const card = db.cards.find((item) => item.id === cardId);
+         const name = (card && card.cat) || "Tous les mots";
+         let category = db.categories.find(
+            (item) => item.packId === pack.id && item.name.toLocaleLowerCase("fr") === name.toLocaleLowerCase("fr"),
+         );
+         if (!category) {
+            category = { id: uid(), packId: pack.id, name, created: Date.now(), updated: Date.now() };
+            db.categories.push(category);
+         }
+         db.memberships.push({ id: category.id + "§" + cardId, categoryId: category.id, cardId });
+      });
+   });
+
+   const categoryIds = new Set(db.categories.map((category) => category.id));
+   const seenMemberships = new Set();
+   db.memberships = db.memberships.filter((membership) => {
+      if (!membership || !cardIds.has(String(membership.cardId)) || !categoryIds.has(String(membership.categoryId)))
+         return false;
+      membership.cardId = String(membership.cardId);
+      membership.categoryId = String(membership.categoryId);
+      membership.id = membership.categoryId + "§" + membership.cardId;
+      if (seenMemberships.has(membership.id)) return false;
+      seenMemberships.add(membership.id);
+      return true;
+   });
+   syncLegacyPackCardIds();
+   return db;
+}
+
+function openPersonalDatabase() {
+   if (!globalThis.indexedDB) return Promise.resolve(null);
+   return new Promise((resolve, reject) => {
+      const request = indexedDB.open(PERSONAL_DB_NAME, PERSONAL_DB_VERSION);
+      request.onupgradeneeded = () => {
+         const database = request.result;
+         ["cards", "packs", "categories", "memberships", "meta"].forEach((name) => {
+            if (!database.objectStoreNames.contains(name)) database.createObjectStore(name, { keyPath: "id" });
+         });
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error("IndexedDB indisponible."));
+      request.onblocked = () => reject(new Error("La bibliothèque est ouverte dans un autre onglet."));
+   });
+}
+
+function idbRequest(request) {
+   return new Promise((resolve, reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+   });
+}
+
+function idbTransactionDone(transaction) {
+   return new Promise((resolve, reject) => {
+      transaction.oncomplete = () => resolve();
+      transaction.onabort = transaction.onerror = () => reject(transaction.error || new Error("Transaction IndexedDB annulée."));
+   });
+}
+
+async function readPersonalDatabase() {
+   if (!personalDbHandle) return null;
+   const transaction = personalDbHandle.transaction(
+      ["cards", "packs", "categories", "memberships", "meta"],
+      "readonly",
+   );
+   const [cards, packs, categories, memberships, meta] = await Promise.all([
+      idbRequest(transaction.objectStore("cards").getAll()),
+      idbRequest(transaction.objectStore("packs").getAll()),
+      idbRequest(transaction.objectStore("categories").getAll()),
+      idbRequest(transaction.objectStore("memberships").getAll()),
+      idbRequest(transaction.objectStore("meta").get("library")),
+   ]);
+   return { cards, packs, categories, memberships, meta };
+}
+
+async function persistPersonalLibraryNow() {
+   if (!personalDbHandle) return;
+   ensurePersonalLibraryShape();
+   const snapshot = {
+      cards: structuredClone(db.cards),
+      packs: structuredClone(db.packs),
+      categories: structuredClone(db.categories),
+      memberships: structuredClone(db.memberships),
+   };
+   const transaction = personalDbHandle.transaction(
+      ["cards", "packs", "categories", "memberships", "meta"],
+      "readwrite",
+   );
+   ["cards", "packs", "categories", "memberships"].forEach((name) => {
+      const store = transaction.objectStore(name);
+      store.clear();
+      snapshot[name].forEach((item) => store.put(item));
+   });
+   transaction.objectStore("meta").put({
+      id: "library",
+      schemaVersion: PERSONAL_SCHEMA_VERSION,
+      migratedFrom: DB_KEY,
+      updated: db.personalLibraryUpdated || Date.now(),
+   });
+   await idbTransactionDone(transaction);
+}
+
+function schedulePersonalLibraryPersist() {
+   if (!personalDbHandle) return;
+   clearTimeout(personalPersistTimer);
+   personalPersistTimer = setTimeout(() => {
+      personalPersistChain = personalPersistChain
+         .then(persistPersonalLibraryNow)
+         .catch((error) => console.error("Échec de sauvegarde IndexedDB", error));
+   }, 40);
+}
+
+async function flushPersonalLibrary() {
+   clearTimeout(personalPersistTimer);
+   personalPersistChain = personalPersistChain.then(persistPersonalLibraryNow);
+   return personalPersistChain;
+}
+
+async function personalLibraryInit() {
+   ensurePersonalLibraryShape();
+   try {
+      personalDbHandle = await openPersonalDatabase();
+      if (!personalDbHandle) return;
+      const stored = await readPersonalDatabase();
+      const hasStoredData = stored && stored.meta && stored.meta.schemaVersion >= PERSONAL_SCHEMA_VERSION;
+      const localIsNewer = hasStoredData &&
+         Number(db.personalLibraryUpdated || 0) > Number(stored.meta.updated || 0);
+      if (hasStoredData && !localIsNewer) {
+         // IndexedDB est autoritaire pour les données personnelles. Les réglages
+         // et unités restent issus du contrat historique localStorage.
+         db.cards = stored.cards.map((card) => normalizeCard(card, true)).filter(Boolean);
+         db.packs = stored.packs;
+         db.categories = stored.categories;
+         db.memberships = stored.memberships;
+         ensurePersonalLibraryShape();
+         localStorage.setItem(DB_KEY, JSON.stringify(db));
+      } else {
+         // La transaction n'efface jamais la source locale. En cas d'échec,
+         // l'application continue avec les anciennes données intactes.
+         await persistPersonalLibraryNow();
+      }
+   } catch (error) {
+      personalDbHandle = null;
+      console.error("Migration IndexedDB non destructive échouée", error);
+   }
+}
+
+function createPersonalPack(name, description) {
+   const pack = {
+      id: uid(),
+      name: String(name || "").trim(),
+      description: String(description || "").trim(),
+      cardIds: [],
+      created: Date.now(),
+      updated: Date.now(),
+   };
+   if (!pack.name) return null;
+   db.packs.push(pack);
+   save();
+   return pack;
+}
+
+function createPersonalCategory(packId, name) {
+   if (!db.packs.some((pack) => pack.id === packId)) return null;
+   const category = {
+      id: uid(), packId, name: String(name || "").trim(), created: Date.now(), updated: Date.now(),
+   };
+   if (!category.name) return null;
+   db.categories.push(category);
+   save();
+   return category;
+}
+
+// Compatibilité avec l’ancien import plat : il devient un pack doté d’une
+// sous-catégorie « Tous les mots », sans dupliquer les cartes.
+function upsertPack(name, cardIds) {
+   const cleanName = String(name || "").trim();
+   if (!cleanName) return null;
+   let pack = db.packs.find((item) => item.name.toLocaleLowerCase("fr") === cleanName.toLocaleLowerCase("fr"));
+   if (!pack) pack = createPersonalPack(cleanName);
+   let category = categoriesForPack(pack.id).find((item) => item.name === "Tous les mots");
+   if (!category) category = createPersonalCategory(pack.id, "Tous les mots");
+   uniqueStrings(cardIds).forEach((cardId) => addCardMembership(cardId, category.id));
+   syncLegacyPackCardIds();
+   save();
+   return pack;
+}
+
+function addCardMembership(cardId, categoryId) {
+   if (!db.cards.some((card) => card.id === cardId) || !categoryById(categoryId)) return false;
+   const id = categoryId + "§" + cardId;
+   if (db.memberships.some((membership) => membership.id === id)) return false;
+   db.memberships.push({ id, categoryId, cardId });
+   syncLegacyPackCardIds();
+   return true;
+}
+
+function removeCardsFromLibrary(cardIds) {
+   const ids = new Set(cardIds);
+   db.cards = db.cards.filter((card) => !ids.has(card.id));
+   db.memberships = db.memberships.filter((membership) => !ids.has(membership.cardId));
+   syncLegacyPackCardIds();
+   invalidateDictIndex();
+   save();
+}
+
+function deletePersonalCategory(categoryId) {
+   db.categories = db.categories.filter((category) => category.id !== categoryId);
+   db.memberships = db.memberships.filter((membership) => membership.categoryId !== categoryId);
+   syncLegacyPackCardIds();
+   save();
+}
+
+function deletePersonalPack(packId) {
+   const categoryIds = new Set(categoriesForPack(packId).map((category) => category.id));
+   db.packs = db.packs.filter((pack) => pack.id !== packId);
+   db.categories = db.categories.filter((category) => category.packId !== packId);
+   db.memberships = db.memberships.filter((membership) => !categoryIds.has(membership.categoryId));
+   syncLegacyPackCardIds();
+   save();
+}
+
+function jsonErrorWithLocation(error, source) {
+   const match = /position\s+(\d+)/i.exec(error.message || "");
+   if (!match) return "JSON invalide : " + error.message;
+   const position = Number(match[1]);
+   const before = source.slice(0, position);
+   const line = before.split(/\r?\n/).length;
+   const column = position - Math.max(before.lastIndexOf("\n"), before.lastIndexOf("\r"));
+   return "JSON invalide à la ligne " + line + ", colonne " + column + " : " + error.message;
+}
+
+function parsePackJson(source) {
+   let payload;
+   try {
+      payload = typeof source === "string" ? JSON.parse(source) : source;
+   } catch (error) {
+      throw new Error(jsonErrorWithLocation(error, String(source || "")));
+   }
+   return payload;
+}
+
+function parseCsvRows(source) {
+   const rows = [];
+   let row = [], field = "", quoted = false;
+   const text = String(source || "").replace(/^\uFEFF/, "");
+   for (let index = 0; index < text.length; index++) {
+      const char = text[index];
+      if (quoted) {
+         if (char === '"' && text[index + 1] === '"') { field += '"'; index++; }
+         else if (char === '"') quoted = false;
+         else field += char;
+      } else if (char === '"') quoted = true;
+      else if (char === ",") { row.push(field); field = ""; }
+      else if (char === "\n") { row.push(field.replace(/\r$/, "")); rows.push(row); row = []; field = ""; }
+      else field += char;
+   }
+   if (quoted) throw new Error("CSV invalide : guillemet non fermé.");
+   if (field || row.length) { row.push(field.replace(/\r$/, "")); rows.push(row); }
+   return rows.filter((item) => item.some((value) => String(value).trim()));
+}
+
+function csvToPackPayload(source) {
+   const rows = parseCsvRows(source);
+   if (!rows.length) throw new Error("Le fichier CSV est vide.");
+   const supported = ["pack", "category", "chinese", "pinyin", "translation", "notes", "tags"];
+   const first = rows[0].map((value) => value.trim().toLowerCase());
+   const hasHeader = first.includes("chinese");
+   const headers = hasHeader ? first : supported;
+   const dataRows = hasHeader ? rows.slice(1) : rows;
+   if (!headers.includes("chinese")) throw new Error("CSV invalide : colonne chinese manquante.");
+   const packs = new Map();
+   dataRows.forEach((row, rowIndex) => {
+      const record = Object.fromEntries(headers.map((header, index) => [header, String(row[index] || "").trim()]));
+      if (!record.chinese) throw new Error("CSV invalide : chinese manquant à la ligne " + (rowIndex + (hasHeader ? 2 : 1)) + ".");
+      const packName = record.pack || "Pack importé";
+      const categoryName = record.category || "Sans catégorie";
+      if (!packs.has(packName)) packs.set(packName, new Map());
+      const categories = packs.get(packName);
+      if (!categories.has(categoryName)) categories.set(categoryName, []);
+      categories.get(categoryName).push({
+         chinese: record.chinese,
+         pinyin: record.pinyin,
+         translation: record.translation,
+         notes: record.notes,
+         tags: record.tags ? record.tags.split(/[;|]/).map((tag) => tag.trim()).filter(Boolean) : [],
+      });
+   });
+   return {
+      version: 1,
+      packs: Array.from(packs, ([name, categories]) => ({
+         name,
+         categories: Array.from(categories, ([categoryName, words]) => ({ name: categoryName, words })),
+      })),
+      sourceType: "csv",
+   };
+}
+
+function validatePackPayload(payload) {
+   const errors = [];
+   if (!payload || typeof payload !== "object" || Array.isArray(payload))
+      return { errors: ["La racine doit être un objet JSON."], packs: [] };
+   let packs = [];
+   if (payload.pack) packs = [payload.pack];
+   else if (Array.isArray(payload.packs)) packs = payload.packs;
+   else errors.push("Champ obligatoire manquant : pack (ou packs pour une sauvegarde). ");
+   if (Array.isArray(payload.unclassifiedWords) && payload.unclassifiedWords.length) {
+      packs = packs.concat([{
+         name: "Cartes non classées",
+         description: "Cartes conservées hors pack dans la sauvegarde",
+         __unclassified: true,
+         categories: [{ name: "Sans catégorie", words: payload.unclassifiedWords }],
+      }]);
+   }
+   packs.forEach((pack, packIndex) => {
+      if (!pack || typeof pack !== "object") { errors.push("pack[" + packIndex + "] doit être un objet."); return; }
+      if (!String(pack.name || "").trim()) errors.push("pack[" + packIndex + "].name est obligatoire.");
+      if (!Array.isArray(pack.categories)) { errors.push("pack[" + packIndex + "].categories doit être un tableau."); return; }
+      pack.categories.forEach((category, categoryIndex) => {
+         const path = "pack[" + packIndex + "].categories[" + categoryIndex + "]";
+         if (!category || typeof category !== "object") { errors.push(path + " doit être un objet."); return; }
+         if (!String(category.name || "").trim()) errors.push(path + ".name est obligatoire.");
+         if (!Array.isArray(category.words)) { errors.push(path + ".words doit être un tableau."); return; }
+         category.words.forEach((word, wordIndex) => {
+            if (!word || typeof word !== "object") errors.push(path + ".words[" + wordIndex + "] doit être un objet.");
+            else if (!String(word.chinese || word.hz || "").trim()) errors.push(path + ".words[" + wordIndex + "].chinese est obligatoire.");
+         });
+      });
+   });
+   return { errors, packs };
+}
+
+async function dictionaryCompletion(chinese) {
+   try {
+      const index = await loadDictionaryIndex("exactHanzi", false);
+      const references = index[chinese] || [];
+      if (!references.length) return null;
+      const entries = await loadDictionaryPreviewsByReferences(references.slice(0, 8));
+      const exact = entries.filter((entry) => entry.simplified === chinese || entry.traditional === chinese);
+      if (!exact.length) return null;
+      const entry = exact[0];
+      return {
+         pinyin: entry.pinyin && entry.pinyin[0] ? entry.pinyin[0].marked : "",
+         translation: entry.definitionsFr && entry.definitionsFr[0] ? entry.definitionsFr[0] : "",
+         dictionaryId: entry.id,
+      };
+   } catch (error) {
+      console.error("Complétion dictionnaire impossible", error);
+      return null;
+   }
+}
+
+async function dictionaryCompletions(chineseValues) {
+   try {
+      const index = await loadDictionaryIndex("exactHanzi", false);
+      const wanted = uniqueStrings(chineseValues);
+      const refs = uniqueStrings(wanted.flatMap((chinese) => (index[chinese] || []).slice(0, 8))).map(Number);
+      const entries = await loadDictionaryPreviewsByReferences(refs);
+      const output = new Map();
+      wanted.forEach((chinese) => {
+         const entry = entries.find((item) => item.simplified === chinese || item.traditional === chinese);
+         if (!entry) return;
+         output.set(chinese, {
+            pinyin: entry.pinyin && entry.pinyin[0] ? entry.pinyin[0].marked : "",
+            translation: entry.definitionsFr && entry.definitionsFr[0] ? entry.definitionsFr[0] : "",
+            dictionaryId: entry.id,
+         });
+      });
+      return output;
+   } catch (error) {
+      console.error("Complétion groupée du dictionnaire impossible", error);
+      return new Map();
+   }
+}
+
+async function buildPackImportPreview(payload, sourceType) {
+   const validation = validatePackPayload(payload);
+   const preview = {
+      payload,
+      sourceType: sourceType || payload.sourceType || "json",
+      errors: validation.errors,
+      packs: [],
+      categoryCount: 0,
+      wordCount: 0,
+      duplicates: 0,
+      existing: 0,
+      missingDictionary: 0,
+      incomplete: 0,
+   };
+   if (preview.errors.length) return preview;
+   const chineseValues = validation.packs.flatMap((rawPack) =>
+      rawPack.categories.flatMap((rawCategory) =>
+         rawCategory.words.map((rawWord) => String(rawWord.chinese || rawWord.hz || "").trim()),
+      ),
+   );
+   const dictionaryMatches = await dictionaryCompletions(chineseValues);
+   const seenIncoming = new Map();
+   const existingCards = db.cards.slice();
+   for (const rawPack of validation.packs) {
+      const pack = { name: String(rawPack.name).trim(), description: String(rawPack.description || "").trim(), unclassified: !!rawPack.__unclassified, categories: [] };
+      for (const rawCategory of rawPack.categories) {
+         const category = { name: String(rawCategory.name).trim(), words: [] };
+         for (const rawWord of rawCategory.words) {
+            const chinese = String(rawWord.chinese || rawWord.hz || "").trim();
+            let pinyin = String(rawWord.pinyin || rawWord.py || "").trim();
+            let translation = String(rawWord.translation || rawWord.fr || "").trim();
+            const dictionary = dictionaryMatches.get(chinese) || null;
+            if (!dictionary) preview.missingDictionary++;
+            if (!pinyin && dictionary) pinyin = dictionary.pinyin;
+            if (!translation && dictionary) translation = dictionary.translation;
+            const word = {
+               chinese, pinyin, translation,
+               notes: String(rawWord.notes || rawWord.note || "").trim(),
+               favorite: !!(rawWord.favorite || rawWord.fav),
+               difficult: !!rawWord.difficult,
+               tags: Array.isArray(rawWord.tags) ? rawWord.tags : typeof rawWord.tags === "string" ? rawWord.tags.split(/[;,]/) : [],
+               senseId: rawWord.senseId ? String(rawWord.senseId) : "",
+               incomplete: !pinyin || !translation,
+               dictionaryId: dictionary ? dictionary.dictionaryId : "",
+               sourceId: rawWord.id ? String(rawWord.id) : "",
+               srs: rawWord.srs && typeof rawWord.srs === "object" ? rawWord.srs : null,
+            };
+            if (word.incomplete) preview.incomplete++;
+            const key = personalCardKey({ hz: chinese, py: pinyin, fr: translation, senseId: word.senseId });
+            const exactExisting = existingCards.find((card) => personalCardKey(card) === key);
+            word.existingCardId = exactExisting ? exactExisting.id : "";
+            if (exactExisting) preview.existing++;
+            if (seenIncoming.has(key)) { preview.duplicates++; word.duplicateOf = seenIncoming.get(key); }
+            else seenIncoming.set(key, word);
+            category.words.push(word);
+            preview.wordCount++;
+         }
+         pack.categories.push(category);
+         preview.categoryCount++;
+      }
+      preview.packs.push(pack);
+   }
+   return preview;
+}
+
+function findReusableCard(word) {
+   if (word.sourceId) {
+      const byId = db.cards.find((card) => card.id === word.sourceId);
+      if (byId) return byId;
+   }
+   const key = personalCardKey({ hz: word.chinese, py: word.pinyin, fr: word.translation, senseId: word.senseId });
+   return db.cards.find((card) => personalCardKey(card) === key) || null;
+}
+
+function createCardFromImportedWord(word) {
+   const sameHanziAndPinyin = db.cards.filter(
+      (card) => card.hz === word.chinese && normalizePinyinIdentity(card.py) === normalizePinyinIdentity(word.pinyin),
+   );
+   const differentSense = sameHanziAndPinyin.some(
+      (card) => normalizeMeaningIdentity(card.fr) !== normalizeMeaningIdentity(word.translation),
+   );
+   const card = normalizeCard({
+      id: word.sourceId || undefined,
+      hz: word.chinese,
+      py: word.pinyin,
+      fr: word.translation,
+      note: word.notes,
+      fav: word.favorite,
+      difficult: word.difficult,
+      tags: word.tags,
+      incomplete: word.incomplete,
+      senseId: word.senseId || (differentSense ? "sense-" + normalizeMeaningIdentity(word.translation || uid()) : ""),
+      lvl: word.srs ? word.srs.level : 0,
+      acquired: word.srs ? word.srs.acquired : false,
+      due: word.srs ? word.srs.due : null,
+      created: word.srs ? word.srs.created : Date.now(),
+      updated: word.srs ? word.srs.updated : Date.now(),
+      lastReviewed: word.srs ? word.srs.lastReviewed : null,
+      reviewHistory: word.srs ? word.srs.reviewHistory : [],
+   }, !!word.sourceId);
+   db.cards.push(card);
+   return card;
+}
+
+function applyPackImport(preview, options) {
+   if (!preview || preview.errors.length) throw new Error("L'aperçu contient des erreurs.");
+   const settings = Object.assign({ mode: "new", targetPackId: "", skipDuplicates: true, replaceStructure: false, importMissing: true }, options || {});
+   makeBackup();
+   const results = { added: 0, reused: 0, memberships: 0, packs: 0, categories: 0, skipped: 0 };
+   const importWord = (word, category) => {
+      if (word.incomplete && !settings.importMissing) { results.skipped++; return; }
+      let card = findReusableCard(word);
+      if (card) {
+         results.reused++;
+         card.fav = card.fav || word.favorite;
+         card.difficult = card.difficult || word.difficult;
+         card.tags = uniqueStrings([...(card.tags || []), ...(word.tags || [])]);
+         if (!card.note && word.notes) card.note = word.notes;
+      } else {
+         card = createCardFromImportedWord(word);
+         results.added++;
+      }
+      if (category && addCardMembership(card.id, category.id)) results.memberships++;
+   };
+   preview.packs.forEach((incomingPack, packIndex) => {
+      if (incomingPack.unclassified) {
+         incomingPack.categories.forEach((category) =>
+            category.words.forEach((word) => importWord(word, null)),
+         );
+         return;
+      }
+      let pack = null;
+      if (settings.mode === "merge" && settings.targetPackId)
+         pack = db.packs.find((item) => item.id === settings.targetPackId) || null;
+      if (!pack) pack = db.packs.find((item) => item.name.toLocaleLowerCase("fr") === incomingPack.name.toLocaleLowerCase("fr")) || null;
+      if (!pack || settings.mode === "new") {
+         pack = createPersonalPack(incomingPack.name, incomingPack.description);
+         results.packs++;
+      } else if (incomingPack.description && !pack.description) pack.description = incomingPack.description;
+
+      if (settings.replaceStructure) {
+         const oldCategoryIds = new Set(categoriesForPack(pack.id).map((category) => category.id));
+         db.categories = db.categories.filter((category) => category.packId !== pack.id);
+         db.memberships = db.memberships.filter((membership) => !oldCategoryIds.has(membership.categoryId));
+      }
+
+      incomingPack.categories.forEach((incomingCategory) => {
+         let category = db.categories.find(
+            (item) => item.packId === pack.id && item.name.toLocaleLowerCase("fr") === incomingCategory.name.toLocaleLowerCase("fr"),
+         );
+         if (!category) {
+            category = { id: uid(), packId: pack.id, name: incomingCategory.name, created: Date.now(), updated: Date.now() };
+            db.categories.push(category);
+            results.categories++;
+         }
+         incomingCategory.words.forEach((word) => {
+            importWord(word, category);
+         });
+      });
+   });
+   syncLegacyPackCardIds();
+   invalidateDictIndex();
+   save();
+   return results;
+}
+
+function packExportObject(pack) {
+   return {
+      id: pack.id,
+      name: pack.name,
+      description: pack.description || "",
+      created: pack.created,
+      updated: pack.updated,
+      categories: categoriesForPack(pack.id).map((category) => ({
+         id: category.id,
+         name: category.name,
+         created: category.created,
+         updated: category.updated,
+         words: cardsForCategory(category.id).map((card) => ({
+            id: card.id,
+            chinese: card.hz,
+            pinyin: card.py,
+            translation: card.fr,
+            notes: card.note,
+            favorite: card.fav,
+            difficult: card.difficult,
+            tags: card.tags || [],
+            incomplete: card.incomplete,
+            senseId: card.senseId || "",
+            srs: {
+               level: card.lvl,
+               acquired: card.acquired,
+               due: card.due,
+               created: card.created,
+               updated: card.updated,
+               lastReviewed: card.lastReviewed,
+               reviewHistory: card.reviewHistory || [],
+            },
+         })),
+      })),
+   };
+}
+
+function buildLibraryExport(packIds) {
+   const wanted = packIds ? new Set(packIds) : null;
+   const packs = db.packs.filter((pack) => !wanted || wanted.has(pack.id));
+   const includedCardIds = new Set(packs.flatMap((pack) => packCardIds(pack.id)));
+   if (!wanted) db.cards.forEach((card) => includedCardIds.add(card.id));
+   return {
+      app: "mo-studio",
+      type: wanted && wanted.size === 1 ? "pack" : "personal-library-backup",
+      version: 3,
+      exported: new Date().toISOString(),
+      packs: packs.map(packExportObject),
+      unclassifiedWords: db.cards.filter((card) => includedCardIds.has(card.id) && !categoriesForCard(card.id).length).map((card) => ({
+         id: card.id, chinese: card.hz, pinyin: card.py, translation: card.fr, notes: card.note,
+         favorite: card.fav, difficult: card.difficult, tags: card.tags || [], senseId: card.senseId || "",
+         srs: { level: card.lvl, acquired: card.acquired, due: card.due, created: card.created, updated: card.updated, lastReviewed: card.lastReviewed, reviewHistory: card.reviewHistory || [] },
+      })),
+      settings: db.settings,
+      units: db.units,
+   };
+}
+
+function downloadJson(data, filename) {
+   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+   const link = document.createElement("a");
+   link.href = URL.createObjectURL(blob);
+   link.download = filename;
+   document.body.appendChild(link);
+   link.click();
+   link.remove();
+   setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+}
+
+const PACK_JSON_EXAMPLE = `{
+  "version": 1,
+  "pack": {
+    "name": "Livres",
+    "description": "Vocabulaire de mes livres",
+    "categories": [
+      {
+        "name": "Chapitre 1",
+        "words": [
+          { "chinese": "你好", "pinyin": "nǐ hǎo", "translation": "bonjour" },
+          { "chinese": "朋友", "translation": "ami" }
+        ]
+      }
+    ]
+  }
+}`;
 
 "use strict";
 
@@ -4619,478 +5965,157 @@ let courseProgress = loadCourseProgress();
 
 "use strict";
 
-/* ================= hub (Réviser) ================= */
-         let hub = {
-            flt: "all",
-            pack: "",
-            cat: "",
-            includeAcquired: false,
-            freeOpen: false,
-         };
+/* ================= Réviser : sélection explicite ================= */
+let reviewSelectionMode = "due";
+let reviewPackId = "";
+let reviewCategoryIds = new Set();
+let manualReviewIds = new Set();
+let reviewScopeLabel = "Cartes dues aujourd’hui";
+let hub = { flt: "due", pack: "", cat: "", includeAcquired: true, freeOpen: true };
 
-         function scopeCards() {
-            let list = db.cards.slice();
-            if (hub.flt === "due") list = list.filter(isDue);
-            else if (hub.flt === "fav") list = list.filter((c) => c.fav);
-            else if (hub.flt === "acq") list = list.filter((c) => c.acquired);
-            if (hub.pack) {
-               if (hub.pack.startsWith("unit:")) {
-                  const u = +hub.pack.slice(5);
-                  list = list.filter((c) => c.unit === u);
-               } else {
-                  const p = db.packs.find((p) => p.id === hub.pack);
-                  const set = new Set(p ? p.cardIds : []);
-                  list = list.filter((c) => set.has(c.id));
-               }
-            }
-            if (hub.cat) list = list.filter((c) => c.cat === hub.cat);
-            if (!hub.includeAcquired && hub.flt !== "acq")
-               list = list.filter((c) => !c.acquired);
-            return list;
-         }
-         function scopeLabel() {
-            const parts = [];
-            if (hub.flt === "due") parts.push("À revoir");
-            else if (hub.flt === "fav") parts.push("Favoris");
-            else if (hub.flt === "acq") parts.push("Acquises");
-            if (hub.pack) {
-               if (hub.pack.startsWith("unit:"))
-                  parts.push(unitName(+hub.pack.slice(5)));
-               else {
-                  const p = db.packs.find((p) => p.id === hub.pack);
-                  if (p) parts.push(p.name);
-               }
-            }
-            if (hub.cat) parts.push(hub.cat);
-            return parts.join(" · ") || "Tout";
-         }
+function reviewSelectedCards() {
+   let cards = db.cards.slice();
+   if (reviewSelectionMode === "due") cards = cards.filter(isDue);
+   else if (reviewSelectionMode === "all") cards = cards;
+   else if (reviewSelectionMode === "pack") cards = cardsForPack(reviewPackId);
+   else if (reviewSelectionMode === "categories") {
+      const ids = new Set(Array.from(reviewCategoryIds).flatMap(categoryCardIds));
+      cards = cards.filter((card) => ids.has(card.id));
+   } else if (reviewSelectionMode === "manual") cards = cards.filter((card) => manualReviewIds.has(card.id));
+   else if (reviewSelectionMode === "fav") cards = cards.filter((card) => card.fav);
+   else if (reviewSelectionMode === "difficult") cards = cards.filter((card) => card.difficult);
+   else if (reviewSelectionMode === "new") cards = cards.filter((card) => card.due == null && !card.acquired);
+   else if (reviewSelectionMode === "learned") cards = cards.filter((card) => card.acquired || card.due != null || (card.lvl || 0) > 0);
+   return cards;
+}
 
-         /* -------- file intelligente pour « Continuer » -------- */
-         function smartQueuePool() {
-            let pool = db.cards.filter((c) => !c.acquired);
-            if (!hub.pack) return pool;
-            if (hub.pack.startsWith("unit:")) {
-               const unit = +hub.pack.slice(5);
-               return pool.filter((card) => card.unit === unit);
-            }
-            const pack = db.packs.find((item) => item.id === hub.pack);
-            const ids = new Set(pack ? pack.cardIds : []);
-            return pool.filter((card) => ids.has(card.id));
-         }
+function scopeCards() {
+   return reviewSelectedCards();
+}
 
-         function smartQueue() {
-            const pool = smartQueuePool();
-            const due = pool.filter(isDue).sort((a, b) => a.due - b.due);
-            const fresh = pool.filter((c) => c.due == null).sort(unitSort);
-            const size = db.settings.sessionSize; // 0 = tout
-            const newTake = Math.min(db.settings.newPerSession, fresh.length);
-            let dueTake = size > 0 ? Math.max(0, size - newTake) : due.length;
-            dueTake = Math.min(dueTake, due.length);
-            let q = due.slice(0, dueTake).concat(fresh.slice(0, newTake));
-            if (size > 0) q = q.slice(0, size);
-            const planned = pool
-               .filter((c) => c.due != null && c.due > now())
-               .sort((a, b) => a.due - b.due);
-            return {
-               q: shuffle(q),
-               dueN: Math.min(due.length, dueTake),
-               dueTotal: due.length,
-               freshN: Math.min(
-                  newTake,
-                  Math.max(0, size > 0 ? size : Infinity),
-               ),
-               freshTotal: fresh.length,
-               freshUnit: fresh.length ? fresh[0].unit : null,
-               nextDue: planned.length ? planned[0].due : null,
-            };
-         }
-         function startSmartSession() {
-            const sq = smartQueue();
-            if (!sq.q.length) {
-               toast("Rien à réviser pour le moment.");
-               return;
-            }
-            startCardsWith(sq.q, "Ma révision", "cards");
-         }
-         function startCardsWith(cards, label, mode) {
-            session = {
-               active: true,
-               mode: mode || "cards",
-               cards,
-               index: 0,
-               states: new Array(cards.length).fill(null),
-               live: { marked: 0, acquired: 0 },
-               scopeLabel: label,
-            };
-            document.body.classList.add("in-session");
-            renderSession();
-            window.scrollTo(0, 0);
-         }
-         function startFreeSession(mode) {
-            let cards = shuffle(scopeCards());
-            if (!cards.length) {
-               toast("Aucune carte dans cette sélection.");
-               return;
-            }
-            const size = db.settings.freeSize;
-            if (size > 0) cards = cards.slice(0, size);
-            startCardsWith(cards, scopeLabel(), mode);
-         }
+function scopeLabel() {
+   if (reviewSelectionMode === "pack") {
+      const pack = db.packs.find((item) => item.id === reviewPackId);
+      return pack ? "Pack · " + pack.name : "Pack";
+   }
+   if (reviewSelectionMode === "categories") return reviewCategoryIds.size + " sous-catégorie(s)";
+   if (reviewSelectionMode === "manual") return reviewScopeLabel || "Sélection manuelle";
+   return ({ due: "Cartes dues aujourd’hui", all: "Tous mes mots", fav: "Favoris", difficult: "Mots difficiles", new: "Nouveaux mots", learned: "Cartes déjà apprises" })[reviewSelectionMode] || "Révision";
+}
 
-         /* -------- écrans du hub -------- */
-         function emptyHtml() {
-            return (
-               '<section class="card pad empty">' +
-               '<div class="empty-hz">学</div>' +
-               '<h2 class="empty-t">Ta collection est vide</h2>' +
-               '<p class="empty-p">Ajoute ton premier mot depuis le dictionnaire ou crée-le ici pour commencer une collection personnelle.</p>' +
-               '<div class="empty-btns">' +
-               '<button class="btn primary" id="btn-e-add">Créer un mot</button>' +
-               "</div></section>"
-            );
-         }
-         function wireEmpty() {
-            if ($("btn-e-add"))
-               $("btn-e-add").onclick = () => openCardForm(null);
-         }
+function smartQueue() {
+   const cards = reviewSelectedCards();
+   const due = cards.filter(isDue);
+   const fresh = cards.filter((card) => card.due == null && !card.acquired);
+   return {
+      q: cards,
+      dueN: due.length,
+      dueTotal: due.length,
+      freshN: fresh.length,
+      freshTotal: fresh.length,
+      freshUnit: fresh.length ? fresh[0].unit : null,
+      nextDue: db.cards.filter((card) => card.due > now()).sort((a, b) => a.due - b.due)[0]?.due || null,
+   };
+}
 
-         function reviewOverviewHtml(queue) {
-            const estimated = queue.q.length
-               ? "~" + Math.max(1, Math.round((queue.q.length * 25) / 60)) + " min"
-               : "0 min";
-            return (
-               '<section class="review-overview" aria-labelledby="review-title"><header class="review-heading"><div class="review-mark">复</div><div><h2 class="v-t" id="review-title">复 · Réviser</h2><p class="muted">Lance tes sessions SRS à partir des mots de ta collection personnelle.</p></div></header>' +
-               '<div class="review-queue" aria-label="Résumé de la prochaine session"><div><b>' +
-               queue.dueTotal +
-               '</b><span>À revoir</span></div><div><b>' +
-               queue.freshTotal +
-               '</b><span>Nouvelles</span></div><div><b>' +
-               estimated +
-               '</b><span>Durée estimée</span></div></div>' +
-               (db.packs.length
-                  ? '<label class="review-pack-label" for="review-pack">Pack à réviser<select class="search" id="review-pack"><option value="">Tous Mes mots</option>' +
-                    db.packs
-                       .map(
-                          (pack) =>
-                             '<option value="' +
-                             esc(pack.id) +
-                             '"' +
-                             (hub.pack === pack.id ? " selected" : "") +
-                             ">" +
-                             esc(pack.name) +
-                             "</option>",
-                       )
-                       .join("") +
-                    "</select></label>"
-                  : "") +
-               "</section>"
-            );
-         }
+function startCardsWith(cards, label, mode) {
+   session = {
+      active: true,
+      mode: mode || "cards",
+      cards,
+      index: 0,
+      states: new Array(cards.length).fill(null),
+      live: { marked: 0, acquired: 0 },
+      scopeLabel: label,
+   };
+   document.body.classList.add("in-session");
+   renderSession();
+   window.scrollTo(0, 0);
+}
 
-         function wireReviewOverview() {
-            if ($("review-pack"))
-               $("review-pack").onchange = (event) => {
-                  hub.pack = event.target.value;
-                  renderLearn();
-               };
-         }
+function startSmartSession() {
+   startReviewSelection("cards");
+}
 
-         function renderLearn() {
-            document.body.classList.toggle("in-session", session.active);
-            if (session.active) {
-               renderSession();
-               return;
-            }
-            if (session.summary) {
-               renderSummary();
-               return;
-            }
-            const root = $("view");
-            const initialQueue = smartQueue();
-            if (!db.cards.length) {
-               root.innerHTML = reviewOverviewHtml(initialQueue) + emptyHtml();
-               wireReviewOverview();
-               wireEmpty();
-               return;
-            }
-            // garde-fous sur les filtres
-            if (
-               hub.pack &&
-               !hub.pack.startsWith("unit:") &&
-               !db.packs.some((p) => p.id === hub.pack)
-            )
-               hub.pack = "";
-            if (hub.cat && !db.cards.some((c) => c.cat === hub.cat))
-               hub.cat = "";
+function startFreeSession(mode) {
+   startReviewSelection(mode);
+}
 
-            const total = db.cards.length;
-            const dueN = db.cards.filter(isDue).length;
-            const fav = db.cards.filter((c) => c.fav).length;
-            const acq = db.cards.filter((c) => c.acquired).length;
-            const sq = smartQueue();
-            const mins = Math.max(1, Math.round((sq.q.length * 25) / 60));
-            const resume = loadSavedSession();
+function startReviewSelection(mode) {
+   const cards = reviewSelectedCards();
+   if (!cards.length) { toast("Aucune carte dans cette sélection."); return; }
+   startCardsWith(shuffle(cards), scopeLabel(), mode || "cards");
+}
 
-            // bouton principal
-            let cta;
-            if (sq.q.length) {
-               const sub =
-                  sq.dueTotal +
-                  " à revoir · " +
-                  sq.freshN +
-                  " nouvelle" +
-                  (sq.freshN > 1 ? "s" : "");
-               const uline =
-                  sq.freshN > 0 && sq.freshUnit != null
-                     ? '<span class="u-line">Unité ' +
-                       sq.freshUnit +
-                       " · " +
-                       esc(unitName(sq.freshUnit)) +
-                       "</span>"
-                     : "";
-               cta =
-                  '<button class="cta ink-in" id="btn-continue"><b>Continuer ma révision</b><span>' +
-                  sq.q.length +
-                  " carte" +
-                  (sq.q.length > 1 ? "s" : "") +
-                  " · ~" +
-                  mins +
-                  " min — " +
-                  sub +
-                  "</span>" +
-                  uline +
-                  "</button>";
-            } else {
-               cta =
-                  '<button class="cta" disabled><b>Tout est à jour 完</b><span>' +
-                  (sq.nextDue
-                     ? "Prochaine révision : " + fmtDate(sq.nextDue)
-                     : "Ajoute de nouveaux mots à ta collection") +
-                  "</span></button>";
-            }
+function emptyHtml() {
+   return '<section class="card pad empty"><div class="empty-hz">学</div><h2 class="empty-t">Ta collection est vide</h2><p class="empty-p">Crée un mot ou importe un pack. Les 5 399 mots HSK ne sont jamais ajoutés automatiquement ici.</p><div class="empty-btns"><button class="btn primary" id="btn-e-import">Importer un pack</button><button class="btn" id="btn-e-add">Créer un mot</button></div></section>';
+}
 
-            const statBtn = (flt, val, lab) =>
-               '<button class="stat" data-flt="' +
-               flt +
-               '"><b>' +
-               val +
-               "</b><span>" +
-               lab +
-               "</span></button>";
-            const dirChip = (v, lab) =>
-               '<button class="chip" data-dir="' +
-               v +
-               '" aria-pressed="' +
-               String(db.settings.direction === v) +
-               '">' +
-               lab +
-               "</button>";
-            const fltChip = (v, lab) =>
-               '<button class="chip" data-hflt="' +
-               v +
-               '" aria-pressed="' +
-               String(hub.flt === v) +
-               '">' +
-               lab +
-               "</button>";
-            const sizeChip = (v, lab) =>
-               '<button class="chip" data-size="' +
-               v +
-               '" aria-pressed="' +
-               String(db.settings.freeSize === v) +
-               '">' +
-               lab +
-               "</button>";
-            const cats = Array.from(
-               new Set(db.cards.map((c) => c.cat).filter(Boolean)),
-            ).sort((a, b) => a.localeCompare(b, "fr"));
-            const unitIds = Array.from(
-               new Set(db.cards.map((c) => c.unit).filter((u) => u != null)),
-            ).sort((a, b) => a - b);
-            const n = scopeCards().length;
-            const dis = n === 0 ? "disabled" : "";
+function wireEmpty() {
+   if ($("btn-e-add")) $("btn-e-add").onclick = () => openCardForm(null);
+   if ($("btn-e-import")) $("btn-e-import").onclick = openPackImportSheet;
+}
 
-            root.innerHTML =
-               reviewOverviewHtml(sq) +
-               (resume
-                  ? '<div class="resume"><span>Séance en cours · ' +
-                    Math.min(resume.snap.index + 1, resume.cards.length) +
-                    " / " +
-                    resume.cards.length +
-                    '</span><span style="display:flex;gap:6px"><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">×</button></span></div>'
-                  : "") +
-               cta +
-               '<div class="stats">' +
-               statBtn("all", total, "Mes mots") +
-               statBtn("due", dueN, "À revoir") +
-               statBtn("fav", fav, "Favoris") +
-               statBtn("acq", acq, "Acquises") +
-               "</div>" +
-               '<details class="free" id="free-panel"' +
-               (hub.freeOpen ? " open" : "") +
-               ">" +
-               '<summary><span class="free-hz">选</span>Séance libre & filtres</summary>' +
-               '<div class="free-body">' +
-               '<div class="eyebrow" style="margin-top:4px">Sens de révision</div>' +
-               '<div class="chips">' +
-               dirChip("zh2fr", "中文 → FR") +
-               dirChip("fr2zh", "FR → 中文") +
-               dirChip("mix", "Mixte") +
-               "</div>" +
-               '<div class="eyebrow">Sélection — ' +
-               n +
-               " carte" +
-               (n > 1 ? "s" : "") +
-               "</div>" +
-               '<div class="chips">' +
-               fltChip("all", "Tout") +
-               fltChip("due", "À revoir") +
-               fltChip("fav", "Favoris") +
-               fltChip("acq", "Maîtrisées") +
-               "</div>" +
-               '<div class="selects">' +
-               '<select class="search" id="hub-pack"><option value="">Unité / pack : tous</option>' +
-               (unitIds.length
-                  ? '<optgroup label="Unités">' +
-                    unitIds
-                       .map(
-                          (u) =>
-                             '<option value="unit:' +
-                             u +
-                             '"' +
-                             (hub.pack === "unit:" + u ? " selected" : "") +
-                             ">U" +
-                             u +
-                             " · " +
-                             esc(unitName(u)) +
-                             "</option>",
-                       )
-                       .join("") +
-                    "</optgroup>"
-                  : "") +
-               (db.packs.length
-                  ? '<optgroup label="Packs">' +
-                    db.packs
-                       .map(
-                          (p) =>
-                             '<option value="' +
-                             p.id +
-                             '"' +
-                             (hub.pack === p.id ? " selected" : "") +
-                             ">" +
-                             esc(p.name) +
-                             "</option>",
-                       )
-                       .join("") +
-                    "</optgroup>"
-                  : "") +
-               "</select>" +
-               '<select class="search" id="hub-cat"><option value="">Catégorie : toutes</option>' +
-               cats
-                  .map(
-                     (c) =>
-                        '<option value="' +
-                        esc(c) +
-                        '"' +
-                        (hub.cat === c ? " selected" : "") +
-                        ">" +
-                        esc(c) +
-                        "</option>",
-                  )
-                  .join("") +
-               "</select>" +
-               "</div>" +
-               '<label class="ck" style="margin-top:8px"><input type="checkbox" id="inc-acq"' +
-               (hub.includeAcquired ? " checked" : "") +
-               "> Inclure les cartes acquises</label>" +
-               '<div class="eyebrow">Taille de la séance</div>' +
-               '<div class="chips">' +
-               sizeChip(10, "10") +
-               sizeChip(20, "20") +
-               sizeChip(50, "50") +
-               sizeChip(0, "Tout") +
-               "</div>" +
-               '<div class="eyebrow">Lancer</div>' +
-               '<div class="modes">' +
-               '<button class="mode" data-mode="cards" ' +
-               dis +
-               '><span class="m-hz">卡</span><span><b>Cartes</b><span>Retourne, note-toi : le planning se règle tout seul</span></span></button>' +
-               '<button class="mode" data-mode="written" ' +
-               dis +
-               '><span class="m-hz">笔</span><span><b>Écrit</b><span>Tape le pinyin ou le français, trace les 汉字</span></span></button>' +
-               '<button class="mode" data-mode="discover" ' +
-               dis +
-               '><span class="m-hz">览</span><span><b>Découverte</b><span>Tout est visible, parcours tranquillement</span></span></button>' +
-               "</div>" +
-               '<div class="lib-foot"><button class="btn ghost" id="btn-packs">Gérer les packs</button></div>' +
-               "</div>" +
-               "</details>";
+function reviewChoiceHtml(value, title, detail) {
+   return '<label class="review-choice"><input type="radio" name="review-scope" value="' + value + '"' + (reviewSelectionMode === value ? " checked" : "") + '><span><strong>' + title + '</strong><small>' + detail + "</small></span></label>";
+}
 
-            if ($("btn-resume")) $("btn-resume").onclick = resumeSession;
-            wireReviewOverview();
-            if ($("btn-resume-x"))
-               $("btn-resume-x").onclick = () => {
-                  clearSavedSession();
-                  renderLearn();
-               };
-            if ($("btn-continue"))
-               $("btn-continue").onclick = startSmartSession;
-            root.querySelectorAll("[data-flt]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     hub.flt = b.dataset.flt;
-                     if (hub.flt === "acq") hub.includeAcquired = true;
-                     hub.freeOpen = true;
-                     renderLearn();
-                  }),
-            );
-            const panel = $("free-panel");
-            panel.addEventListener("toggle", () => {
-               hub.freeOpen = panel.open;
-            });
-            root.querySelectorAll("[data-dir]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     db.settings.direction = b.dataset.dir;
-                     save();
-                     renderLearn();
-                  }),
-            );
-            root.querySelectorAll("[data-hflt]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     hub.flt = b.dataset.hflt;
-                     if (hub.flt === "acq") hub.includeAcquired = true;
-                     renderLearn();
-                  }),
-            );
-            root.querySelectorAll("[data-size]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     db.settings.freeSize = +b.dataset.size;
-                     save();
-                     renderLearn();
-                  }),
-            );
-            $("hub-pack").onchange = (e) => {
-               hub.pack = e.target.value;
-               renderLearn();
-            };
-            $("hub-cat").onchange = (e) => {
-               hub.cat = e.target.value;
-               renderLearn();
-            };
-            $("inc-acq").onchange = (e) => {
-               hub.includeAcquired = e.target.checked;
-               renderLearn();
-            };
-            root
-               .querySelectorAll("[data-mode]")
-               .forEach(
-                  (b) => (b.onclick = () => startFreeSession(b.dataset.mode)),
-               );
-            $("btn-packs").onclick = openPacksSheet;
-         }
+function reviewCategoryTreeHtml() {
+   if (!db.packs.length) return '<p class="sh-note">Aucun pack organisé pour le moment.</p>';
+   return '<div class="review-tree">' + db.packs.map((pack) => {
+      const categories = categoriesForPack(pack.id);
+      const allChecked = categories.length && categories.every((category) => reviewCategoryIds.has(category.id));
+      return '<section class="review-tree-pack"><div class="review-tree-pack-head"><label class="ck"><input type="checkbox" data-review-pack-check="' + esc(pack.id) + '"' + (allChecked ? " checked" : "") + '> <strong>' + esc(pack.name) + '</strong></label><button class="btn sm ghost" data-review-entire-pack="' + esc(pack.id) + '">Pack entier</button></div>' + categories.map((category) => '<label class="ck review-category-check"><input type="checkbox" data-review-category="' + esc(category.id) + '"' + (reviewCategoryIds.has(category.id) ? " checked" : "") + '> ' + esc(category.name) + '<span>' + cardsForCategory(category.id).length + "</span></label>").join("") + "</section>";
+   }).join("") + "</div>";
+}
+
+function reviewMetricsHtml(cards) {
+   const fresh = cards.filter((card) => card.due == null && !card.acquired).length;
+   const due = cards.filter(isDue).length;
+   const minutes = cards.length ? Math.max(1, Math.round(cards.length * 25 / 60)) : 0;
+   return '<div class="review-live" aria-live="polite"><div><b>' + cards.length + '</b><span>Cartes sélectionnées</span></div><div><b>' + fresh + '</b><span>Nouvelles cartes</span></div><div><b>' + due + '</b><span>Cartes dues</span></div><div><b>~' + minutes + ' min</b><span>Durée estimée</span></div></div>';
+}
+
+function renderLearn() {
+   document.body.classList.toggle("in-session", session.active);
+   if (session.active) { renderSession(); return; }
+   if (session.summary) { renderSummary(); return; }
+   const root = $("view");
+   const resume = loadSavedSession();
+   const selected = reviewSelectedCards();
+   root.innerHTML = '<section class="review-page"><header class="review-heading"><div class="review-mark">复</div><div><p class="eyebrow">Révision personnelle</p><h2 class="v-t" id="review-title">Que veux-tu réviser ?</h2><p class="muted">Choisis exactement les cartes de cette séance. Cette sélection ne modifie jamais tes packs.</p></div></header>' +
+      (resume ? '<div class="resume"><span>Séance en cours · ' + Math.min(resume.snap.index + 1, resume.cards.length) + ' / ' + resume.cards.length + '</span><span><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">Fermer</button></span></div>' : "") +
+      (!db.cards.length ? emptyHtml() : '<div class="review-layout"><section class="review-scope card"><h3>Type de sélection</h3><div class="review-choice-grid">' +
+         reviewChoiceHtml("due", "Cartes dues aujourd’hui", db.cards.filter(isDue).length + " cartes") +
+         reviewChoiceHtml("all", "Tous mes mots", db.cards.length + " cartes") +
+         reviewChoiceHtml("pack", "Un pack entier", "Choisir dans la liste") +
+         reviewChoiceHtml("categories", "Une ou plusieurs sous-catégories", reviewCategoryIds.size + " cochée(s)") +
+         reviewChoiceHtml("manual", "Seulement les mots sélectionnés", manualReviewIds.size + " carte(s)") +
+         reviewChoiceHtml("fav", "Favoris", db.cards.filter((card) => card.fav).length + " cartes") +
+         reviewChoiceHtml("difficult", "Mots difficiles", db.cards.filter((card) => card.difficult).length + " cartes") +
+         reviewChoiceHtml("new", "Nouveaux mots", db.cards.filter((card) => card.due == null && !card.acquired).length + " cartes") +
+         reviewChoiceHtml("learned", "Cartes déjà apprises", db.cards.filter((card) => card.acquired || card.due != null || (card.lvl || 0) > 0).length + " cartes") +
+         '</div><label class="f-lab review-pack-select">Pack entier<select class="search" id="review-pack-select"><option value="">Choisir un pack</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '"' + (reviewPackId === pack.id ? " selected" : "") + '>' + esc(pack.name) + "</option>").join("") + '</select></label></section><section class="review-categories card"><div class="review-section-title"><div><h3>Packs et sous-catégories</h3><p>Les cases peuvent être combinées librement.</p></div><button class="btn sm ghost" id="review-clear-categories">Effacer</button></div>' + reviewCategoryTreeHtml() + '</section></div>' +
+         reviewMetricsHtml(selected) + '<section class="review-launch card"><div><label class="f-lab">Mode<select class="search" id="review-mode"><option value="cards">Cartes</option><option value="written">Écrit</option><option value="discover">Découverte</option></select></label></div><button class="btn primary big" id="btn-continue"' + (selected.length ? "" : " disabled") + '>Commencer la révision</button><button class="btn ghost" id="review-open-library">Ouvrir Mes mots</button></section><details id="free-panel" class="review-compat"><summary>Options de séance</summary><div class="modes"><button data-mode="cards">Cartes</button><button data-mode="written">Écrit</button><button data-mode="discover">Découverte</button></div></details>') + "</section>";
+   if (!db.cards.length) { wireEmpty(); return; }
+   if ($("btn-resume")) $("btn-resume").onclick = resumeSession;
+   if ($("btn-resume-x")) $("btn-resume-x").onclick = () => { clearSavedSession(); renderLearn(); };
+   document.querySelectorAll('input[name="review-scope"]').forEach((input) => input.onchange = () => { reviewSelectionMode = input.value; renderLearn(); });
+   $("review-pack-select").onchange = (event) => { reviewPackId = event.target.value; reviewSelectionMode = "pack"; renderLearn(); };
+   document.querySelectorAll("[data-review-category]").forEach((input) => input.onchange = () => {
+      if (input.checked) reviewCategoryIds.add(input.dataset.reviewCategory); else reviewCategoryIds.delete(input.dataset.reviewCategory);
+      reviewSelectionMode = "categories"; renderLearn();
+   });
+   document.querySelectorAll("[data-review-pack-check]").forEach((input) => input.onchange = () => {
+      categoriesForPack(input.dataset.reviewPackCheck).forEach((category) => input.checked ? reviewCategoryIds.add(category.id) : reviewCategoryIds.delete(category.id));
+      reviewSelectionMode = "categories"; renderLearn();
+   });
+   document.querySelectorAll("[data-review-entire-pack]").forEach((button) => button.onclick = () => { reviewPackId = button.dataset.reviewEntirePack; reviewSelectionMode = "pack"; renderLearn(); });
+   $("review-clear-categories").onclick = () => { reviewCategoryIds.clear(); reviewSelectionMode = "categories"; renderLearn(); };
+   $("btn-continue").onclick = () => startReviewSelection($("review-mode").value);
+   $("review-open-library").onclick = () => setView("lib");
+   document.querySelectorAll("[data-mode]").forEach((button) => button.onclick = () => startReviewSelection(button.dataset.mode));
+}
 
 "use strict";
 
@@ -6719,491 +7744,334 @@ function destroyWritingBoard() {
 
 "use strict";
 
-/* ================= bibliothèque (库) ================= */
-         let lib = { q: "", flt: "all", cat: "", sort: "unit" };
-         function libFiltered() {
-            let list = db.cards.slice();
-            const q = lib.q.trim();
-            if (q) {
-               const fq = flatten(q);
-               list = list.filter(
-                  (c) =>
-                     c.hz.includes(q) ||
-                     (fq &&
-                        (flatten(c.py).includes(fq) ||
-                           flatten(c.fr).includes(fq) ||
-                           flatten(c.cat).includes(fq))),
-               );
-            }
-            if (lib.flt === "fav") list = list.filter((c) => c.fav);
-            else if (lib.flt === "due")
-               list = list.filter((c) => c.due != null);
-            else if (lib.flt === "acq") list = list.filter((c) => c.acquired);
-            else if (lib.flt === "notacq")
-               list = list.filter((c) => !c.acquired);
-            if (lib.cat) list = list.filter((c) => c.cat === lib.cat);
-            if (lib.sort === "unit") list.sort(unitSort);
-            else if (lib.sort === "old")
-               list.sort((a, b) => a.created - b.created);
-            else if (lib.sort === "hz")
-               list.sort((a, b) => a.hz.localeCompare(b.hz, "zh"));
-            else if (lib.sort === "py")
-               list.sort((a, b) => flatten(a.py).localeCompare(flatten(b.py)));
-            else if (lib.sort === "fr")
-               list.sort((a, b) => flatten(a.fr).localeCompare(flatten(b.fr)));
-            else list.sort((a, b) => b.created - a.created);
-            return list;
-         }
-         function rowHtml(c) {
-            return (
-               '<button class="row" data-id="' +
-               c.id +
-               '">' +
-               '<span class="row-hz">' +
-               esc(c.hz) +
-               "</span>" +
-               '<span class="row-mid"><span class="row-py">' +
-               colorPinyin(c.py) +
-               '</span><span class="row-fr">' +
-               esc(c.fr) +
-               "</span></span>" +
-               '<span class="row-badges">' +
-               (c.unit != null ? '<i class="b u">U' + c.unit + "</i>" : "") +
-               (c.fav ? '<i class="b red" aria-label="Favori">F</i>' : "") +
-               (c.due != null ? '<i class="b gold" aria-label="À revoir">R</i>' : "") +
-               (c.acquired ? '<i class="b jade" aria-label="Maîtrisé">M</i>' : "") +
-               "</span></button>"
-            );
-         }
-         function updateLibList() {
-            if (!$("lib-list")) return;
-            const list = libFiltered();
-            $("lib-count").textContent =
-               list.length + " mot" + (list.length > 1 ? "s" : "");
-            $("lib-list").innerHTML =
-               list.map(rowHtml).join("") ||
-               '<p class="sh-p">Rien ne correspond à ta recherche.</p>';
-            document
-               .querySelectorAll("#lib-list .row")
-               .forEach(
-                  (r) => (r.onclick = () => openCardDetail(r.dataset.id)),
-               );
-         }
-         function renderLib() {
-            const root = $("view");
-            const cats = Array.from(
-               new Set(db.cards.map((c) => c.cat).filter(Boolean)),
-            ).sort((a, b) => a.localeCompare(b, "fr"));
-            if (!db.cards.length) {
-               root.innerHTML =
-                  '<section class="lib-head" style="padding:6px 2px"><div><h2 class="v-t" style="margin:0">库 · Mes mots</h2><p class="muted">Ta collection personnelle, séparée du dictionnaire et du HSK.</p></div></section>' +
-                  emptyHtml();
-               wireEmpty();
-               return;
-            }
-            const fltChip = (v, l) =>
-               '<button class="chip" data-lflt="' +
-               v +
-               '" aria-pressed="' +
-               String(lib.flt === v) +
-               '">' +
-               l +
-               "</button>";
-            root.innerHTML =
-               '<section class="card pad">' +
-               '<div class="lib-head"><div><h2 class="v-t" style="margin:0">库 · Mes mots</h2><p class="muted">Ta collection personnelle, séparée du dictionnaire et du HSK.</p></div><button class="seal-btn add" id="btn-add" aria-label="Nouveau mot">加</button></div>' +
-               '<input class="search" id="lib-q" placeholder="Rechercher (汉字, pinyin, français…)" value="' +
-               esc(lib.q) +
-               '" autocomplete="off">' +
-               '<div class="chips" style="margin-top:10px">' +
-               fltChip("all", "Tout") +
-               fltChip("fav", "Favoris") +
-               fltChip("due", "À revoir") +
-               fltChip("acq", "Maîtrisés") +
-               fltChip("notacq", "À apprendre") +
-               "</div>" +
-               '<div class="selects">' +
-               '<select class="search" id="lib-cat"><option value="">Toutes catégories</option>' +
-               cats
-                  .map(
-                     (c) =>
-                        '<option value="' +
-                        esc(c) +
-                        '"' +
-                        (lib.cat === c ? " selected" : "") +
-                        ">" +
-                        esc(c) +
-                        "</option>",
-                  )
-                  .join("") +
-               "</select>" +
-               '<select class="search" id="lib-sort">' +
-               [
-                  ["unit", "Ordre du cours"],
-                  ["new", "Plus récentes"],
-                  ["old", "Plus anciennes"],
-                  ["hz", "汉字"],
-                  ["py", "Pinyin A→Z"],
-                  ["fr", "Français A→Z"],
-               ]
-                  .map(
-                     (o) =>
-                        '<option value="' +
-                        o[0] +
-                        '"' +
-                        (lib.sort === o[0] ? " selected" : "") +
-                        ">" +
-                        o[1] +
-                        "</option>",
-                  )
-                  .join("") +
-               "</select>" +
-               "</div>" +
-               '<div class="eyebrow" id="lib-count"></div>' +
-               '<div id="lib-list"></div>' +
-               '<div class="lib-foot"><button class="btn ghost" id="btn-packs2">Gérer les packs</button></div>' +
-               "</section>";
-            $("btn-add").onclick = () => openCardForm(null);
-            $("lib-q").oninput = (e) => {
-               lib.q = e.target.value;
-               updateLibList();
-            };
-            document.querySelectorAll("[data-lflt]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     lib.flt = b.dataset.lflt;
-                     renderLib();
-                  }),
-            );
-            $("lib-cat").onchange = (e) => {
-               lib.cat = e.target.value;
-               renderLib();
-            };
-            $("lib-sort").onchange = (e) => {
-               lib.sort = e.target.value;
-               renderLib();
-            };
-            $("btn-packs2").onclick = openPacksSheet;
-            updateLibList();
-         }
+/* ================= Mes mots : packs, catégories et cartes ================= */
+let lib = {
+   level: "packs",
+   packId: "",
+   categoryId: "",
+   q: "",
+   flt: "all",
+   selected: new Set(),
+};
 
-         /* -------- fiche carte -------- */
-         function openCardDetail(id) {
-            const c = db.cards.find((x) => x.id === id);
-            if (!c) return;
-            const status = [];
-            if (c.acquired)
-               status.push('<span class="b jade">maîtrisé</span>');
-            else if (c.due != null)
-               status.push(
-                  '<span class="b gold">À revoir ' + fmtDate(c.due) + "</span>",
-               );
-            else status.push('<span class="b">à apprendre</span>');
-            status.push('<span class="b u">Niveau ' + (c.lvl || 0) + "</span>");
-            const packCk = db.packs.length
-               ? '<div class="eyebrow">Packs</div>' +
-                 db.packs
-                    .map(
-                       (p) =>
-                          '<label class="ck"><input type="checkbox" data-pk="' +
-                          p.id +
-                          '"' +
-                          (p.cardIds.includes(c.id) ? " checked" : "") +
-                          "> " +
-                          esc(p.name) +
-                          "</label>",
-                    )
-                    .join("")
-               : "";
-            openSheet(
-               '<div class="cd-head"><div class="cd-hz" data-say="' +
-                  esc(c.hz) +
-                  '">' +
-                  esc(c.hz) +
-                  '</div><button class="seal" data-say="' +
-                  esc(c.hz) +
-                  '" aria-label="Écouter">听</button></div>' +
-                  (c.py
-                     ? '<div class="cd-py">' + colorPinyin(c.py) + "</div>"
-                     : "") +
-                  '<div class="cd-fr">' +
-                  esc(c.fr) +
-                  "</div>" +
-                  "<div>" +
-                  (c.cat
-                     ? '<span class="cd-cat">' + esc(c.cat) + "</span>"
-                     : "") +
-                  (c.unit != null
-                     ? '<span class="cd-cat">U' +
-                       c.unit +
-                       " · " +
-                       esc(unitName(c.unit)) +
-                       "</span>"
-                     : "") +
-                  "</div>" +
-                  (c.exHz ? exampleHtml(c) : "") +
-                  noteHtml(c) +
-                  '<div class="cd-status">' +
-                  status.join(" ") +
-                  "</div>" +
-                  '<div class="acts" style="justify-content:flex-start">' +
-                  '<button class="act' +
-                  (c.fav ? " on" : "") +
-                  '" id="cd-fav">Favori</button>' +
-                  '<button class="act" id="cd-hard">Programmer</button>' +
-                  '<button class="act' +
-                  (c.acquired ? " on jade" : "") +
-                  '" id="cd-acq">Maîtrisé</button>' +
-                  "</div>" +
-                  packCk +
-                  '<div class="sh-btns">' +
-                  '<button class="btn primary" id="cd-write">写 Écrire ce mot</button>' +
-                  '<button class="btn" id="cd-edit">Modifier</button>' +
-                  '<button class="btn danger" id="cd-del">Supprimer</button>' +
-                  '<button class="btn ghost" id="cd-close">Fermer</button>' +
-                  "</div>",
-            );
-            $("cd-fav").onclick = () => {
-               c.fav = !c.fav;
-               save();
-               openCardDetail(id);
-               updateLibList();
-            };
-            $("cd-acq").onclick = () => {
-               c.acquired = !c.acquired;
-               if (c.acquired) c.due = null;
-               save();
-               openCardDetail(id);
-               updateLibList();
-            };
-            $("cd-hard").onclick = () =>
-               openDelaySheet(c, () => {
-                  openCardDetail(id);
-                  updateLibList();
-               });
-            $("cd-edit").onclick = () => openCardForm(c);
-            $("cd-write").onclick = () => openWritingWord(c.hz);
-            $("cd-del").onclick = () => {
-               if (!confirm("Supprimer « " + c.hz + " » ?")) return;
-               db.cards = db.cards.filter((x) => x.id !== id);
-               db.packs.forEach((p) => {
-                  p.cardIds = p.cardIds.filter((i) => i !== id);
-               });
-               invalidateDictIndex();
-               save();
-               closeSheet();
-               refreshActive();
-               toast("Carte supprimée.");
-            };
-            $("cd-close").onclick = closeSheet;
-            document.querySelectorAll("#sheet [data-pk]").forEach(
-               (ck) =>
-                  (ck.onchange = (e) => {
-                     const p = db.packs.find((p) => p.id === ck.dataset.pk);
-                     if (!p) return;
-                     if (e.target.checked) {
-                        if (!p.cardIds.includes(c.id)) p.cardIds.push(c.id);
-                     } else p.cardIds = p.cardIds.filter((i) => i !== c.id);
-                     save();
-                  }),
-            );
-         }
+function dueCount(cards) {
+   return cards.filter(isDue).length;
+}
 
-         /* -------- formulaire carte -------- */
-         function openCardForm(c) {
-            const existing = c ? db.cards.find((card) => card.id === c.id) : null;
-            const cats = Array.from(
-               new Set(db.cards.map((x) => x.cat).filter(Boolean)),
-            ).sort((a, b) => a.localeCompare(b, "fr"));
-            const val = (k) => esc(c ? (c[k] ?? "") : "");
-            openSheet(
-               '<h3 class="sh-t">' +
-                  (existing ? "Modifier la carte" : "Nouvelle carte") +
-                  "</h3>" +
-                  '<label class="f-lab">Caractères 汉字 *<input class="search" id="fm-hz" value="' +
-                  val("hz") +
-                  '"></label>' +
-                  '<label class="f-lab">Pinyin<input class="search" id="fm-py" value="' +
-                  val("py") +
-                  '" placeholder="ni3 hao3 ou nǐ hǎo" autocapitalize="off"></label>' +
-                  '<label class="f-lab">Français *<input class="search" id="fm-fr" value="' +
-                  val("fr") +
-                  '"></label>' +
-                  '<label class="f-lab">Catégorie<input class="search" id="fm-cat" list="cats-dl" value="' +
-                  val("cat") +
-                  '"><datalist id="cats-dl">' +
-                  cats.map((x) => '<option value="' + esc(x) + '">').join("") +
-                  "</datalist></label>" +
-                  '<label class="f-lab">Exemple 中文<input class="search" id="fm-exhz" value="' +
-                  val("exHz") +
-                  '"></label>' +
-                  '<label class="f-lab">Exemple pinyin<input class="search" id="fm-expy" value="' +
-                  val("exPy") +
-                  '" autocapitalize="off"></label>' +
-                  '<label class="f-lab">Exemple français<input class="search" id="fm-exfr" value="' +
-                  val("exFr") +
-                  '"></label>' +
-                  '<label class="f-lab">Note (prononciation, nuance…)<input class="search" id="fm-note" value="' +
-                  val("note") +
-                  '"></label>' +
-                  '<div class="sh-btns"><button class="btn primary" id="fm-save">Enregistrer</button><button class="btn ghost" id="fm-cancel">Annuler</button></div>',
-            );
-            $("fm-cancel").onclick = closeSheet;
-            $("fm-save").onclick = () => {
-               const hz = $("fm-hz").value.trim();
-               const fr = $("fm-fr").value.trim();
-               if (!hz || !fr) {
-                  toast("Caractères et français sont obligatoires.");
-                  return;
-               }
-               const py = numToAccent($("fm-py").value.trim());
-               const key = hz + "§" + flatten(py);
-               const dup = db.cards.find(
-                  (x) => cardKey(x) === key && (!c || x.id !== c.id),
-               );
-               if (dup) {
-                  toast(
-                     "« " +
-                        hz +
-                        " » (" +
-                        (py || "sans pinyin") +
-                        ") existe déjà.",
-                  );
-                  return;
-               }
-               const fields = {
-                  hz,
-                  fr,
-                  py,
-                  cat: $("fm-cat").value.trim(),
-                  exHz: $("fm-exhz").value.trim(),
-                  exPy: numToAccent($("fm-expy").value.trim()),
-                  exFr: $("fm-exfr").value.trim(),
-                  note: $("fm-note").value.trim(),
-               };
-               if (existing) Object.assign(existing, fields);
-               else db.cards.push(normalizeCard(fields, false));
-               invalidateDictIndex();
-               save();
-               closeSheet();
-               refreshActive();
-               toast(existing ? "Carte modifiée." : "Carte ajoutée.");
-            };
-         }
+function libraryScopeCards() {
+   if (lib.level === "category" && lib.categoryId) return cardsForCategory(lib.categoryId);
+   if (lib.level === "pack" && lib.packId) return cardsForPack(lib.packId);
+   return db.cards.slice();
+}
 
-         /* -------- packs -------- */
-         function upsertPack(name, ids) {
-            let p = db.packs.find(
-               (p) => p.name.toLowerCase() === name.toLowerCase(),
-            );
-            if (!p) {
-               p = { id: uid(), name, cardIds: [] };
-               db.packs.push(p);
-            }
-            const set = new Set(p.cardIds);
-            ids.forEach((id) => set.add(id));
-            p.cardIds = Array.from(set);
-            return p;
-         }
-         function openPacksSheet() {
-            const rows =
-               db.packs
-                  .map((p) => {
-                     const n = p.cardIds.filter((id) =>
-                        db.cards.some((c) => c.id === id),
-                     ).length;
-                     return (
-                        '<div class="pk-row">' +
-                        '<div class="pk-info"><b>' +
-                        esc(p.name) +
-                        "</b><span>" +
-                        n +
-                        " carte" +
-                        (n > 1 ? "s" : "") +
-                        "</span></div>" +
-                        '<div class="pk-btns">' +
-                        '<button class="btn sm" data-rev="' +
-                        p.id +
-                        '">Réviser</button>' +
-                        '<button class="btn sm ghost" data-ren="' +
-                        p.id +
-                        '">Renommer</button>' +
-                        '<button class="btn sm danger" data-del="' +
-                        p.id +
-                        '">×</button>' +
-                        "</div></div>"
-                     );
-                  })
-                  .join("") ||
-               "<p class=\"sh-p\">Aucun pack pour l'instant. Crée-en un ici, puis ajoute-lui des mots depuis leur fiche.</p>";
-            openSheet(
-               '<h3 class="sh-t">Packs</h3>' +
-                  rows +
-                  '<div class="pk-new"><input class="search" id="pk-name" placeholder="Nom du nouveau pack"><button class="btn" id="pk-create">Créer</button></div>' +
-                  '<button class="btn ghost wide" id="pk-close">Fermer</button>',
-            );
-            document.querySelectorAll("#sheet [data-rev]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     hub.pack = b.dataset.rev;
-                     hub.flt = "all";
-                     hub.freeOpen = true;
-                     closeSheet();
-                     setView("learn");
-                  }),
-            );
-            document.querySelectorAll("#sheet [data-ren]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     const p = db.packs.find((p) => p.id === b.dataset.ren);
-                     if (!p) return;
-                     const name = prompt("Nouveau nom du pack :", p.name);
-                     if (name && name.trim()) {
-                        p.name = name.trim();
-                        save();
-                        openPacksSheet();
-                     }
-                  }),
-            );
-            document.querySelectorAll("#sheet [data-del]").forEach(
-               (b) =>
-                  (b.onclick = () => {
-                     const p = db.packs.find((p) => p.id === b.dataset.del);
-                     if (!p) return;
-                     if (
-                        !confirm(
-                           "Supprimer le pack « " +
-                              p.name +
-                              " » ? (les cartes sont conservées)",
-                        )
-                     )
-                        return;
-                     db.packs = db.packs.filter((x) => x.id !== p.id);
-                     if (hub.pack === p.id) hub.pack = "";
-                     save();
-                     openPacksSheet();
-                  }),
-            );
-            $("pk-create").onclick = () => {
-               const name = $("pk-name").value.trim();
-               if (!name) {
-                  toast("Donne un nom au pack.");
-                  return;
-               }
-               if (
-                  db.packs.some(
-                     (p) => p.name.toLowerCase() === name.toLowerCase(),
-                  )
-               ) {
-                  toast("Ce pack existe déjà.");
-                  return;
-               }
-               db.packs.push({ id: uid(), name, cardIds: [] });
-               save();
-               openPacksSheet();
-            };
-            $("pk-close").onclick = closeSheet;
-         }
+function libraryFilteredCards() {
+   let cards = libraryScopeCards();
+   const query = lib.q.trim();
+   const flat = flatten(query);
+   if (query) {
+      cards = cards.filter((card) =>
+         card.hz.includes(query) ||
+         flatten(card.py).includes(flat) ||
+         flatten(card.fr).includes(flat) ||
+         flatten((card.tags || []).join(" ")).includes(flat),
+      );
+   }
+   if (lib.flt === "fav") cards = cards.filter((card) => card.fav);
+   else if (lib.flt === "difficult") cards = cards.filter((card) => card.difficult);
+   else if (lib.flt === "new") cards = cards.filter((card) => card.due == null && !card.acquired);
+   else if (lib.flt === "mastered") cards = cards.filter((card) => card.acquired);
+   else if (lib.flt === "due") cards = cards.filter(isDue);
+   return cards.sort((a, b) => b.created - a.created);
+}
+
+function libraryBreadcrumb() {
+   const pack = db.packs.find((item) => item.id === lib.packId);
+   const category = categoryById(lib.categoryId);
+   if (lib.level === "category" && pack && category)
+      return '<button class="lib-crumb" data-lib-go="packs">Mes mots</button><span>›</span><button class="lib-crumb" data-lib-go="pack">' + esc(pack.name) + '</button><span>›</span><strong>' + esc(category.name) + "</strong>";
+   if (lib.level === "pack" && pack)
+      return '<button class="lib-crumb" data-lib-go="packs">Mes mots</button><span>›</span><strong>' + esc(pack.name) + "</strong>";
+   if (lib.level === "all")
+      return '<button class="lib-crumb" data-lib-go="packs">Mes mots</button><span>›</span><strong>Tous les mots</strong>';
+   return "";
+}
+
+function libraryHeaderHtml() {
+   return '<header class="library-head"><div><p class="eyebrow">Bibliothèque personnelle</p><h2 class="v-t">库 · Mes mots</h2><p class="muted">Tes packs et ta progression, séparés du dictionnaire et des listes HSK.</p></div><button class="btn primary lib-import-main" id="lib-import">Importer un pack</button></header>' +
+      (lib.level !== "packs" ? '<nav class="lib-breadcrumb" aria-label="Fil d’Ariane">' + libraryBreadcrumb() + "</nav>" : "");
+}
+
+function packTileHtml(pack) {
+   const categories = categoriesForPack(pack.id);
+   const cards = cardsForPack(pack.id);
+   return '<article class="pack-tile"><button class="pack-open" data-pack-open="' + esc(pack.id) + '"><span class="pack-mark">册</span><span class="pack-copy"><strong>' + esc(pack.name) + '</strong><span>' + categories.length + ' sous-catégorie' + (categories.length > 1 ? "s" : "") + ' · ' + cards.length + ' mot' + (cards.length > 1 ? "s" : "") + '</span></span><span class="due-pill">' + dueCount(cards) + ' à revoir</span></button><div class="tile-actions"><button class="btn sm ghost" data-pack-review="' + esc(pack.id) + '">Réviser</button><button class="btn sm ghost" data-pack-export="' + esc(pack.id) + '">Exporter</button><button class="btn sm ghost" data-pack-rename="' + esc(pack.id) + '">Renommer</button><button class="btn sm danger" data-pack-delete="' + esc(pack.id) + '">Supprimer</button></div></article>';
+}
+
+function renderPackLibrary() {
+   const root = $("view");
+   root.innerHTML = '<section class="library-page">' + libraryHeaderHtml() +
+      '<div class="library-toolbar"><button class="btn" id="lib-create-pack">Créer un pack</button><button class="btn ghost" id="lib-show-all">Voir tous les mots (' + db.cards.length + ')</button><button class="btn ghost" id="lib-export">Exporter</button></div>' +
+      (db.packs.length ? '<div class="pack-grid">' + db.packs.map(packTileHtml).join("") + "</div>" : '<div class="lib-empty card"><div class="pack-mark large">册</div><h3>Aucun pack</h3><p>Crée un pack ou importe directement un JSON. Tes anciennes cartes restent accessibles dans « Tous les mots ».</p></div>') +
+      "</section>";
+   wireLibraryCommon();
+   $("lib-create-pack").onclick = () => {
+      const name = prompt("Nom du nouveau pack :");
+      const pack = createPersonalPack(name);
+      if (pack) { lib.packId = pack.id; lib.level = "pack"; renderLib(); }
+   };
+   $("lib-show-all").onclick = () => { lib.level = "all"; lib.packId = ""; lib.categoryId = ""; lib.selected.clear(); renderLib(); };
+   $("lib-export").onclick = openLibraryExportSheet;
+   root.querySelectorAll("[data-pack-open]").forEach((button) => button.onclick = () => {
+      lib.level = "pack"; lib.packId = button.dataset.packOpen; lib.categoryId = ""; lib.selected.clear(); renderLib();
+   });
+   root.querySelectorAll("[data-pack-review]").forEach((button) => button.onclick = () => reviewLibraryCards(cardsForPack(button.dataset.packReview), "Pack · " + db.packs.find((pack) => pack.id === button.dataset.packReview).name));
+   root.querySelectorAll("[data-pack-export]").forEach((button) => button.onclick = () => {
+      const pack = db.packs.find((item) => item.id === button.dataset.packExport);
+      downloadJson(buildLibraryExport([pack.id]), "mo-studio-pack-" + flatten(pack.name) + ".json");
+   });
+   root.querySelectorAll("[data-pack-rename]").forEach((button) => button.onclick = () => {
+      const pack = db.packs.find((item) => item.id === button.dataset.packRename);
+      const name = prompt("Nouveau nom du pack :", pack.name);
+      if (name && name.trim()) { pack.name = name.trim(); pack.updated = Date.now(); save(); renderLib(); }
+   });
+   root.querySelectorAll("[data-pack-delete]").forEach((button) => button.onclick = () => {
+      const pack = db.packs.find((item) => item.id === button.dataset.packDelete);
+      if (!confirm("Supprimer le pack « " + pack.name + " » et sa structure ? Les cartes resteront dans Mes mots.")) return;
+      deletePersonalPack(pack.id); renderLib();
+   });
+}
+
+function categoryTileHtml(category) {
+   const cards = cardsForCategory(category.id);
+   return '<article class="category-tile"><button class="category-open" data-category-open="' + esc(category.id) + '"><span><strong>' + esc(category.name) + '</strong><small>' + cards.length + ' mot' + (cards.length > 1 ? "s" : "") + ' · ' + dueCount(cards) + ' à revoir</small></span><span aria-hidden="true">›</span></button><div class="tile-actions"><button class="btn sm primary" data-category-review="' + esc(category.id) + '">Réviser</button><button class="btn sm ghost" data-category-rename="' + esc(category.id) + '">Renommer</button><button class="btn sm danger" data-category-delete="' + esc(category.id) + '">Supprimer</button></div></article>';
+}
+
+function renderPackDetail() {
+   const root = $("view");
+   const pack = db.packs.find((item) => item.id === lib.packId);
+   if (!pack) { lib.level = "packs"; renderLib(); return; }
+   const categories = categoriesForPack(pack.id);
+   root.innerHTML = '<section class="library-page">' + libraryHeaderHtml() +
+      '<div class="pack-detail-title"><div><h3>' + esc(pack.name) + '</h3>' + (pack.description ? '<p class="muted">' + esc(pack.description) + "</p>" : "") + '</div><div class="library-toolbar"><button class="btn primary" id="pack-review-all">Réviser ce pack</button><button class="btn" id="pack-add-category">Créer une sous-catégorie</button><button class="btn ghost" id="pack-add-word">Ajouter un mot</button></div></div>' +
+      (categories.length ? '<div class="category-list">' + categories.map(categoryTileHtml).join("") + "</div>" : '<div class="lib-empty card"><h3>Ce pack n’a pas encore de sous-catégorie</h3><p>Crée par exemple « Chapitre 1 » pour commencer à l’organiser.</p></div>') +
+      "</section>";
+   wireLibraryCommon(); wireBreadcrumbs();
+   $("pack-review-all").onclick = () => reviewLibraryCards(cardsForPack(pack.id), "Pack · " + pack.name);
+   $("pack-add-category").onclick = () => {
+      const name = prompt("Nom de la sous-catégorie :");
+      if (createPersonalCategory(pack.id, name)) renderLib();
+   };
+   $("pack-add-word").onclick = () => openCardForm(null, categories.map((category) => category.id));
+   root.querySelectorAll("[data-category-open]").forEach((button) => button.onclick = () => {
+      lib.level = "category"; lib.categoryId = button.dataset.categoryOpen; lib.selected.clear(); renderLib();
+   });
+   root.querySelectorAll("[data-category-review]").forEach((button) => button.onclick = () => {
+      const category = categoryById(button.dataset.categoryReview);
+      reviewLibraryCards(cardsForCategory(category.id), pack.name + " · " + category.name);
+   });
+   root.querySelectorAll("[data-category-rename]").forEach((button) => button.onclick = () => {
+      const category = categoryById(button.dataset.categoryRename);
+      const name = prompt("Nouveau nom :", category.name);
+      if (name && name.trim()) { category.name = name.trim(); category.updated = Date.now(); save(); renderLib(); }
+   });
+   root.querySelectorAll("[data-category-delete]").forEach((button) => button.onclick = () => {
+      const category = categoryById(button.dataset.categoryDelete);
+      if (!confirm("Supprimer la sous-catégorie « " + category.name + " » ? Les cartes resteront dans Mes mots.")) return;
+      deletePersonalCategory(category.id); renderLib();
+   });
+}
+
+function wordRowHtml(card) {
+   const checked = lib.selected.has(card.id);
+   return '<div class="word-select-row"><label class="word-check"><input type="checkbox" data-word-check="' + esc(card.id) + '"' + (checked ? " checked" : "") + '><span class="sr-only">Sélectionner ' + esc(card.hz) + '</span></label><button class="word-open" data-word-open="' + esc(card.id) + '"><span class="row-hz">' + esc(card.hz) + '</span><span class="row-mid"><span class="row-py">' + (card.py ? colorPinyin(card.py) : '<em>pinyin manquant</em>') + '</span><span class="row-fr">' + (card.fr ? esc(card.fr) : '<em>traduction manquante</em>') + '</span></span><span class="row-badges">' + (card.fav ? '<i class="b red">Favori</i>' : "") + (card.difficult ? '<i class="b gold">Difficile</i>' : "") + (isDue(card) ? '<i class="b gold">Due</i>' : "") + (card.acquired ? '<i class="b jade">Maîtrisé</i>' : "") + (card.incomplete ? '<i class="b">Incomplet</i>' : "") + "</span></button></div>";
+}
+
+function filterChip(value, label) {
+   return '<button class="chip" data-lib-filter="' + value + '" aria-pressed="' + String(lib.flt === value) + '">' + label + "</button>";
+}
+
+function renderWordList() {
+   const root = $("view");
+   const cards = libraryFilteredCards();
+   const scope = libraryScopeCards();
+   const category = categoryById(lib.categoryId);
+   const title = category ? category.name : "Tous les mots";
+   root.innerHTML = '<section class="library-page">' + libraryHeaderHtml() +
+      '<div class="word-list-title"><div><h3>' + esc(title) + '</h3><p class="muted">' + scope.length + ' carte' + (scope.length > 1 ? "s" : "") + ' dans cette vue</p></div><div class="library-toolbar">' + (category ? '<button class="btn primary" id="category-review">Réviser cette sous-catégorie</button>' : "") + '<button class="btn" id="word-add">Ajouter un mot</button></div></div>' +
+      '<div class="word-tools card"><input class="search" id="lib-search" value="' + esc(lib.q) + '" placeholder="Rechercher un mot, un sens ou un tag"><div class="chips">' + filterChip("all", "Tous") + filterChip("due", "À revoir") + filterChip("fav", "Favoris") + filterChip("difficult", "Difficiles") + filterChip("new", "Nouveaux") + filterChip("mastered", "Maîtrisés") + '</div><div class="selection-tools"><button class="btn sm ghost" data-select-mode="all">Tout sélectionner</button><button class="btn sm ghost" data-select-mode="none">Tout désélectionner</button><button class="btn sm ghost" data-select-mode="due">Seulement dues</button><button class="btn sm ghost" data-select-mode="new">Seulement nouvelles</button></div></div>' +
+      '<div class="bulk-bar"' + (lib.selected.size ? "" : " hidden") + '><strong>' + lib.selected.size + ' sélectionnée' + (lib.selected.size > 1 ? "s" : "") + '</strong><button class="btn sm primary" id="selected-review">Réviser</button><button class="btn sm" id="selected-move">Déplacer / ajouter</button><button class="btn sm danger" id="selected-delete">Supprimer</button></div>' +
+      '<div class="word-list" id="lib-list">' + (cards.length ? cards.map(wordRowHtml).join("") : '<p class="lib-no-results">Aucun mot ne correspond à cette sélection.</p>') + '</div></section>';
+   wireLibraryCommon(); wireBreadcrumbs(); wireWordList(cards);
+   if ($("category-review")) $("category-review").onclick = () => reviewLibraryCards(scope, "Sous-catégorie · " + title);
+   $("word-add").onclick = () => openCardForm(null, category ? [category.id] : []);
+}
+
+function wireWordList(visibleCards) {
+   $("lib-search").oninput = (event) => { lib.q = event.target.value; renderWordList(); };
+   document.querySelectorAll("[data-lib-filter]").forEach((button) => button.onclick = () => { lib.flt = button.dataset.libFilter; renderWordList(); });
+   document.querySelectorAll("[data-word-check]").forEach((input) => input.onchange = () => {
+      if (input.checked) lib.selected.add(input.dataset.wordCheck); else lib.selected.delete(input.dataset.wordCheck);
+      renderWordList();
+   });
+   document.querySelectorAll("[data-word-open]").forEach((button) => button.onclick = () => openCardDetail(button.dataset.wordOpen));
+   document.querySelectorAll("[data-select-mode]").forEach((button) => button.onclick = () => {
+      if (button.dataset.selectMode === "none") lib.selected.clear();
+      else {
+         const picked = button.dataset.selectMode === "due" ? visibleCards.filter(isDue) : button.dataset.selectMode === "new" ? visibleCards.filter((card) => card.due == null && !card.acquired) : visibleCards;
+         lib.selected = new Set(picked.map((card) => card.id));
+      }
+      renderWordList();
+   });
+   if ($("selected-review")) $("selected-review").onclick = () => reviewLibraryCards(db.cards.filter((card) => lib.selected.has(card.id)), "Sélection manuelle");
+   if ($("selected-delete")) $("selected-delete").onclick = () => {
+      if (!confirm("Supprimer définitivement " + lib.selected.size + " carte(s) personnelle(s) ?")) return;
+      removeCardsFromLibrary(Array.from(lib.selected)); lib.selected.clear(); renderLib();
+   };
+   if ($("selected-move")) $("selected-move").onclick = openMoveSelectedSheet;
+}
+
+function wireBreadcrumbs() {
+   document.querySelectorAll("[data-lib-go]").forEach((button) => button.onclick = () => {
+      if (button.dataset.libGo === "packs") { lib.level = "packs"; lib.packId = ""; lib.categoryId = ""; }
+      else { lib.level = "pack"; lib.categoryId = ""; }
+      lib.selected.clear(); renderLib();
+   });
+}
+
+function wireLibraryCommon() {
+   if ($("lib-import")) $("lib-import").onclick = openPackImportSheet;
+}
+
+function renderLib() {
+   ensurePersonalLibraryShape();
+   if (lib.level === "pack") renderPackDetail();
+   else if (lib.level === "category" || lib.level === "all") renderWordList();
+   else renderPackLibrary();
+}
+
+function reviewLibraryCards(cards, label) {
+   if (!cards.length) { toast("Aucune carte dans cette sélection."); return; }
+   manualReviewIds = new Set(cards.map((card) => card.id));
+   reviewSelectionMode = "manual";
+   reviewScopeLabel = label;
+   setView("learn");
+}
+
+function openMoveSelectedSheet() {
+   const current = lib.categoryId;
+   openSheet('<h3 class="sh-t">Déplacer ou ajouter</h3><p class="sh-p">Choisis la destination pour les ' + lib.selected.size + ' mots sélectionnés.</p><label class="f-lab">Sous-catégorie<select class="search" id="move-target">' + db.packs.map((pack) => '<optgroup label="' + esc(pack.name) + '">' + categoriesForPack(pack.id).map((category) => '<option value="' + esc(category.id) + '">' + esc(category.name) + "</option>").join("") + "</optgroup>").join("") + '</select></label><label class="ck"><input type="checkbox" id="move-copy" checked> Conserver aussi l’appartenance actuelle</label><div class="sh-btns"><button class="btn primary" id="move-confirm">Confirmer</button><button class="btn ghost" data-sheet-close>Annuler</button></div>');
+   $("move-confirm").onclick = () => {
+      const target = $("move-target").value;
+      if (!target) return;
+      lib.selected.forEach((cardId) => addCardMembership(cardId, target));
+      if (!$("move-copy").checked && current && current !== target)
+         db.memberships = db.memberships.filter((membership) => !(membership.categoryId === current && lib.selected.has(membership.cardId)));
+      syncLegacyPackCardIds(); save(); closeSheet(); renderLib(); toast("Appartenances mises à jour.");
+   };
+}
+
+function cardCategoryCheckboxes(card, checkedIds) {
+   const checked = new Set(checkedIds || (card ? categoriesForCard(card.id).map((category) => category.id) : []));
+   if (!db.packs.length) return '<p class="sh-note">Crée d’abord un pack et une sous-catégorie pour classer ce mot.</p>';
+   return '<div class="category-check-groups">' + db.packs.map((pack) => '<fieldset><legend>' + esc(pack.name) + '</legend>' + (categoriesForPack(pack.id).map((category) => '<label class="ck"><input type="checkbox" data-card-category="' + esc(category.id) + '"' + (checked.has(category.id) ? " checked" : "") + '> ' + esc(category.name) + "</label>").join("") || '<span class="sh-note">Aucune sous-catégorie</span>') + "</fieldset>").join("") + "</div>";
+}
+
+function openCardDetail(id) {
+   const card = db.cards.find((item) => item.id === id);
+   if (!card) return;
+   openSheet('<div class="cd-head"><div><div class="cd-hz" data-say="' + esc(card.hz) + '">' + esc(card.hz) + '</div><div class="cd-py">' + (card.py ? colorPinyin(card.py) : "Pinyin manquant") + '</div><div class="cd-fr">' + (esc(card.fr) || "Traduction manquante") + '</div></div><button class="seal" data-say="' + esc(card.hz) + '" aria-label="Écouter">听</button></div>' + (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") + '<div class="acts"><button class="act' + (card.fav ? " on" : "") + '" id="card-favorite">Favori</button><button class="act' + (card.difficult ? " on" : "") + '" id="card-difficult">Difficile</button><button class="act' + (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div><div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) + '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" data-sheet-close>Fermer</button></div>');
+   $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id); };
+   $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id); };
+   $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id); };
+   document.querySelectorAll("[data-card-category]").forEach((input) => input.onchange = () => {
+      if (input.checked) addCardMembership(card.id, input.dataset.cardCategory);
+      else db.memberships = db.memberships.filter((membership) => !(membership.cardId === card.id && membership.categoryId === input.dataset.cardCategory));
+      syncLegacyPackCardIds(); save();
+   });
+   $("card-review-one").onclick = () => { closeSheet(); reviewLibraryCards([card], "Mot · " + card.hz); };
+   $("card-edit").onclick = () => openCardForm(card);
+   $("card-delete").onclick = () => { if (confirm("Supprimer définitivement « " + card.hz + " » ?")) { removeCardsFromLibrary([card.id]); closeSheet(); lib.selected.delete(card.id); renderLib(); } };
+}
+
+function openCardForm(card, initialCategoryIds) {
+   const existingCard = card && db.cards.find((item) => item.id === card.id);
+   const current = card || {};
+   openSheet('<h3 class="sh-t">' + (existingCard ? "Modifier le mot" : "Ajouter un mot") + '</h3><label class="f-lab">Caractères chinois *<input class="search" id="word-hz" value="' + esc(current.hz || "") + '"></label><label class="f-lab">Pinyin<input class="search" id="word-py" value="' + esc(current.py || "") + '"></label><label class="f-lab">Traduction<input class="search" id="word-fr" value="' + esc(current.fr || "") + '"></label><label class="f-lab">Notes<textarea class="search" id="word-note" rows="2">' + esc(current.note || "") + '</textarea></label><label class="f-lab">Tags, séparés par des virgules<input class="search" id="word-tags" value="' + esc((current.tags || []).join(", ")) + '"></label><div class="eyebrow">Sous-catégories</div>' + cardCategoryCheckboxes(existingCard, initialCategoryIds) + '<div class="sh-btns"><button class="btn primary" id="word-save">Enregistrer</button><button class="btn ghost" data-sheet-close>Annuler</button></div>');
+   $("word-save").onclick = async () => {
+      const chinese = $("word-hz").value.trim();
+      if (!chinese) { toast("Les caractères chinois sont obligatoires."); return; }
+      let pinyin = $("word-py").value.trim(); let translation = $("word-fr").value.trim();
+      if (!pinyin || !translation) { const match = await dictionaryCompletion(chinese); if (match) { pinyin ||= match.pinyin; translation ||= match.translation; } }
+      const candidate = { hz: chinese, py: pinyin, fr: translation, senseId: current.senseId || "" };
+      const duplicate = db.cards.find((item) => item.id !== (existingCard && existingCard.id) && personalCardKey(item) === personalCardKey(candidate));
+      const saved = existingCard || duplicate || normalizeCard(candidate, false);
+      saved.hz = chinese; saved.py = pinyin; saved.fr = translation; saved.note = $("word-note").value.trim(); saved.tags = $("word-tags").value.split(",").map((tag) => tag.trim()).filter(Boolean); saved.incomplete = !pinyin || !translation; saved.updated = Date.now();
+      if (!existingCard && !duplicate) db.cards.push(saved);
+      const checked = new Set(Array.from(document.querySelectorAll("[data-card-category]:checked")).map((input) => input.dataset.cardCategory));
+      if (existingCard) db.memberships = db.memberships.filter((membership) => membership.cardId !== saved.id || checked.has(membership.categoryId));
+      checked.forEach((categoryId) => addCardMembership(saved.id, categoryId));
+      syncLegacyPackCardIds(); invalidateDictIndex(); save(); closeSheet(); renderLib(); toast(duplicate ? "Mot existant ajouté aux sous-catégories." : "Mot enregistré.");
+   };
+}
+
+function openPacksSheet() {
+   closeSheet(); lib.level = "packs"; lib.packId = ""; lib.categoryId = ""; setView("lib");
+}
+
+function openPackImportSheet() {
+   openSheet('<h3 class="sh-t">Importer un pack</h3><p class="sh-p">Le JSON est recommandé. Tu peux aussi choisir un CSV simple ou coller un JSON généré par ChatGPT.</p><div class="import-source-grid"><button class="btn primary" id="import-json-file">Choisir un fichier JSON</button><button class="btn" id="import-csv-file">Choisir un fichier CSV</button><button class="btn ghost" id="import-example">Voir un exemple JSON</button></div><label class="f-lab">Coller du JSON<textarea class="search import-paste" id="import-paste" rows="9" placeholder="{ &quot;version&quot;: 1, … }"></textarea></label><div class="sh-btns"><button class="btn primary" id="import-paste-preview">Prévisualiser le JSON collé</button><button class="btn ghost" data-sheet-close>Annuler</button></div><input type="file" id="pack-file-json" accept=".json,application/json" hidden><input type="file" id="pack-file-csv" accept=".csv,text/csv" hidden>');
+   $("import-json-file").onclick = () => $("pack-file-json").click();
+   $("import-csv-file").onclick = () => $("pack-file-csv").click();
+   $("import-example").onclick = openPackExampleSheet;
+   $("import-paste-preview").onclick = () => previewPackImportText($("import-paste").value, "json");
+   $("pack-file-json").onchange = (event) => readPackImportFile(event.target.files[0], "json");
+   $("pack-file-csv").onchange = (event) => readPackImportFile(event.target.files[0], "csv");
+}
+
+function readPackImportFile(file, type) {
+   if (!file) return;
+   const reader = new FileReader();
+   reader.onload = () => previewPackImportText(String(reader.result || ""), type);
+   reader.onerror = () => toast("Impossible de lire ce fichier.");
+   reader.readAsText(file);
+}
+
+async function previewPackImportText(text, type) {
+   try {
+      const payload = type === "csv" ? csvToPackPayload(text) : parsePackJson(text);
+      openSheet('<h3 class="sh-t">Analyse de l’import</h3><p class="sh-p">Vérification de la structure et du dictionnaire…</p><div class="import-loading" aria-label="Chargement"></div>');
+      const preview = await buildPackImportPreview(payload, type);
+      openPackImportPreview(preview);
+   } catch (error) {
+      openSheet('<h3 class="sh-t">Import impossible</h3><div class="import-error" role="alert">' + esc(error.message) + '</div><div class="sh-btns"><button class="btn ghost" id="import-back">Retour</button></div>');
+      $("import-back").onclick = openPackImportSheet;
+   }
+}
+
+function openPackImportPreview(preview) {
+   const names = preview.packs.map((pack) => pack.name).join(", ") || "—";
+   const errors = preview.errors.length ? '<div class="import-error" role="alert"><strong>Erreurs de structure</strong><ul>' + preview.errors.map((error) => '<li>' + esc(error) + "</li>").join("") + "</ul></div>" : "";
+   openSheet('<h3 class="sh-t">Aperçu avant import</h3><p class="sh-p"><strong>' + esc(names) + '</strong> · source ' + preview.sourceType.toUpperCase() + '</p><div class="import-stats"><div><b>' + preview.categoryCount + '</b><span>Sous-catégories</span></div><div><b>' + preview.wordCount + '</b><span>Mots</span></div><div><b>' + preview.duplicates + '</b><span>Doublons du fichier</span></div><div><b>' + preview.existing + '</b><span>Déjà présents</span></div><div><b>' + preview.missingDictionary + '</b><span>Absents du dictionnaire</span></div><div><b>' + preview.incomplete + '</b><span>Incomplets</span></div></div>' + errors + (preview.errors.length ? "" : '<fieldset class="import-options"><legend>Mode d’import</legend><label class="ck"><input type="radio" name="import-mode" value="new" checked> Créer un nouveau pack</label><label class="ck"><input type="radio" name="import-mode" value="merge"> Fusionner avec un pack existant</label><select class="search" id="import-target"><option value="">Choisir un pack existant</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '">' + esc(pack.name) + "</option>").join("") + '</select><label class="ck"><input type="checkbox" id="import-skip" checked> Ignorer les doublons internes</label><label class="ck"><input type="checkbox" id="import-replace-structure"> Remplacer uniquement la structure du pack, sans supprimer les cartes ni leur progression</label><label class="ck"><input type="checkbox" id="import-missing" checked> Importer les mots absents ou incomplets comme cartes personnelles</label></fieldset>') + '<div class="sh-btns">' + (preview.errors.length ? "" : '<button class="btn primary" id="import-confirm">Confirmer l’import</button>') + '<button class="btn ghost" id="import-cancel">Annuler</button></div><p class="sh-note">Aucune donnée n’a été modifiée pendant cet aperçu.</p>');
+   $("import-cancel").onclick = closeSheet;
+   if ($("import-confirm")) $("import-confirm").onclick = () => {
+      const mode = document.querySelector('input[name="import-mode"]:checked').value;
+      if (mode === "merge" && !$("import-target").value) { toast("Choisis le pack à fusionner."); return; }
+      const result = applyPackImport(preview, { mode, targetPackId: $("import-target").value, skipDuplicates: $("import-skip").checked, replaceStructure: $("import-replace-structure").checked, importMissing: $("import-missing").checked });
+      closeSheet(); lib.level = "packs"; renderLib(); toast(result.added + " nouvelle(s) carte(s), " + result.reused + " carte(s) réutilisée(s).");
+   };
+}
+
+function openPackExampleSheet() {
+   openSheet('<h3 class="sh-t">Exemple JSON</h3><p class="sh-p">Cet exemple est court, valide et directement copiable.</p><pre class="fmt" id="pack-json-example">' + esc(PACK_JSON_EXAMPLE) + '</pre><div class="sh-btns"><button class="btn primary" id="example-copy">Copier l’exemple</button><button class="btn ghost" id="example-back">Retour</button></div>');
+   $("example-copy").onclick = async () => { try { await navigator.clipboard.writeText(PACK_JSON_EXAMPLE); toast("Exemple copié."); } catch (_) { toast("Sélectionne le texte pour le copier."); } };
+   $("example-back").onclick = openPackImportSheet;
+}
+
+function openLibraryExportSheet() {
+   openSheet('<h3 class="sh-t">Exporter la bibliothèque</h3><p class="sh-p">L’export conserve la structure, les propriétés des mots et toute la progression SRS.</p><div class="export-pack-list">' + db.packs.map((pack) => '<label class="ck"><input type="checkbox" data-export-pack="' + esc(pack.id) + '"> ' + esc(pack.name) + "</label>").join("") + '</div><div class="sh-btns"><button class="btn primary" id="export-selected">Exporter les packs cochés</button><button class="btn" id="export-all-library">Exporter toute la bibliothèque</button><button class="btn ghost" data-sheet-close>Annuler</button></div>');
+   $("export-selected").onclick = () => { const ids = Array.from(document.querySelectorAll("[data-export-pack]:checked")).map((input) => input.dataset.exportPack); if (!ids.length) { toast("Coche au moins un pack."); return; } downloadJson(buildLibraryExport(ids), "mo-studio-packs.json"); };
+   $("export-all-library").onclick = () => downloadJson(buildLibraryExport(), "mo-studio-bibliotheque-complete.json");
+}
 
 "use strict";
 
@@ -11335,6 +12203,8 @@ async function renderSequence() {
                      .map((c) => normalizeCard(c, true))
                      .filter(Boolean);
                   db.packs = Array.isArray(b.packs) ? b.packs : [];
+                  db.categories = Array.isArray(b.categories) ? b.categories : [];
+                  db.memberships = Array.isArray(b.memberships) ? b.memberships : [];
                   db.units =
                      b.units && typeof b.units === "object" ? b.units : {};
                   session = { active: false };
@@ -11355,6 +12225,8 @@ async function renderSequence() {
                makeBackup();
                db.cards = [];
                db.packs = [];
+               db.categories = [];
+               db.memberships = [];
                db.units = {};
                hub = {
                   flt: "all",
@@ -11385,11 +12257,13 @@ async function renderSequence() {
          function exportData() {
             const data = {
                app: "mo-studio",
-               version: 2,
+               version: 3,
                exported: new Date().toISOString(),
                units: db.units,
                cards: db.cards,
                packs: db.packs,
+               categories: db.categories,
+               memberships: db.memberships,
                settings: db.settings,
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -11405,6 +12279,17 @@ async function renderSequence() {
             toast("Export téléchargé.");
          }
          function openImportSheet(data) {
+            if (
+               data &&
+               typeof data === "object" &&
+               (data.pack || (Array.isArray(data.packs) && data.packs.some((pack) => Array.isArray(pack.categories))))
+            ) {
+               openSheet('<h3 class="sh-t">Analyse de la sauvegarde</h3><p class="sh-p">Préparation d’un aperçu non destructif…</p><div class="import-loading"></div>');
+               buildPackImportPreview(data, "json")
+                  .then(openPackImportPreview)
+                  .catch((error) => toast(error.message));
+               return;
+            }
             const rawCards = Array.isArray(data)
                ? data
                : Array.isArray(data.cards)
@@ -11509,6 +12394,14 @@ async function renderSequence() {
                              cardIds: p.cardIds.filter((i) => ids.has(i)),
                           }))
                      : [];
+               db.categories =
+                  !Array.isArray(data) && Array.isArray(data.categories)
+                     ? data.categories.filter((category) => category && category.id && category.packId && category.name)
+                     : [];
+               db.memberships =
+                  !Array.isArray(data) && Array.isArray(data.memberships)
+                     ? data.memberships.filter((membership) => membership && membership.cardId && membership.categoryId)
+                     : [];
                db.units = inUnits || {};
             } else {
                db.cards = db.cards.concat(fresh);
@@ -11540,9 +12433,8 @@ async function renderSequence() {
             );
          }
          const FORMAT_CARD_EXAMPLE =
-            '[\n  {\n    "hz": "你好",\n    "fr": "bonjour"\n  }\n]';
-         const FORMAT_PACK_EXAMPLE =
-            '{\n  "name": "Mes premières expressions",\n  "units": {\n    "1": "Salutations"\n  },\n  "cards": [\n    {\n      "hz": "你好",\n      "fr": "bonjour",\n      "py": "ni3 hao3",\n      "cat": "Expressions",\n      "unit": 1,\n      "order": 1,\n      "exHz": "你好！很高兴认识你。",\n      "exPy": "ni3 hao3! hen3 gao1 xing4 ren4 shi5 ni3.",\n      "exFr": "Bonjour ! Ravi de te rencontrer.",\n      "note": "Formule de salutation courante."\n    }\n  ]\n}';
+            '{\n  "chinese": "你好",\n  "pinyin": "nǐ hǎo",\n  "translation": "bonjour"\n}';
+         const FORMAT_PACK_EXAMPLE = PACK_JSON_EXAMPLE;
 
          async function copyFormatExample() {
             try {
@@ -11558,12 +12450,12 @@ async function renderSequence() {
          function openFormatSheet() {
             openSheet(
                '<h3 class="sh-t">Format JSON des packs</h3>' +
-                  '<p class="sh-p">Chaque carte demande les champs <code>hz</code> et <code>fr</code>. Les champs <code>py</code>, <code>cat</code>, <code>unit</code>, <code>order</code>, <code>exHz</code>, <code>exPy</code>, <code>exFr</code> et <code>note</code> sont optionnels. Le pinyin accepte les tons en chiffres (<code>ni3</code>) ou en accents (<code>nǐ</code>).</p>' +
+                  '<p class="sh-p">Chaque mot demande uniquement <code>chinese</code>. <code>pinyin</code>, <code>translation</code>, <code>notes</code>, <code>favorite</code>, <code>difficult</code> et <code>tags</code> sont optionnels. Les données manquantes sont recherchées dans le dictionnaire sans jamais être inventées.</p>' +
                   '<div class="eyebrow">Exemple minimal valide</div>' +
                   '<pre class="fmt" id="fmt-card-example">' +
                   esc(FORMAT_CARD_EXAMPLE) +
                   "</pre>" +
-                  '<p class="sh-p">Un pack peut regrouper les cartes dans <code>cards</code>, porter un <code>name</code> et nommer ses unités avec <code>units</code>. <code>unit</code> et <code>order</code> fixent alors l’ordre d’apprentissage.</p>' +
+                  '<p class="sh-p">Un pack contient des <code>categories</code>, chacune avec un tableau <code>words</code>. Le format historique reste accepté depuis Réglages → Données.</p>' +
                   '<div class="eyebrow">Exemple de pack</div>' +
                   '<pre class="fmt" id="fmt-pack-example">' +
                   esc(FORMAT_PACK_EXAMPLE) +
@@ -11645,7 +12537,8 @@ async function renderSequence() {
 "use strict";
 
 /* ================= initialisation ================= */
-         function init() {
+         async function init() {
+            await personalLibraryInit();
             refreshVoices();
             document
                .querySelectorAll(".nav button")

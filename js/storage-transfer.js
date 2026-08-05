@@ -4,11 +4,13 @@
          function exportData() {
             const data = {
                app: "mo-studio",
-               version: 2,
+               version: 3,
                exported: new Date().toISOString(),
                units: db.units,
                cards: db.cards,
                packs: db.packs,
+               categories: db.categories,
+               memberships: db.memberships,
                settings: db.settings,
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -24,6 +26,17 @@
             toast("Export téléchargé.");
          }
          function openImportSheet(data) {
+            if (
+               data &&
+               typeof data === "object" &&
+               (data.pack || (Array.isArray(data.packs) && data.packs.some((pack) => Array.isArray(pack.categories))))
+            ) {
+               openSheet('<h3 class="sh-t">Analyse de la sauvegarde</h3><p class="sh-p">Préparation d’un aperçu non destructif…</p><div class="import-loading"></div>');
+               buildPackImportPreview(data, "json")
+                  .then(openPackImportPreview)
+                  .catch((error) => toast(error.message));
+               return;
+            }
             const rawCards = Array.isArray(data)
                ? data
                : Array.isArray(data.cards)
@@ -128,6 +141,14 @@
                              cardIds: p.cardIds.filter((i) => ids.has(i)),
                           }))
                      : [];
+               db.categories =
+                  !Array.isArray(data) && Array.isArray(data.categories)
+                     ? data.categories.filter((category) => category && category.id && category.packId && category.name)
+                     : [];
+               db.memberships =
+                  !Array.isArray(data) && Array.isArray(data.memberships)
+                     ? data.memberships.filter((membership) => membership && membership.cardId && membership.categoryId)
+                     : [];
                db.units = inUnits || {};
             } else {
                db.cards = db.cards.concat(fresh);
@@ -159,9 +180,8 @@
             );
          }
          const FORMAT_CARD_EXAMPLE =
-            '[\n  {\n    "hz": "你好",\n    "fr": "bonjour"\n  }\n]';
-         const FORMAT_PACK_EXAMPLE =
-            '{\n  "name": "Mes premières expressions",\n  "units": {\n    "1": "Salutations"\n  },\n  "cards": [\n    {\n      "hz": "你好",\n      "fr": "bonjour",\n      "py": "ni3 hao3",\n      "cat": "Expressions",\n      "unit": 1,\n      "order": 1,\n      "exHz": "你好！很高兴认识你。",\n      "exPy": "ni3 hao3! hen3 gao1 xing4 ren4 shi5 ni3.",\n      "exFr": "Bonjour ! Ravi de te rencontrer.",\n      "note": "Formule de salutation courante."\n    }\n  ]\n}';
+            '{\n  "chinese": "你好",\n  "pinyin": "nǐ hǎo",\n  "translation": "bonjour"\n}';
+         const FORMAT_PACK_EXAMPLE = PACK_JSON_EXAMPLE;
 
          async function copyFormatExample() {
             try {
@@ -177,12 +197,12 @@
          function openFormatSheet() {
             openSheet(
                '<h3 class="sh-t">Format JSON des packs</h3>' +
-                  '<p class="sh-p">Chaque carte demande les champs <code>hz</code> et <code>fr</code>. Les champs <code>py</code>, <code>cat</code>, <code>unit</code>, <code>order</code>, <code>exHz</code>, <code>exPy</code>, <code>exFr</code> et <code>note</code> sont optionnels. Le pinyin accepte les tons en chiffres (<code>ni3</code>) ou en accents (<code>nǐ</code>).</p>' +
+                  '<p class="sh-p">Chaque mot demande uniquement <code>chinese</code>. <code>pinyin</code>, <code>translation</code>, <code>notes</code>, <code>favorite</code>, <code>difficult</code> et <code>tags</code> sont optionnels. Les données manquantes sont recherchées dans le dictionnaire sans jamais être inventées.</p>' +
                   '<div class="eyebrow">Exemple minimal valide</div>' +
                   '<pre class="fmt" id="fmt-card-example">' +
                   esc(FORMAT_CARD_EXAMPLE) +
                   "</pre>" +
-                  '<p class="sh-p">Un pack peut regrouper les cartes dans <code>cards</code>, porter un <code>name</code> et nommer ses unités avec <code>units</code>. <code>unit</code> et <code>order</code> fixent alors l’ordre d’apprentissage.</p>' +
+                  '<p class="sh-p">Un pack contient des <code>categories</code>, chacune avec un tableau <code>words</code>. Le format historique reste accepté depuis Réglages → Données.</p>' +
                   '<div class="eyebrow">Exemple de pack</div>' +
                   '<pre class="fmt" id="fmt-pack-example">' +
                   esc(FORMAT_PACK_EXAMPLE) +

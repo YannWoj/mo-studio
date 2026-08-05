@@ -5,7 +5,8 @@
     "build:hsk-runtime": "node scripts/build-hsk-runtime.mjs",
     "build:portable": "node scripts/build-portable.mjs",
     "test:data": "node tests/search-normalization.test.cjs && node tests/hsk-runtime.test.cjs",
-    "test:browser": "node tests/browser-regression.mjs"
+    "test:browser": "node tests/browser-regression.mjs",
+    "test:packs-review": "node tests/packs-review-browser.mjs"
   },
   "dependencies": {
     "hanzi-writer": "3.7.3",
