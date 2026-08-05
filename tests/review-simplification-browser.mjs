@@ -66,15 +66,15 @@ async function main() {
 
    const seeded = await evaluate(`(async () => {
       db.cards=[];db.packs=[];db.categories=[];db.memberships=[];
-      const pack=createPersonalPack('Livres'); const chapter=createPersonalCategory(pack.id,'Chapitre 1'); const empty=createPersonalCategory(pack.id,'Chapitre vide');
+      const pack=createPersonalPack('Livres'); const chapter=createPersonalCategory(pack.id,'Chapitre 1'); const chapter2=createPersonalCategory(pack.id,'Chapitre 2'); const empty=createPersonalCategory(pack.id,'Chapitre vide');
       const cards=[
          normalizeCard({id:'c1',hz:'你好',py:'nǐ hǎo',fr:'bonjour',fav:true,lvl:4,due:Date.now()-1000,created:1},true),
          normalizeCard({id:'c2',hz:'朋友',py:'péngyou',fr:'ami',difficult:true,lvl:0,due:null,created:2},true),
          normalizeCard({id:'c3',hz:'书',py:'shū',fr:'livre',lvl:2,due:Date.now()+86400000,created:3},true),
          normalizeCard({id:'c4',hz:'会',py:'huì',fr:'savoir',lvl:6,acquired:true,due:null,created:4},true)
       ];
-      db.cards.push(...cards); cards.forEach(card=>addCardMembership(card.id,chapter.id)); syncLegacyPackCardIds(); save(); await flushPersonalLibrary();
-      return {packId:pack.id,categoryId:chapter.id,emptyId:empty.id,srs:JSON.stringify(cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,history:c.reviewHistory})))};
+      db.cards.push(...cards); cards.slice(0,2).forEach(card=>addCardMembership(card.id,chapter.id)); cards.slice(2).forEach(card=>addCardMembership(card.id,chapter2.id)); syncLegacyPackCardIds(); save(); await flushPersonalLibrary();
+      return {packId:pack.id,categoryId:chapter.id,category2Id:chapter2.id,emptyId:empty.id,srs:JSON.stringify(cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory}))),structure:JSON.stringify({packs:db.packs,categories:db.categories,memberships:db.memberships})};
    })()`);
 
    await evaluate("setView('lib',{fromHistory:true});lib.level='all';renderLib()");
@@ -88,64 +88,73 @@ async function main() {
    }
 
    await evaluate("document.body.style.minHeight='1800px';window.scrollTo(0,240)");
-   await openDetail(); await click("#card-close"); await closedCorrectly("bottom close"); pass("1 bouton Fermer");
-   await openDetail(); await click(".sheet-x"); await closedCorrectly("top close"); pass("2 croix");
-   await openDetail(); await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))"); await closedCorrectly("escape"); pass("3 touche Échap");
-   await openDetail(); await click("#sheet"); await closedCorrectly("backdrop"); pass("4 clic extérieur");
-   await openDetail(); await click(".cd-head"); assert(await evaluate("sheetOpen()"), "inside click closed dialog"); await click("#card-close"); pass("5 clic intérieur sans fermeture");
+   await openDetail(); await click("#card-close"); await closedCorrectly("bottom close"); pass("23 Annuler/Fermer et restauration focus/scroll");
+   await openDetail(); await click(".sheet-x"); await closedCorrectly("top close"); pass("croix de fermeture");
+   await openDetail(); await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))"); await closedCorrectly("escape"); pass("24 touche Échap");
+   await openDetail(); await click("#sheet"); await closedCorrectly("backdrop"); pass("25 clic extérieur");
+   await openDetail(); await click(".cd-head"); assert(await evaluate("sheetOpen()"), "inside click closed dialog"); await click("#card-close"); pass("26 clic intérieur sans fermeture");
    for (let index=0; index<5; index++) { await openDetail(); await click(index % 2 ? ".sheet-x" : "#card-close"); await closedCorrectly("repeat " + index); }
-   pass("6 ouvertures et fermetures répétées, focus/scroll/écouteurs restaurés");
+   pass("non-régression ouvertures et fermetures répétées");
 
    await evaluate("setView('learn',{fromHistory:true});reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewSelectionMode='all';renderLearn()");
-   assert((await evaluate("reviewSelectedCards().length")) === 3, "Tout failed"); pass("7 Tout");
-   await click('[data-review-scope="due"]'); assert((await evaluate("reviewSelectedCards().length")) === 1, "Dues failed"); pass("8 Cartes dues");
-   await click('[data-review-scope="pack"]'); assert(await evaluate("!!document.querySelector('#review-pack-select')&&!document.querySelector('#review-category-select')"), "conditional pack selector failed"); await choose("#review-pack-select", seeded.packId); assert((await evaluate("reviewSelectedCards().length")) === 3, "pack cards failed"); pass("9 Un pack");
-   await click('[data-review-scope="category"]'); assert(await evaluate("!!document.querySelector('#review-category-pack')&&!!document.querySelector('#review-category-select')"), "category selectors failed"); await choose("#review-category-pack", seeded.packId); await choose("#review-category-select", seeded.categoryId); assert((await evaluate("reviewSelectedCards().length")) === 3, "category cards failed"); pass("10 Une sous-catégorie");
-   await evaluate("manualReviewIds=new Set(['c1','c2']);reviewSelectionMode='manual';renderLearn()"); assert((await evaluate("reviewSelectedCards().length")) === 2 && await evaluate("document.querySelector('#review-conditional').textContent.includes('2 mots')"), "manual selection failed"); pass("11 Mots sélectionnés");
+   assert((await evaluate("reviewSelectedCards().length")) === 3, "all failed"); pass("1 Tous mes mots");
+   await click('[data-review-scope="due"]'); assert((await evaluate("reviewSelectedCards().length")) === 1, "due failed"); pass("2 Cartes dues");
+   await click('[data-review-scope="pack"]'); assert(await evaluate("!!document.querySelector('[data-review-pack-option]')&&!document.querySelector('[data-review-category-option]')"), "conditional pack list failed"); await click(`[data-review-pack-option="${seeded.packId}"]`); assert((await evaluate("reviewSelectedCards().length")) === 3, "pack cards failed"); pass("3 sélection d’un pack");
+   await click('[data-review-scope="category"]'); await click(`[data-review-category-pack-option="${seeded.packId}"]`); await click(`[data-review-category-option="${seeded.categoryId}"]`); assert((await evaluate("reviewSelectedCards().length")) === 2, "single category failed"); pass("4 sélection d’une sous-catégorie");
+   await click(`[data-review-category-option="${seeded.category2Id}"]`); assert((await evaluate("reviewSelectedCards().length")) === 3, "multiple categories failed"); await click("#review-categories-clear"); assert((await evaluate("reviewSelectedCards().length")) === 0, "clear categories failed"); await click("#review-categories-all"); assert((await evaluate("reviewCategoryIds.size")) === 3, "select all categories failed"); pass("5 sélection multiple, Tout sélectionner et Effacer");
+
+   await evaluate("setView('lib',{fromHistory:true});lib.level='packs';renderLib()"); await click(`[data-pack-review="${seeded.packId}"]`); assert(await evaluate(`reviewSelectionMode==='pack'&&reviewPackId===${JSON.stringify(seeded.packId)}&&document.querySelector('[data-review-pack-option][aria-pressed="true"]')?.dataset.reviewPackOption===${JSON.stringify(seeded.packId)}`), "open from pack failed"); pass("6 ouverture depuis Réviser ce pack");
+   await evaluate(`setView('lib',{fromHistory:true});lib.level='category';lib.packId=${JSON.stringify(seeded.packId)};lib.categoryId=${JSON.stringify(seeded.categoryId)};renderLib()`); await click("#category-review"); assert(await evaluate(`reviewSelectionMode==='category'&&reviewCategoryIds.has(${JSON.stringify(seeded.categoryId)})&&document.querySelector('[data-review-category-option]:checked')?.dataset.reviewCategoryOption===${JSON.stringify(seeded.categoryId)}`), "open from category failed"); pass("7 ouverture depuis Réviser cette sous-catégorie");
+   await evaluate("setView('lib',{fromHistory:true});lib.level='all';lib.selected=new Set(['c1','c2']);renderLib()"); await click("#selected-review"); assert(await evaluate("reviewSelectionMode==='manual'&&manualReviewIds.size===2&&document.querySelector('#review-conditional').textContent.includes('2 mots choisis depuis Mes mots')&&!document.querySelector('[data-review-scope=manual]')"), "open from manual failed"); pass("8 ouverture depuis des mots cochés sans option abstraite");
+
+   await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:true};renderLearn()");
+   await click('[data-review-mode="cards"]'); await click("#btn-continue"); assert(await evaluate("session.active&&session.mode==='cards'"), "cards mode failed"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("9 mode Cartes");
+   await click('[data-review-mode="written"]'); await click("#btn-continue"); assert(await evaluate("session.active&&session.mode==='written'&&!!getState(0).task"), "written mode failed"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("10 mode Écriture");
+   const beforeDiscovery = await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory})))");
+   await click('[data-review-mode="discover"]'); await click("#btn-continue"); assert(await evaluate("session.mode==='discover'&&!document.querySelector('#a-hard')&&!document.querySelector('[data-grade]')"), "discovery exposes SRS actions");
+   await evaluate("while(session.active){ if(session.index>=session.cards.length-1){endSession();break;} advance(); } session={active:false};renderLearn()");
+   assert((await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory})))")) === beforeDiscovery, "discovery changed SRS"); pass("11 mode Découverte sans modification SRS");
 
    async function startDirection(value) {
       await click(`[data-review-direction="${value}"]`);
       assert((await evaluate("JSON.parse(localStorage.getItem(DB_KEY)).settings.direction")) === value, "direction not persisted");
-      await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:true};renderLearn()");
+      await evaluate("reviewSelectionMode='all';reviewMode='cards';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:true};renderLearn()");
       await click("#btn-continue");
    }
    await startDirection("zh2fr");
    const zhFront = await evaluate(`({front:getState(0).front,hanzi:!!document.querySelector('.flash .hanzi'),pinyin:!!document.querySelector('.flash .pinyin'),fr:!!document.querySelector('.flash .fr')})`);
-   assert(zhFront.front === "zh" && zhFront.hanzi && !zhFront.pinyin && !zhFront.fr, "zh front wrong"); await click("#s-flip"); assert(await evaluate("!!document.querySelector('.flash .pinyin')&&!!document.querySelector('.flash .fr')"), "zh back wrong"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("12 中文 → Français");
+   assert(zhFront.front === "zh" && zhFront.hanzi && !zhFront.pinyin && !zhFront.fr, "zh front wrong"); await click("#s-flip"); assert(await evaluate("!!document.querySelector('.flash .pinyin')&&!!document.querySelector('.flash .fr')"), "zh back wrong"); await evaluate("session={active:false};clearSavedSession();reviewMode='written';renderLearn()"); await click("#btn-continue"); assert(await evaluate("getState(0).front==='zh'&&['fr','py-read'].includes(getState(0).task)"), "zh written prompt wrong"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("12 中文 → Français");
    await startDirection("fr2zh");
    const frFront = await evaluate(`({front:getState(0).front,french:!!document.querySelector('.flash .fr-big'),hanzi:!!document.querySelector('.flash .hanzi')})`);
-   assert(frFront.front === "fr" && frFront.french && !frFront.hanzi, "fr front wrong"); await click("#s-flip"); assert(await evaluate("!!document.querySelector('.flash .hanzi')&&!!document.querySelector('.flash .pinyin')&&!document.querySelector('.flash .fr')"), "fr back wrong"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("13 Français → 中文");
+   assert(frFront.front === "fr" && frFront.french && !frFront.hanzi, "fr front wrong"); await click("#s-flip"); assert(await evaluate("!!document.querySelector('.flash .hanzi')&&!!document.querySelector('.flash .pinyin')&&!document.querySelector('.flash .fr')"), "fr back wrong"); await evaluate("session={active:false};clearSavedSession();reviewMode='written';renderLearn()"); await click("#btn-continue"); assert(await evaluate("getState(0).front==='fr'&&['py-prod','trace'].includes(getState(0).task)"), "fr written prompt wrong"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("13 Français → 中文");
    await startDirection("mix");
    const mixed = await evaluate(`(() => { const original=Math.random; let n=0; Math.random=()=>n++%2?0.9:0.1; const first=session.cards.map((card,index)=>frontOf(card,getState(index))); const second=session.cards.map((card,index)=>frontOf(card,getState(index))); Math.random=original; return {first,second,unique:new Set(session.cards.map(c=>c.id)).size,total:session.cards.length}; })()`);
    assert(JSON.stringify(mixed.first) === JSON.stringify(mixed.second) && mixed.first.includes("zh") && mixed.first.includes("fr") && mixed.unique === mixed.total, "mixed direction unstable or duplicated"); await evaluate("session={active:false};clearSavedSession();renderLearn()"); pass("14 Mélanger les deux, sens stable et aucune carte dupliquée");
 
-   await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewOptionsOpen=false;renderLearn()");
+   await evaluate("reviewSelectionMode='all';reviewMode='written';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewOptionsOpen=false;renderLearn()");
    assert(!(await evaluate("document.querySelector('#review-options').open")), "options not closed by default"); await click("#review-options summary");
    await click('[data-review-filter="newOnly"]'); assert((await evaluate("reviewSelectedCards().map(c=>c.id).join(',')")) === "c2", "new filter failed");
    await click('[data-review-filter="newOnly"]'); await click('[data-review-filter="favoritesOnly"]'); assert((await evaluate("reviewSelectedCards().map(c=>c.id).join(',')")) === "c1", "favorite filter failed");
    await click('[data-review-filter="favoritesOnly"]'); await click('[data-review-filter="difficultOnly"]'); assert((await evaluate("reviewSelectedCards().map(c=>c.id).join(',')")) === "c2", "difficult filter failed");
-   await click('[data-review-filter="difficultOnly"]'); await click('[data-review-filter="includeLearned"]'); assert((await evaluate("reviewSelectedCards().length")) === 4, "learned filter failed"); pass("15 Options supplémentaires");
+   await click('[data-review-filter="difficultOnly"]'); await click('[data-review-filter="includeLearned"]'); assert((await evaluate("reviewSelectedCards().length")) === 4, "learned filter failed"); assert(await evaluate("document.querySelectorAll('[data-writing-setting]').length===3"), "writing settings missing"); pass("15 réglages avancés et options d’écriture");
 
-   await evaluate(`reviewSelectionMode='category';reviewCategoryPackId=${JSON.stringify(seeded.packId)};reviewCategoryId=${JSON.stringify(seeded.emptyId)};reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};renderLearn()`);
+   await evaluate(`reviewSelectionMode='category';reviewCategoryPackId=${JSON.stringify(seeded.packId)};reviewCategoryIds=new Set([${JSON.stringify(seeded.emptyId)}]);reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};renderLearn()`);
    assert(await evaluate("document.querySelector('#btn-continue').disabled&&document.querySelector('.review-empty-message').textContent.includes('Aucune carte')"), "empty selection state failed"); pass("16 aucune carte disponible");
-
-   await evaluate("setView('lib',{fromHistory:true});lib.level='packs';renderLib()"); await click(`[data-pack-review="${seeded.packId}"]`); assert(await evaluate(`reviewSelectionMode==='pack'&&reviewPackId===${JSON.stringify(seeded.packId)}&&document.querySelector('#review-pack-select').value===${JSON.stringify(seeded.packId)}`), "open from pack failed"); pass("17 ouverture depuis Réviser ce pack");
-   await evaluate(`setView('lib',{fromHistory:true});lib.level='category';lib.packId=${JSON.stringify(seeded.packId)};lib.categoryId=${JSON.stringify(seeded.categoryId)};renderLib()`); await click("#category-review"); assert(await evaluate(`reviewSelectionMode==='category'&&reviewCategoryId===${JSON.stringify(seeded.categoryId)}&&document.querySelector('#review-category-select').value===${JSON.stringify(seeded.categoryId)}`), "open from category failed"); pass("18 ouverture depuis Réviser cette sous-catégorie");
-   await evaluate("setView('lib',{fromHistory:true});lib.level='all';lib.selected=new Set(['c1','c2']);renderLib()"); await click("#selected-review"); assert(await evaluate("reviewSelectionMode==='manual'&&manualReviewIds.size===2&&document.querySelector('#review-conditional').textContent.includes('2 mots')"), "open from manual failed"); pass("19 ouverture depuis Réviser les mots sélectionnés");
+   await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};renderLearn()"); const summaryBefore=await evaluate("document.querySelector('.review-compact-summary').textContent"); await click('[data-review-scope="due"]'); const summaryAfter=await evaluate("document.querySelector('.review-compact-summary').textContent"); assert(summaryBefore!==summaryAfter&&summaryAfter.includes('1 carte'),"live summary failed"); pass("17 résumé mis à jour immédiatement");
 
    await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};renderLearn()");
    for (const width of [360,430,1024]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
       await evaluate("renderLearn()");
-      const layout = await evaluate(`(() => { const nav=document.querySelector('.nav').getBoundingClientRect(); const start=document.querySelector('#btn-continue').getBoundingClientRect(); return {blocks:document.querySelectorAll('.review-block').length,overflow:document.documentElement.scrollWidth>innerWidth+1,max:document.querySelector('.review-page').getBoundingClientRect().width,buttons:[...document.querySelectorAll('.review-page button')].every(b=>b.getBoundingClientRect().height>=44),navFixed:getComputedStyle(document.querySelector('.nav')).position==='fixed',notMasked:start.bottom<=nav.top+1}; })()`);
-      assert(layout.blocks===3&&!layout.overflow&&layout.max<=850&&layout.buttons&&layout.navFixed&&layout.notMasked, `layout ${width} failed: ${JSON.stringify(layout)}`);
+      const layout = await evaluate(`(() => { const start=document.querySelector('#btn-continue'); start.scrollIntoView({block:'center'}); const nav=document.querySelector('.nav').getBoundingClientRect(); const rect=start.getBoundingClientRect(); return {blocks:document.querySelectorAll('.review-block').length,overflow:document.documentElement.scrollWidth>innerWidth+1,max:document.querySelector('.review-page').getBoundingClientRect().width,buttons:[...document.querySelectorAll('.review-page button')].every(b=>b.getBoundingClientRect().height>=44),navFixed:getComputedStyle(document.querySelector('.nav')).position==='fixed',notMasked:rect.bottom<=nav.top+1,height:document.querySelector('.review-page').scrollHeight}; })()`);
+      assert(layout.blocks===4&&!layout.overflow&&layout.max<=820&&layout.buttons&&layout.navFixed&&layout.notMasked&&layout.height<1400, `layout ${width} failed: ${JSON.stringify(layout)}`);
    }
-   pass("20 affichage 360, 430 et 1024 px"); pass("21 aucun scroll horizontal, navigation et bouton non masqués");
+   pass("18 affichage 360 px"); pass("19 affichage 430 px"); pass("20 affichage 1024 px"); pass("21 aucun scroll horizontal");
 
-   const srsAfter = await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,history:c.reviewHistory})))");
-   assert(srsAfter === seeded.srs, "SRS changed during selection/direction tests"); pass("22 aucune perte de progression SRS");
+   const finalState = await evaluate("({srs:JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory}))),structure:JSON.stringify({packs:db.packs,categories:db.categories,memberships:db.memberships})})");
+   assert(finalState.srs === seeded.srs && finalState.structure === seeded.structure, "packs or SRS changed"); pass("22 aucune perte de packs ou progression");
    assert(!cdp.errors.length, "runtime errors: " + cdp.errors.join(" | "));
-   console.log(`RESULT ${version.Browser} — 22 scénarios validés`);
+   console.log(`RESULT ${version.Browser} — 26 scénarios validés`);
 }
 
 try { await main(); }

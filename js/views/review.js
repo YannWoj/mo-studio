@@ -32,12 +32,12 @@
                     : "zh";
             return st.front;
          }
-         function pickWriteTask(c) {
+         function pickWriteTask(c, st) {
             // choisit une tâche écrite selon les réglages et le sens de révision
             const wm = db.settings.writeModes;
-            const d = db.settings.direction;
-            const zhSide = d === "zh2fr" || d === "mix";
-            const frSide = d === "fr2zh" || d === "mix";
+            const front = frontOf(c, st);
+            const zhSide = front === "zh";
+            const frSide = front === "fr";
             const canTrace =
                Array.from(c.hz).some((ch) => /[\u4e00-\u9fff]/.test(ch)) &&
                c.hz.length <= 3;
@@ -46,12 +46,12 @@
             if (wm.pinyin && zhSide && c.py) opts.push("py-read");
             if (wm.pinyin && frSide && c.py) opts.push("py-prod");
             if (wm.trace && frSide && canTrace) opts.push("trace");
-            if (!opts.length) {
-               if (wm.fr) opts.push("fr");
-               if (wm.pinyin && c.py) opts.push("py-read");
-               if (wm.trace && canTrace) opts.push("trace");
-            }
-            if (!opts.length) opts.push("fr");
+            // Garde une consigne cohérente avec le sens même lorsque les
+            // préférences avancées excluent tous les exercices compatibles.
+            if (!opts.length && zhSide)
+               opts.push(c.fr ? "fr" : "py-read");
+            if (!opts.length && frSide)
+               opts.push(c.py ? "py-prod" : canTrace ? "trace" : "fr");
             return opts[Math.floor(Math.random() * opts.length)];
          }
 
@@ -72,7 +72,7 @@
          }
          function noteHtml(c) {
             return c.note
-               ? '<div class="note">📌 ' + esc(c.note) + "</div>"
+               ? '<div class="note"><strong>Note ·</strong> ' + esc(c.note) + "</div>"
                : "";
          }
          function actionsHtml(c) {
@@ -196,7 +196,7 @@
             const st = getState(session.index);
             if (session.mode === "discover") st.revealed = true;
             if (session.mode === "written" && !st.task)
-               st.task = pickWriteTask(c);
+               st.task = pickWriteTask(c, st);
             const front = session.mode === "cards" ? frontOf(c, st) : "zh";
             // Les flashcards révèlent toujours le pinyin au verso, quel que
             // soit le sens choisi. Les autres modes conservent leur réglage.
@@ -204,9 +204,7 @@
                session.mode === "cards" || db.settings.pinyin !== "never";
             const hideSay =
                (session.mode === "cards" && front === "fr" && !st.revealed) ||
-               (session.mode === "written" &&
-                  !st.checked &&
-                  st.task === "py-prod");
+               (session.mode === "written" && !st.checked && st.front === "fr");
 
             let body = "";
             if (session.mode === "written" && !st.checked) {
@@ -254,7 +252,7 @@
                      : "") +
                   (c.exHz ? exampleHtml(c) : "") +
                   noteHtml(c) +
-                  actionsHtml(c);
+                  (session.mode === "discover" ? "" : actionsHtml(c));
             }
 
             const modeName = {

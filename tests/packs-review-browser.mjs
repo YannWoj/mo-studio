@@ -135,7 +135,7 @@ async function main() {
       const pack=db.packs.find(p=>p.name==='Import JSON'); const cats=categoriesForPack(pack.id);
       reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:true};
       reviewPackId=pack.id; reviewSelectionMode='pack'; const whole=reviewSelectedCards().length;
-      reviewCategoryId=cats[0].id; reviewCategoryPackId=pack.id; reviewSelectionMode='category'; const one=reviewSelectedCards().length;
+      reviewCategoryIds=new Set([cats[0].id]); reviewCategoryPackId=pack.id; reviewSelectionMode='category'; const one=reviewSelectedCards().length;
       manualReviewIds=new Set(db.cards.slice(0,2).map(c=>c.id)); reviewSelectionMode='manual'; const manual=reviewSelectedCards().length;
       reviewSelectionMode='all'; reviewExtraFilters.favoritesOnly=true; const favorite=reviewSelectedCards().length;
       reviewExtraFilters.favoritesOnly=false; reviewExtraFilters.difficultOnly=true; const difficult=reviewSelectedCards().length;
