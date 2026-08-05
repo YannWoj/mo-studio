@@ -80,7 +80,7 @@ function renderPackLibrary() {
    root.querySelectorAll("[data-pack-open]").forEach((button) => button.onclick = () => {
       lib.level = "pack"; lib.packId = button.dataset.packOpen; lib.categoryId = ""; lib.selected.clear(); renderLib();
    });
-   root.querySelectorAll("[data-pack-review]").forEach((button) => button.onclick = () => reviewLibraryCards(cardsForPack(button.dataset.packReview), "Pack · " + db.packs.find((pack) => pack.id === button.dataset.packReview).name));
+   root.querySelectorAll("[data-pack-review]").forEach((button) => button.onclick = () => openReviewForPack(button.dataset.packReview));
    root.querySelectorAll("[data-pack-export]").forEach((button) => button.onclick = () => {
       const pack = db.packs.find((item) => item.id === button.dataset.packExport);
       downloadJson(buildLibraryExport([pack.id]), "mo-studio-pack-" + flatten(pack.name) + ".json");
@@ -112,7 +112,7 @@ function renderPackDetail() {
       (categories.length ? '<div class="category-list">' + categories.map(categoryTileHtml).join("") + "</div>" : '<div class="lib-empty card"><h3>Ce pack n’a pas encore de sous-catégorie</h3><p>Crée par exemple « Chapitre 1 » pour commencer à l’organiser.</p></div>') +
       "</section>";
    wireLibraryCommon(); wireBreadcrumbs();
-   $("pack-review-all").onclick = () => reviewLibraryCards(cardsForPack(pack.id), "Pack · " + pack.name);
+   $("pack-review-all").onclick = () => openReviewForPack(pack.id);
    $("pack-add-category").onclick = () => {
       const name = prompt("Nom de la sous-catégorie :");
       if (createPersonalCategory(pack.id, name)) renderLib();
@@ -123,7 +123,7 @@ function renderPackDetail() {
    });
    root.querySelectorAll("[data-category-review]").forEach((button) => button.onclick = () => {
       const category = categoryById(button.dataset.categoryReview);
-      reviewLibraryCards(cardsForCategory(category.id), pack.name + " · " + category.name);
+      openReviewForCategory(category.id);
    });
    root.querySelectorAll("[data-category-rename]").forEach((button) => button.onclick = () => {
       const category = categoryById(button.dataset.categoryRename);
@@ -158,7 +158,7 @@ function renderWordList() {
       '<div class="bulk-bar"' + (lib.selected.size ? "" : " hidden") + '><strong>' + lib.selected.size + ' sélectionnée' + (lib.selected.size > 1 ? "s" : "") + '</strong><button class="btn sm primary" id="selected-review">Réviser</button><button class="btn sm" id="selected-move">Déplacer / ajouter</button><button class="btn sm danger" id="selected-delete">Supprimer</button></div>' +
       '<div class="word-list" id="lib-list">' + (cards.length ? cards.map(wordRowHtml).join("") : '<p class="lib-no-results">Aucun mot ne correspond à cette sélection.</p>') + '</div></section>';
    wireLibraryCommon(); wireBreadcrumbs(); wireWordList(cards);
-   if ($("category-review")) $("category-review").onclick = () => reviewLibraryCards(scope, "Sous-catégorie · " + title);
+   if ($("category-review")) $("category-review").onclick = () => openReviewForCategory(category.id);
    $("word-add").onclick = () => openCardForm(null, category ? [category.id] : []);
 }
 
@@ -207,10 +207,7 @@ function renderLib() {
 
 function reviewLibraryCards(cards, label) {
    if (!cards.length) { toast("Aucune carte dans cette sélection."); return; }
-   manualReviewIds = new Set(cards.map((card) => card.id));
-   reviewSelectionMode = "manual";
-   reviewScopeLabel = label;
-   setView("learn");
+   openReviewForManualCards(cards, label);
 }
 
 function openMoveSelectedSheet() {
@@ -235,7 +232,7 @@ function cardCategoryCheckboxes(card, checkedIds) {
 function openCardDetail(id) {
    const card = db.cards.find((item) => item.id === id);
    if (!card) return;
-   openSheet('<div class="cd-head"><div><div class="cd-hz" data-say="' + esc(card.hz) + '">' + esc(card.hz) + '</div><div class="cd-py">' + (card.py ? colorPinyin(card.py) : "Pinyin manquant") + '</div><div class="cd-fr">' + (esc(card.fr) || "Traduction manquante") + '</div></div><button class="seal" data-say="' + esc(card.hz) + '" aria-label="Écouter">听</button></div>' + (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") + '<div class="acts"><button class="act' + (card.fav ? " on" : "") + '" id="card-favorite">Favori</button><button class="act' + (card.difficult ? " on" : "") + '" id="card-difficult">Difficile</button><button class="act' + (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div><div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) + '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" data-sheet-close>Fermer</button></div>');
+   openSheet('<button class="sheet-x" data-sheet-close aria-label="Fermer la fiche">×</button><div class="cd-head"><div><div class="cd-hz" data-say="' + esc(card.hz) + '">' + esc(card.hz) + '</div><div class="cd-py">' + (card.py ? colorPinyin(card.py) : "Pinyin manquant") + '</div><div class="cd-fr">' + (esc(card.fr) || "Traduction manquante") + '</div></div><button class="seal" data-say="' + esc(card.hz) + '" aria-label="Écouter">听</button></div>' + (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") + '<div class="acts"><button class="act' + (card.fav ? " on" : "") + '" id="card-favorite">Favori</button><button class="act' + (card.difficult ? " on" : "") + '" id="card-difficult">Difficile</button><button class="act' + (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div><div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) + '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div>');
    $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id); };
    $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id); };
    $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id); };

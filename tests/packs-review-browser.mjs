@@ -133,16 +133,16 @@ async function main() {
 
    const selections = await evaluate(`(() => {
       const pack=db.packs.find(p=>p.name==='Import JSON'); const cats=categoriesForPack(pack.id);
+      reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:true};
       reviewPackId=pack.id; reviewSelectionMode='pack'; const whole=reviewSelectedCards().length;
-      reviewCategoryIds=new Set([cats[0].id]); reviewSelectionMode='categories'; const one=reviewSelectedCards().length;
-      reviewCategoryIds.add(cats[1].id); const multiple=reviewSelectedCards().length;
+      reviewCategoryId=cats[0].id; reviewCategoryPackId=pack.id; reviewSelectionMode='category'; const one=reviewSelectedCards().length;
       manualReviewIds=new Set(db.cards.slice(0,2).map(c=>c.id)); reviewSelectionMode='manual'; const manual=reviewSelectedCards().length;
-      reviewSelectionMode='fav'; const favorite=reviewSelectedCards().length;
-      reviewSelectionMode='difficult'; const difficult=reviewSelectedCards().length;
-      return {whole,one,multiple,manual,favorite,difficult};
+      reviewSelectionMode='all'; reviewExtraFilters.favoritesOnly=true; const favorite=reviewSelectedCards().length;
+      reviewExtraFilters.favoritesOnly=false; reviewExtraFilters.difficultOnly=true; const difficult=reviewSelectedCards().length;
+      return {whole,one,manual,favorite,difficult};
    })()`);
-   assert(selections.whole === 2 && selections.one === 1 && selections.multiple === 2 && selections.manual === 2 && selections.favorite >= 1 && selections.difficult >= 1, "review scopes failed");
-   pass("sélection pack, une/plusieurs sous-catégories, manuelle, favoris et difficiles");
+   assert(selections.whole === 2 && selections.one === 1 && selections.manual === 2 && selections.favorite >= 1 && selections.difficult >= 1, "review scopes failed");
+   pass("sélection pack, sous-catégorie, manuelle et filtres supplémentaires");
 
    const exports = await evaluate(`(() => { db.cards.push(normalizeCard({hz:'独',py:'dú',fr:'seul',note:'hors pack'},false)); const pack=db.packs.find(p=>p.name==='Import JSON'); const one=buildLibraryExport([pack.id]); const all=buildLibraryExport(); return {onePacks:one.packs.length,oneWords:one.packs[0].categories.reduce((n,c)=>n+c.words.length,0),allPacks:all.packs.length,unclassified:all.unclassifiedWords.length,srs:one.packs[0].categories.flatMap(c=>c.words).find(w=>w.chinese==='你好').srs.level}; })()`);
    assert(exports.onePacks === 1 && exports.oneWords === 3 && exports.allPacks >= 3 && exports.unclassified === 1 && exports.srs === 5, "exports incomplete");

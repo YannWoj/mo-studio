@@ -1,26 +1,42 @@
 "use strict";
 
-/* ================= Réviser : sélection explicite ================= */
+/* ================= Réviser : sélection compacte ================= */
 let reviewSelectionMode = "due";
 let reviewPackId = "";
-let reviewCategoryIds = new Set();
+let reviewCategoryPackId = "";
+let reviewCategoryId = "";
 let manualReviewIds = new Set();
-let reviewScopeLabel = "Cartes dues aujourd’hui";
-let hub = { flt: "due", pack: "", cat: "", includeAcquired: true, freeOpen: true };
+let reviewScopeLabel = "Mots sélectionnés";
+let reviewOptionsOpen = false;
+let reviewExtraFilters = {
+   newOnly: false,
+   favoritesOnly: false,
+   difficultOnly: false,
+   includeLearned: false,
+};
+
+// Conservé pour les modules historiques qui consultent encore cet état.
+let hub = { flt: "due", pack: "", cat: "", includeAcquired: false, freeOpen: false };
+
+function baseReviewCards() {
+   if (reviewSelectionMode === "all") return db.cards.slice();
+   if (reviewSelectionMode === "due") return db.cards.filter(isDue);
+   if (reviewSelectionMode === "pack") return reviewPackId ? cardsForPack(reviewPackId) : [];
+   if (reviewSelectionMode === "category") return reviewCategoryId ? cardsForCategory(reviewCategoryId) : [];
+   if (reviewSelectionMode === "manual") return db.cards.filter((card) => manualReviewIds.has(card.id));
+   return [];
+}
 
 function reviewSelectedCards() {
-   let cards = db.cards.slice();
-   if (reviewSelectionMode === "due") cards = cards.filter(isDue);
-   else if (reviewSelectionMode === "all") cards = cards;
-   else if (reviewSelectionMode === "pack") cards = cardsForPack(reviewPackId);
-   else if (reviewSelectionMode === "categories") {
-      const ids = new Set(Array.from(reviewCategoryIds).flatMap(categoryCardIds));
-      cards = cards.filter((card) => ids.has(card.id));
-   } else if (reviewSelectionMode === "manual") cards = cards.filter((card) => manualReviewIds.has(card.id));
-   else if (reviewSelectionMode === "fav") cards = cards.filter((card) => card.fav);
-   else if (reviewSelectionMode === "difficult") cards = cards.filter((card) => card.difficult);
-   else if (reviewSelectionMode === "new") cards = cards.filter((card) => card.due == null && !card.acquired);
-   else if (reviewSelectionMode === "learned") cards = cards.filter((card) => card.acquired || card.due != null || (card.lvl || 0) > 0);
+   let cards = baseReviewCards();
+   if (!reviewExtraFilters.includeLearned)
+      cards = cards.filter((card) => !card.acquired);
+   if (reviewExtraFilters.newOnly)
+      cards = cards.filter((card) => card.due == null && !card.acquired);
+   if (reviewExtraFilters.favoritesOnly)
+      cards = cards.filter((card) => card.fav);
+   if (reviewExtraFilters.difficultOnly)
+      cards = cards.filter((card) => card.difficult);
    return cards;
 }
 
@@ -33,9 +49,13 @@ function scopeLabel() {
       const pack = db.packs.find((item) => item.id === reviewPackId);
       return pack ? "Pack · " + pack.name : "Pack";
    }
-   if (reviewSelectionMode === "categories") return reviewCategoryIds.size + " sous-catégorie(s)";
-   if (reviewSelectionMode === "manual") return reviewScopeLabel || "Sélection manuelle";
-   return ({ due: "Cartes dues aujourd’hui", all: "Tous mes mots", fav: "Favoris", difficult: "Mots difficiles", new: "Nouveaux mots", learned: "Cartes déjà apprises" })[reviewSelectionMode] || "Révision";
+   if (reviewSelectionMode === "category") {
+      const category = categoryById(reviewCategoryId);
+      const pack = category && db.packs.find((item) => item.id === category.packId);
+      return category ? (pack ? pack.name + " · " : "") + category.name : "Sous-catégorie";
+   }
+   if (reviewSelectionMode === "manual") return reviewScopeLabel || "Mots sélectionnés";
+   return reviewSelectionMode === "all" ? "Tous mes mots" : "Cartes dues";
 }
 
 function smartQueue() {
@@ -48,7 +68,6 @@ function smartQueue() {
       dueTotal: due.length,
       freshN: fresh.length,
       freshTotal: fresh.length,
-      freshUnit: fresh.length ? fresh[0].unit : null,
       nextDue: db.cards.filter((card) => card.due > now()).sort((a, b) => a.due - b.due)[0]?.due || null,
    };
 }
@@ -68,86 +87,128 @@ function startCardsWith(cards, label, mode) {
    window.scrollTo(0, 0);
 }
 
-function startSmartSession() {
-   startReviewSelection("cards");
-}
-
-function startFreeSession(mode) {
-   startReviewSelection(mode);
-}
-
-function startReviewSelection(mode) {
+function startReviewSelection() {
    const cards = reviewSelectedCards();
-   if (!cards.length) { toast("Aucune carte dans cette sélection."); return; }
-   startCardsWith(shuffle(cards), scopeLabel(), mode || "cards");
+   if (!cards.length) {
+      toast("Aucune carte disponible avec cette sélection.");
+      return;
+   }
+   // Les identifiants proviennent toujours d'un Set ou d'une relation unique :
+   // une carte ne peut donc pas être ajoutée deux fois à une même session.
+   startCardsWith(shuffle(cards), scopeLabel(), "cards");
 }
 
-function emptyHtml() {
-   return '<section class="card pad empty"><div class="empty-hz">学</div><h2 class="empty-t">Ta collection est vide</h2><p class="empty-p">Crée un mot ou importe un pack. Les 5 399 mots HSK ne sont jamais ajoutés automatiquement ici.</p><div class="empty-btns"><button class="btn primary" id="btn-e-import">Importer un pack</button><button class="btn" id="btn-e-add">Créer un mot</button></div></section>';
+function startSmartSession() {
+   startReviewSelection();
 }
 
-function wireEmpty() {
-   if ($("btn-e-add")) $("btn-e-add").onclick = () => openCardForm(null);
-   if ($("btn-e-import")) $("btn-e-import").onclick = openPackImportSheet;
+function startFreeSession() {
+   startReviewSelection();
 }
 
-function reviewChoiceHtml(value, title, detail) {
-   return '<label class="review-choice"><input type="radio" name="review-scope" value="' + value + '"' + (reviewSelectionMode === value ? " checked" : "") + '><span><strong>' + title + '</strong><small>' + detail + "</small></span></label>";
+function openReviewForPack(packId) {
+   reviewSelectionMode = "pack";
+   reviewPackId = packId;
+   reviewCategoryPackId = "";
+   reviewCategoryId = "";
+   session = { active: false };
+   setView("learn");
 }
 
-function reviewCategoryTreeHtml() {
-   if (!db.packs.length) return '<p class="sh-note">Aucun pack organisé pour le moment.</p>';
-   return '<div class="review-tree">' + db.packs.map((pack) => {
-      const categories = categoriesForPack(pack.id);
-      const allChecked = categories.length && categories.every((category) => reviewCategoryIds.has(category.id));
-      return '<section class="review-tree-pack"><div class="review-tree-pack-head"><label class="ck"><input type="checkbox" data-review-pack-check="' + esc(pack.id) + '"' + (allChecked ? " checked" : "") + '> <strong>' + esc(pack.name) + '</strong></label><button class="btn sm ghost" data-review-entire-pack="' + esc(pack.id) + '">Pack entier</button></div>' + categories.map((category) => '<label class="ck review-category-check"><input type="checkbox" data-review-category="' + esc(category.id) + '"' + (reviewCategoryIds.has(category.id) ? " checked" : "") + '> ' + esc(category.name) + '<span>' + cardsForCategory(category.id).length + "</span></label>").join("") + "</section>";
-   }).join("") + "</div>";
+function openReviewForCategory(categoryId) {
+   const category = categoryById(categoryId);
+   reviewSelectionMode = "category";
+   reviewCategoryId = category ? category.id : "";
+   reviewCategoryPackId = category ? category.packId : "";
+   reviewPackId = "";
+   session = { active: false };
+   setView("learn");
 }
 
-function reviewMetricsHtml(cards) {
-   const fresh = cards.filter((card) => card.due == null && !card.acquired).length;
-   const due = cards.filter(isDue).length;
-   const minutes = cards.length ? Math.max(1, Math.round(cards.length * 25 / 60)) : 0;
-   return '<div class="review-live" aria-live="polite"><div><b>' + cards.length + '</b><span>Cartes sélectionnées</span></div><div><b>' + fresh + '</b><span>Nouvelles cartes</span></div><div><b>' + due + '</b><span>Cartes dues</span></div><div><b>~' + minutes + ' min</b><span>Durée estimée</span></div></div>';
+function openReviewForManualCards(cards, label) {
+   manualReviewIds = new Set(cards.map((card) => card.id));
+   reviewSelectionMode = "manual";
+   reviewScopeLabel = label || "Mots sélectionnés";
+   session = { active: false };
+   setView("learn");
+}
+
+function reviewSegment(value, label) {
+   return '<button class="review-segment" data-review-scope="' + value + '" aria-pressed="' + String(reviewSelectionMode === value) + '">' + label + "</button>";
+}
+
+function directionSegment(value, label) {
+   return '<button class="review-segment direction" data-review-direction="' + value + '" aria-pressed="' + String(db.settings.direction === value) + '">' + label + "</button>";
+}
+
+function conditionalReviewSelectorHtml() {
+   if (reviewSelectionMode === "pack") {
+      return '<label class="review-conditional-label">Choisir un pack<select class="search" id="review-pack-select"><option value="">Sélectionner…</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '"' + (pack.id === reviewPackId ? " selected" : "") + '>' + esc(pack.name) + "</option>").join("") + "</select></label>";
+   }
+   if (reviewSelectionMode === "category") {
+      const categories = reviewCategoryPackId ? categoriesForPack(reviewCategoryPackId) : [];
+      return '<div class="review-conditional-grid"><label class="review-conditional-label">Pack<select class="search" id="review-category-pack"><option value="">Sélectionner…</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '"' + (pack.id === reviewCategoryPackId ? " selected" : "") + '>' + esc(pack.name) + "</option>").join("") + '</select></label><label class="review-conditional-label">Sous-catégorie<select class="search" id="review-category-select"' + (reviewCategoryPackId ? "" : " disabled") + '><option value="">Sélectionner…</option>' + categories.map((category) => '<option value="' + esc(category.id) + '"' + (category.id === reviewCategoryId ? " selected" : "") + '>' + esc(category.name) + "</option>").join("") + "</select></label></div>";
+   }
+   if (reviewSelectionMode === "manual") {
+      return '<p class="review-manual-note"><strong>' + manualReviewIds.size + ' mot' + (manualReviewIds.size > 1 ? "s" : "") + '</strong> reçu' + (manualReviewIds.size > 1 ? "s" : "") + ' depuis Mes mots.</p>';
+   }
+   return "";
+}
+
+function extraFilterCheckbox(key, label) {
+   return '<label class="review-filter"><input type="checkbox" data-review-filter="' + key + '"' + (reviewExtraFilters[key] ? " checked" : "") + "><span>" + label + "</span></label>";
 }
 
 function renderLearn() {
    document.body.classList.toggle("in-session", session.active);
    if (session.active) { renderSession(); return; }
    if (session.summary) { renderSummary(); return; }
+
+   if (!["all", "due", "pack", "category", "manual"].includes(reviewSelectionMode))
+      reviewSelectionMode = "due";
+   if (!reviewPackId || !db.packs.some((pack) => pack.id === reviewPackId)) reviewPackId = "";
+   if (!reviewCategoryPackId || !db.packs.some((pack) => pack.id === reviewCategoryPackId)) reviewCategoryPackId = "";
+   if (!reviewCategoryId || !categoryById(reviewCategoryId)) reviewCategoryId = "";
+
    const root = $("view");
+   const cards = reviewSelectedCards();
+   const minutes = cards.length ? Math.max(1, Math.round(cards.length * 25 / 60)) : 0;
    const resume = loadSavedSession();
-   const selected = reviewSelectedCards();
-   root.innerHTML = '<section class="review-page"><header class="review-heading"><div class="review-mark">复</div><div><p class="eyebrow">Révision personnelle</p><h2 class="v-t" id="review-title">Que veux-tu réviser ?</h2><p class="muted">Choisis exactement les cartes de cette séance. Cette sélection ne modifie jamais tes packs.</p></div></header>' +
-      (resume ? '<div class="resume"><span>Séance en cours · ' + Math.min(resume.snap.index + 1, resume.cards.length) + ' / ' + resume.cards.length + '</span><span><button class="btn sm primary" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">Fermer</button></span></div>' : "") +
-      (!db.cards.length ? emptyHtml() : '<div class="review-layout"><section class="review-scope card"><h3>Type de sélection</h3><div class="review-choice-grid">' +
-         reviewChoiceHtml("due", "Cartes dues aujourd’hui", db.cards.filter(isDue).length + " cartes") +
-         reviewChoiceHtml("all", "Tous mes mots", db.cards.length + " cartes") +
-         reviewChoiceHtml("pack", "Un pack entier", "Choisir dans la liste") +
-         reviewChoiceHtml("categories", "Une ou plusieurs sous-catégories", reviewCategoryIds.size + " cochée(s)") +
-         reviewChoiceHtml("manual", "Seulement les mots sélectionnés", manualReviewIds.size + " carte(s)") +
-         reviewChoiceHtml("fav", "Favoris", db.cards.filter((card) => card.fav).length + " cartes") +
-         reviewChoiceHtml("difficult", "Mots difficiles", db.cards.filter((card) => card.difficult).length + " cartes") +
-         reviewChoiceHtml("new", "Nouveaux mots", db.cards.filter((card) => card.due == null && !card.acquired).length + " cartes") +
-         reviewChoiceHtml("learned", "Cartes déjà apprises", db.cards.filter((card) => card.acquired || card.due != null || (card.lvl || 0) > 0).length + " cartes") +
-         '</div><label class="f-lab review-pack-select">Pack entier<select class="search" id="review-pack-select"><option value="">Choisir un pack</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '"' + (reviewPackId === pack.id ? " selected" : "") + '>' + esc(pack.name) + "</option>").join("") + '</select></label></section><section class="review-categories card"><div class="review-section-title"><div><h3>Packs et sous-catégories</h3><p>Les cases peuvent être combinées librement.</p></div><button class="btn sm ghost" id="review-clear-categories">Effacer</button></div>' + reviewCategoryTreeHtml() + '</section></div>' +
-         reviewMetricsHtml(selected) + '<section class="review-launch card"><div><label class="f-lab">Mode<select class="search" id="review-mode"><option value="cards">Cartes</option><option value="written">Écrit</option><option value="discover">Découverte</option></select></label></div><button class="btn primary big" id="btn-continue"' + (selected.length ? "" : " disabled") + '>Commencer la révision</button><button class="btn ghost" id="review-open-library">Ouvrir Mes mots</button></section><details id="free-panel" class="review-compat"><summary>Options de séance</summary><div class="modes"><button data-mode="cards">Cartes</button><button data-mode="written">Écrit</button><button data-mode="discover">Découverte</button></div></details>') + "</section>";
-   if (!db.cards.length) { wireEmpty(); return; }
+   root.innerHTML = '<section class="review-page review-page-simple"><header class="review-simple-heading"><p class="eyebrow">Révision personnelle</p><h2 class="v-t">复 · Réviser</h2></header>' +
+      '<section class="review-block card" aria-labelledby="review-what-title"><div class="review-block-title"><span>1</span><h3 id="review-what-title">Que réviser ?</h3></div><div class="review-segments review-scope-segments">' + reviewSegment("all", "Tout") + reviewSegment("due", "Cartes dues") + reviewSegment("pack", "Un pack") + reviewSegment("category", "Une sous-catégorie") + reviewSegment("manual", "Mots sélectionnés") + '</div><div id="review-conditional">' + conditionalReviewSelectorHtml() + '</div><details class="review-more" id="review-options"' + (reviewOptionsOpen ? " open" : "") + '><summary>Options supplémentaires</summary><div class="review-filter-grid">' + extraFilterCheckbox("newOnly", "Uniquement nouveaux") + extraFilterCheckbox("favoritesOnly", "Uniquement favoris") + extraFilterCheckbox("difficultOnly", "Uniquement difficiles") + extraFilterCheckbox("includeLearned", "Inclure les cartes déjà apprises") + "</div></details></section>" +
+      '<section class="review-block card" aria-labelledby="review-direction-title"><div class="review-block-title"><span>2</span><h3 id="review-direction-title">Sens des cartes</h3></div><div class="review-segments review-direction-segments">' + directionSegment("zh2fr", "中文 → Français") + directionSegment("fr2zh", "Français → 中文") + directionSegment("mix", "Mélanger les deux") + "</div></section>" +
+      '<section class="review-block review-start-block card" aria-labelledby="review-summary-title"><div class="review-block-title"><span>3</span><h3 id="review-summary-title">Prêt à commencer</h3></div>' + (resume ? '<div class="resume review-resume"><span>Séance en cours · ' + Math.min(resume.snap.index + 1, resume.cards.length) + ' / ' + resume.cards.length + '</span><span><button class="btn sm" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">Ignorer</button></span></div>' : "") + '<p class="review-compact-summary" aria-live="polite"><strong>' + cards.length + ' carte' + (cards.length > 1 ? "s" : "") + '</strong> · environ ' + minutes + ' min</p>' + (!cards.length ? '<p class="review-empty-message">Aucune carte disponible avec cette sélection.</p>' : "") + '<button class="btn primary big review-start" id="btn-continue"' + (cards.length ? "" : " disabled") + '>Commencer la révision</button></section></section>';
+
+   document.querySelectorAll("[data-review-scope]").forEach((button) => button.onclick = () => {
+      reviewSelectionMode = button.dataset.reviewScope;
+      renderLearn();
+   });
+   document.querySelectorAll("[data-review-direction]").forEach((button) => button.onclick = () => {
+      db.settings.direction = button.dataset.reviewDirection;
+      save();
+      renderLearn();
+   });
+   if ($("review-pack-select")) $("review-pack-select").onchange = (event) => {
+      reviewPackId = event.target.value;
+      renderLearn();
+   };
+   if ($("review-category-pack")) $("review-category-pack").onchange = (event) => {
+      reviewCategoryPackId = event.target.value;
+      reviewCategoryId = "";
+      renderLearn();
+   };
+   if ($("review-category-select")) $("review-category-select").onchange = (event) => {
+      reviewCategoryId = event.target.value;
+      renderLearn();
+   };
+   const options = $("review-options");
+   options.ontoggle = () => { reviewOptionsOpen = options.open; };
+   document.querySelectorAll("[data-review-filter]").forEach((input) => input.onchange = () => {
+      reviewOptionsOpen = true;
+      reviewExtraFilters[input.dataset.reviewFilter] = input.checked;
+      renderLearn();
+   });
+   $("btn-continue").onclick = startReviewSelection;
    if ($("btn-resume")) $("btn-resume").onclick = resumeSession;
    if ($("btn-resume-x")) $("btn-resume-x").onclick = () => { clearSavedSession(); renderLearn(); };
-   document.querySelectorAll('input[name="review-scope"]').forEach((input) => input.onchange = () => { reviewSelectionMode = input.value; renderLearn(); });
-   $("review-pack-select").onchange = (event) => { reviewPackId = event.target.value; reviewSelectionMode = "pack"; renderLearn(); };
-   document.querySelectorAll("[data-review-category]").forEach((input) => input.onchange = () => {
-      if (input.checked) reviewCategoryIds.add(input.dataset.reviewCategory); else reviewCategoryIds.delete(input.dataset.reviewCategory);
-      reviewSelectionMode = "categories"; renderLearn();
-   });
-   document.querySelectorAll("[data-review-pack-check]").forEach((input) => input.onchange = () => {
-      categoriesForPack(input.dataset.reviewPackCheck).forEach((category) => input.checked ? reviewCategoryIds.add(category.id) : reviewCategoryIds.delete(category.id));
-      reviewSelectionMode = "categories"; renderLearn();
-   });
-   document.querySelectorAll("[data-review-entire-pack]").forEach((button) => button.onclick = () => { reviewPackId = button.dataset.reviewEntirePack; reviewSelectionMode = "pack"; renderLearn(); });
-   $("review-clear-categories").onclick = () => { reviewCategoryIds.clear(); reviewSelectionMode = "categories"; renderLearn(); };
-   $("btn-continue").onclick = () => startReviewSelection($("review-mode").value);
-   $("review-open-library").onclick = () => setView("lib");
-   document.querySelectorAll("[data-mode]").forEach((button) => button.onclick = () => startReviewSelection(button.dataset.mode));
 }

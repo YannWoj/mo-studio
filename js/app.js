@@ -8,17 +8,6 @@
                .querySelectorAll(".nav button")
                .forEach((b) => (b.onclick = () => setView(b.dataset.view)));
             $("btn-settings").onclick = openSettings;
-            $("sheet").addEventListener("click", (e) => {
-               if (e.target.id !== "sheet") return;
-               if (
-                  activeView === "search" &&
-                  history.state &&
-                  history.state.moStudioSearch &&
-                  history.state.mode === "detail"
-               )
-                  closeSearchDictionaryDetail();
-               else closeSheet();
-            });
             // audio : tout élément portant data-say est cliquable
             document.addEventListener("click", (e) => {
                const el = e.target.closest("[data-say]");
@@ -43,17 +32,6 @@
             // raccourcis clavier
             document.addEventListener("keydown", (e) => {
                if (sheetOpen()) {
-                  if (e.key === "Escape") {
-                     if (
-                        activeView === "search" &&
-                        history.state &&
-                        history.state.moStudioSearch &&
-                        history.state.mode === "detail"
-                     )
-                        closeSearchDictionaryDetail();
-                     else closeSheet();
-                     return;
-                  }
                   const tag = (e.target.tagName || "").toLowerCase();
                   const editing =
                      tag === "input" || tag === "textarea" || tag === "select" ||

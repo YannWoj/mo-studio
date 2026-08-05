@@ -198,7 +198,10 @@
             if (session.mode === "written" && !st.task)
                st.task = pickWriteTask(c);
             const front = session.mode === "cards" ? frontOf(c, st) : "zh";
-            const showPyBack = db.settings.pinyin !== "never";
+            // Les flashcards révèlent toujours le pinyin au verso, quel que
+            // soit le sens choisi. Les autres modes conservent leur réglage.
+            const showPyBack =
+               session.mode === "cards" || db.settings.pinyin !== "never";
             const hideSay =
                (session.mode === "cards" && front === "fr" && !st.revealed) ||
                (session.mode === "written" &&
@@ -216,11 +219,6 @@
                        '">' +
                        esc(c.hz) +
                        "</div>" +
-                       (db.settings.pinyin === "always" && c.py
-                          ? '<div class="pinyin">' +
-                            colorPinyin(c.py) +
-                            "</div>"
-                          : "") +
                        '<div class="hint">Appuie pour retourner</div>'
                      : '<div class="fr-big ink-in">' +
                        esc(c.fr) +
@@ -251,9 +249,9 @@
                   (showPyBack && c.py
                      ? '<div class="pinyin">' + colorPinyin(c.py) + "</div>"
                      : "") +
-                  '<div class="sep"></div><div class="fr">' +
-                  esc(c.fr) +
-                  "</div>" +
+                  (session.mode !== "cards" || front === "zh"
+                     ? '<div class="sep"></div><div class="fr">' + esc(c.fr) + "</div>"
+                     : "") +
                   (c.exHz ? exampleHtml(c) : "") +
                   noteHtml(c) +
                   actionsHtml(c);

@@ -16,6 +16,7 @@
             pointer-events: auto;
          }
          .sheet-card {
+            position: relative;
             width: 100%;
             max-width: 560px;
             max-height: 86dvh;
@@ -27,6 +28,24 @@
             padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
             transform: translateY(30px);
             transition: transform 0.22s;
+         }
+         .sheet-x {
+            position: absolute;
+            z-index: 2;
+            top: 8px;
+            right: 8px;
+            display: grid;
+            width: 44px;
+            height: 44px;
+            place-items: center;
+            border-radius: 50%;
+            color: var(--ink-soft);
+            font-size: 22px;
+            line-height: 1;
+         }
+         .sheet-x:hover {
+            background: var(--card);
+            color: var(--lacquer);
          }
          #sheet.open .sheet-card {
             transform: none;
