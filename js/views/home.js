@@ -3,6 +3,7 @@
 /* ================= Réviser : sélection compacte ================= */
 let reviewSelectionMode = "due";
 let reviewPackId = "";
+let reviewPackIds = new Set();
 let reviewCategoryPackId = "";
 let reviewCategoryIds = new Set();
 let manualReviewIds = new Set();
@@ -22,7 +23,15 @@ let hub = { flt: "due", pack: "", cat: "", includeAcquired: false, freeOpen: fal
 function baseReviewCards() {
    if (reviewSelectionMode === "all") return db.cards.slice();
    if (reviewSelectionMode === "due") return db.cards.filter(isDue);
-   if (reviewSelectionMode === "pack") return reviewPackId ? cardsForPack(reviewPackId) : [];
+   if (reviewSelectionMode === "pack") {
+      const selectedPackIds = reviewPackIds.size
+         ? Array.from(reviewPackIds)
+         : reviewPackId
+           ? [reviewPackId]
+           : [];
+      const ids = new Set(selectedPackIds.flatMap(packCardIds));
+      return db.cards.filter((card) => ids.has(card.id));
+   }
    if (reviewSelectionMode === "category") {
       const ids = new Set(Array.from(reviewCategoryIds).flatMap(categoryCardIds));
       return db.cards.filter((card) => ids.has(card.id));
@@ -50,8 +59,11 @@ function scopeCards() {
 
 function scopeLabel() {
    if (reviewSelectionMode === "pack") {
-      const pack = db.packs.find((item) => item.id === reviewPackId);
-      return pack ? "Pack · " + pack.name : "Pack";
+      const packs = Array.from(reviewPackIds)
+         .map((id) => db.packs.find((pack) => pack.id === id))
+         .filter(Boolean);
+      if (packs.length === 1) return "Pack · " + packs[0].name;
+      return packs.length + " packs";
    }
    if (reviewSelectionMode === "category") {
       const categories = Array.from(reviewCategoryIds).map(categoryById).filter(Boolean);
@@ -60,7 +72,7 @@ function scopeLabel() {
       return categories.length + " sous-catégories" + (pack ? " · " + pack.name : "");
    }
    if (reviewSelectionMode === "manual") return reviewScopeLabel || "Mots sélectionnés";
-   return reviewSelectionMode === "all" ? "Tous mes mots" : "Cartes dues";
+   return reviewSelectionMode === "all" ? "Tous mes mots" : "À revoir aujourd’hui";
 }
 
 function smartQueue() {
@@ -78,6 +90,7 @@ function smartQueue() {
 }
 
 function startCardsWith(cards, label, mode) {
+   if (typeof resetReviewStrokeSession === "function") resetReviewStrokeSession();
    session = {
       active: true,
       mode: mode || "cards",
@@ -116,6 +129,7 @@ function startFreeSession(mode) {
 function openReviewForPack(packId) {
    reviewSelectionMode = "pack";
    reviewPackId = packId;
+   reviewPackIds = new Set(packId ? [packId] : []);
    reviewCategoryPackId = "";
    reviewCategoryIds.clear();
    session = { active: false };
@@ -128,6 +142,7 @@ function openReviewForCategory(categoryId) {
    reviewCategoryIds = new Set(category ? [category.id] : []);
    reviewCategoryPackId = category ? category.packId : "";
    reviewPackId = "";
+   reviewPackIds.clear();
    session = { active: false };
    setView("learn");
 }
@@ -140,8 +155,8 @@ function openReviewForManualCards(cards, label) {
    setView("learn");
 }
 
-function reviewSegment(value, label) {
-   return '<button class="review-segment" data-review-scope="' + value + '" aria-pressed="' + String(reviewSelectionMode === value) + '">' + label + "</button>";
+function reviewSegment(value, label, help) {
+   return '<button class="review-segment" data-review-scope="' + value + '" aria-pressed="' + String(reviewSelectionMode === value) + '"><span>' + label + "</span>" + (help ? '<small>' + help + "</small>" : "") + "</button>";
 }
 
 function reviewModeCard(value, title, description) {
@@ -154,11 +169,11 @@ function directionSegment(value, label) {
 
 function conditionalReviewSelectorHtml() {
    if (reviewSelectionMode === "pack") {
-      return '<div class="review-visual-list" id="review-pack-list">' + (db.packs.map((pack) => '<button class="review-list-option" data-review-pack-option="' + esc(pack.id) + '" aria-pressed="' + String(pack.id === reviewPackId) + '"><span>' + esc(pack.name) + '</span><small>' + cardsForPack(pack.id).length + ' carte' + (cardsForPack(pack.id).length > 1 ? "s" : "") + "</small></button>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div>";
+      return '<div class="review-multi-picker"><div class="review-category-list-head"><p class="review-picker-label"><strong>' + reviewPackIds.size + '</strong> sélectionné' + (reviewPackIds.size > 1 ? "s" : "") + '</p><div><button class="review-text-action" id="review-packs-all">Tout sélectionner</button><button class="review-text-action" id="review-packs-clear">Effacer</button></div></div><div class="review-category-options" id="review-pack-list">' + (db.packs.map((pack) => '<label class="review-category-option"><input type="checkbox" data-review-pack-option="' + esc(pack.id) + '"' + (reviewPackIds.has(pack.id) ? " checked" : "") + '><span><strong>' + esc(pack.name) + '</strong><small>' + cardsForPack(pack.id).length + ' carte' + (cardsForPack(pack.id).length > 1 ? "s" : "") + "</small></span></label>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div></div>";
    }
    if (reviewSelectionMode === "category") {
       const categories = reviewCategoryPackId ? categoriesForPack(reviewCategoryPackId) : [];
-      return '<div class="review-category-picker"><p class="review-picker-label">1. Choisis un pack</p><div class="review-visual-list compact">' + (db.packs.map((pack) => '<button class="review-list-option" data-review-category-pack-option="' + esc(pack.id) + '" aria-pressed="' + String(pack.id === reviewCategoryPackId) + '"><span>' + esc(pack.name) + '</span><small>' + categoriesForPack(pack.id).length + ' sous-catégorie' + (categoriesForPack(pack.id).length > 1 ? "s" : "") + "</small></button>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div>" + (reviewCategoryPackId ? '<div class="review-category-list-head"><p class="review-picker-label">2. Choisis une ou plusieurs sous-catégories</p><div><button class="review-text-action" id="review-categories-all">Tout sélectionner</button><button class="review-text-action" id="review-categories-clear">Effacer</button></div></div><div class="review-category-options">' + (categories.map((category) => '<label class="review-category-option"><input type="checkbox" data-review-category-option="' + esc(category.id) + '"' + (reviewCategoryIds.has(category.id) ? " checked" : "") + '><span><strong>' + esc(category.name) + '</strong><small>' + cardsForCategory(category.id).length + ' carte' + (cardsForCategory(category.id).length > 1 ? "s" : "") + "</small></span></label>").join("") || '<p class="review-inline-empty">Ce pack ne contient aucune sous-catégorie.</p>') + "</div>" : "") + "</div>";
+      return '<div class="review-category-picker"><p class="review-picker-label">1. Choisis un pack</p><div class="review-visual-list compact">' + (db.packs.map((pack) => '<button class="review-list-option" data-review-category-pack-option="' + esc(pack.id) + '" aria-pressed="' + String(pack.id === reviewCategoryPackId) + '"><span>' + esc(pack.name) + '</span><small>' + categoriesForPack(pack.id).length + ' sous-catégorie' + (categoriesForPack(pack.id).length > 1 ? "s" : "") + "</small></button>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div>" + (reviewCategoryPackId ? '<div class="review-category-list-head"><p class="review-picker-label">2. Sous-catégories · <strong>' + reviewCategoryIds.size + ' sélectionnée' + (reviewCategoryIds.size > 1 ? "s" : "") + '</strong></p><div><button class="review-text-action" id="review-categories-all">Tout sélectionner</button><button class="review-text-action" id="review-categories-clear">Effacer</button></div></div><div class="review-category-options">' + (categories.map((category) => '<label class="review-category-option"><input type="checkbox" data-review-category-option="' + esc(category.id) + '"' + (reviewCategoryIds.has(category.id) ? " checked" : "") + '><span><strong>' + esc(category.name) + '</strong><small>' + cardsForCategory(category.id).length + ' carte' + (cardsForCategory(category.id).length > 1 ? "s" : "") + "</small></span></label>").join("") || '<p class="review-inline-empty">Ce pack ne contient aucune sous-catégorie.</p>') + "</div>" : "") + "</div>";
    }
    if (reviewSelectionMode === "manual") {
       return '<p class="review-manual-note"><strong>' + manualReviewIds.size + ' mot' + (manualReviewIds.size > 1 ? "s" : "") + '</strong> choisi' + (manualReviewIds.size > 1 ? "s" : "") + ' depuis Mes mots.</p>';
@@ -181,7 +196,8 @@ function renderLearn() {
 
    if (!["all", "due", "pack", "category", "manual"].includes(reviewSelectionMode))
       reviewSelectionMode = "due";
-   if (!reviewPackId || !db.packs.some((pack) => pack.id === reviewPackId)) reviewPackId = "";
+   reviewPackIds = new Set(Array.from(reviewPackIds).filter((id) => db.packs.some((pack) => pack.id === id)));
+   reviewPackId = reviewPackIds.values().next().value || "";
    if (!reviewCategoryPackId || !db.packs.some((pack) => pack.id === reviewCategoryPackId)) reviewCategoryPackId = "";
    reviewCategoryIds = new Set(
       Array.from(reviewCategoryIds).filter((id) => {
@@ -196,7 +212,7 @@ function renderLearn() {
    const minutes = cards.length ? Math.max(1, Math.round(cards.length * 25 / 60)) : 0;
    const resume = loadSavedSession();
    root.innerHTML = '<section class="review-page review-page-simple"><header class="review-simple-heading"><p class="eyebrow">Révision personnelle</p><h2 class="v-t">复 · Réviser</h2></header>' +
-      '<section class="review-block card" aria-labelledby="review-content-title"><div class="review-block-title"><span>1</span><div><h3 id="review-content-title">Choisir le contenu</h3><p>Que veux-tu réviser ?</p></div></div><div class="review-segments review-scope-segments">' + reviewSegment("all", "Tous mes mots") + reviewSegment("pack", "Un pack") + reviewSegment("category", "Une sous-catégorie") + reviewSegment("due", "Cartes dues") + '</div><div id="review-conditional">' + conditionalReviewSelectorHtml() + "</div></section>" +
+      '<section class="review-block card" aria-labelledby="review-content-title"><div class="review-block-title"><span>1</span><div><h3 id="review-content-title">Choisir le contenu</h3><p>Que veux-tu réviser ?</p></div></div><div class="review-segments review-scope-segments">' + reviewSegment("all", "Tous mes mots") + reviewSegment("pack", "Un ou plusieurs packs") + reviewSegment("category", "Une ou plusieurs sous-catégories") + reviewSegment("due", "À revoir aujourd’hui", "Cartes prévues par ton système de révision.") + '</div><div id="review-conditional">' + conditionalReviewSelectorHtml() + "</div></section>" +
       '<section class="review-block card" aria-labelledby="review-mode-title"><div class="review-block-title"><span>2</span><div><h3 id="review-mode-title">Choisir le mode</h3><p>Comment veux-tu réviser ?</p></div></div><div class="review-mode-grid">' + reviewModeCard("cards", "Cartes", "Je révèle la réponse et je m’auto-évalue") + reviewModeCard("written", "Écriture", "J’écris la réponse avant de la vérifier") + reviewModeCard("discover", "Découverte", "Je feuillette sans modifier ma progression") + "</div></section>" +
       '<section class="review-block card" aria-labelledby="review-direction-title"><div class="review-block-title"><span>3</span><div><h3 id="review-direction-title">Choisir le sens</h3><p>Dans quel sens ?</p></div></div><div class="review-segments review-direction-segments">' + directionSegment("zh2fr", "中文 → Français") + directionSegment("fr2zh", "Français → 中文") + directionSegment("mix", "Mélanger les deux") + "</div></section>" +
       '<details class="review-advanced card" id="review-options"' + (reviewOptionsOpen ? " open" : "") + '><summary>Réglages avancés</summary><div class="review-filter-grid">' + extraFilterCheckbox("newOnly", "Uniquement les nouveaux mots") + extraFilterCheckbox("favoritesOnly", "Uniquement les favoris") + extraFilterCheckbox("difficultOnly", "Uniquement les mots difficiles") + extraFilterCheckbox("includeLearned", "Inclure les cartes déjà maîtrisées") + (reviewMode === "written" ? '<div class="review-writing-options"><p>Exercices d’écriture</p>' + writingSettingCheckbox("fr", "Traduction française") + writingSettingCheckbox("pinyin", "Pinyin") + writingSettingCheckbox("trace", "Tracé des caractères") + "</div>" : "") + "</div></details>" +
@@ -215,10 +231,22 @@ function renderLearn() {
       reviewMode = button.dataset.reviewMode;
       renderLearn();
    });
-   document.querySelectorAll("[data-review-pack-option]").forEach((button) => button.onclick = () => {
-      reviewPackId = button.dataset.reviewPackOption;
+   document.querySelectorAll("[data-review-pack-option]").forEach((input) => input.onchange = () => {
+      if (input.checked) reviewPackIds.add(input.dataset.reviewPackOption);
+      else reviewPackIds.delete(input.dataset.reviewPackOption);
+      reviewPackId = reviewPackIds.values().next().value || "";
       renderLearn();
    });
+   if ($("review-packs-all")) $("review-packs-all").onclick = () => {
+      reviewPackIds = new Set(db.packs.map((pack) => pack.id));
+      reviewPackId = reviewPackIds.values().next().value || "";
+      renderLearn();
+   };
+   if ($("review-packs-clear")) $("review-packs-clear").onclick = () => {
+      reviewPackIds.clear();
+      reviewPackId = "";
+      renderLearn();
+   };
    document.querySelectorAll("[data-review-category-pack-option]").forEach((button) => button.onclick = () => {
       reviewCategoryPackId = button.dataset.reviewCategoryPackOption;
       reviewCategoryIds.clear();

@@ -67,14 +67,15 @@ async function main() {
    const seeded = await evaluate(`(async () => {
       db.cards=[];db.packs=[];db.categories=[];db.memberships=[];
       const pack=createPersonalPack('Livres'); const chapter=createPersonalCategory(pack.id,'Chapitre 1'); const chapter2=createPersonalCategory(pack.id,'Chapitre 2'); const empty=createPersonalCategory(pack.id,'Chapitre vide');
+      const secondPack=createPersonalPack('Cours'); const secondCategory=createPersonalCategory(secondPack.id,'Leçon 1');
       const cards=[
-         normalizeCard({id:'c1',hz:'你好',py:'nǐ hǎo',fr:'bonjour',fav:true,lvl:4,due:Date.now()-1000,created:1},true),
+         normalizeCard({id:'c1',hz:'你好吗',py:'nǐ hǎo ma',fr:'comment vas-tu ?',fav:true,lvl:4,due:Date.now()-1000,created:1},true),
          normalizeCard({id:'c2',hz:'朋友',py:'péngyou',fr:'ami',difficult:true,lvl:0,due:null,created:2},true),
          normalizeCard({id:'c3',hz:'书',py:'shū',fr:'livre',lvl:2,due:Date.now()+86400000,created:3},true),
          normalizeCard({id:'c4',hz:'会',py:'huì',fr:'savoir',lvl:6,acquired:true,due:null,created:4},true)
       ];
-      db.cards.push(...cards); cards.slice(0,2).forEach(card=>addCardMembership(card.id,chapter.id)); cards.slice(2).forEach(card=>addCardMembership(card.id,chapter2.id)); syncLegacyPackCardIds(); save(); await flushPersonalLibrary();
-      return {packId:pack.id,categoryId:chapter.id,category2Id:chapter2.id,emptyId:empty.id,srs:JSON.stringify(cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory}))),structure:JSON.stringify({packs:db.packs,categories:db.categories,memberships:db.memberships})};
+      db.cards.push(...cards); cards.slice(0,2).forEach(card=>addCardMembership(card.id,chapter.id)); cards.slice(2).forEach(card=>addCardMembership(card.id,chapter2.id)); addCardMembership(cards[0].id,secondCategory.id); syncLegacyPackCardIds(); save(); await flushPersonalLibrary();
+      return {packId:pack.id,secondPackId:secondPack.id,categoryId:chapter.id,category2Id:chapter2.id,emptyId:empty.id,srs:JSON.stringify(cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory}))),structure:JSON.stringify({packs:db.packs,categories:db.categories,memberships:db.memberships})};
    })()`);
 
    await evaluate("setView('lib',{fromHistory:true});lib.level='all';renderLib()");
@@ -98,12 +99,12 @@ async function main() {
 
    await evaluate("setView('learn',{fromHistory:true});reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewSelectionMode='all';renderLearn()");
    assert((await evaluate("reviewSelectedCards().length")) === 3, "all failed"); pass("1 Tous mes mots");
-   await click('[data-review-scope="due"]'); assert((await evaluate("reviewSelectedCards().length")) === 1, "due failed"); pass("2 Cartes dues");
-   await click('[data-review-scope="pack"]'); assert(await evaluate("!!document.querySelector('[data-review-pack-option]')&&!document.querySelector('[data-review-category-option]')"), "conditional pack list failed"); await click(`[data-review-pack-option="${seeded.packId}"]`); assert((await evaluate("reviewSelectedCards().length")) === 3, "pack cards failed"); pass("3 sélection d’un pack");
+   await click('[data-review-scope="due"]'); assert((await evaluate("reviewSelectedCards().length")) === 1, "due failed"); assert(await evaluate("document.querySelector('[data-review-scope=due]').textContent.includes('À revoir aujourd’hui')&&document.querySelector('[data-review-scope=due] small').textContent==='Cartes prévues par ton système de révision.'"), "due wording failed"); pass("2 À revoir aujourd’hui et aide contextuelle");
+   await click('[data-review-scope="pack"]'); assert(await evaluate("!!document.querySelector('[data-review-pack-option]')&&!document.querySelector('[data-review-category-option]')"), "conditional pack list failed"); await click(`[data-review-pack-option="${seeded.packId}"]`); assert((await evaluate("reviewSelectedCards().length")) === 3, "pack cards failed"); await click(`[data-review-pack-option="${seeded.secondPackId}"]`); assert(await evaluate("reviewPackIds.size===2&&reviewSelectedCards().length===3&&document.querySelector('.review-category-list-head').textContent.includes('2 sélectionnés')"), "multiple packs or deduplication failed"); await click("#review-packs-clear"); assert((await evaluate("reviewSelectedCards().length")) === 0, "clear packs failed"); await click(`[data-review-pack-option="${seeded.packId}"]`); pass("3 sélection multiple de packs et déduplication");
    await click('[data-review-scope="category"]'); await click(`[data-review-category-pack-option="${seeded.packId}"]`); await click(`[data-review-category-option="${seeded.categoryId}"]`); assert((await evaluate("reviewSelectedCards().length")) === 2, "single category failed"); pass("4 sélection d’une sous-catégorie");
    await click(`[data-review-category-option="${seeded.category2Id}"]`); assert((await evaluate("reviewSelectedCards().length")) === 3, "multiple categories failed"); await click("#review-categories-clear"); assert((await evaluate("reviewSelectedCards().length")) === 0, "clear categories failed"); await click("#review-categories-all"); assert((await evaluate("reviewCategoryIds.size")) === 3, "select all categories failed"); pass("5 sélection multiple, Tout sélectionner et Effacer");
 
-   await evaluate("setView('lib',{fromHistory:true});lib.level='packs';renderLib()"); await click(`[data-pack-review="${seeded.packId}"]`); assert(await evaluate(`reviewSelectionMode==='pack'&&reviewPackId===${JSON.stringify(seeded.packId)}&&document.querySelector('[data-review-pack-option][aria-pressed="true"]')?.dataset.reviewPackOption===${JSON.stringify(seeded.packId)}`), "open from pack failed"); pass("6 ouverture depuis Réviser ce pack");
+   await evaluate("setView('lib',{fromHistory:true});lib.level='packs';renderLib()"); await click(`[data-pack-review="${seeded.packId}"]`); assert(await evaluate(`reviewSelectionMode==='pack'&&reviewPackIds.has(${JSON.stringify(seeded.packId)})&&document.querySelector('[data-review-pack-option]:checked')?.dataset.reviewPackOption===${JSON.stringify(seeded.packId)}`), "open from pack failed"); pass("6 ouverture depuis Réviser ce pack");
    await evaluate(`setView('lib',{fromHistory:true});lib.level='category';lib.packId=${JSON.stringify(seeded.packId)};lib.categoryId=${JSON.stringify(seeded.categoryId)};renderLib()`); await click("#category-review"); assert(await evaluate(`reviewSelectionMode==='category'&&reviewCategoryIds.has(${JSON.stringify(seeded.categoryId)})&&document.querySelector('[data-review-category-option]:checked')?.dataset.reviewCategoryOption===${JSON.stringify(seeded.categoryId)}`), "open from category failed"); pass("7 ouverture depuis Réviser cette sous-catégorie");
    await evaluate("setView('lib',{fromHistory:true});lib.level='all';lib.selected=new Set(['c1','c2']);renderLib()"); await click("#selected-review"); assert(await evaluate("reviewSelectionMode==='manual'&&manualReviewIds.size===2&&document.querySelector('#review-conditional').textContent.includes('2 mots choisis depuis Mes mots')&&!document.querySelector('[data-review-scope=manual]')"), "open from manual failed"); pass("8 ouverture depuis des mots cochés sans option abstraite");
 
@@ -142,6 +143,34 @@ async function main() {
    assert(await evaluate("document.querySelector('#btn-continue').disabled&&document.querySelector('.review-empty-message').textContent.includes('Aucune carte')"), "empty selection state failed"); pass("16 aucune carte disponible");
    await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};renderLearn()"); const summaryBefore=await evaluate("document.querySelector('.review-compact-summary').textContent"); await click('[data-review-scope="due"]'); const summaryAfter=await evaluate("document.querySelector('.review-compact-summary').textContent"); assert(summaryBefore!==summaryAfter&&summaryAfter.includes('1 carte'),"live summary failed"); pass("17 résumé mis à jour immédiatement");
 
+   await evaluate("startCardsWith([db.cards.find(c=>c.id==='c1'),db.cards.find(c=>c.id==='c3')],'Test des traits','cards')");
+   assert(await evaluate("document.querySelector('#s-prev')===null"), "navigation should stay below grades before reveal");
+   await click("#s-flip");
+   if (!(await evaluate("document.querySelector('#review-strokes').open"))) await click("#review-strokes summary");
+   await waitFor(() => evaluate("reviewStrokeData?.character==='你'&&!!document.querySelector('#review-stroke-target svg')"), "stroke animation did not load");
+   assert(await evaluate("document.querySelectorAll('[data-review-stroke-character]').length===3&&document.querySelector('#review-stroke-count').textContent.trim()==='1 / 3'"), "multi-character stroke selector failed");
+   assert(await evaluate("document.querySelector('#s-prev').disabled&&document.querySelector('#s-next').textContent.includes('Passer')"), "first card navigation failed");
+   await evaluate("window.__previousReviewWriter=reviewStrokeWriter;true"); await click("#review-stroke-replay"); assert(await evaluate("!!reviewStrokeWriter&&reviewStrokeWriter!==window.__previousReviewWriter"), "replay did not recreate animation"); pass("ordre des traits · Animation et Rejouer");
+   await click('[data-review-stroke-tab="steps"]'); await waitFor(() => evaluate("document.querySelectorAll('.review-stroke-step').length===reviewStrokeData?.strokeCount"), "stroke steps missing"); pass("ordre des traits · Étapes");
+   await click("#review-stroke-character-next"); await waitFor(() => evaluate("reviewStrokeData?.character==='好'"), "second character did not load"); assert(await evaluate("document.querySelector('#review-stroke-count').textContent.trim()==='2 / 3'"), "second character counter failed");
+   await click('[data-review-stroke-character="2"]'); await waitFor(() => evaluate("reviewStrokeData?.character==='吗'"), "third character did not load"); assert(await evaluate(`document.querySelector('#review-stroke-count').textContent.trim()==='3 / 3'&&document.querySelector('[data-review-stroke-character="2"]').getAttribute('aria-pressed')==='true'`), "third character state failed"); pass("navigation entre 你, 好 et 吗");
+   const listenerCount = await evaluate("reviewStrokeWriterListeners.length"); await click("#s-next"); assert(await evaluate("session.index===1&&reviewStrokeWriter===null&&reviewStrokeWriterListeners.length===0"), "writer was not destroyed on card change"); await click("#s-flip"); await waitFor(() => evaluate("reviewStrokeData?.character==='书'"), "next card stroke data did not load"); assert((await evaluate("reviewStrokeWriterListeners.length")) <= Math.max(listenerCount, 2), "writer listeners leaked"); assert(await evaluate("document.querySelector('#s-next').textContent.includes('Terminer')&&!document.querySelector('#s-prev').disabled"), "last card navigation failed"); await click("#s-prev"); assert((await evaluate("session.index")) === 0, "previous navigation failed"); pass("nettoyage Hanzi Writer et barre Précédent / Passer / Terminer");
+   await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();startCardsWith([{id:'latin',hz:'hello',py:'',fr:'bonjour',lvl:0,due:null,acquired:false}],'Sans hanzi','cards')"); await click("#s-flip"); assert(!(await evaluate("!!document.querySelector('#review-strokes')")), "stroke block shown without Han character"); await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()"); pass("verso sans caractère chinois");
+
+   async function dragCard(dx, dy, selector = "#flash") {
+      const point = await evaluate(`(() => { const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(); return {x:${JSON.stringify(selector)}==='#flash'?r.left+18:r.left+r.width/2,y:r.top+r.height/2}; })()`);
+      await cdp.send("Input.dispatchMouseEvent", { type:"mousePressed", x:point.x, y:point.y, button:"left", buttons:1, clickCount:1 });
+      await cdp.send("Input.dispatchMouseEvent", { type:"mouseMoved", x:point.x+dx, y:point.y+dy, button:"left", buttons:1 });
+      await cdp.send("Input.dispatchMouseEvent", { type:"mouseReleased", x:point.x+dx, y:point.y+dy, button:"left", buttons:0, clickCount:1 });
+   }
+   await evaluate("startCardsWith([db.cards.find(c=>c.id==='c1'),db.cards.find(c=>c.id==='c2'),db.cards.find(c=>c.id==='c3')],'Gestes','cards')");
+   await dragCard(-120, 4); assert((await evaluate("session.index")) === 1, "left swipe failed"); await dragCard(120, 3); assert((await evaluate("session.index")) === 0, "right swipe failed");
+   await dragCard(2, 1); assert((await evaluate("session.index")) === 0, "simple touch changed card");
+   await evaluate("getState(0).revealed=false;renderSession()");
+   await dragCard(3, 110); assert(await evaluate("session.index===0&&getComputedStyle(document.querySelector('#flash')).touchAction==='pan-y'"), "vertical gesture blocked or changed card");
+   await click("#s-flip"); await dragCard(-120, 0, "#a-fav"); assert((await evaluate("session.index")) === 0, "interactive control triggered swipe"); assert(await evaluate("!document.querySelector('#flash').classList.contains('is-session-dragging')&&(getSelection().isCollapsed||!String(getSelection()))"), "drag state or text selection remained"); pass("swipes gauche/droite, toucher simple, scroll vertical et contrôles protégés");
+   await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
+
    await evaluate("reviewSelectionMode='all';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};renderLearn()");
    for (const width of [360,430,1024]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
@@ -151,10 +180,20 @@ async function main() {
    }
    pass("18 affichage 360 px"); pass("19 affichage 430 px"); pass("20 affichage 1024 px"); pass("21 aucun scroll horizontal");
 
+   for (const width of [360,430,1024]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
+      await evaluate("startCardsWith([db.cards.find(c=>c.id==='c1')],'Responsive','cards');getState(0).revealed=true;reviewStrokeExpanded=true;renderSession()");
+      await waitFor(() => evaluate("!!document.querySelector('#review-strokes')"), "responsive stroke block missing");
+      const layout = await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth+1,flash:document.querySelector('#flash').getBoundingClientRect().width,viewport:innerWidth,controls:[...document.querySelectorAll('.review-strokes button,.session-nav button,.grades button')].every(button=>button.getBoundingClientRect().height>=44),overlap:document.querySelector('.session-nav').getBoundingClientRect().left<0})`);
+      assert(!layout.overflow&&layout.flash<=layout.viewport&&layout.controls&&!layout.overlap, `session layout ${width} failed: ${JSON.stringify(layout)}`);
+      await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
+   }
+   pass("session responsive 360, 430 et 1024 px sans chevauchement");
+
    const finalState = await evaluate("({srs:JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory}))),structure:JSON.stringify({packs:db.packs,categories:db.categories,memberships:db.memberships})})");
    assert(finalState.srs === seeded.srs && finalState.structure === seeded.structure, "packs or SRS changed"); pass("22 aucune perte de packs ou progression");
    assert(!cdp.errors.length, "runtime errors: " + cdp.errors.join(" | "));
-   console.log(`RESULT ${version.Browser} — 26 scénarios validés`);
+   console.log(`RESULT ${version.Browser} — expérience Réviser et flashcards validée`);
 }
 
 try { await main(); }

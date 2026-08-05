@@ -1,5 +1,218 @@
 "use strict";
 
+let reviewStrokeWriter = null;
+let reviewStrokeWriterTarget = null;
+let reviewStrokeWriterListeners = [];
+let reviewStrokeLoadToken = 0;
+let reviewStrokeData = null;
+let reviewStrokeTab = "animation";
+let reviewStrokeExpanded = false;
+
+function reviewHanzi(value) {
+   return Array.from(String(value || "")).filter((character) =>
+      /^\p{Script=Han}$/u.test(character),
+   );
+}
+
+function removeReviewStrokeWriterListeners() {
+   reviewStrokeWriterListeners.forEach(({ type, listener, options }) =>
+      document.removeEventListener(type, listener, options),
+   );
+   reviewStrokeWriterListeners = [];
+}
+
+function destroyReviewStrokeWriter() {
+   if (reviewStrokeWriter && typeof reviewStrokeWriter.cancelAnimation === "function") {
+      try { reviewStrokeWriter.cancelAnimation(); } catch (error) {}
+   }
+   if (reviewStrokeWriter && typeof reviewStrokeWriter.cancelQuiz === "function") {
+      try { reviewStrokeWriter.cancelQuiz(); } catch (error) {}
+   }
+   if (reviewStrokeWriterTarget) reviewStrokeWriterTarget.innerHTML = "";
+   removeReviewStrokeWriterListeners();
+   reviewStrokeWriter = null;
+   reviewStrokeWriterTarget = null;
+}
+
+function destroyReviewStrokeWorkspace() {
+   reviewStrokeLoadToken++;
+   destroyReviewStrokeWriter();
+   reviewStrokeData = null;
+}
+
+function resetReviewStrokeSession() {
+   destroyReviewStrokeWorkspace();
+   reviewStrokeTab = "animation";
+   reviewStrokeExpanded =
+      typeof matchMedia === "function" && matchMedia("(min-width: 601px)").matches;
+}
+
+function managedReviewStrokeWriter(target, character, options) {
+   const captured = [];
+   const originalAddEventListener = document.addEventListener;
+   document.addEventListener = function (type, listener, listenerOptions) {
+      if (type === "mouseup" || type === "touchend")
+         captured.push({ type, listener, options: listenerOptions });
+      return originalAddEventListener.call(this, type, listener, listenerOptions);
+   };
+   try {
+      const writer = HanziWriter.create(target, character, options);
+      reviewStrokeWriterListeners = captured;
+      return writer;
+   } catch (error) {
+      captured.forEach(({ type, listener, options: listenerOptions }) =>
+         document.removeEventListener(type, listener, listenerOptions),
+      );
+      throw error;
+   } finally {
+      document.addEventListener = originalAddEventListener;
+   }
+}
+
+function reviewStrokeBlockHtml(c, st) {
+   const characters = reviewHanzi(c.hz);
+   if (!characters.length) return "";
+   const selected = Math.max(0, Math.min(Number(st.strokeCharacterIndex) || 0, characters.length - 1));
+   st.strokeCharacterIndex = selected;
+   const pills = characters.map((character, index) =>
+      '<button type="button" class="review-stroke-character" data-review-stroke-character="' + index + '" aria-pressed="' + String(index === selected) + '" aria-label="Afficher ' + esc(character) + '">' + esc(character) + "</button>",
+   ).join("");
+   return (
+      '<details class="review-strokes" id="review-strokes"' + (reviewStrokeExpanded ? " open" : "") + ' data-no-session-swipe>' +
+      '<summary><span>Écriture du caractère</span><small>Voir l’ordre des traits</small></summary>' +
+      '<div class="review-stroke-content">' +
+      '<div class="review-stroke-character-nav">' +
+      '<button type="button" class="review-stroke-chevron" id="review-stroke-character-prev" aria-label="Caractère précédent"' + (selected === 0 ? " disabled" : "") + '>‹</button>' +
+      '<div class="review-stroke-characters" aria-label="Caractères du mot">' + pills + "</div>" +
+      '<button type="button" class="review-stroke-chevron" id="review-stroke-character-next" aria-label="Caractère suivant"' + (selected === characters.length - 1 ? " disabled" : "") + '>›</button>' +
+      '<span class="review-stroke-count" id="review-stroke-count" aria-live="polite">' + (selected + 1) + " / " + characters.length + "</span></div>" +
+      '<div class="review-stroke-tabs" role="tablist" aria-label="Affichage de l’ordre des traits">' +
+      '<button type="button" role="tab" data-review-stroke-tab="animation" aria-selected="' + String(reviewStrokeTab === "animation") + '">Animation</button>' +
+      '<button type="button" role="tab" data-review-stroke-tab="steps" aria-selected="' + String(reviewStrokeTab === "steps") + '">Étapes</button></div>' +
+      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="btn sm ghost" id="review-stroke-replay">Rejouer</button></div></div>' +
+      '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
+      "</div></details>"
+   );
+}
+
+function renderReviewStrokeSteps(data) {
+   const target = $("review-stroke-steps-list");
+   if (!target || !data || typeof strokePanelSvg !== "function") return;
+   target.innerHTML = Array.from({ length: data.strokeCount }, (_, index) => {
+      const labelId = "review-stroke-step-label-" + index;
+      return '<div class="review-stroke-step"><span class="review-stroke-step-number">' + (index + 1) + '</span><span id="' + labelId + '" class="sr-only">Trait ' + (index + 1) + " sur " + data.strokeCount + '</span>' + strokePanelSvg(data, index, { showFuture: false, showGrid: true, showGhost: false }, labelId) + "</div>";
+   }).join("");
+}
+
+function createReviewStrokeAnimation(data, autoplay) {
+   destroyReviewStrokeWriter();
+   const target = $("review-stroke-target");
+   const status = $("review-stroke-status");
+   if (!target || typeof HanziWriter === "undefined") return;
+   const size = Math.min(164, target.parentElement.clientWidth || 164);
+   target.style.width = size + "px";
+   target.style.height = size + "px";
+   reviewStrokeWriterTarget = target;
+   try {
+      reviewStrokeWriter = managedReviewStrokeWriter(target, data.character, {
+         width: size,
+         height: size,
+         padding: 10,
+         showCharacter: true,
+         showOutline: true,
+         strokeColor: "#17140F",
+         outlineColor: "#CDBFA1",
+         charDataLoader: () => data,
+         ...(typeof speedOpts === "function" ? speedOpts(db.settings.strokeSpeed) : {}),
+      });
+      if (status) status.textContent = data.strokeCount + " traits";
+      const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (autoplay && !reduced) reviewStrokeWriter.animateCharacter();
+   } catch (error) {
+      destroyReviewStrokeWriter();
+      const root = $("review-strokes");
+      if (root) root.hidden = true;
+   }
+}
+
+async function loadReviewStrokeCharacter(character, autoplay) {
+   const token = ++reviewStrokeLoadToken;
+   destroyReviewStrokeWriter();
+   reviewStrokeData = null;
+   const status = $("review-stroke-status");
+   if (status) status.textContent = "Chargement…";
+   try {
+      if (typeof loadStrokeCharacterData !== "function") throw new Error("stroke data unavailable");
+      const data = await loadStrokeCharacterData(character);
+      if (token !== reviewStrokeLoadToken || !$("review-strokes") || !session.active) return;
+      reviewStrokeData = data;
+      if (reviewStrokeTab === "steps") renderReviewStrokeSteps(data);
+      else createReviewStrokeAnimation(data, autoplay);
+   } catch (error) {
+      if (token !== reviewStrokeLoadToken) return;
+      const root = $("review-strokes");
+      if (root) root.hidden = true;
+   }
+}
+
+function activateReviewStrokeTab(tab) {
+   if (!["animation", "steps"].includes(tab)) return;
+   reviewStrokeTab = tab;
+   document.querySelectorAll("[data-review-stroke-tab]").forEach((button) =>
+      button.setAttribute("aria-selected", String(button.dataset.reviewStrokeTab === tab)),
+   );
+   const animation = $("review-stroke-animation");
+   const steps = $("review-stroke-steps");
+   if (animation) animation.hidden = tab !== "animation";
+   if (steps) steps.hidden = tab !== "steps";
+   if (!reviewStrokeData) return;
+   if (tab === "steps") {
+      destroyReviewStrokeWriter();
+      renderReviewStrokeSteps(reviewStrokeData);
+   } else createReviewStrokeAnimation(reviewStrokeData, false);
+}
+
+function wireReviewStrokeBlock(c, st) {
+   const root = $("review-strokes");
+   if (!root) return;
+   const characters = reviewHanzi(c.hz);
+   const selectCharacter = (nextIndex) => {
+      if (!root.isConnected) return;
+      const index = Math.max(0, Math.min(nextIndex, characters.length - 1));
+      st.strokeCharacterIndex = index;
+      root.querySelectorAll("[data-review-stroke-character]").forEach((button) =>
+         button.setAttribute("aria-pressed", String(Number(button.dataset.reviewStrokeCharacter) === index)),
+      );
+      const previous = root.querySelector("#review-stroke-character-prev");
+      const next = root.querySelector("#review-stroke-character-next");
+      const count = root.querySelector("#review-stroke-count");
+      if (previous) previous.disabled = index === 0;
+      if (next) next.disabled = index === characters.length - 1;
+      if (count) count.textContent = (index + 1) + " / " + characters.length;
+      loadReviewStrokeCharacter(characters[index], true);
+      if (characters[index + 1] && typeof preloadStrokeCharacterData === "function")
+         preloadStrokeCharacterData(characters[index + 1]);
+   };
+   root.ontoggle = () => {
+      if (!root.isConnected) return;
+      reviewStrokeExpanded = root.open;
+      if (root.open) selectCharacter(st.strokeCharacterIndex || 0);
+      else destroyReviewStrokeWorkspace();
+   };
+   root.querySelectorAll("[data-review-stroke-character]").forEach((button) =>
+      button.onclick = () => selectCharacter(Number(button.dataset.reviewStrokeCharacter)),
+   );
+   $("review-stroke-character-prev").onclick = () => selectCharacter((st.strokeCharacterIndex || 0) - 1);
+   $("review-stroke-character-next").onclick = () => selectCharacter((st.strokeCharacterIndex || 0) + 1);
+   root.querySelectorAll("[data-review-stroke-tab]").forEach((button) =>
+      button.onclick = () => activateReviewStrokeTab(button.dataset.reviewStrokeTab),
+   );
+   $("review-stroke-replay").onclick = () => {
+      if (reviewStrokeData) createReviewStrokeAnimation(reviewStrokeData, true);
+   };
+   if (root.open) selectCharacter(st.strokeCharacterIndex || 0);
+}
+
 /* ================= séance ================= */
          const currentCard = () => session.cards[session.index];
          function getState(i) {
@@ -156,27 +369,24 @@
                b("hard", "Difficile") +
                b("good", "Correct") +
                b("easy", "Facile") +
-               "</div>" +
-               '<div class="g-row">' +
-               '<button class="btn sm ghost" id="s-prev"' +
-               (session.index === 0 ? " disabled" : "") +
-               ">← préc.</button>" +
-               '<button class="btn sm ghost" id="s-next">passer →</button>' +
-               "</div>"
+               "</div>" + sessionNavigationHtml()
+            );
+         }
+         function sessionNavigationHtml() {
+            const last = session.index >= session.cards.length - 1;
+            return (
+               '<nav class="session-nav" aria-label="Navigation dans la séance">' +
+               '<button type="button" class="session-nav-button previous" id="s-prev"' +
+               (session.index === 0 ? " disabled aria-disabled=\"true\"" : "") +
+               '>‹ <span>Précédent</span></button>' +
+               '<button type="button" class="session-nav-button next" id="s-next"><span>' +
+               (last ? "Terminer" : "Passer") +
+               "</span> ›</button></nav>"
             );
          }
          function sessionFooterHtml(c, st) {
-            const last = session.index >= session.cards.length - 1;
             if (session.mode === "discover") {
-               return (
-                  '<div class="s-foot">' +
-                  '<button class="btn ghost" id="s-prev"' +
-                  (session.index === 0 ? " disabled" : "") +
-                  ">←</button>" +
-                  '<button class="btn primary" id="s-next">' +
-                  (last ? "Terminer 完" : "Suivante →") +
-                  "</button></div>"
-               );
+               return sessionNavigationHtml();
             }
             if (session.mode === "cards" && !st.revealed)
                return '<div class="s-foot"><button class="btn primary big" id="s-flip">Retourner</button></div>';
@@ -187,6 +397,7 @@
          }
 
          function renderSession() {
+            destroyReviewStrokeWorkspace();
             const c = currentCard();
             if (!c) {
                endSession();
@@ -252,7 +463,8 @@
                      : "") +
                   (c.exHz ? exampleHtml(c) : "") +
                   noteHtml(c) +
-                  (session.mode === "discover" ? "" : actionsHtml(c));
+                  (session.mode === "discover" ? "" : actionsHtml(c)) +
+                  (session.mode === "cards" ? reviewStrokeBlockHtml(c, st) : "");
             }
 
             const modeName = {
@@ -289,6 +501,8 @@
                sessionFooterHtml(c, st) +
                "</section>";
             wireSession(c, st);
+            if (session.mode === "cards" && st.revealed)
+               wireReviewStrokeBlock(c, st);
             persistSession();
          }
 
@@ -299,6 +513,63 @@
                renderSession();
             }
          }
+         function previousCard() {
+            if (session.index <= 0) return;
+            session.index--;
+            renderSession();
+         }
+         function wireSessionSwipe(flash) {
+            if (!flash || !("PointerEvent" in window)) return;
+            const interactive = "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav";
+            let gesture = null;
+            const finish = (event, cancelled) => {
+               if (!gesture || event.pointerId !== gesture.pointerId) return;
+               const current = gesture;
+               gesture = null;
+               flash.classList.remove("is-session-dragging");
+               flash.style.removeProperty("--session-drag-x");
+               if (flash.hasPointerCapture && flash.hasPointerCapture(event.pointerId))
+                  flash.releasePointerCapture(event.pointerId);
+               if (cancelled) {
+                  flash._suppressSessionClickUntil = Date.now() + 500;
+                  return;
+               }
+               if (!current.horizontal) return;
+               const dx = event.clientX - current.x;
+               const dy = event.clientY - current.y;
+               if (Math.abs(dx) < 72 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+               const selection = typeof getSelection === "function" ? getSelection() : null;
+               if (selection && typeof selection.removeAllRanges === "function") selection.removeAllRanges();
+               if (dx < 0) advance();
+               else previousCard();
+            };
+            flash.onpointerdown = (event) => {
+               if (event.button !== 0 || event.target.closest(interactive)) return;
+               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
+               if (flash.setPointerCapture) flash.setPointerCapture(event.pointerId);
+            };
+            flash.onpointermove = (event) => {
+               if (!gesture || event.pointerId !== gesture.pointerId) return;
+               const dx = event.clientX - gesture.x;
+               const dy = event.clientY - gesture.y;
+               if (!gesture.horizontal) {
+                  if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) {
+                     finish(event, true);
+                     return;
+                  }
+                  if (Math.abs(dx) < 16 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+                  gesture.horizontal = true;
+                  flash.classList.add("is-session-dragging");
+               }
+               if (event.cancelable) event.preventDefault();
+               flash.style.setProperty("--session-drag-x", Math.max(-38, Math.min(38, dx)) + "px");
+            };
+            flash.onpointerup = (event) => finish(event, false);
+            flash.onpointercancel = (event) => finish(event, true);
+            flash.onlostpointercapture = (event) => {
+               if (gesture && event.pointerId === gesture.pointerId) finish(event, true);
+            };
+         }
          function wireSession(c, st) {
             $("s-exit").onclick = endSession;
             const flip = () => {
@@ -308,9 +579,11 @@
             };
             if ($("s-flip")) $("s-flip").onclick = flip;
             const fl = $("flash");
+            wireSessionSwipe(fl);
             if (session.mode === "cards" && !st.revealed) {
                fl.style.cursor = "pointer";
                fl.onclick = (e) => {
+                  if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
                   if (
                      e.target.closest("[data-say]") ||
                      e.target.closest("button")
@@ -321,12 +594,7 @@
             }
             if ($("s-next")) $("s-next").onclick = advance;
             if ($("s-prev"))
-               $("s-prev").onclick = () => {
-                  if (session.index > 0) {
-                     session.index--;
-                     renderSession();
-                  }
-               };
+               $("s-prev").onclick = previousCard;
             if ($("s-check")) $("s-check").onclick = checkWritten;
             if ($("s-skip"))
                $("s-skip").onclick = () => {
@@ -602,6 +870,7 @@
 
          /* -------- fin de séance -------- */
          function endSession() {
+            destroyReviewStrokeWorkspace();
             const sts = session.states.filter(Boolean);
             const seen = sts.filter(
                (s) => s.revealed || s.checked || s.grade,

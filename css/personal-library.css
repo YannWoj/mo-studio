@@ -585,8 +585,8 @@
 
 .review-block {
    display: grid;
-   gap: 11px;
-   padding: 14px;
+   gap: 9px;
+   padding: 12px 14px;
    border-radius: 14px;
 }
 
@@ -835,6 +835,23 @@
    font-size: 13px;
    font-weight: 600;
    line-height: 1.2;
+}
+
+.review-segment > span,
+.review-segment > small {
+   display: block;
+}
+
+.review-segment > small {
+   margin-top: 3px;
+   color: var(--ink-faint);
+   font-size: 10px;
+   font-weight: 400;
+   line-height: 1.2;
+}
+
+.review-segment[aria-pressed="true"] > small {
+   color: var(--ink-soft);
 }
 
 .review-segment[aria-pressed="true"] {
