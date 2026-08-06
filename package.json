@@ -7,6 +7,7 @@
     "test:data": "node tests/search-normalization.test.cjs && node tests/hsk-runtime.test.cjs",
     "test:browser": "node tests/browser-regression.mjs",
     "test:packs-review": "node tests/packs-review-browser.mjs",
+    "test:dictionary-placement": "node tests/dictionary-library-placement-browser.mjs",
     "test:review-simplification": "node tests/review-simplification-browser.mjs"
   },
   "dependencies": {

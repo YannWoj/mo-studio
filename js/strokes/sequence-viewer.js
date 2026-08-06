@@ -247,7 +247,8 @@ async function renderSequence() {
       (pinyin ? '<div class="pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       verifiedHskBadges(entry) +
       '<div class="sep"></div><div class="fr">' +
-      (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") + esc(definition.text) + "</div>" +
+      (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
+      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" +
        '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
        '<div class="sh-btns"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></div>' +
        (card

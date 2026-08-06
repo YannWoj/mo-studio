@@ -2,13 +2,13 @@
 
 /* Scores positifs : plus le score est élevé, plus le résultat est pertinent. */
 const SEARCH_WEIGHTS = Object.freeze({
-   EXACT_SIMPLIFIED: 12000,
-   EXACT_TRADITIONAL: 11800,
-   EXACT_CHINESE_WORD: 1100,
+   EXACT_SIMPLIFIED: 16000,
+   EXACT_TRADITIONAL: 15000,
+   EXACT_CHINESE_WORD: 1800,
    EXACT_CHARACTER: 900,
-   EXACT_PINYIN_MARKED: 10800,
-   EXACT_PINYIN_NUMBERED: 10400,
-   EXACT_PINYIN_PLAIN: 8600,
+   EXACT_PINYIN_MARKED: 14800,
+   EXACT_PINYIN_NUMBERED: 14600,
+   EXACT_PINYIN_PLAIN: 11600,
    PINYIN_PREFIX: 4400,
    HANZI_PREFIX: 6900,
    HANZI_CONTAINS: 3200,
@@ -16,14 +16,53 @@ const SEARCH_WEIGHTS = Object.freeze({
    FRENCH_PREFIX_TOKEN: 4200,
    ENGLISH_FALLBACK: 2300,
    PERSONAL_CARD: 1500,
-   CHARACTER_TYPE: 260,
+   CHARACTER_TYPE: 0,
    VERIFIED_HSK: 420,
    VERIFIED_FREQUENCY_MAX: 600,
-   FRENCH_DEFINITION: 180,
+   FRENCH_DEFINITION: 520,
    ENGLISH_DEFINITION: 45,
    SOURCE_COMPLETENESS: 35,
    WORD_LENGTH_PENALTY: 9,
 });
+
+function dictionaryVariantStatus(entry) {
+   const definitions = [...entryDefinitions(entry, "fr"), ...entryDefinitions(entry, "en")].join(" ");
+   if (/\b(?:archaic|ancient|old)\s+(?:variant|form)\b|\bforme\s+ancienne\b/iu.test(definitions))
+      return "ancient";
+   if (/\bvariant(?:e)?\s+(?:of|de)\b|\bvariant\b/iu.test(definitions)) return "variant";
+   if (entry.__scriptVariant) return "script-variant";
+   return "modern";
+}
+
+function dictionaryExactSortTier(entry, query) {
+   const simplified = entry.simplified || entry.hz || "";
+   const traditional = entry.traditional || simplified;
+   const exact = simplified === query.hanzi || traditional === query.hanzi;
+   if (!query.type.startsWith("hanzi") || !exact) return null;
+   const entryType = entry.entryType || (Array.from(simplified).length === 1 ? "character" : "word");
+   const variant = dictionaryVariantStatus(entry) !== "modern";
+   if (entryType === "word" && !variant && entryDefinitions(entry, "fr").length) return 0;
+   if (verifiedHskLevel(entry) != null) return 1;
+   if (entryType === "character") return 2;
+   if (!variant) return 3;
+   return 4;
+}
+
+function dictionaryPinyinSortTier(entry, query) {
+   if (!query.type.startsWith("pinyin")) return null;
+   let tier = 4;
+   entryPinyinVariants(entry).forEach((variant) => {
+      const marked = normalizePinyinMarked(variant.marked || variant.numbered || "");
+      const numbered = normalizePinyinNumbered(variant.numbered || variant.marked || "");
+      const plain = normalizePinyinPlain(variant.plain || variant.numbered || variant.marked || "");
+      if (query.type === "pinyin-marked" && marked === query.marked) tier = Math.min(tier, 0);
+      else if (query.type === "pinyin-numbered" && numbered === query.numbered) tier = Math.min(tier, 0);
+      else if (plain === query.plain) tier = Math.min(tier, 1);
+      else if (marked.startsWith(query.marked) || numbered.startsWith(query.numbered) || plain.startsWith(query.plain))
+         tier = Math.min(tier, 3);
+   });
+   return tier;
+}
 
 function entryPinyinVariants(entry) {
    if (Array.isArray(entry.pinyin)) return entry.pinyin;
@@ -180,8 +219,19 @@ function rankDictionaryEntry(entry, query, context) {
    );
    score -= entryHanziLength(entry) * SEARCH_WEIGHTS.WORD_LENGTH_PENALTY;
 
+   const exactTier = dictionaryExactSortTier(entry, query);
+   const pinyinTier = dictionaryPinyinSortTier(entry, query);
+   const sortTier = exactTier != null
+      ? exactTier
+      : pinyinTier != null
+        ? pinyinTier + (pinyinTier <= 1 && verifiedHskLevel(entry) == null ? 0.5 : 0)
+        : query.type.startsWith("hanzi")
+          ? simplified.startsWith(query.hanzi) || traditional.startsWith(query.hanzi) ? 5 : 6
+          : 0;
+
    return {
       score,
+      sortTier,
       factors,
       explanation: factors.length ? factors[0].explanation : "correspondance indexée",
    };
@@ -189,6 +239,7 @@ function rankDictionaryEntry(entry, query, context) {
 
 function compareRankedDictionaryEntries(left, right) {
    return (
+      (left.rank.sortTier ?? 0) - (right.rank.sortTier ?? 0) ||
       right.rank.score - left.rank.score ||
       Number(!!right.entry.personalCard) - Number(!!left.entry.personalCard) ||
       entryHanziLength(left.entry) - entryHanziLength(right.entry) ||
@@ -208,6 +259,7 @@ if (typeof module !== "undefined" && module.exports) {
    module.exports = {
       SEARCH_WEIGHTS,
       compareRankedDictionaryEntries,
+      dictionaryVariantStatus,
       rankDictionaryEntry,
    };
 }

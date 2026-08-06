@@ -27,7 +27,7 @@ from parse_cfdict import parse_cfdict
 
 
 SCHEMA_VERSION = 1
-BUILDER_VERSION = "1.3.0"
+BUILDER_VERSION = "1.3.1"
 SOURCE_ORDER = {"CFDICT": 0, "CC-CEDICT": 1}
 DEFAULT_OUTPUT = Path("data/generated/dictionary")
 
@@ -158,7 +158,13 @@ def _build_character_entries(
             and len(simple_chars) == 1
             and len(traditional_chars) == 1
         ):
-            standalone[word["simplified"]].append(word)
+            # A synthetic simplified-character entry must not inherit senses that
+            # belong only to a distinct traditional graph.  The old aggregation
+            # made e.g. every traditional homograph look like a meaning of the
+            # simplified character.  Keep the exact modern graph here; the
+            # traditional character still receives its verified source entry.
+            if word["traditional"] == word["simplified"]:
+                standalone[word["simplified"]].append(word)
             if word["traditional"] != word["simplified"]:
                 standalone[word["traditional"]].append(word)
 

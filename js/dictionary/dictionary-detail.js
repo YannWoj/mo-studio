@@ -9,7 +9,9 @@ function cardActionsHtml(card) {
       '<button class="act' + (card.fav ? " on" : "") + '" id="dd-fav">Favori</button>' +
       '<button class="act' + (card.acquired ? " on jade" : "") + '" id="dd-acq">Maîtrisé</button>' +
       "</div>" +
-      '<button class="btn ghost wide" id="dd-manage">Modifier ou gérer ce mot</button></section>'
+      '<div class="dd-already-state"><b>Déjà dans Mes mots</b><span>La carte et sa progression SRS restent uniques.</span></div>' +
+      '<button class="btn primary wide" id="dd-manage">Gérer les emplacements</button>' +
+      '<button class="btn ghost wide" id="dd-edit-personal">Modifier la carte personnelle</button></section>'
    );
 }
 
@@ -78,8 +80,8 @@ function dictionaryCharacterStudyCardHtml(entry, character) {
       esc(character) + '">' + esc(character) + "</div>" +
       (pinyin ? '<div class="dd-character-study-pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       '<div class="dd-character-study-translation">' +
-      (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") +
-      esc(definition.text) + "</div>" + verifiedHskBadges(entry) + "</div>" +
+      (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
+      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" + verifiedHskBadges(entry) + "</div>" +
       '<div class="dd-character-study-action">' +
       (card
          ? '<span class="cd-cat jade">Dans Mes mots</span><button class="btn ghost" id="dd-character-manage" type="button">Ouvrir le mot</button>'
@@ -162,7 +164,7 @@ function dictionaryHskSourceHtml(entry) {
    const values = Array.isArray(entry.hskVerified) ? entry.hskVerified : [];
    if (!values.length) return "";
    return (
-      '<section class="dd-hsk-source"><div class="eyebrow">Données HSK source</div>' +
+      '<section class="dd-hsk-source"><div class="eyebrow">Données HSK</div>' +
       values
          .map(
             (item) =>
@@ -177,6 +179,9 @@ function dictionaryHskSourceHtml(entry) {
                '<small>' +
                (item.partOfSpeech ? esc(item.partOfSpeech) + " · " : "") +
                esc(hskLinkStatusLabel(item.dictionaryLinkStatus)) +
+               (item.dictionaryLinkStatus === "duplicate-sense"
+                  ? " · sens HSK distinct du sens général, pas une contradiction"
+                  : "") +
                (Array.isArray(item.sourceLevels) && item.sourceLevels.length > 1
                   ? " · niveaux source " + item.sourceLevels.map(esc).join(", ")
                   : "") +
@@ -188,21 +193,30 @@ function dictionaryHskSourceHtml(entry) {
 }
 
 function dictionaryDefinitionsHtml(entry) {
-   if (entry.definitionsFr && entry.definitionsFr.length) {
-      return (
-         '<section class="dd-definitions"><div class="eyebrow">Définitions françaises</div><ul>' +
-         entry.definitionsFr.map((definition) => "<li>" + esc(definition) + "</li>").join("") +
-         "</ul></section>"
-      );
-   }
-   if (entry.definitionsEn && entry.definitionsEn.length) {
-      return (
-         '<section class="dd-definitions english"><div class="eyebrow">Anglais · repli, français indisponible</div><ul>' +
-         entry.definitionsEn.map((definition) => "<li>" + esc(definition) + "</li>").join("") +
-         "</ul></section>"
-      );
-   }
-   return '<p class="muted">Aucune définition fournie par les sources disponibles.</p>';
+   const splitSenses = (values) => Array.from(new Set(
+      (values || []).flatMap((definition) => String(definition).split(/\s*;\s*/u)).map((sense) => sense.trim()).filter(Boolean),
+   ));
+   const french = splitSenses(entry.definitionsFr);
+   const english = splitSenses(entry.definitionsEn);
+   const frenchSection = french.length
+      ? '<section class="dd-definitions"><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
+        french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></section>"
+      : '<section class="dd-definitions dd-french-unavailable"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+   const englishSection = english.length
+      ? '<details class="dd-definitions english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
+        english.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></details>"
+      : "";
+   return frenchSection + englishSection;
+}
+
+function dictionaryVariantExplanationHtml(entry) {
+   const status = dictionaryVariantStatus(entry);
+   const traditional = entry.traditional && entry.traditional !== entry.simplified ? entry.traditional : "";
+   if (!traditional && status === "modern") return "";
+   const label = status === "ancient"
+      ? "Forme ancienne signalée par la source"
+      : status !== "modern" ? "Variante signalée par la source" : "Formes d’écriture";
+   return '<section class="dd-variant-note"><div class="eyebrow">' + label + '</div><p>Simplifié · <b>' + esc(entry.simplified) + "</b>" + (traditional ? ' · Traditionnel · <b>' + esc(traditional) + "</b>" : "") + "</p></section>";
 }
 
 function dictionarySourcesHtml(entry) {
@@ -217,9 +231,18 @@ function dictionarySourcesHtml(entry) {
 function findPersonalCardForEntry(entry) {
    if (entry.personalCard) return db.cards.find((card) => card.id === entry.personalCard.id) || null;
    if (entry.cardId) return db.cards.find((card) => card.id === entry.cardId) || null;
+   const sourceEntryId = entry.dictionaryEntryId || (/^(?:word-|char-)/.test(entry.id || "") ? entry.id : "");
+   if (sourceEntryId) {
+      const sourced = db.cards.find((card) => card.dictionaryEntryId === sourceEntryId);
+      if (sourced) return sourced;
+   }
    const identity = dictionaryEntryIdentity(entry);
    return (
-      db.cards.find((card) => dictionaryEntryIdentity(personalCardAsDictionaryEntry(card)) === identity) ||
+      db.cards.find(
+         (card) =>
+            !card.dictionaryEntryId &&
+            dictionaryEntryIdentity(personalCardAsDictionaryEntry(card)) === identity,
+      ) ||
       null
    );
 }
@@ -231,6 +254,8 @@ function addDictionaryEntryToPersonalCards(entry) {
       py: detailPinyin(entry, "marked").join(" / "),
       fr: french,
       cat: "",
+      traditional: entry.traditional || "",
+      dictionaryEntryId: entry.dictionaryEntryId || entry.id || "",
    };
    if (!french) {
       toast("Ajoute une définition française vérifiée avant d’enregistrer.");
@@ -258,107 +283,285 @@ function returnFromDictionaryAdd(entry, options) {
    else openDictDetail(entry, options);
 }
 
-function openDictionaryAddToWords(entry, options, state) {
-   const existing = findPersonalCardForEntry(entry);
-   const selected = new Set(
-      state && Array.isArray(state.packIds)
-         ? state.packIds
-         : existing
-           ? db.packs.filter((pack) => pack.cardIds.includes(existing.id)).map((pack) => pack.id)
-           : [],
-   );
-   const french =
-      state && typeof state.french === "string"
-         ? state.french
-         : (entry.definitionsFr || []).join(" ; ");
-   const packChoices = db.packs.length
-      ? '<div class="dd-add-packs"><div class="eyebrow">Packs facultatifs</div>' +
-        db.packs
-           .map(
-              (pack) =>
-                 '<label class="ck"><input type="checkbox" data-dd-add-pack="' +
-                 esc(pack.id) +
-                 '"' +
-                 (selected.has(pack.id) ? " checked" : "") +
-                 "> " +
-                 esc(pack.name) +
-                 "</label>",
-           )
-           .join("") +
-        "</div>"
-      : '<p class="sh-note">Aucun pack pour l’instant. Tu peux en créer un ci-dessous.</p>';
-   openSheet(
-      '<section class="dd-add-words" aria-labelledby="dd-add-title"><h3 class="sh-t" id="dd-add-title">' +
-         (existing ? "Gérer dans Mes mots" : "Ajouter à Mes mots") +
-         '</h3><div class="dd-add-word"><b>' +
-         esc(entry.simplified) +
-         "</b><span>" +
-         colorPinyin(dictionaryEntryPinyinText(entry)) +
-         "</span></div>" +
-         (existing
-            ? '<p class="sh-note">Ce mot existe déjà : sa carte unique sera conservée.</p>'
-            : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' +
-              esc(french) +
-              '"></label>') +
-         packChoices +
-         '<div class="pk-new"><input class="search" id="dd-add-pack-name" placeholder="Nouveau pack"><button class="btn" id="dd-add-pack-create" type="button">Créer</button></div>' +
-         '<p class="sh-note">Sans pack sélectionné, le mot est ajouté directement à Mes mots.</p>' +
-         '<div class="sh-btns"><button class="btn primary" id="dd-add-confirm" type="button">' +
-         (existing ? "Enregistrer" : "+ Ajouter à Mes mots") +
-         '</button><button class="btn ghost" id="dd-add-cancel" type="button">Annuler</button></div></section>',
-   );
-   const currentSelection = () =>
-      Array.from(document.querySelectorAll("[data-dd-add-pack]:checked")).map(
-         (checkbox) => checkbox.dataset.ddAddPack,
+const DICTIONARY_PLACEMENT_KEY = "mo-studio-dictionary-placement-v1";
+
+function readDictionaryPlacementMemory() {
+   try {
+      const memory = JSON.parse(localStorage.getItem(DICTIONARY_PLACEMENT_KEY) || "{}");
+      return {
+         lastPackId: typeof memory.lastPackId === "string" ? memory.lastPackId : "",
+         categoryByPack: memory.categoryByPack && typeof memory.categoryByPack === "object" ? memory.categoryByPack : {},
+         recentPackIds: Array.isArray(memory.recentPackIds) ? memory.recentPackIds.map(String).slice(0, 8) : [],
+      };
+   } catch (error) {
+      return { lastPackId: "", categoryByPack: {}, recentPackIds: [] };
+   }
+}
+
+function rememberDictionaryPlacement(packIds, categoryIds) {
+   if (!packIds.length) return;
+   const previous = readDictionaryPlacementMemory();
+   const categoryByPack = { ...previous.categoryByPack };
+   packIds.forEach((packId) => {
+      const category = categoryIds
+         .map(categoryById)
+         .find((item) => item && item.packId === packId);
+      if (category) categoryByPack[packId] = category.id;
+   });
+   const recentPackIds = uniqueStrings([...packIds.slice().reverse(), ...previous.recentPackIds]).slice(0, 8);
+   try {
+      localStorage.setItem(
+         DICTIONARY_PLACEMENT_KEY,
+         JSON.stringify({ lastPackId: packIds[packIds.length - 1], categoryByPack, recentPackIds }),
       );
+   } catch (error) {
+      /* La validation finale reste possible si la préférence locale est indisponible. */
+   }
+}
+
+function dictionaryPlacementLocationsHtml(card) {
+   if (!card) return "";
+   const locations = categoriesForCard(card.id)
+      .map((category) => {
+         const pack = db.packs.find((item) => item.id === category.packId);
+         return pack ? '<li>' + esc(pack.name) + ' <span aria-hidden="true">→</span> ' + esc(category.name) + "</li>" : "";
+      })
+      .filter(Boolean);
+   return (
+      '<section class="dd-current-locations"><div class="eyebrow">Emplacements actuels</div>' +
+      (locations.length ? "<ul>" + locations.join("") + "</ul>" : '<p class="sh-note">Aucune sous-catégorie pour le moment.</p>') +
+      "</section>"
+   );
+}
+
+function initialDictionaryPlacementState(entry, existing) {
+   const memory = readDictionaryPlacementMemory();
+   const currentCategories = existing ? categoriesForCard(existing.id) : [];
+   const selectedCategoryIds = new Set(currentCategories.map((category) => category.id));
+   const selectedPackIds = new Set(currentCategories.map((category) => category.packId));
+   if (!existing && db.packs.some((pack) => pack.id === memory.lastPackId)) {
+      selectedPackIds.add(memory.lastPackId);
+      const rememberedCategory = categoryById(memory.categoryByPack[memory.lastPackId]);
+      if (rememberedCategory && rememberedCategory.packId === memory.lastPackId)
+         selectedCategoryIds.add(rememberedCategory.id);
+   }
+   return {
+      french: (entry.definitionsFr || []).join(" ; "),
+      selectedPackIds,
+      selectedCategoryIds,
+      withoutCategoryPackIds: new Set(),
+      openPackIds: new Set(selectedPackIds),
+      filter: "",
+      error: "",
+   };
+}
+
+function dictionaryPlacementPackOrder(state) {
+   const memory = readDictionaryPlacementMemory();
+   const recentIndex = new Map(memory.recentPackIds.map((id, index) => [id, index]));
+   return db.packs.slice().sort((left, right) => {
+      const leftUsed = state.selectedPackIds.has(left.id) ? -2 : recentIndex.has(left.id) ? recentIndex.get(left.id) : 99;
+      const rightUsed = state.selectedPackIds.has(right.id) ? -2 : recentIndex.has(right.id) ? recentIndex.get(right.id) : 99;
+      return leftUsed - rightUsed || left.name.localeCompare(right.name, "fr");
+   });
+}
+
+function dictionaryPlacementPackHtml(pack, state) {
+   const selected = state.selectedPackIds.has(pack.id);
+   const categories = categoriesForPack(pack.id);
+   const selectedInPack = categories.filter((category) => state.selectedCategoryIds.has(category.id));
+   const needsDecision = selected && !selectedInPack.length && !state.withoutCategoryPackIds.has(pack.id);
+   return (
+      '<details class="dd-pack-block" data-dd-pack-block="' + esc(pack.id) + '"' + (state.openPackIds.has(pack.id) ? " open" : "") + ">" +
+      '<summary><label class="dd-pack-choice"><input type="checkbox" data-dd-add-pack="' + esc(pack.id) + '"' + (selected ? " checked" : "") + '><span><b>' + esc(pack.name) + '</b><small>' + categories.length + " sous-catégorie" + (categories.length > 1 ? "s" : "") + '</small></span></label><span class="dd-pack-chevron" aria-hidden="true">⌄</span></summary>' +
+      '<div class="dd-pack-content"><div class="dd-category-list">' +
+      (categories.length
+         ? categories.map((category) => '<label class="dd-category-choice"><input type="checkbox" data-dd-add-category="' + esc(category.id) + '"' + (state.selectedCategoryIds.has(category.id) ? " checked" : "") + '><span>' + esc(category.name) + "</span></label>").join("")
+         : '<p class="sh-note">Ce pack n’a encore aucune sous-catégorie.</p>') +
+      "</div>" +
+      (needsDecision
+         ? '<div class="dd-placement-warning" role="note"><b>Où ranger ce mot ?</b><span>Choisis une sous-catégorie, ou confirme explicitement un classement général.</span><label class="dd-category-choice"><input type="checkbox" data-dd-without-category="' + esc(pack.id) + '"><span>Ajouter sans sous-catégorie <small>dans « Tous les mots »</small></span></label></div>'
+         : state.withoutCategoryPackIds.has(pack.id)
+           ? '<label class="dd-category-choice dd-without-choice"><input type="checkbox" data-dd-without-category="' + esc(pack.id) + '" checked><span>Ajouter sans sous-catégorie <small>dans « Tous les mots »</small></span></label>'
+           : "") +
+      '<div class="dd-category-create"><input class="search" data-dd-category-name="' + esc(pack.id) + '" aria-label="Nom de la nouvelle sous-catégorie dans ' + esc(pack.name) + '" placeholder="Nouvelle sous-catégorie"><button class="btn" type="button" data-dd-category-create="' + esc(pack.id) + '">Créer</button></div></div></details>'
+   );
+}
+
+function openDictionaryAddToWords(entry, options, suppliedState) {
+   const existing = findPersonalCardForEntry(entry);
+   const state = suppliedState || initialDictionaryPlacementState(entry, existing);
+   const query = state.filter.trim().toLocaleLowerCase("fr");
+   const packs = dictionaryPlacementPackOrder(state).filter((pack) => !query || pack.name.toLocaleLowerCase("fr").includes(query));
+   const frenchBlock = existing
+      ? '<section class="dd-personal-definition"><div class="eyebrow">Définition française personnelle</div><p>' + (esc(existing.fr) || '<span class="muted">Non renseignée</span>') + "</p></section>"
+      : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' + esc(state.french) + '" autocomplete="off"></label>' +
+        (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Traduction française indisponible dans les sources. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
+   openSheet(
+      '<section class="dd-add-words" aria-labelledby="dd-add-title"><button class="sheet-x" id="dd-add-cancel-top" type="button" aria-label="Fermer">×</button><h3 class="sh-t" id="dd-add-title">' +
+         (existing ? "Déjà dans Mes mots" : "Ajouter à Mes mots") +
+         '</h3><div class="dd-add-word"><b>' + esc(entry.simplified) + "</b><span>" + colorPinyin(dictionaryEntryPinyinText(entry)) + "</span></div>" +
+         (existing ? '<p class="dd-unique-card-note">La carte personnelle et toute sa progression SRS seront conservées.</p>' + dictionaryPlacementLocationsHtml(existing) : "") +
+         frenchBlock +
+         '<div class="dd-placement-head"><div><div class="eyebrow">Packs et sous-catégories</div><p>Tu peux choisir plusieurs emplacements.</p></div><button class="btn ghost" id="dd-collapse-packs" type="button">Tout replier</button></div>' +
+         (db.packs.length > 5 ? '<label class="dd-pack-search"><span class="sr-only">Rechercher un pack</span><input class="search" id="dd-pack-search" value="' + esc(state.filter) + '" placeholder="Rechercher un pack…"></label>' : "") +
+         '<div class="dd-add-packs" id="dd-add-packs">' +
+         (packs.length ? packs.map((pack) => dictionaryPlacementPackHtml(pack, state)).join("") : '<p class="sh-note">Aucun pack correspondant.</p>') +
+         '</div><details class="dd-quick-create"><summary>+ Créer rapidement un pack</summary><div class="dd-pack-create"><input class="search" id="dd-add-pack-name" placeholder="Nom du nouveau pack"><button class="btn" id="dd-add-pack-create" type="button">Créer le pack</button></div></details>' +
+         (!db.packs.length ? '<p class="sh-note">Tu peux aussi ajouter le mot à Mes mots sans le ranger dans un pack.</p>' : "") +
+         (state.error ? '<p class="dd-placement-error" id="dd-placement-error" role="alert">' + esc(state.error) + "</p>" : '<p class="dd-placement-error" id="dd-placement-error" role="alert" hidden></p>') +
+         '<div class="dd-placement-actions"><button class="btn ghost" id="dd-add-cancel" type="button">Annuler</button><button class="btn primary" id="dd-add-confirm" type="button">' +
+         (existing ? "Enregistrer les emplacements" : "Ajouter à Mes mots") +
+         "</button></div></section>",
+   );
+
+   const preserveFrench = () => {
+      if (!existing && $("dd-add-fr")) state.french = $("dd-add-fr").value;
+   };
+   document.querySelectorAll("[data-dd-pack-block]").forEach((details) => {
+      details.ontoggle = () => {
+         if (details.open) state.openPackIds.add(details.dataset.ddPackBlock);
+         else state.openPackIds.delete(details.dataset.ddPackBlock);
+      };
+   });
+   document.querySelectorAll("[data-dd-add-pack]").forEach((input) => {
+      input.onchange = (event) => {
+         event.stopPropagation();
+         const packId = input.dataset.ddAddPack;
+         if (input.checked) {
+            state.selectedPackIds.add(packId);
+            state.openPackIds.add(packId);
+         } else {
+            state.selectedPackIds.delete(packId);
+            state.withoutCategoryPackIds.delete(packId);
+            categoriesForPack(packId).forEach((category) => state.selectedCategoryIds.delete(category.id));
+         }
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+      };
+   });
+   document.querySelectorAll("[data-dd-add-category]").forEach((input) => {
+      input.onchange = () => {
+         const category = categoryById(input.dataset.ddAddCategory);
+         if (!category) return;
+         if (input.checked) {
+            state.selectedCategoryIds.add(category.id);
+            state.selectedPackIds.add(category.packId);
+            state.withoutCategoryPackIds.delete(category.packId);
+            state.openPackIds.add(category.packId);
+         } else state.selectedCategoryIds.delete(category.id);
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+      };
+   });
+   document.querySelectorAll("[data-dd-without-category]").forEach((input) => {
+      input.onchange = () => {
+         const packId = input.dataset.ddWithoutCategory;
+         if (input.checked) {
+            state.withoutCategoryPackIds.add(packId);
+            state.selectedPackIds.add(packId);
+            categoriesForPack(packId).forEach((category) => state.selectedCategoryIds.delete(category.id));
+         } else state.withoutCategoryPackIds.delete(packId);
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+      };
+   });
+   document.querySelectorAll("[data-dd-category-create]").forEach((button) => {
+      button.onclick = () => {
+         if (button.disabled) return;
+         const packId = button.dataset.ddCategoryCreate;
+         const input = document.querySelector('[data-dd-category-name="' + CSS.escape(packId) + '"]');
+         const name = input ? input.value.trim() : "";
+         if (!name) return toast("Donne un nom à la sous-catégorie.");
+         if (categoriesForPack(packId).some((category) => category.name.localeCompare(name, "fr", { sensitivity: "accent" }) === 0))
+            return toast("Cette sous-catégorie existe déjà dans ce pack.");
+         button.disabled = true;
+         const category = createPersonalCategory(packId, name);
+         if (!category) { button.disabled = false; return toast("Sous-catégorie non créée."); }
+         state.selectedPackIds.add(packId);
+         state.selectedCategoryIds.add(category.id);
+         state.withoutCategoryPackIds.delete(packId);
+         state.openPackIds.add(packId);
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+         toast("Sous-catégorie créée et sélectionnée.");
+      };
+   });
    $("dd-add-pack-create").onclick = () => {
+      const button = $("dd-add-pack-create");
+      if (button.disabled) return;
       const name = $("dd-add-pack-name").value.trim();
       if (!name) return toast("Donne un nom au pack.");
-      if (db.packs.some((pack) => pack.name.toLowerCase() === name.toLowerCase()))
+      if (db.packs.some((pack) => pack.name.localeCompare(name, "fr", { sensitivity: "accent" }) === 0))
          return toast("Ce pack existe déjà.");
-      const pack = { id: uid(), name, cardIds: [] };
-      db.packs.push(pack);
-      save();
-      openDictionaryAddToWords(entry, options, {
-         french: existing ? french : $("dd-add-fr").value,
-         packIds: currentSelection().concat(pack.id),
-      });
+      button.disabled = true;
+      const pack = createPersonalPack(name);
+      if (!pack) { button.disabled = false; return toast("Pack non créé."); }
+      state.selectedPackIds.add(pack.id);
+      state.openPackIds.add(pack.id);
+      preserveFrench();
+      openDictionaryAddToWords(entry, options, state);
       toast("Pack créé et sélectionné.");
    };
-   $("dd-add-cancel").onclick = () => returnFromDictionaryAdd(entry, options);
+   if ($("dd-pack-search")) $("dd-pack-search").oninput = () => {
+      state.filter = $("dd-pack-search").value;
+      preserveFrench();
+      openDictionaryAddToWords(entry, options, state);
+      if ($("dd-pack-search")) {
+         $("dd-pack-search").focus({ preventScroll: true });
+         $("dd-pack-search").setSelectionRange(state.filter.length, state.filter.length);
+      }
+   };
+   $("dd-collapse-packs").onclick = () => {
+      state.openPackIds.clear();
+      preserveFrench();
+      openDictionaryAddToWords(entry, options, state);
+   };
+   const cancel = () => returnFromDictionaryAdd(entry, options);
+   $("dd-add-cancel").onclick = cancel;
+   $("dd-add-cancel-top").onclick = cancel;
    $("dd-add-confirm").onclick = () => {
+      if ($("dd-add-confirm").disabled) return;
+      preserveFrench();
+      const undecided = Array.from(state.selectedPackIds).filter((packId) => {
+         const hasCategory = categoriesForPack(packId).some((category) => state.selectedCategoryIds.has(category.id));
+         return !hasCategory && !state.withoutCategoryPackIds.has(packId);
+      });
+      if (undecided.length) {
+         const names = undecided.map((id) => db.packs.find((pack) => pack.id === id)?.name).filter(Boolean);
+         state.error = "Choisis une sous-catégorie ou « Ajouter sans sous-catégorie » pour : " + names.join(", ") + ".";
+         undecided.forEach((id) => state.openPackIds.add(id));
+         openDictionaryAddToWords(entry, options, state);
+         return;
+      }
       let card = findPersonalCardForEntry(entry);
       const wasExisting = !!card;
+      if (!card && !state.french.trim()) return toast("La définition française est obligatoire pour créer ta carte.");
+      $("dd-add-confirm").disabled = true;
+      makeBackup();
+      state.withoutCategoryPackIds.forEach((packId) => {
+         let category = categoriesForPack(packId).find((item) => item.name === "Tous les mots");
+         if (!category) category = createPersonalCategory(packId, "Tous les mots");
+         if (category) state.selectedCategoryIds.add(category.id);
+      });
       if (!card) {
-         const definition = $("dd-add-fr").value.trim();
-         if (!definition) return toast("La définition française est obligatoire.");
-         card = normalizeCard(
-            {
-               hz: entry.simplified,
-               py: detailPinyin(entry, "marked").join(" / "),
-               fr: definition,
-               cat: "",
-            },
-            false,
-         );
+         card = normalizeCard({
+            hz: entry.simplified,
+            py: detailPinyin(entry, "marked").join(" / "),
+            fr: state.french.trim(),
+            cat: "",
+            traditional: entry.traditional || "",
+            dictionaryEntryId: entry.dictionaryEntryId || entry.id || "",
+         }, false);
          if (!card) return;
          db.cards.push(card);
          invalidateDictIndex();
       }
-      const memberships = new Set(currentSelection());
-      db.packs.forEach((pack) => {
-         const ids = new Set(pack.cardIds);
-         if (memberships.has(pack.id)) ids.add(card.id);
-         else if (wasExisting) ids.delete(card.id);
-         pack.cardIds = Array.from(ids);
-      });
+      setCardMemberships(card.id, Array.from(state.selectedCategoryIds));
       entry.personalCard = card;
       save();
-      toast(
-         wasExisting
-            ? "Packs de « " + entry.simplified + " » mis à jour."
-            : "« " + entry.simplified + " » ajouté à Mes mots.",
-      );
+      rememberDictionaryPlacement(Array.from(state.selectedPackIds), Array.from(state.selectedCategoryIds));
+      toast(wasExisting ? "Emplacements mis à jour, progression conservée." : "« " + entry.simplified + " » ajouté à Mes mots.");
       returnFromDictionaryAdd(entry, options);
    };
 }
@@ -386,15 +589,15 @@ function openDictDetail(rawEntry, options) {
          '<button class="dd-top-close" id="dd-close-top" data-sheet-close aria-label="Fermer la fiche">×</button></div></div>' +
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
+         dictionaryVariantExplanationHtml(entry) +
          dictionaryDefinitionsHtml(entry) +
          dictionaryHskSourceHtml(entry) +
          '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
          (card
             ? cardActionsHtml(card)
             : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
-         '<div class="dd-meta"><span class="cd-cat">' +
-         (entry.entryType === "character" ? "Caractère" : "Mot") +
-         "</span>" +
+         '<div class="dd-meta">' +
+         dictionaryEntryTypeLabels(entry).map((label) => '<span class="cd-cat">' + esc(label) + "</span>").join("") +
          verifiedHskBadges(entry) +
          (Number.isFinite(entry.frequencyRank)
             ? '<span class="cd-cat">Fréquence vérifiée · ' + esc(entry.frequencyRank) + "</span>"
@@ -418,25 +621,49 @@ async function renderDictionaryRelatedWords(character, token) {
    target.setAttribute("aria-busy", "true");
    target.innerHTML = '<span class="muted">Chargement des mots liés à ' + esc(character) + "…</span>";
    try {
-      const related = await loadDictionaryCharacterLinks(character, 10);
+      const related = await loadDictionaryCharacterLinks(character, 240);
+      try { await loadHskSearchIndex(); } catch (error) { /* Le dictionnaire reste utilisable sans index HSK. */ }
       if (token !== dictionaryDetailToken || ddChar !== character || !$("dd-related")) return;
       target.setAttribute("aria-busy", "false");
-      if (!related.words.length) {
+      const words = related.words
+         .filter((word) => word.simplified !== character && Array.from(word.simplified).length > 1)
+         .map(attachHskMetadata);
+      const usefulHskLevel = (word) => {
+         const exactLevel = verifiedHskLevel(word);
+         if (exactLevel != null) return exactLevel;
+         const withoutErhua = (value) => String(value || "").replace(/儿$/u, "");
+         const normalizedWord = withoutErhua(word.simplified);
+         const linkedForm = (hskDataState.searchEntries || []).find(
+            (item) => withoutErhua(item.chinese) === normalizedWord,
+         );
+         return linkedForm ? linkedForm.firstHskLevel : null;
+      };
+      const compareUseful = (left, right) => {
+         const leftLevel = usefulHskLevel(left) ?? 99;
+         const rightLevel = usefulHskLevel(right) ?? 99;
+         return leftLevel - rightLevel ||
+            Number(!(left.definitionsFr || []).length) - Number(!(right.definitionsFr || []).length) ||
+            Array.from(left.simplified).length - Array.from(right.simplified).length ||
+            left.simplified.localeCompare(right.simplified, "zh");
+      };
+      const groups = [
+         { label: "Commencent par " + character, words: words.filter((word) => word.simplified.startsWith(character)).sort(compareUseful).slice(0, 12) },
+         { label: "Contiennent " + character, words: words.filter((word) => !word.simplified.startsWith(character)).sort(compareUseful).slice(0, 12) },
+      ].filter((group) => group.words.length);
+      const visibleWords = groups.flatMap((group) => group.words);
+      if (!visibleWords.length) {
          target.innerHTML = '<span class="muted">Aucun mot lié classé par les sources.</span>';
          return;
       }
       target.innerHTML =
-         '<div class="eyebrow">Mots liés vérifiés</div><div class="dd-related-list">' +
-         related.words
-            .map(
-               (word, index) =>
-                  '<button class="chip hzchip" data-related="' + index + '">' + esc(word.simplified) + "</button>",
-            )
-            .join("") +
-         "</div>";
-      target.querySelectorAll("[data-related]").forEach((button) => {
+         '<div class="eyebrow">Mots associés utiles · présents dans les données</div>' +
+         groups.map((group) => '<div class="dd-related-group"><small>' + esc(group.label) + '</small><div class="dd-related-list">' +
+            group.words.map((word) => '<button class="chip hzchip" data-related-id="' + esc(word.id) + '">' + esc(word.simplified) + "</button>").join("") +
+            "</div></div>").join("");
+      target.querySelectorAll("[data-related-id]").forEach((button) => {
          button.onclick = () => {
-            const word = related.words[Number(button.dataset.related)];
+            const word = visibleWords.find((item) => item.id === button.dataset.relatedId);
+            if (!word) return;
             if (typeof openSearchDictionaryDetail === "function" && activeView === "search")
                openSearchDictionaryDetail(word, true);
             else openDictDetail(word);
@@ -542,7 +769,8 @@ function wireDictDetail(entry, characters, card, token, options) {
                refreshActive();
             }
          };
-      if ($("dd-manage")) $("dd-manage").onclick = () => openCardDetail(card.id);
+      if ($("dd-manage")) $("dd-manage").onclick = () => openDictionaryAddToWords(entry, options);
+      if ($("dd-edit-personal")) $("dd-edit-personal").onclick = () => openCardDetail(card.id);
    }
    if ($("dd-addcard"))
       $("dd-addcard").onclick = () => openDictionaryAddToWords(entry, options);

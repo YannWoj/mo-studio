@@ -118,6 +118,7 @@ function personalCardAsDictionaryEntry(card) {
       frequencyRank: null,
       characters: Array.from(card.hz).filter((character) => HAN_PATTERN.test(character)),
       searchAliases: [],
+      dictionaryEntryId: card.dictionaryEntryId || "",
       personalCard: card,
       cardId: card.id,
       src: "card",
@@ -148,6 +149,96 @@ function dictionaryEntryIdentity(entry) {
       ? normalizePinyinNumbered(entry.pinyin[0].numbered || entry.pinyin[0].marked)
       : "";
    return entry.simplified + "§" + pronunciation;
+}
+
+function dictionaryEntryPronunciationKeys(entry) {
+   return new Set(
+      entryPinyinVariants(entry)
+         .map((variant) => normalizePinyinNumbered(variant.numbered || variant.marked || ""))
+         .filter(Boolean),
+   );
+}
+
+function annotateDictionaryScriptVariants(entries, query) {
+   if (!query.type.startsWith("hanzi")) return;
+   const modern = new Set();
+   entries.forEach((entry) => {
+      if (entry.entryType !== "word" || entry.simplified !== entry.traditional) return;
+      dictionaryEntryPronunciationKeys(entry).forEach((pinyin) => modern.add(entry.simplified + "§" + pinyin));
+   });
+   entries.forEach((entry) => {
+      if (entry.entryType !== "word" || entry.simplified === entry.traditional) return;
+      entry.__scriptVariant = Array.from(dictionaryEntryPronunciationKeys(entry)).some((pinyin) =>
+         modern.has(entry.simplified + "§" + pinyin),
+      );
+   });
+}
+
+function dictionaryDefinitionKeys(entry) {
+   return new Set(
+      [...entryDefinitions(entry, "fr"), ...entryDefinitions(entry, "en")]
+         .map(normalizeTranslation)
+         .filter(Boolean),
+   );
+}
+
+function visuallyEquivalentDictionaryEntries(left, right) {
+   if ((left.simplified || left.hz) !== (right.simplified || right.hz)) return false;
+   if (left.entryType === right.entryType) return false;
+   const word = left.entryType === "word" ? left : right.entryType === "word" ? right : null;
+   const character = left.entryType === "character" ? left : right.entryType === "character" ? right : null;
+   if (!word || !character || word.traditional !== word.simplified) return false;
+   const leftPinyin = dictionaryEntryPronunciationKeys(left);
+   if (!Array.from(dictionaryEntryPronunciationKeys(right)).some((pinyin) => leftPinyin.has(pinyin))) return false;
+   const leftDefinitions = dictionaryDefinitionKeys(left);
+   return Array.from(dictionaryDefinitionKeys(right)).some((definition) => leftDefinitions.has(definition));
+}
+
+function mergeDictionaryResultMetadata(primary, duplicate) {
+   const entry = primary.entry;
+   const other = duplicate.entry;
+   entry.visualGroup = Array.from(new Set([
+      ...(entry.visualGroup || [entry.id]),
+      ...(other.visualGroup || [other.id]),
+   ]));
+   entry.visualEntryTypes = Array.from(new Set([
+      ...(entry.visualEntryTypes || [entry.entryType]),
+      ...(other.visualEntryTypes || [other.entryType]),
+   ]));
+   entry.sources = Array.from(new Set([...(entry.sources || []), ...(other.sources || [])]));
+   entry.hskLegacy = Array.from(new Set([...(entry.hskLegacy || []), ...(other.hskLegacy || [])]));
+   entry.hsk30 = Array.from(new Set([...(entry.hsk30 || []), ...(other.hsk30 || [])]));
+   entry.hskVerified = [...(entry.hskVerified || []), ...(other.hskVerified || [])].filter(
+      (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
+   );
+   if (!entry.definitionsFr?.length && other.definitionsFr?.length) {
+      const primaryMeanings = dictionaryDefinitionKeys(entry);
+      entry.definitionsFr = other.definitionsFr.filter((definition) =>
+         primaryMeanings.has(normalizeTranslation(definition)),
+      );
+   }
+   if (other.personalCard && !entry.personalCard) entry.personalCard = other.personalCard;
+   primary.rank.score = Math.max(primary.rank.score, duplicate.rank.score);
+   return primary;
+}
+
+function mergeDictionaryVisualResults(response) {
+   if (!response || !Array.isArray(response.results)) return response;
+   const output = [];
+   let merged = 0;
+   response.results.forEach((result) => {
+      const match = output.find((candidate) =>
+         visuallyEquivalentDictionaryEntries(candidate.entry, result.entry),
+      );
+      if (!match) output.push(result);
+      else {
+         mergeDictionaryResultMetadata(match, result);
+         merged++;
+      }
+   });
+   response.results = output.sort(compareRankedDictionaryEntries);
+   response.visualDuplicatesMerged = merged;
+   return response;
 }
 
 async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidates) {
@@ -280,19 +371,28 @@ async function searchDictionaryLocally(rawQuery, options) {
    const personalEntries = db.cards
       .map(personalCardAsDictionaryEntry)
       .filter((entry) => personalEntryMatches(entry, query));
-   const personalByIdentity = new Map(
-      personalEntries.map((entry) => [dictionaryEntryIdentity(entry), entry.personalCard]),
+   const personalBySourceId = new Map(
+      personalEntries.filter((entry) => entry.dictionaryEntryId).map((entry) => [entry.dictionaryEntryId, entry.personalCard]),
+   );
+   const legacyPersonalByIdentity = new Map(
+      personalEntries.filter((entry) => !entry.dictionaryEntryId).map((entry) => [dictionaryEntryIdentity(entry), entry.personalCard]),
    );
    dictionaryEntries.forEach((entry) => {
-      const card = personalByIdentity.get(dictionaryEntryIdentity(entry));
+      const card = personalBySourceId.get(entry.id) || legacyPersonalByIdentity.get(dictionaryEntryIdentity(entry));
       if (card) entry.personalCard = card;
    });
 
    const dictionaryIdentities = new Set(dictionaryEntries.map(dictionaryEntryIdentity));
+   const dictionaryIds = new Set(dictionaryEntries.map((entry) => entry.id));
    const merged = [
       ...dictionaryEntries,
-      ...personalEntries.filter((entry) => !dictionaryIdentities.has(dictionaryEntryIdentity(entry))),
+      ...personalEntries.filter((entry) =>
+         entry.dictionaryEntryId
+            ? !dictionaryIds.has(entry.dictionaryEntryId)
+            : !dictionaryIdentities.has(dictionaryEntryIdentity(entry)),
+      ),
    ];
+   annotateDictionaryScriptVariants(merged, query);
    const ranked = merged
       .map((entry) => ({
          entry,

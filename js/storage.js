@@ -59,6 +59,8 @@
                difficult: !!c.difficult,
                incomplete: c.incomplete == null ? !py || !fr : !!c.incomplete,
                senseId: c.senseId ? String(c.senseId) : "",
+               dictionaryEntryId: c.dictionaryEntryId ? String(c.dictionaryEntryId) : "",
+               traditional: String(c.traditional || "").trim(),
                unit:
                   Number.isFinite(+c.unit) && c.unit !== "" && c.unit != null
                      ? +c.unit

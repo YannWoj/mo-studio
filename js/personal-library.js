@@ -275,10 +275,18 @@ function createPersonalPack(name, description) {
 
 function createPersonalCategory(packId, name) {
    if (!db.packs.some((pack) => pack.id === packId)) return null;
+   const cleanName = String(name || "").trim();
+   if (!cleanName) return null;
+   if (
+      db.categories.some(
+         (category) =>
+            category.packId === packId &&
+            category.name.localeCompare(cleanName, "fr", { sensitivity: "accent" }) === 0,
+      )
+   ) return null;
    const category = {
-      id: uid(), packId, name: String(name || "").trim(), created: Date.now(), updated: Date.now(),
+      id: uid(), packId, name: cleanName, created: Date.now(), updated: Date.now(),
    };
-   if (!category.name) return null;
    db.categories.push(category);
    save();
    return category;
@@ -304,6 +312,28 @@ function addCardMembership(cardId, categoryId) {
    const id = categoryId + "§" + cardId;
    if (db.memberships.some((membership) => membership.id === id)) return false;
    db.memberships.push({ id, categoryId, cardId });
+   syncLegacyPackCardIds();
+   return true;
+}
+
+function removeCardMembership(cardId, categoryId) {
+   const before = db.memberships.length;
+   db.memberships = db.memberships.filter(
+      (membership) => membership.cardId !== cardId || membership.categoryId !== categoryId,
+   );
+   if (db.memberships.length === before) return false;
+   syncLegacyPackCardIds();
+   return true;
+}
+
+function setCardMemberships(cardId, categoryIds) {
+   if (!db.cards.some((card) => card.id === cardId)) return false;
+   const validCategoryIds = new Set(db.categories.map((category) => category.id));
+   const wanted = new Set(uniqueStrings(categoryIds).filter((id) => validCategoryIds.has(id)));
+   db.memberships = db.memberships.filter(
+      (membership) => membership.cardId !== cardId || wanted.has(membership.categoryId),
+   );
+   wanted.forEach((categoryId) => addCardMembership(cardId, categoryId));
    syncLegacyPackCardIds();
    return true;
 }

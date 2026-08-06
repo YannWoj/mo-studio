@@ -618,6 +618,18 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            max-width: 100%;
+            touch-action: pan-y;
+            transform: translateX(0);
+            transition: transform 140ms ease, box-shadow 140ms ease;
+            will-change: transform;
+         }
+         .flash.is-session-dragging {
+            cursor: grabbing !important;
+            user-select: none;
+            -webkit-user-select: none;
+            transform: translateX(var(--session-drag-x, 0));
+            transition: none;
          }
          .fl-seal {
             position: absolute;
@@ -728,6 +740,7 @@
             justify-content: center;
          }
          .act {
+            min-height: 44px;
             padding: 8px 13px;
             border-radius: 999px;
             border: 1px solid var(--line);
@@ -781,6 +794,223 @@
             gap: 8px;
             margin-top: 14px;
          }
+         .session-nav {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+         }
+         .session-nav-button {
+            min-width: 0;
+            min-height: 44px;
+            padding: 8px 14px;
+            border: 1px solid var(--line);
+            border-radius: 11px;
+            background: var(--card);
+            color: var(--ink-soft);
+            font: 600 14px var(--disp);
+            text-align: left;
+            transition: border-color 120ms, color 120ms, background 120ms;
+         }
+         .session-nav-button.next {
+            border-color: color-mix(in srgb, var(--lacquer) 42%, var(--line));
+            color: var(--lacquer);
+            text-align: right;
+         }
+         .session-nav-button:hover:not(:disabled),
+         .session-nav-button:focus-visible,
+         .session-nav-button:active:not(:disabled) {
+            border-color: var(--lacquer);
+            background: color-mix(in srgb, var(--lacquer) 6%, var(--card));
+            color: var(--lacquer);
+         }
+         .session-nav-button:disabled {
+            border-color: var(--line-soft);
+            background: var(--card-2);
+            color: var(--ink-faint);
+            cursor: default;
+            opacity: .48;
+            pointer-events: none;
+         }
+         .review-strokes {
+            width: min(100%, 560px);
+            margin-top: 14px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: color-mix(in srgb, var(--card-2) 72%, var(--card));
+            overflow: hidden;
+            text-align: left;
+         }
+         .review-strokes summary {
+            display: flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 12px;
+            color: var(--ink);
+            cursor: pointer;
+            font: 600 14px var(--disp);
+            list-style: none;
+         }
+         .review-strokes summary::-webkit-details-marker {
+            display: none;
+         }
+         .review-strokes summary small {
+            color: var(--lacquer);
+            font-size: 11px;
+            font-weight: 500;
+         }
+         .review-strokes[open] summary {
+            border-bottom: 1px solid var(--line-soft);
+         }
+         .review-strokes[open] summary small {
+            font-size: 0;
+         }
+         .review-strokes[open] summary small::after {
+            content: "Masquer";
+            font-size: 11px;
+         }
+         .review-stroke-content {
+            padding: 10px 12px 12px;
+         }
+         .review-stroke-character-nav {
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr) 44px auto;
+            align-items: center;
+            gap: 6px;
+         }
+         .review-stroke-chevron,
+         .review-stroke-character {
+            min-width: 44px;
+            min-height: 44px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--ink-soft);
+         }
+         .review-stroke-chevron {
+            font-size: 24px;
+         }
+         .review-stroke-chevron:disabled {
+            opacity: .35;
+            pointer-events: none;
+         }
+         .review-stroke-characters {
+            display: flex;
+            min-width: 0;
+            gap: 5px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+         }
+         .review-stroke-character {
+            flex: 0 0 44px;
+            font: 21px var(--serif);
+         }
+         .review-stroke-character[aria-pressed="true"] {
+            border-color: var(--lacquer);
+            background: color-mix(in srgb, var(--lacquer) 9%, var(--card));
+            box-shadow: inset 0 -2px var(--lacquer);
+            color: var(--lacquer);
+         }
+         .review-stroke-count {
+            min-width: 36px;
+            color: var(--ink-faint);
+            font-size: 12px;
+            text-align: right;
+         }
+         .review-stroke-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin-top: 8px;
+            padding: 3px;
+            border: 1px solid var(--line-soft);
+            border-radius: 10px;
+            background: var(--card-2);
+         }
+         .review-stroke-tabs button {
+            min-height: 44px;
+            border-radius: 8px;
+            color: var(--ink-soft);
+            font-size: 13px;
+            font-weight: 600;
+         }
+         .review-stroke-tabs button[aria-selected="true"] {
+            background: var(--card);
+            box-shadow: 0 2px 8px rgba(23, 20, 15, .08);
+            color: var(--lacquer);
+         }
+         .review-stroke-panel {
+            margin-top: 9px;
+         }
+         .review-stroke-grid {
+            display: grid;
+            width: 164px;
+            height: 164px;
+            margin: 0 auto;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background-image:
+               linear-gradient(45deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%),
+               linear-gradient(-45deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%),
+               linear-gradient(90deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%),
+               linear-gradient(0deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%);
+            background-color: var(--card);
+         }
+         .review-stroke-animation-meta {
+            display: flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 6px;
+            color: var(--ink-faint);
+            font-size: 12px;
+         }
+         .review-stroke-animation-meta .btn {
+            min-height: 44px;
+         }
+         .review-stroke-steps-list {
+            display: flex;
+            gap: 7px;
+            max-width: 100%;
+            padding: 1px 1px 7px;
+            overflow-x: auto;
+            overscroll-behavior-inline: contain;
+            scroll-snap-type: inline proximity;
+         }
+         .review-stroke-step {
+            position: relative;
+            width: 88px;
+            flex: 0 0 88px;
+            border: 1px solid var(--line-soft);
+            border-radius: 9px;
+            background: var(--card);
+            scroll-snap-align: start;
+            overflow: hidden;
+         }
+         .review-stroke-step .stroke-panel-svg {
+            display: block;
+            width: 88px;
+            height: 88px;
+         }
+         .review-stroke-step-number {
+            position: absolute;
+            z-index: 1;
+            top: 4px;
+            left: 5px;
+            display: grid;
+            width: 20px;
+            height: 20px;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--card);
+            color: var(--lacquer);
+            font-size: 10px;
+            box-shadow: 0 1px 5px rgba(23, 20, 15, .12);
+         }
          .gr {
             border-radius: 12px;
             padding: 10px 4px 8px;
@@ -815,6 +1045,34 @@
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
+         }
+         @media (max-width: 430px) {
+            .flash {
+               padding: 50px 12px 18px;
+            }
+            .grades {
+               gap: 5px;
+            }
+            .session-nav {
+               gap: 6px;
+            }
+            .review-strokes {
+               margin-top: 11px;
+            }
+            .review-stroke-content {
+               padding: 8px 9px 10px;
+            }
+            .review-stroke-grid {
+               width: 144px;
+               height: 144px;
+            }
+            .review-stroke-character-nav {
+               grid-template-columns: 44px minmax(0, 1fr) 44px;
+            }
+            .review-stroke-count {
+               grid-column: 1 / -1;
+               text-align: center;
+            }
          }
          .w-lab {
             font-size: 12.5px;
@@ -1747,7 +2005,14 @@
    white-space: nowrap;
 }
 .dict-result-main .row-fr.english {
+   color: var(--ink-faint);
+   font-style: italic;
+}
+.dict-english-reference {
+   display: block;
+   margin-top: 3px;
    color: var(--gold);
+   overflow-wrap: anywhere;
 }
 .dict-match {
    display: block;
@@ -1798,11 +2063,48 @@
    margin: 6px 0 0;
    padding-left: 20px;
 }
+.dd-sense-list {
+   margin: 8px 0 0;
+   padding-left: 24px;
+}
+.dd-sense-list li {
+   padding-left: 4px;
+}
+.dd-sense-list li + li {
+   margin-top: 7px;
+}
 .dd-definitions li + li {
    margin-top: 5px;
 }
 .dd-definitions.english {
+   padding: 11px 13px;
+   border: 1px solid var(--line-soft);
+   border-radius: 11px;
    color: var(--ink-soft);
+}
+.dd-definitions.english summary {
+   min-height: 44px;
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+   color: var(--gold);
+   font-weight: 650;
+}
+.dd-french-unavailable {
+   padding: 12px 14px;
+   border-left: 3px solid var(--gold);
+   background: var(--card-2);
+}
+.dd-french-unavailable p,
+.dd-variant-note p {
+   margin: 5px 0 0;
+}
+.dd-variant-note {
+   margin: 12px 0;
+   padding: 11px 13px;
+   border: 1px solid var(--line-soft);
+   border-radius: 11px;
+   background: var(--card-2);
 }
 .dd-hsk-source {
    display: grid;
@@ -1839,6 +2141,17 @@
 }
 .dd-card-actions .acts {
    justify-content: flex-start;
+}
+.dd-already-state {
+   display: grid;
+   gap: 2px;
+}
+.dd-already-state b {
+   color: var(--jade);
+}
+.dd-already-state span {
+   color: var(--ink-faint);
+   font-size: 13px;
 }
 .dd-sources {
    margin: 15px 0;
@@ -2006,8 +2319,229 @@
 }
 
 .dd-add-packs {
-   max-height: 220px;
-   overflow: auto;
+   display: grid;
+   gap: 9px;
+   margin-top: 10px;
+}
+.dd-related-group {
+   margin-top: 9px;
+}
+.dd-related-group > small {
+   display: block;
+   margin-bottom: 5px;
+   color: var(--ink-faint);
+}
+
+.dd-add-words {
+   padding-bottom: 70px;
+}
+.dd-add-words .sheet-x {
+   top: -10px;
+   right: -8px;
+}
+.dd-personal-definition,
+.dd-current-locations {
+   margin: 13px 0;
+   padding: 12px 14px;
+   border: 1px solid var(--line-soft);
+   border-radius: 12px;
+   background: var(--card-2);
+}
+.dd-personal-definition p {
+   margin: 5px 0 0;
+}
+.dd-current-locations ul {
+   display: grid;
+   gap: 5px;
+   margin: 7px 0 0;
+   padding-left: 20px;
+}
+.dd-unique-card-note,
+.dd-language-notice {
+   margin: 8px 0 12px;
+   color: var(--ink-soft);
+   font-size: 13px;
+}
+.dd-placement-head {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   margin-top: 18px;
+}
+.dd-placement-head p {
+   margin: 2px 0 0;
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+.dd-placement-head .btn {
+   min-height: 44px;
+   flex: none;
+}
+.dd-pack-search {
+   display: block;
+   margin-top: 9px;
+}
+.dd-pack-block {
+   overflow: clip;
+   border: 1px solid var(--line);
+   border-radius: 14px;
+   background: var(--card);
+}
+.dd-pack-block[open] {
+   border-color: color-mix(in srgb, var(--seal) 42%, var(--line));
+   box-shadow: 0 5px 16px rgba(23, 20, 15, 0.05);
+}
+.dd-pack-block > summary {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   min-height: 56px;
+   padding: 6px 12px;
+   cursor: pointer;
+   list-style: none;
+}
+.dd-pack-block > summary::-webkit-details-marker {
+   display: none;
+}
+.dd-pack-choice {
+   display: flex;
+   align-items: center;
+   gap: 11px;
+   min-width: 0;
+   min-height: 44px;
+   cursor: pointer;
+}
+.dd-pack-choice input,
+.dd-category-choice input {
+   width: 20px;
+   height: 20px;
+   flex: none;
+   accent-color: var(--seal);
+}
+.dd-pack-choice span {
+   display: grid;
+   min-width: 0;
+}
+.dd-pack-choice small,
+.dd-category-choice small {
+   color: var(--ink-faint);
+   font-size: 12px;
+}
+.dd-pack-chevron {
+   font-size: 22px;
+   transition: transform 0.18s;
+}
+.dd-pack-block[open] .dd-pack-chevron {
+   transform: rotate(180deg);
+}
+.dd-pack-content {
+   padding: 4px 12px 13px;
+   border-top: 1px solid var(--line-soft);
+}
+.dd-category-list {
+   display: grid;
+   gap: 4px;
+   padding-top: 6px;
+}
+.dd-category-choice {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   min-height: 44px;
+   padding: 6px 9px;
+   border-radius: 10px;
+   cursor: pointer;
+}
+.dd-category-choice:has(input:checked) {
+   background: color-mix(in srgb, var(--seal) 10%, var(--card-2));
+   color: var(--seal);
+}
+.dd-category-choice span {
+   display: grid;
+}
+.dd-placement-warning {
+   display: grid;
+   gap: 3px;
+   margin: 8px 0;
+   padding: 10px;
+   border: 1px solid color-mix(in srgb, var(--gold) 48%, var(--line));
+   border-radius: 11px;
+   background: color-mix(in srgb, var(--gold) 7%, var(--card));
+   font-size: 13px;
+}
+.dd-without-choice {
+   margin-top: 7px;
+}
+.dd-category-create,
+.dd-pack-create {
+   display: grid;
+   grid-template-columns: minmax(0, 1fr) auto;
+   gap: 8px;
+   margin-top: 9px;
+}
+.dd-category-create .btn,
+.dd-pack-create .btn {
+   min-height: 44px;
+}
+.dd-quick-create {
+   margin-top: 13px;
+   padding: 0 12px 12px;
+   border: 1px dashed var(--line);
+   border-radius: 12px;
+}
+.dd-quick-create summary {
+   display: flex;
+   align-items: center;
+   min-height: 44px;
+   cursor: pointer;
+   color: var(--lacquer);
+   font-weight: 650;
+}
+.dd-placement-error {
+   margin: 11px 0 0;
+   padding: 10px 12px;
+   border-radius: 10px;
+   background: color-mix(in srgb, var(--lacquer) 9%, var(--card));
+   color: var(--lacquer);
+   font-size: 13px;
+}
+.dd-placement-actions {
+   position: sticky;
+   z-index: 4;
+   bottom: calc(-22px - env(safe-area-inset-bottom));
+   display: grid;
+   grid-template-columns: auto minmax(0, 1fr);
+   gap: 9px;
+   margin: 18px -20px -92px;
+   padding: 12px 20px calc(14px + env(safe-area-inset-bottom));
+   border-top: 1px solid var(--line);
+   background: color-mix(in srgb, var(--paper-2) 94%, transparent);
+   backdrop-filter: blur(10px);
+}
+.dd-placement-actions .btn {
+   min-height: 48px;
+   margin: 0;
+}
+
+@media (max-width: 430px) {
+   .dd-add-words {
+      min-width: 0;
+   }
+   .dd-placement-head {
+      align-items: flex-end;
+   }
+   .dd-placement-head .btn {
+      padding-inline: 10px;
+   }
+   .dd-category-create,
+   .dd-pack-create,
+   .dd-placement-actions {
+      grid-template-columns: 1fr;
+   }
+   .dd-placement-actions .btn.primary {
+      order: -1;
+   }
 }
 
 /* ---------- écoute ---------- */
@@ -4006,8 +4540,8 @@ body.writing-fullscreen-open {
 
 .review-block {
    display: grid;
-   gap: 11px;
-   padding: 14px;
+   gap: 9px;
+   padding: 12px 14px;
    border-radius: 14px;
 }
 
@@ -4256,6 +4790,23 @@ body.writing-fullscreen-open {
    font-size: 13px;
    font-weight: 600;
    line-height: 1.2;
+}
+
+.review-segment > span,
+.review-segment > small {
+   display: block;
+}
+
+.review-segment > small {
+   margin-top: 3px;
+   color: var(--ink-faint);
+   font-size: 10px;
+   font-weight: 400;
+   line-height: 1.2;
+}
+
+.review-segment[aria-pressed="true"] > small {
+   color: var(--ink-soft);
 }
 
 .review-segment[aria-pressed="true"] {
@@ -5427,6 +5978,8 @@ async function openHskVocabularyEntry(entry) {
                difficult: !!c.difficult,
                incomplete: c.incomplete == null ? !py || !fr : !!c.incomplete,
                senseId: c.senseId ? String(c.senseId) : "",
+               dictionaryEntryId: c.dictionaryEntryId ? String(c.dictionaryEntryId) : "",
+               traditional: String(c.traditional || "").trim(),
                unit:
                   Number.isFinite(+c.unit) && c.unit !== "" && c.unit != null
                      ? +c.unit
@@ -5914,10 +6467,18 @@ function createPersonalPack(name, description) {
 
 function createPersonalCategory(packId, name) {
    if (!db.packs.some((pack) => pack.id === packId)) return null;
+   const cleanName = String(name || "").trim();
+   if (!cleanName) return null;
+   if (
+      db.categories.some(
+         (category) =>
+            category.packId === packId &&
+            category.name.localeCompare(cleanName, "fr", { sensitivity: "accent" }) === 0,
+      )
+   ) return null;
    const category = {
-      id: uid(), packId, name: String(name || "").trim(), created: Date.now(), updated: Date.now(),
+      id: uid(), packId, name: cleanName, created: Date.now(), updated: Date.now(),
    };
-   if (!category.name) return null;
    db.categories.push(category);
    save();
    return category;
@@ -5943,6 +6504,28 @@ function addCardMembership(cardId, categoryId) {
    const id = categoryId + "§" + cardId;
    if (db.memberships.some((membership) => membership.id === id)) return false;
    db.memberships.push({ id, categoryId, cardId });
+   syncLegacyPackCardIds();
+   return true;
+}
+
+function removeCardMembership(cardId, categoryId) {
+   const before = db.memberships.length;
+   db.memberships = db.memberships.filter(
+      (membership) => membership.cardId !== cardId || membership.categoryId !== categoryId,
+   );
+   if (db.memberships.length === before) return false;
+   syncLegacyPackCardIds();
+   return true;
+}
+
+function setCardMemberships(cardId, categoryIds) {
+   if (!db.cards.some((card) => card.id === cardId)) return false;
+   const validCategoryIds = new Set(db.categories.map((category) => category.id));
+   const wanted = new Set(uniqueStrings(categoryIds).filter((id) => validCategoryIds.has(id)));
+   db.memberships = db.memberships.filter(
+      (membership) => membership.cardId !== cardId || wanted.has(membership.categoryId),
+   );
+   wanted.forEach((categoryId) => addCardMembership(cardId, categoryId));
    syncLegacyPackCardIds();
    return true;
 }
@@ -6483,6 +7066,7 @@ let courseProgress = loadCourseProgress();
 /* ================= Réviser : sélection compacte ================= */
 let reviewSelectionMode = "due";
 let reviewPackId = "";
+let reviewPackIds = new Set();
 let reviewCategoryPackId = "";
 let reviewCategoryIds = new Set();
 let manualReviewIds = new Set();
@@ -6502,7 +7086,15 @@ let hub = { flt: "due", pack: "", cat: "", includeAcquired: false, freeOpen: fal
 function baseReviewCards() {
    if (reviewSelectionMode === "all") return db.cards.slice();
    if (reviewSelectionMode === "due") return db.cards.filter(isDue);
-   if (reviewSelectionMode === "pack") return reviewPackId ? cardsForPack(reviewPackId) : [];
+   if (reviewSelectionMode === "pack") {
+      const selectedPackIds = reviewPackIds.size
+         ? Array.from(reviewPackIds)
+         : reviewPackId
+           ? [reviewPackId]
+           : [];
+      const ids = new Set(selectedPackIds.flatMap(packCardIds));
+      return db.cards.filter((card) => ids.has(card.id));
+   }
    if (reviewSelectionMode === "category") {
       const ids = new Set(Array.from(reviewCategoryIds).flatMap(categoryCardIds));
       return db.cards.filter((card) => ids.has(card.id));
@@ -6530,8 +7122,11 @@ function scopeCards() {
 
 function scopeLabel() {
    if (reviewSelectionMode === "pack") {
-      const pack = db.packs.find((item) => item.id === reviewPackId);
-      return pack ? "Pack · " + pack.name : "Pack";
+      const packs = Array.from(reviewPackIds)
+         .map((id) => db.packs.find((pack) => pack.id === id))
+         .filter(Boolean);
+      if (packs.length === 1) return "Pack · " + packs[0].name;
+      return packs.length + " packs";
    }
    if (reviewSelectionMode === "category") {
       const categories = Array.from(reviewCategoryIds).map(categoryById).filter(Boolean);
@@ -6540,7 +7135,7 @@ function scopeLabel() {
       return categories.length + " sous-catégories" + (pack ? " · " + pack.name : "");
    }
    if (reviewSelectionMode === "manual") return reviewScopeLabel || "Mots sélectionnés";
-   return reviewSelectionMode === "all" ? "Tous mes mots" : "Cartes dues";
+   return reviewSelectionMode === "all" ? "Tous mes mots" : "À revoir aujourd’hui";
 }
 
 function smartQueue() {
@@ -6558,6 +7153,7 @@ function smartQueue() {
 }
 
 function startCardsWith(cards, label, mode) {
+   if (typeof resetReviewStrokeSession === "function") resetReviewStrokeSession();
    session = {
       active: true,
       mode: mode || "cards",
@@ -6596,6 +7192,7 @@ function startFreeSession(mode) {
 function openReviewForPack(packId) {
    reviewSelectionMode = "pack";
    reviewPackId = packId;
+   reviewPackIds = new Set(packId ? [packId] : []);
    reviewCategoryPackId = "";
    reviewCategoryIds.clear();
    session = { active: false };
@@ -6608,6 +7205,7 @@ function openReviewForCategory(categoryId) {
    reviewCategoryIds = new Set(category ? [category.id] : []);
    reviewCategoryPackId = category ? category.packId : "";
    reviewPackId = "";
+   reviewPackIds.clear();
    session = { active: false };
    setView("learn");
 }
@@ -6620,8 +7218,8 @@ function openReviewForManualCards(cards, label) {
    setView("learn");
 }
 
-function reviewSegment(value, label) {
-   return '<button class="review-segment" data-review-scope="' + value + '" aria-pressed="' + String(reviewSelectionMode === value) + '">' + label + "</button>";
+function reviewSegment(value, label, help) {
+   return '<button class="review-segment" data-review-scope="' + value + '" aria-pressed="' + String(reviewSelectionMode === value) + '"><span>' + label + "</span>" + (help ? '<small>' + help + "</small>" : "") + "</button>";
 }
 
 function reviewModeCard(value, title, description) {
@@ -6634,11 +7232,11 @@ function directionSegment(value, label) {
 
 function conditionalReviewSelectorHtml() {
    if (reviewSelectionMode === "pack") {
-      return '<div class="review-visual-list" id="review-pack-list">' + (db.packs.map((pack) => '<button class="review-list-option" data-review-pack-option="' + esc(pack.id) + '" aria-pressed="' + String(pack.id === reviewPackId) + '"><span>' + esc(pack.name) + '</span><small>' + cardsForPack(pack.id).length + ' carte' + (cardsForPack(pack.id).length > 1 ? "s" : "") + "</small></button>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div>";
+      return '<div class="review-multi-picker"><div class="review-category-list-head"><p class="review-picker-label"><strong>' + reviewPackIds.size + '</strong> sélectionné' + (reviewPackIds.size > 1 ? "s" : "") + '</p><div><button class="review-text-action" id="review-packs-all">Tout sélectionner</button><button class="review-text-action" id="review-packs-clear">Effacer</button></div></div><div class="review-category-options" id="review-pack-list">' + (db.packs.map((pack) => '<label class="review-category-option"><input type="checkbox" data-review-pack-option="' + esc(pack.id) + '"' + (reviewPackIds.has(pack.id) ? " checked" : "") + '><span><strong>' + esc(pack.name) + '</strong><small>' + cardsForPack(pack.id).length + ' carte' + (cardsForPack(pack.id).length > 1 ? "s" : "") + "</small></span></label>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div></div>";
    }
    if (reviewSelectionMode === "category") {
       const categories = reviewCategoryPackId ? categoriesForPack(reviewCategoryPackId) : [];
-      return '<div class="review-category-picker"><p class="review-picker-label">1. Choisis un pack</p><div class="review-visual-list compact">' + (db.packs.map((pack) => '<button class="review-list-option" data-review-category-pack-option="' + esc(pack.id) + '" aria-pressed="' + String(pack.id === reviewCategoryPackId) + '"><span>' + esc(pack.name) + '</span><small>' + categoriesForPack(pack.id).length + ' sous-catégorie' + (categoriesForPack(pack.id).length > 1 ? "s" : "") + "</small></button>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div>" + (reviewCategoryPackId ? '<div class="review-category-list-head"><p class="review-picker-label">2. Choisis une ou plusieurs sous-catégories</p><div><button class="review-text-action" id="review-categories-all">Tout sélectionner</button><button class="review-text-action" id="review-categories-clear">Effacer</button></div></div><div class="review-category-options">' + (categories.map((category) => '<label class="review-category-option"><input type="checkbox" data-review-category-option="' + esc(category.id) + '"' + (reviewCategoryIds.has(category.id) ? " checked" : "") + '><span><strong>' + esc(category.name) + '</strong><small>' + cardsForCategory(category.id).length + ' carte' + (cardsForCategory(category.id).length > 1 ? "s" : "") + "</small></span></label>").join("") || '<p class="review-inline-empty">Ce pack ne contient aucune sous-catégorie.</p>') + "</div>" : "") + "</div>";
+      return '<div class="review-category-picker"><p class="review-picker-label">1. Choisis un pack</p><div class="review-visual-list compact">' + (db.packs.map((pack) => '<button class="review-list-option" data-review-category-pack-option="' + esc(pack.id) + '" aria-pressed="' + String(pack.id === reviewCategoryPackId) + '"><span>' + esc(pack.name) + '</span><small>' + categoriesForPack(pack.id).length + ' sous-catégorie' + (categoriesForPack(pack.id).length > 1 ? "s" : "") + "</small></button>").join("") || '<p class="review-inline-empty">Aucun pack disponible.</p>') + "</div>" + (reviewCategoryPackId ? '<div class="review-category-list-head"><p class="review-picker-label">2. Sous-catégories · <strong>' + reviewCategoryIds.size + ' sélectionnée' + (reviewCategoryIds.size > 1 ? "s" : "") + '</strong></p><div><button class="review-text-action" id="review-categories-all">Tout sélectionner</button><button class="review-text-action" id="review-categories-clear">Effacer</button></div></div><div class="review-category-options">' + (categories.map((category) => '<label class="review-category-option"><input type="checkbox" data-review-category-option="' + esc(category.id) + '"' + (reviewCategoryIds.has(category.id) ? " checked" : "") + '><span><strong>' + esc(category.name) + '</strong><small>' + cardsForCategory(category.id).length + ' carte' + (cardsForCategory(category.id).length > 1 ? "s" : "") + "</small></span></label>").join("") || '<p class="review-inline-empty">Ce pack ne contient aucune sous-catégorie.</p>') + "</div>" : "") + "</div>";
    }
    if (reviewSelectionMode === "manual") {
       return '<p class="review-manual-note"><strong>' + manualReviewIds.size + ' mot' + (manualReviewIds.size > 1 ? "s" : "") + '</strong> choisi' + (manualReviewIds.size > 1 ? "s" : "") + ' depuis Mes mots.</p>';
@@ -6661,7 +7259,8 @@ function renderLearn() {
 
    if (!["all", "due", "pack", "category", "manual"].includes(reviewSelectionMode))
       reviewSelectionMode = "due";
-   if (!reviewPackId || !db.packs.some((pack) => pack.id === reviewPackId)) reviewPackId = "";
+   reviewPackIds = new Set(Array.from(reviewPackIds).filter((id) => db.packs.some((pack) => pack.id === id)));
+   reviewPackId = reviewPackIds.values().next().value || "";
    if (!reviewCategoryPackId || !db.packs.some((pack) => pack.id === reviewCategoryPackId)) reviewCategoryPackId = "";
    reviewCategoryIds = new Set(
       Array.from(reviewCategoryIds).filter((id) => {
@@ -6676,7 +7275,7 @@ function renderLearn() {
    const minutes = cards.length ? Math.max(1, Math.round(cards.length * 25 / 60)) : 0;
    const resume = loadSavedSession();
    root.innerHTML = '<section class="review-page review-page-simple"><header class="review-simple-heading"><p class="eyebrow">Révision personnelle</p><h2 class="v-t">复 · Réviser</h2></header>' +
-      '<section class="review-block card" aria-labelledby="review-content-title"><div class="review-block-title"><span>1</span><div><h3 id="review-content-title">Choisir le contenu</h3><p>Que veux-tu réviser ?</p></div></div><div class="review-segments review-scope-segments">' + reviewSegment("all", "Tous mes mots") + reviewSegment("pack", "Un pack") + reviewSegment("category", "Une sous-catégorie") + reviewSegment("due", "Cartes dues") + '</div><div id="review-conditional">' + conditionalReviewSelectorHtml() + "</div></section>" +
+      '<section class="review-block card" aria-labelledby="review-content-title"><div class="review-block-title"><span>1</span><div><h3 id="review-content-title">Choisir le contenu</h3><p>Que veux-tu réviser ?</p></div></div><div class="review-segments review-scope-segments">' + reviewSegment("all", "Tous mes mots") + reviewSegment("pack", "Un ou plusieurs packs") + reviewSegment("category", "Une ou plusieurs sous-catégories") + reviewSegment("due", "À revoir aujourd’hui", "Cartes prévues par ton système de révision.") + '</div><div id="review-conditional">' + conditionalReviewSelectorHtml() + "</div></section>" +
       '<section class="review-block card" aria-labelledby="review-mode-title"><div class="review-block-title"><span>2</span><div><h3 id="review-mode-title">Choisir le mode</h3><p>Comment veux-tu réviser ?</p></div></div><div class="review-mode-grid">' + reviewModeCard("cards", "Cartes", "Je révèle la réponse et je m’auto-évalue") + reviewModeCard("written", "Écriture", "J’écris la réponse avant de la vérifier") + reviewModeCard("discover", "Découverte", "Je feuillette sans modifier ma progression") + "</div></section>" +
       '<section class="review-block card" aria-labelledby="review-direction-title"><div class="review-block-title"><span>3</span><div><h3 id="review-direction-title">Choisir le sens</h3><p>Dans quel sens ?</p></div></div><div class="review-segments review-direction-segments">' + directionSegment("zh2fr", "中文 → Français") + directionSegment("fr2zh", "Français → 中文") + directionSegment("mix", "Mélanger les deux") + "</div></section>" +
       '<details class="review-advanced card" id="review-options"' + (reviewOptionsOpen ? " open" : "") + '><summary>Réglages avancés</summary><div class="review-filter-grid">' + extraFilterCheckbox("newOnly", "Uniquement les nouveaux mots") + extraFilterCheckbox("favoritesOnly", "Uniquement les favoris") + extraFilterCheckbox("difficultOnly", "Uniquement les mots difficiles") + extraFilterCheckbox("includeLearned", "Inclure les cartes déjà maîtrisées") + (reviewMode === "written" ? '<div class="review-writing-options"><p>Exercices d’écriture</p>' + writingSettingCheckbox("fr", "Traduction française") + writingSettingCheckbox("pinyin", "Pinyin") + writingSettingCheckbox("trace", "Tracé des caractères") + "</div>" : "") + "</div></details>" +
@@ -6695,10 +7294,22 @@ function renderLearn() {
       reviewMode = button.dataset.reviewMode;
       renderLearn();
    });
-   document.querySelectorAll("[data-review-pack-option]").forEach((button) => button.onclick = () => {
-      reviewPackId = button.dataset.reviewPackOption;
+   document.querySelectorAll("[data-review-pack-option]").forEach((input) => input.onchange = () => {
+      if (input.checked) reviewPackIds.add(input.dataset.reviewPackOption);
+      else reviewPackIds.delete(input.dataset.reviewPackOption);
+      reviewPackId = reviewPackIds.values().next().value || "";
       renderLearn();
    });
+   if ($("review-packs-all")) $("review-packs-all").onclick = () => {
+      reviewPackIds = new Set(db.packs.map((pack) => pack.id));
+      reviewPackId = reviewPackIds.values().next().value || "";
+      renderLearn();
+   };
+   if ($("review-packs-clear")) $("review-packs-clear").onclick = () => {
+      reviewPackIds.clear();
+      reviewPackId = "";
+      renderLearn();
+   };
    document.querySelectorAll("[data-review-category-pack-option]").forEach((button) => button.onclick = () => {
       reviewCategoryPackId = button.dataset.reviewCategoryPackOption;
       reviewCategoryIds.clear();
@@ -7553,6 +8164,219 @@ function destroyWritingBoard() {
 
 "use strict";
 
+let reviewStrokeWriter = null;
+let reviewStrokeWriterTarget = null;
+let reviewStrokeWriterListeners = [];
+let reviewStrokeLoadToken = 0;
+let reviewStrokeData = null;
+let reviewStrokeTab = "animation";
+let reviewStrokeExpanded = false;
+
+function reviewHanzi(value) {
+   return Array.from(String(value || "")).filter((character) =>
+      /^\p{Script=Han}$/u.test(character),
+   );
+}
+
+function removeReviewStrokeWriterListeners() {
+   reviewStrokeWriterListeners.forEach(({ type, listener, options }) =>
+      document.removeEventListener(type, listener, options),
+   );
+   reviewStrokeWriterListeners = [];
+}
+
+function destroyReviewStrokeWriter() {
+   if (reviewStrokeWriter && typeof reviewStrokeWriter.cancelAnimation === "function") {
+      try { reviewStrokeWriter.cancelAnimation(); } catch (error) {}
+   }
+   if (reviewStrokeWriter && typeof reviewStrokeWriter.cancelQuiz === "function") {
+      try { reviewStrokeWriter.cancelQuiz(); } catch (error) {}
+   }
+   if (reviewStrokeWriterTarget) reviewStrokeWriterTarget.innerHTML = "";
+   removeReviewStrokeWriterListeners();
+   reviewStrokeWriter = null;
+   reviewStrokeWriterTarget = null;
+}
+
+function destroyReviewStrokeWorkspace() {
+   reviewStrokeLoadToken++;
+   destroyReviewStrokeWriter();
+   reviewStrokeData = null;
+}
+
+function resetReviewStrokeSession() {
+   destroyReviewStrokeWorkspace();
+   reviewStrokeTab = "animation";
+   reviewStrokeExpanded =
+      typeof matchMedia === "function" && matchMedia("(min-width: 601px)").matches;
+}
+
+function managedReviewStrokeWriter(target, character, options) {
+   const captured = [];
+   const originalAddEventListener = document.addEventListener;
+   document.addEventListener = function (type, listener, listenerOptions) {
+      if (type === "mouseup" || type === "touchend")
+         captured.push({ type, listener, options: listenerOptions });
+      return originalAddEventListener.call(this, type, listener, listenerOptions);
+   };
+   try {
+      const writer = HanziWriter.create(target, character, options);
+      reviewStrokeWriterListeners = captured;
+      return writer;
+   } catch (error) {
+      captured.forEach(({ type, listener, options: listenerOptions }) =>
+         document.removeEventListener(type, listener, listenerOptions),
+      );
+      throw error;
+   } finally {
+      document.addEventListener = originalAddEventListener;
+   }
+}
+
+function reviewStrokeBlockHtml(c, st) {
+   const characters = reviewHanzi(c.hz);
+   if (!characters.length) return "";
+   const selected = Math.max(0, Math.min(Number(st.strokeCharacterIndex) || 0, characters.length - 1));
+   st.strokeCharacterIndex = selected;
+   const pills = characters.map((character, index) =>
+      '<button type="button" class="review-stroke-character" data-review-stroke-character="' + index + '" aria-pressed="' + String(index === selected) + '" aria-label="Afficher ' + esc(character) + '">' + esc(character) + "</button>",
+   ).join("");
+   return (
+      '<details class="review-strokes" id="review-strokes"' + (reviewStrokeExpanded ? " open" : "") + ' data-no-session-swipe>' +
+      '<summary><span>Écriture du caractère</span><small>Voir l’ordre des traits</small></summary>' +
+      '<div class="review-stroke-content">' +
+      '<div class="review-stroke-character-nav">' +
+      '<button type="button" class="review-stroke-chevron" id="review-stroke-character-prev" aria-label="Caractère précédent"' + (selected === 0 ? " disabled" : "") + '>‹</button>' +
+      '<div class="review-stroke-characters" aria-label="Caractères du mot">' + pills + "</div>" +
+      '<button type="button" class="review-stroke-chevron" id="review-stroke-character-next" aria-label="Caractère suivant"' + (selected === characters.length - 1 ? " disabled" : "") + '>›</button>' +
+      '<span class="review-stroke-count" id="review-stroke-count" aria-live="polite">' + (selected + 1) + " / " + characters.length + "</span></div>" +
+      '<div class="review-stroke-tabs" role="tablist" aria-label="Affichage de l’ordre des traits">' +
+      '<button type="button" role="tab" data-review-stroke-tab="animation" aria-selected="' + String(reviewStrokeTab === "animation") + '">Animation</button>' +
+      '<button type="button" role="tab" data-review-stroke-tab="steps" aria-selected="' + String(reviewStrokeTab === "steps") + '">Étapes</button></div>' +
+      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="btn sm ghost" id="review-stroke-replay">Rejouer</button></div></div>' +
+      '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
+      "</div></details>"
+   );
+}
+
+function renderReviewStrokeSteps(data) {
+   const target = $("review-stroke-steps-list");
+   if (!target || !data || typeof strokePanelSvg !== "function") return;
+   target.innerHTML = Array.from({ length: data.strokeCount }, (_, index) => {
+      const labelId = "review-stroke-step-label-" + index;
+      return '<div class="review-stroke-step"><span class="review-stroke-step-number">' + (index + 1) + '</span><span id="' + labelId + '" class="sr-only">Trait ' + (index + 1) + " sur " + data.strokeCount + '</span>' + strokePanelSvg(data, index, { showFuture: false, showGrid: true, showGhost: false }, labelId) + "</div>";
+   }).join("");
+}
+
+function createReviewStrokeAnimation(data, autoplay) {
+   destroyReviewStrokeWriter();
+   const target = $("review-stroke-target");
+   const status = $("review-stroke-status");
+   if (!target || typeof HanziWriter === "undefined") return;
+   const size = Math.min(164, target.parentElement.clientWidth || 164);
+   target.style.width = size + "px";
+   target.style.height = size + "px";
+   reviewStrokeWriterTarget = target;
+   try {
+      reviewStrokeWriter = managedReviewStrokeWriter(target, data.character, {
+         width: size,
+         height: size,
+         padding: 10,
+         showCharacter: true,
+         showOutline: true,
+         strokeColor: "#17140F",
+         outlineColor: "#CDBFA1",
+         charDataLoader: () => data,
+         ...(typeof speedOpts === "function" ? speedOpts(db.settings.strokeSpeed) : {}),
+      });
+      if (status) status.textContent = data.strokeCount + " traits";
+      const reduced = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (autoplay && !reduced) reviewStrokeWriter.animateCharacter();
+   } catch (error) {
+      destroyReviewStrokeWriter();
+      const root = $("review-strokes");
+      if (root) root.hidden = true;
+   }
+}
+
+async function loadReviewStrokeCharacter(character, autoplay) {
+   const token = ++reviewStrokeLoadToken;
+   destroyReviewStrokeWriter();
+   reviewStrokeData = null;
+   const status = $("review-stroke-status");
+   if (status) status.textContent = "Chargement…";
+   try {
+      if (typeof loadStrokeCharacterData !== "function") throw new Error("stroke data unavailable");
+      const data = await loadStrokeCharacterData(character);
+      if (token !== reviewStrokeLoadToken || !$("review-strokes") || !session.active) return;
+      reviewStrokeData = data;
+      if (reviewStrokeTab === "steps") renderReviewStrokeSteps(data);
+      else createReviewStrokeAnimation(data, autoplay);
+   } catch (error) {
+      if (token !== reviewStrokeLoadToken) return;
+      const root = $("review-strokes");
+      if (root) root.hidden = true;
+   }
+}
+
+function activateReviewStrokeTab(tab) {
+   if (!["animation", "steps"].includes(tab)) return;
+   reviewStrokeTab = tab;
+   document.querySelectorAll("[data-review-stroke-tab]").forEach((button) =>
+      button.setAttribute("aria-selected", String(button.dataset.reviewStrokeTab === tab)),
+   );
+   const animation = $("review-stroke-animation");
+   const steps = $("review-stroke-steps");
+   if (animation) animation.hidden = tab !== "animation";
+   if (steps) steps.hidden = tab !== "steps";
+   if (!reviewStrokeData) return;
+   if (tab === "steps") {
+      destroyReviewStrokeWriter();
+      renderReviewStrokeSteps(reviewStrokeData);
+   } else createReviewStrokeAnimation(reviewStrokeData, false);
+}
+
+function wireReviewStrokeBlock(c, st) {
+   const root = $("review-strokes");
+   if (!root) return;
+   const characters = reviewHanzi(c.hz);
+   const selectCharacter = (nextIndex) => {
+      if (!root.isConnected) return;
+      const index = Math.max(0, Math.min(nextIndex, characters.length - 1));
+      st.strokeCharacterIndex = index;
+      root.querySelectorAll("[data-review-stroke-character]").forEach((button) =>
+         button.setAttribute("aria-pressed", String(Number(button.dataset.reviewStrokeCharacter) === index)),
+      );
+      const previous = root.querySelector("#review-stroke-character-prev");
+      const next = root.querySelector("#review-stroke-character-next");
+      const count = root.querySelector("#review-stroke-count");
+      if (previous) previous.disabled = index === 0;
+      if (next) next.disabled = index === characters.length - 1;
+      if (count) count.textContent = (index + 1) + " / " + characters.length;
+      loadReviewStrokeCharacter(characters[index], true);
+      if (characters[index + 1] && typeof preloadStrokeCharacterData === "function")
+         preloadStrokeCharacterData(characters[index + 1]);
+   };
+   root.ontoggle = () => {
+      if (!root.isConnected) return;
+      reviewStrokeExpanded = root.open;
+      if (root.open) selectCharacter(st.strokeCharacterIndex || 0);
+      else destroyReviewStrokeWorkspace();
+   };
+   root.querySelectorAll("[data-review-stroke-character]").forEach((button) =>
+      button.onclick = () => selectCharacter(Number(button.dataset.reviewStrokeCharacter)),
+   );
+   $("review-stroke-character-prev").onclick = () => selectCharacter((st.strokeCharacterIndex || 0) - 1);
+   $("review-stroke-character-next").onclick = () => selectCharacter((st.strokeCharacterIndex || 0) + 1);
+   root.querySelectorAll("[data-review-stroke-tab]").forEach((button) =>
+      button.onclick = () => activateReviewStrokeTab(button.dataset.reviewStrokeTab),
+   );
+   $("review-stroke-replay").onclick = () => {
+      if (reviewStrokeData) createReviewStrokeAnimation(reviewStrokeData, true);
+   };
+   if (root.open) selectCharacter(st.strokeCharacterIndex || 0);
+}
+
 /* ================= séance ================= */
          const currentCard = () => session.cards[session.index];
          function getState(i) {
@@ -7709,27 +8533,24 @@ function destroyWritingBoard() {
                b("hard", "Difficile") +
                b("good", "Correct") +
                b("easy", "Facile") +
-               "</div>" +
-               '<div class="g-row">' +
-               '<button class="btn sm ghost" id="s-prev"' +
-               (session.index === 0 ? " disabled" : "") +
-               ">← préc.</button>" +
-               '<button class="btn sm ghost" id="s-next">passer →</button>' +
-               "</div>"
+               "</div>" + sessionNavigationHtml()
+            );
+         }
+         function sessionNavigationHtml() {
+            const last = session.index >= session.cards.length - 1;
+            return (
+               '<nav class="session-nav" aria-label="Navigation dans la séance">' +
+               '<button type="button" class="session-nav-button previous" id="s-prev"' +
+               (session.index === 0 ? " disabled aria-disabled=\"true\"" : "") +
+               '>‹ <span>Précédent</span></button>' +
+               '<button type="button" class="session-nav-button next" id="s-next"><span>' +
+               (last ? "Terminer" : "Passer") +
+               "</span> ›</button></nav>"
             );
          }
          function sessionFooterHtml(c, st) {
-            const last = session.index >= session.cards.length - 1;
             if (session.mode === "discover") {
-               return (
-                  '<div class="s-foot">' +
-                  '<button class="btn ghost" id="s-prev"' +
-                  (session.index === 0 ? " disabled" : "") +
-                  ">←</button>" +
-                  '<button class="btn primary" id="s-next">' +
-                  (last ? "Terminer 完" : "Suivante →") +
-                  "</button></div>"
-               );
+               return sessionNavigationHtml();
             }
             if (session.mode === "cards" && !st.revealed)
                return '<div class="s-foot"><button class="btn primary big" id="s-flip">Retourner</button></div>';
@@ -7740,6 +8561,7 @@ function destroyWritingBoard() {
          }
 
          function renderSession() {
+            destroyReviewStrokeWorkspace();
             const c = currentCard();
             if (!c) {
                endSession();
@@ -7805,7 +8627,8 @@ function destroyWritingBoard() {
                      : "") +
                   (c.exHz ? exampleHtml(c) : "") +
                   noteHtml(c) +
-                  (session.mode === "discover" ? "" : actionsHtml(c));
+                  (session.mode === "discover" ? "" : actionsHtml(c)) +
+                  (session.mode === "cards" ? reviewStrokeBlockHtml(c, st) : "");
             }
 
             const modeName = {
@@ -7842,6 +8665,8 @@ function destroyWritingBoard() {
                sessionFooterHtml(c, st) +
                "</section>";
             wireSession(c, st);
+            if (session.mode === "cards" && st.revealed)
+               wireReviewStrokeBlock(c, st);
             persistSession();
          }
 
@@ -7852,6 +8677,63 @@ function destroyWritingBoard() {
                renderSession();
             }
          }
+         function previousCard() {
+            if (session.index <= 0) return;
+            session.index--;
+            renderSession();
+         }
+         function wireSessionSwipe(flash) {
+            if (!flash || !("PointerEvent" in window)) return;
+            const interactive = "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav";
+            let gesture = null;
+            const finish = (event, cancelled) => {
+               if (!gesture || event.pointerId !== gesture.pointerId) return;
+               const current = gesture;
+               gesture = null;
+               flash.classList.remove("is-session-dragging");
+               flash.style.removeProperty("--session-drag-x");
+               if (flash.hasPointerCapture && flash.hasPointerCapture(event.pointerId))
+                  flash.releasePointerCapture(event.pointerId);
+               if (cancelled) {
+                  flash._suppressSessionClickUntil = Date.now() + 500;
+                  return;
+               }
+               if (!current.horizontal) return;
+               const dx = event.clientX - current.x;
+               const dy = event.clientY - current.y;
+               if (Math.abs(dx) < 72 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+               const selection = typeof getSelection === "function" ? getSelection() : null;
+               if (selection && typeof selection.removeAllRanges === "function") selection.removeAllRanges();
+               if (dx < 0) advance();
+               else previousCard();
+            };
+            flash.onpointerdown = (event) => {
+               if (event.button !== 0 || event.target.closest(interactive)) return;
+               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
+               if (flash.setPointerCapture) flash.setPointerCapture(event.pointerId);
+            };
+            flash.onpointermove = (event) => {
+               if (!gesture || event.pointerId !== gesture.pointerId) return;
+               const dx = event.clientX - gesture.x;
+               const dy = event.clientY - gesture.y;
+               if (!gesture.horizontal) {
+                  if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) {
+                     finish(event, true);
+                     return;
+                  }
+                  if (Math.abs(dx) < 16 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+                  gesture.horizontal = true;
+                  flash.classList.add("is-session-dragging");
+               }
+               if (event.cancelable) event.preventDefault();
+               flash.style.setProperty("--session-drag-x", Math.max(-38, Math.min(38, dx)) + "px");
+            };
+            flash.onpointerup = (event) => finish(event, false);
+            flash.onpointercancel = (event) => finish(event, true);
+            flash.onlostpointercapture = (event) => {
+               if (gesture && event.pointerId === gesture.pointerId) finish(event, true);
+            };
+         }
          function wireSession(c, st) {
             $("s-exit").onclick = endSession;
             const flip = () => {
@@ -7861,9 +8743,11 @@ function destroyWritingBoard() {
             };
             if ($("s-flip")) $("s-flip").onclick = flip;
             const fl = $("flash");
+            wireSessionSwipe(fl);
             if (session.mode === "cards" && !st.revealed) {
                fl.style.cursor = "pointer";
                fl.onclick = (e) => {
+                  if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
                   if (
                      e.target.closest("[data-say]") ||
                      e.target.closest("button")
@@ -7874,12 +8758,7 @@ function destroyWritingBoard() {
             }
             if ($("s-next")) $("s-next").onclick = advance;
             if ($("s-prev"))
-               $("s-prev").onclick = () => {
-                  if (session.index > 0) {
-                     session.index--;
-                     renderSession();
-                  }
-               };
+               $("s-prev").onclick = previousCard;
             if ($("s-check")) $("s-check").onclick = checkWritten;
             if ($("s-skip"))
                $("s-skip").onclick = () => {
@@ -8155,6 +9034,7 @@ function destroyWritingBoard() {
 
          /* -------- fin de séance -------- */
          function endSession() {
+            destroyReviewStrokeWorkspace();
             const sts = session.states.filter(Boolean);
             const seen = sts.filter(
                (s) => s.revealed || s.checked || s.grade,
@@ -9162,13 +10042,13 @@ function openDictionarySources() {
 
 /* Scores positifs : plus le score est élevé, plus le résultat est pertinent. */
 const SEARCH_WEIGHTS = Object.freeze({
-   EXACT_SIMPLIFIED: 12000,
-   EXACT_TRADITIONAL: 11800,
-   EXACT_CHINESE_WORD: 1100,
+   EXACT_SIMPLIFIED: 16000,
+   EXACT_TRADITIONAL: 15000,
+   EXACT_CHINESE_WORD: 1800,
    EXACT_CHARACTER: 900,
-   EXACT_PINYIN_MARKED: 10800,
-   EXACT_PINYIN_NUMBERED: 10400,
-   EXACT_PINYIN_PLAIN: 8600,
+   EXACT_PINYIN_MARKED: 14800,
+   EXACT_PINYIN_NUMBERED: 14600,
+   EXACT_PINYIN_PLAIN: 11600,
    PINYIN_PREFIX: 4400,
    HANZI_PREFIX: 6900,
    HANZI_CONTAINS: 3200,
@@ -9176,14 +10056,53 @@ const SEARCH_WEIGHTS = Object.freeze({
    FRENCH_PREFIX_TOKEN: 4200,
    ENGLISH_FALLBACK: 2300,
    PERSONAL_CARD: 1500,
-   CHARACTER_TYPE: 260,
+   CHARACTER_TYPE: 0,
    VERIFIED_HSK: 420,
    VERIFIED_FREQUENCY_MAX: 600,
-   FRENCH_DEFINITION: 180,
+   FRENCH_DEFINITION: 520,
    ENGLISH_DEFINITION: 45,
    SOURCE_COMPLETENESS: 35,
    WORD_LENGTH_PENALTY: 9,
 });
+
+function dictionaryVariantStatus(entry) {
+   const definitions = [...entryDefinitions(entry, "fr"), ...entryDefinitions(entry, "en")].join(" ");
+   if (/\b(?:archaic|ancient|old)\s+(?:variant|form)\b|\bforme\s+ancienne\b/iu.test(definitions))
+      return "ancient";
+   if (/\bvariant(?:e)?\s+(?:of|de)\b|\bvariant\b/iu.test(definitions)) return "variant";
+   if (entry.__scriptVariant) return "script-variant";
+   return "modern";
+}
+
+function dictionaryExactSortTier(entry, query) {
+   const simplified = entry.simplified || entry.hz || "";
+   const traditional = entry.traditional || simplified;
+   const exact = simplified === query.hanzi || traditional === query.hanzi;
+   if (!query.type.startsWith("hanzi") || !exact) return null;
+   const entryType = entry.entryType || (Array.from(simplified).length === 1 ? "character" : "word");
+   const variant = dictionaryVariantStatus(entry) !== "modern";
+   if (entryType === "word" && !variant && entryDefinitions(entry, "fr").length) return 0;
+   if (verifiedHskLevel(entry) != null) return 1;
+   if (entryType === "character") return 2;
+   if (!variant) return 3;
+   return 4;
+}
+
+function dictionaryPinyinSortTier(entry, query) {
+   if (!query.type.startsWith("pinyin")) return null;
+   let tier = 4;
+   entryPinyinVariants(entry).forEach((variant) => {
+      const marked = normalizePinyinMarked(variant.marked || variant.numbered || "");
+      const numbered = normalizePinyinNumbered(variant.numbered || variant.marked || "");
+      const plain = normalizePinyinPlain(variant.plain || variant.numbered || variant.marked || "");
+      if (query.type === "pinyin-marked" && marked === query.marked) tier = Math.min(tier, 0);
+      else if (query.type === "pinyin-numbered" && numbered === query.numbered) tier = Math.min(tier, 0);
+      else if (plain === query.plain) tier = Math.min(tier, 1);
+      else if (marked.startsWith(query.marked) || numbered.startsWith(query.numbered) || plain.startsWith(query.plain))
+         tier = Math.min(tier, 3);
+   });
+   return tier;
+}
 
 function entryPinyinVariants(entry) {
    if (Array.isArray(entry.pinyin)) return entry.pinyin;
@@ -9340,8 +10259,19 @@ function rankDictionaryEntry(entry, query, context) {
    );
    score -= entryHanziLength(entry) * SEARCH_WEIGHTS.WORD_LENGTH_PENALTY;
 
+   const exactTier = dictionaryExactSortTier(entry, query);
+   const pinyinTier = dictionaryPinyinSortTier(entry, query);
+   const sortTier = exactTier != null
+      ? exactTier
+      : pinyinTier != null
+        ? pinyinTier + (pinyinTier <= 1 && verifiedHskLevel(entry) == null ? 0.5 : 0)
+        : query.type.startsWith("hanzi")
+          ? simplified.startsWith(query.hanzi) || traditional.startsWith(query.hanzi) ? 5 : 6
+          : 0;
+
    return {
       score,
+      sortTier,
       factors,
       explanation: factors.length ? factors[0].explanation : "correspondance indexée",
    };
@@ -9349,6 +10279,7 @@ function rankDictionaryEntry(entry, query, context) {
 
 function compareRankedDictionaryEntries(left, right) {
    return (
+      (left.rank.sortTier ?? 0) - (right.rank.sortTier ?? 0) ||
       right.rank.score - left.rank.score ||
       Number(!!right.entry.personalCard) - Number(!!left.entry.personalCard) ||
       entryHanziLength(left.entry) - entryHanziLength(right.entry) ||
@@ -9368,6 +10299,7 @@ if (typeof module !== "undefined" && module.exports) {
    module.exports = {
       SEARCH_WEIGHTS,
       compareRankedDictionaryEntries,
+      dictionaryVariantStatus,
       rankDictionaryEntry,
    };
 }
@@ -9492,6 +10424,7 @@ function personalCardAsDictionaryEntry(card) {
       frequencyRank: null,
       characters: Array.from(card.hz).filter((character) => HAN_PATTERN.test(character)),
       searchAliases: [],
+      dictionaryEntryId: card.dictionaryEntryId || "",
       personalCard: card,
       cardId: card.id,
       src: "card",
@@ -9522,6 +10455,96 @@ function dictionaryEntryIdentity(entry) {
       ? normalizePinyinNumbered(entry.pinyin[0].numbered || entry.pinyin[0].marked)
       : "";
    return entry.simplified + "§" + pronunciation;
+}
+
+function dictionaryEntryPronunciationKeys(entry) {
+   return new Set(
+      entryPinyinVariants(entry)
+         .map((variant) => normalizePinyinNumbered(variant.numbered || variant.marked || ""))
+         .filter(Boolean),
+   );
+}
+
+function annotateDictionaryScriptVariants(entries, query) {
+   if (!query.type.startsWith("hanzi")) return;
+   const modern = new Set();
+   entries.forEach((entry) => {
+      if (entry.entryType !== "word" || entry.simplified !== entry.traditional) return;
+      dictionaryEntryPronunciationKeys(entry).forEach((pinyin) => modern.add(entry.simplified + "§" + pinyin));
+   });
+   entries.forEach((entry) => {
+      if (entry.entryType !== "word" || entry.simplified === entry.traditional) return;
+      entry.__scriptVariant = Array.from(dictionaryEntryPronunciationKeys(entry)).some((pinyin) =>
+         modern.has(entry.simplified + "§" + pinyin),
+      );
+   });
+}
+
+function dictionaryDefinitionKeys(entry) {
+   return new Set(
+      [...entryDefinitions(entry, "fr"), ...entryDefinitions(entry, "en")]
+         .map(normalizeTranslation)
+         .filter(Boolean),
+   );
+}
+
+function visuallyEquivalentDictionaryEntries(left, right) {
+   if ((left.simplified || left.hz) !== (right.simplified || right.hz)) return false;
+   if (left.entryType === right.entryType) return false;
+   const word = left.entryType === "word" ? left : right.entryType === "word" ? right : null;
+   const character = left.entryType === "character" ? left : right.entryType === "character" ? right : null;
+   if (!word || !character || word.traditional !== word.simplified) return false;
+   const leftPinyin = dictionaryEntryPronunciationKeys(left);
+   if (!Array.from(dictionaryEntryPronunciationKeys(right)).some((pinyin) => leftPinyin.has(pinyin))) return false;
+   const leftDefinitions = dictionaryDefinitionKeys(left);
+   return Array.from(dictionaryDefinitionKeys(right)).some((definition) => leftDefinitions.has(definition));
+}
+
+function mergeDictionaryResultMetadata(primary, duplicate) {
+   const entry = primary.entry;
+   const other = duplicate.entry;
+   entry.visualGroup = Array.from(new Set([
+      ...(entry.visualGroup || [entry.id]),
+      ...(other.visualGroup || [other.id]),
+   ]));
+   entry.visualEntryTypes = Array.from(new Set([
+      ...(entry.visualEntryTypes || [entry.entryType]),
+      ...(other.visualEntryTypes || [other.entryType]),
+   ]));
+   entry.sources = Array.from(new Set([...(entry.sources || []), ...(other.sources || [])]));
+   entry.hskLegacy = Array.from(new Set([...(entry.hskLegacy || []), ...(other.hskLegacy || [])]));
+   entry.hsk30 = Array.from(new Set([...(entry.hsk30 || []), ...(other.hsk30 || [])]));
+   entry.hskVerified = [...(entry.hskVerified || []), ...(other.hskVerified || [])].filter(
+      (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
+   );
+   if (!entry.definitionsFr?.length && other.definitionsFr?.length) {
+      const primaryMeanings = dictionaryDefinitionKeys(entry);
+      entry.definitionsFr = other.definitionsFr.filter((definition) =>
+         primaryMeanings.has(normalizeTranslation(definition)),
+      );
+   }
+   if (other.personalCard && !entry.personalCard) entry.personalCard = other.personalCard;
+   primary.rank.score = Math.max(primary.rank.score, duplicate.rank.score);
+   return primary;
+}
+
+function mergeDictionaryVisualResults(response) {
+   if (!response || !Array.isArray(response.results)) return response;
+   const output = [];
+   let merged = 0;
+   response.results.forEach((result) => {
+      const match = output.find((candidate) =>
+         visuallyEquivalentDictionaryEntries(candidate.entry, result.entry),
+      );
+      if (!match) output.push(result);
+      else {
+         mergeDictionaryResultMetadata(match, result);
+         merged++;
+      }
+   });
+   response.results = output.sort(compareRankedDictionaryEntries);
+   response.visualDuplicatesMerged = merged;
+   return response;
 }
 
 async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidates) {
@@ -9654,19 +10677,28 @@ async function searchDictionaryLocally(rawQuery, options) {
    const personalEntries = db.cards
       .map(personalCardAsDictionaryEntry)
       .filter((entry) => personalEntryMatches(entry, query));
-   const personalByIdentity = new Map(
-      personalEntries.map((entry) => [dictionaryEntryIdentity(entry), entry.personalCard]),
+   const personalBySourceId = new Map(
+      personalEntries.filter((entry) => entry.dictionaryEntryId).map((entry) => [entry.dictionaryEntryId, entry.personalCard]),
+   );
+   const legacyPersonalByIdentity = new Map(
+      personalEntries.filter((entry) => !entry.dictionaryEntryId).map((entry) => [dictionaryEntryIdentity(entry), entry.personalCard]),
    );
    dictionaryEntries.forEach((entry) => {
-      const card = personalByIdentity.get(dictionaryEntryIdentity(entry));
+      const card = personalBySourceId.get(entry.id) || legacyPersonalByIdentity.get(dictionaryEntryIdentity(entry));
       if (card) entry.personalCard = card;
    });
 
    const dictionaryIdentities = new Set(dictionaryEntries.map(dictionaryEntryIdentity));
+   const dictionaryIds = new Set(dictionaryEntries.map((entry) => entry.id));
    const merged = [
       ...dictionaryEntries,
-      ...personalEntries.filter((entry) => !dictionaryIdentities.has(dictionaryEntryIdentity(entry))),
+      ...personalEntries.filter((entry) =>
+         entry.dictionaryEntryId
+            ? !dictionaryIds.has(entry.dictionaryEntryId)
+            : !dictionaryIdentities.has(dictionaryEntryIdentity(entry)),
+      ),
    ];
+   annotateDictionaryScriptVariants(merged, query);
    const ranked = merged
       .map((entry) => ({
          entry,
@@ -9877,10 +10909,26 @@ function dictionaryEntryPinyinText(entry) {
 
 function dictionaryResultDefinition(entry) {
    if (entry.definitionsFr && entry.definitionsFr.length)
-      return { text: entry.definitionsFr[0], english: false };
+      return { text: entry.definitionsFr[0], english: false, unavailable: false };
    if (entry.definitionsEn && entry.definitionsEn.length)
-      return { text: entry.definitionsEn[0], english: true };
-   return { text: "Définition indisponible", english: false };
+      return { text: "Traduction française indisponible", english: true, englishText: entry.definitionsEn[0], unavailable: true };
+   return { text: "Traduction française indisponible", english: false, unavailable: true };
+}
+
+function dictionaryEntryTypeLabels(entry) {
+   const definitions = [...(entry.definitionsFr || []), ...(entry.definitionsEn || [])].join(" ");
+   const parts = (entry.hskVerified || []).map((item) => item.partOfSpeech || "").join("、");
+   const labels = [];
+   if (dictionaryVariantStatus(entry) !== "modern") labels.push("variante");
+   if (/classifier|classificateur|measure word|\bCL:/iu.test(definitions + " " + parts)) labels.push("classificateur");
+   if (/suffix|suffixe/iu.test(definitions + " " + parts)) labels.push("suffixe");
+   if (/proper noun|surname|nom propre/iu.test(definitions + " " + parts)) labels.push("nom");
+   if (/\bverb\b|verbe|动词|動詞/iu.test(parts)) labels.push("verbe");
+   if (/\bnoun\b|\bnom\b|名词|名詞/iu.test(parts)) labels.push("nom");
+   const structural = entry.visualEntryTypes?.length > 1
+      ? "mot + caractère"
+      : entry.entryType === "character" ? "caractère" : "mot";
+   return Array.from(new Set([structural, ...labels]));
 }
 
 function verifiedResultHskBadge(entry) {
@@ -9909,18 +10957,18 @@ function dictionaryResultHtml(item, index) {
    const entry = item.entry;
    const definition = dictionaryResultDefinition(entry);
    const traditional = entry.traditional !== entry.simplified ? entry.traditional : "";
+   const typeLabels = dictionaryEntryTypeLabels(entry);
    return (
       '<button class="dict-result" data-result-index="' + index + '" data-entry-id="' + esc(entry.id) + '">' +
       '<span class="dict-result-hanzi"><b>' + esc(entry.simplified) + "</b>" +
-      (traditional ? '<small>繁 · ' + esc(traditional) + "</small>" : "") +
+      (traditional ? '<small>' + (dictionaryVariantStatus(entry) !== "modern" ? "Variante traditionnelle" : "Traditionnel") + ' · ' + esc(traditional) + "</small>" : "") +
       "</span>" +
       '<span class="dict-result-main"><span class="row-py">' + colorPinyin(dictionaryEntryPinyinText(entry)) + "</span>" +
       '<span class="row-fr' + (definition.english ? " english" : "") + '">' +
-      (definition.english ? "EN · " : "") + esc(definition.text) + "</span>" +
+      esc(definition.text) + "</span>" +
+      (definition.englishText ? '<small class="dict-english-reference">Sens anglais de référence · ' + esc(definition.englishText) + "</small>" : "") +
       '<small class="dict-match">' + esc(item.rank.explanation) + "</small></span>" +
-      '<span class="row-badges"><i class="b u">' +
-      (entry.entryType === "character" ? "caractère" : "mot") +
-      "</i>" + verifiedResultHskBadge(entry) +
+      '<span class="row-badges">' + typeLabels.map((label) => '<i class="b u">' + esc(label) + "</i>").join("") + verifiedResultHskBadge(entry) +
       (entry.__hskSource
          ? '<i class="b hsk-source-status">' +
            esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
@@ -10104,6 +11152,7 @@ async function launchDictionarySearch(value, options) {
       } catch (hskError) {
          response.hskError = hskError.message;
       }
+      mergeDictionaryVisualResults(response);
       srch.search = response;
       srch.mode = "results";
       if (response.query.valid) rememberRecentSearch(srch.q);
@@ -10132,12 +11181,30 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
       writeSearchHistory("detail", entry.id, false);
    }
    srch.mode = "detail";
+   const visualGroup = Array.isArray(entry.visualGroup) ? entry.visualGroup.slice() : [];
    if (entry.__preview) {
       openSheet(
          '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche complète…</b></div>',
       );
       try {
          entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
+         if (visualGroup.length > 1) {
+            const grouped = (await Promise.all(
+               visualGroup.filter((id) => id !== entry.id).map((id) => loadHskSearchDetailEntry(id)),
+            )).filter(Boolean);
+            const primaryMeanings = new Set(
+               [...(entry.definitionsFr || []), ...(entry.definitionsEn || [])].map(normalizeTranslation),
+            );
+            if (!(entry.definitionsFr || []).length) {
+               entry.definitionsFr = grouped
+                  .flatMap((item) => item.definitionsFr || [])
+                  .filter((definition) => primaryMeanings.has(normalizeTranslation(definition)));
+            }
+            entry.sources = Array.from(new Set([...(entry.sources || []), ...grouped.flatMap((item) => item.sources || [])]));
+            entry.sourceRefs = [...(entry.sourceRefs || []), ...grouped.flatMap((item) => item.sourceRefs || [])];
+            entry.visualGroup = visualGroup;
+            entry.visualEntryTypes = Array.from(new Set([entry.entryType, ...grouped.map((item) => item.entryType)]));
+         }
       } catch (error) {
          closeSheet();
          toast("Fiche détaillée indisponible hors ligne.");
@@ -11036,7 +12103,9 @@ function cardActionsHtml(card) {
       '<button class="act' + (card.fav ? " on" : "") + '" id="dd-fav">Favori</button>' +
       '<button class="act' + (card.acquired ? " on jade" : "") + '" id="dd-acq">Maîtrisé</button>' +
       "</div>" +
-      '<button class="btn ghost wide" id="dd-manage">Modifier ou gérer ce mot</button></section>'
+      '<div class="dd-already-state"><b>Déjà dans Mes mots</b><span>La carte et sa progression SRS restent uniques.</span></div>' +
+      '<button class="btn primary wide" id="dd-manage">Gérer les emplacements</button>' +
+      '<button class="btn ghost wide" id="dd-edit-personal">Modifier la carte personnelle</button></section>'
    );
 }
 
@@ -11105,8 +12174,8 @@ function dictionaryCharacterStudyCardHtml(entry, character) {
       esc(character) + '">' + esc(character) + "</div>" +
       (pinyin ? '<div class="dd-character-study-pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       '<div class="dd-character-study-translation">' +
-      (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") +
-      esc(definition.text) + "</div>" + verifiedHskBadges(entry) + "</div>" +
+      (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
+      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" + verifiedHskBadges(entry) + "</div>" +
       '<div class="dd-character-study-action">' +
       (card
          ? '<span class="cd-cat jade">Dans Mes mots</span><button class="btn ghost" id="dd-character-manage" type="button">Ouvrir le mot</button>'
@@ -11189,7 +12258,7 @@ function dictionaryHskSourceHtml(entry) {
    const values = Array.isArray(entry.hskVerified) ? entry.hskVerified : [];
    if (!values.length) return "";
    return (
-      '<section class="dd-hsk-source"><div class="eyebrow">Données HSK source</div>' +
+      '<section class="dd-hsk-source"><div class="eyebrow">Données HSK</div>' +
       values
          .map(
             (item) =>
@@ -11204,6 +12273,9 @@ function dictionaryHskSourceHtml(entry) {
                '<small>' +
                (item.partOfSpeech ? esc(item.partOfSpeech) + " · " : "") +
                esc(hskLinkStatusLabel(item.dictionaryLinkStatus)) +
+               (item.dictionaryLinkStatus === "duplicate-sense"
+                  ? " · sens HSK distinct du sens général, pas une contradiction"
+                  : "") +
                (Array.isArray(item.sourceLevels) && item.sourceLevels.length > 1
                   ? " · niveaux source " + item.sourceLevels.map(esc).join(", ")
                   : "") +
@@ -11215,21 +12287,30 @@ function dictionaryHskSourceHtml(entry) {
 }
 
 function dictionaryDefinitionsHtml(entry) {
-   if (entry.definitionsFr && entry.definitionsFr.length) {
-      return (
-         '<section class="dd-definitions"><div class="eyebrow">Définitions françaises</div><ul>' +
-         entry.definitionsFr.map((definition) => "<li>" + esc(definition) + "</li>").join("") +
-         "</ul></section>"
-      );
-   }
-   if (entry.definitionsEn && entry.definitionsEn.length) {
-      return (
-         '<section class="dd-definitions english"><div class="eyebrow">Anglais · repli, français indisponible</div><ul>' +
-         entry.definitionsEn.map((definition) => "<li>" + esc(definition) + "</li>").join("") +
-         "</ul></section>"
-      );
-   }
-   return '<p class="muted">Aucune définition fournie par les sources disponibles.</p>';
+   const splitSenses = (values) => Array.from(new Set(
+      (values || []).flatMap((definition) => String(definition).split(/\s*;\s*/u)).map((sense) => sense.trim()).filter(Boolean),
+   ));
+   const french = splitSenses(entry.definitionsFr);
+   const english = splitSenses(entry.definitionsEn);
+   const frenchSection = french.length
+      ? '<section class="dd-definitions"><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
+        french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></section>"
+      : '<section class="dd-definitions dd-french-unavailable"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+   const englishSection = english.length
+      ? '<details class="dd-definitions english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
+        english.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></details>"
+      : "";
+   return frenchSection + englishSection;
+}
+
+function dictionaryVariantExplanationHtml(entry) {
+   const status = dictionaryVariantStatus(entry);
+   const traditional = entry.traditional && entry.traditional !== entry.simplified ? entry.traditional : "";
+   if (!traditional && status === "modern") return "";
+   const label = status === "ancient"
+      ? "Forme ancienne signalée par la source"
+      : status !== "modern" ? "Variante signalée par la source" : "Formes d’écriture";
+   return '<section class="dd-variant-note"><div class="eyebrow">' + label + '</div><p>Simplifié · <b>' + esc(entry.simplified) + "</b>" + (traditional ? ' · Traditionnel · <b>' + esc(traditional) + "</b>" : "") + "</p></section>";
 }
 
 function dictionarySourcesHtml(entry) {
@@ -11244,9 +12325,18 @@ function dictionarySourcesHtml(entry) {
 function findPersonalCardForEntry(entry) {
    if (entry.personalCard) return db.cards.find((card) => card.id === entry.personalCard.id) || null;
    if (entry.cardId) return db.cards.find((card) => card.id === entry.cardId) || null;
+   const sourceEntryId = entry.dictionaryEntryId || (/^(?:word-|char-)/.test(entry.id || "") ? entry.id : "");
+   if (sourceEntryId) {
+      const sourced = db.cards.find((card) => card.dictionaryEntryId === sourceEntryId);
+      if (sourced) return sourced;
+   }
    const identity = dictionaryEntryIdentity(entry);
    return (
-      db.cards.find((card) => dictionaryEntryIdentity(personalCardAsDictionaryEntry(card)) === identity) ||
+      db.cards.find(
+         (card) =>
+            !card.dictionaryEntryId &&
+            dictionaryEntryIdentity(personalCardAsDictionaryEntry(card)) === identity,
+      ) ||
       null
    );
 }
@@ -11258,6 +12348,8 @@ function addDictionaryEntryToPersonalCards(entry) {
       py: detailPinyin(entry, "marked").join(" / "),
       fr: french,
       cat: "",
+      traditional: entry.traditional || "",
+      dictionaryEntryId: entry.dictionaryEntryId || entry.id || "",
    };
    if (!french) {
       toast("Ajoute une définition française vérifiée avant d’enregistrer.");
@@ -11285,107 +12377,285 @@ function returnFromDictionaryAdd(entry, options) {
    else openDictDetail(entry, options);
 }
 
-function openDictionaryAddToWords(entry, options, state) {
-   const existing = findPersonalCardForEntry(entry);
-   const selected = new Set(
-      state && Array.isArray(state.packIds)
-         ? state.packIds
-         : existing
-           ? db.packs.filter((pack) => pack.cardIds.includes(existing.id)).map((pack) => pack.id)
-           : [],
-   );
-   const french =
-      state && typeof state.french === "string"
-         ? state.french
-         : (entry.definitionsFr || []).join(" ; ");
-   const packChoices = db.packs.length
-      ? '<div class="dd-add-packs"><div class="eyebrow">Packs facultatifs</div>' +
-        db.packs
-           .map(
-              (pack) =>
-                 '<label class="ck"><input type="checkbox" data-dd-add-pack="' +
-                 esc(pack.id) +
-                 '"' +
-                 (selected.has(pack.id) ? " checked" : "") +
-                 "> " +
-                 esc(pack.name) +
-                 "</label>",
-           )
-           .join("") +
-        "</div>"
-      : '<p class="sh-note">Aucun pack pour l’instant. Tu peux en créer un ci-dessous.</p>';
-   openSheet(
-      '<section class="dd-add-words" aria-labelledby="dd-add-title"><h3 class="sh-t" id="dd-add-title">' +
-         (existing ? "Gérer dans Mes mots" : "Ajouter à Mes mots") +
-         '</h3><div class="dd-add-word"><b>' +
-         esc(entry.simplified) +
-         "</b><span>" +
-         colorPinyin(dictionaryEntryPinyinText(entry)) +
-         "</span></div>" +
-         (existing
-            ? '<p class="sh-note">Ce mot existe déjà : sa carte unique sera conservée.</p>'
-            : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' +
-              esc(french) +
-              '"></label>') +
-         packChoices +
-         '<div class="pk-new"><input class="search" id="dd-add-pack-name" placeholder="Nouveau pack"><button class="btn" id="dd-add-pack-create" type="button">Créer</button></div>' +
-         '<p class="sh-note">Sans pack sélectionné, le mot est ajouté directement à Mes mots.</p>' +
-         '<div class="sh-btns"><button class="btn primary" id="dd-add-confirm" type="button">' +
-         (existing ? "Enregistrer" : "+ Ajouter à Mes mots") +
-         '</button><button class="btn ghost" id="dd-add-cancel" type="button">Annuler</button></div></section>',
-   );
-   const currentSelection = () =>
-      Array.from(document.querySelectorAll("[data-dd-add-pack]:checked")).map(
-         (checkbox) => checkbox.dataset.ddAddPack,
+const DICTIONARY_PLACEMENT_KEY = "mo-studio-dictionary-placement-v1";
+
+function readDictionaryPlacementMemory() {
+   try {
+      const memory = JSON.parse(localStorage.getItem(DICTIONARY_PLACEMENT_KEY) || "{}");
+      return {
+         lastPackId: typeof memory.lastPackId === "string" ? memory.lastPackId : "",
+         categoryByPack: memory.categoryByPack && typeof memory.categoryByPack === "object" ? memory.categoryByPack : {},
+         recentPackIds: Array.isArray(memory.recentPackIds) ? memory.recentPackIds.map(String).slice(0, 8) : [],
+      };
+   } catch (error) {
+      return { lastPackId: "", categoryByPack: {}, recentPackIds: [] };
+   }
+}
+
+function rememberDictionaryPlacement(packIds, categoryIds) {
+   if (!packIds.length) return;
+   const previous = readDictionaryPlacementMemory();
+   const categoryByPack = { ...previous.categoryByPack };
+   packIds.forEach((packId) => {
+      const category = categoryIds
+         .map(categoryById)
+         .find((item) => item && item.packId === packId);
+      if (category) categoryByPack[packId] = category.id;
+   });
+   const recentPackIds = uniqueStrings([...packIds.slice().reverse(), ...previous.recentPackIds]).slice(0, 8);
+   try {
+      localStorage.setItem(
+         DICTIONARY_PLACEMENT_KEY,
+         JSON.stringify({ lastPackId: packIds[packIds.length - 1], categoryByPack, recentPackIds }),
       );
+   } catch (error) {
+      /* La validation finale reste possible si la préférence locale est indisponible. */
+   }
+}
+
+function dictionaryPlacementLocationsHtml(card) {
+   if (!card) return "";
+   const locations = categoriesForCard(card.id)
+      .map((category) => {
+         const pack = db.packs.find((item) => item.id === category.packId);
+         return pack ? '<li>' + esc(pack.name) + ' <span aria-hidden="true">→</span> ' + esc(category.name) + "</li>" : "";
+      })
+      .filter(Boolean);
+   return (
+      '<section class="dd-current-locations"><div class="eyebrow">Emplacements actuels</div>' +
+      (locations.length ? "<ul>" + locations.join("") + "</ul>" : '<p class="sh-note">Aucune sous-catégorie pour le moment.</p>') +
+      "</section>"
+   );
+}
+
+function initialDictionaryPlacementState(entry, existing) {
+   const memory = readDictionaryPlacementMemory();
+   const currentCategories = existing ? categoriesForCard(existing.id) : [];
+   const selectedCategoryIds = new Set(currentCategories.map((category) => category.id));
+   const selectedPackIds = new Set(currentCategories.map((category) => category.packId));
+   if (!existing && db.packs.some((pack) => pack.id === memory.lastPackId)) {
+      selectedPackIds.add(memory.lastPackId);
+      const rememberedCategory = categoryById(memory.categoryByPack[memory.lastPackId]);
+      if (rememberedCategory && rememberedCategory.packId === memory.lastPackId)
+         selectedCategoryIds.add(rememberedCategory.id);
+   }
+   return {
+      french: (entry.definitionsFr || []).join(" ; "),
+      selectedPackIds,
+      selectedCategoryIds,
+      withoutCategoryPackIds: new Set(),
+      openPackIds: new Set(selectedPackIds),
+      filter: "",
+      error: "",
+   };
+}
+
+function dictionaryPlacementPackOrder(state) {
+   const memory = readDictionaryPlacementMemory();
+   const recentIndex = new Map(memory.recentPackIds.map((id, index) => [id, index]));
+   return db.packs.slice().sort((left, right) => {
+      const leftUsed = state.selectedPackIds.has(left.id) ? -2 : recentIndex.has(left.id) ? recentIndex.get(left.id) : 99;
+      const rightUsed = state.selectedPackIds.has(right.id) ? -2 : recentIndex.has(right.id) ? recentIndex.get(right.id) : 99;
+      return leftUsed - rightUsed || left.name.localeCompare(right.name, "fr");
+   });
+}
+
+function dictionaryPlacementPackHtml(pack, state) {
+   const selected = state.selectedPackIds.has(pack.id);
+   const categories = categoriesForPack(pack.id);
+   const selectedInPack = categories.filter((category) => state.selectedCategoryIds.has(category.id));
+   const needsDecision = selected && !selectedInPack.length && !state.withoutCategoryPackIds.has(pack.id);
+   return (
+      '<details class="dd-pack-block" data-dd-pack-block="' + esc(pack.id) + '"' + (state.openPackIds.has(pack.id) ? " open" : "") + ">" +
+      '<summary><label class="dd-pack-choice"><input type="checkbox" data-dd-add-pack="' + esc(pack.id) + '"' + (selected ? " checked" : "") + '><span><b>' + esc(pack.name) + '</b><small>' + categories.length + " sous-catégorie" + (categories.length > 1 ? "s" : "") + '</small></span></label><span class="dd-pack-chevron" aria-hidden="true">⌄</span></summary>' +
+      '<div class="dd-pack-content"><div class="dd-category-list">' +
+      (categories.length
+         ? categories.map((category) => '<label class="dd-category-choice"><input type="checkbox" data-dd-add-category="' + esc(category.id) + '"' + (state.selectedCategoryIds.has(category.id) ? " checked" : "") + '><span>' + esc(category.name) + "</span></label>").join("")
+         : '<p class="sh-note">Ce pack n’a encore aucune sous-catégorie.</p>') +
+      "</div>" +
+      (needsDecision
+         ? '<div class="dd-placement-warning" role="note"><b>Où ranger ce mot ?</b><span>Choisis une sous-catégorie, ou confirme explicitement un classement général.</span><label class="dd-category-choice"><input type="checkbox" data-dd-without-category="' + esc(pack.id) + '"><span>Ajouter sans sous-catégorie <small>dans « Tous les mots »</small></span></label></div>'
+         : state.withoutCategoryPackIds.has(pack.id)
+           ? '<label class="dd-category-choice dd-without-choice"><input type="checkbox" data-dd-without-category="' + esc(pack.id) + '" checked><span>Ajouter sans sous-catégorie <small>dans « Tous les mots »</small></span></label>'
+           : "") +
+      '<div class="dd-category-create"><input class="search" data-dd-category-name="' + esc(pack.id) + '" aria-label="Nom de la nouvelle sous-catégorie dans ' + esc(pack.name) + '" placeholder="Nouvelle sous-catégorie"><button class="btn" type="button" data-dd-category-create="' + esc(pack.id) + '">Créer</button></div></div></details>'
+   );
+}
+
+function openDictionaryAddToWords(entry, options, suppliedState) {
+   const existing = findPersonalCardForEntry(entry);
+   const state = suppliedState || initialDictionaryPlacementState(entry, existing);
+   const query = state.filter.trim().toLocaleLowerCase("fr");
+   const packs = dictionaryPlacementPackOrder(state).filter((pack) => !query || pack.name.toLocaleLowerCase("fr").includes(query));
+   const frenchBlock = existing
+      ? '<section class="dd-personal-definition"><div class="eyebrow">Définition française personnelle</div><p>' + (esc(existing.fr) || '<span class="muted">Non renseignée</span>') + "</p></section>"
+      : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' + esc(state.french) + '" autocomplete="off"></label>' +
+        (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Traduction française indisponible dans les sources. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
+   openSheet(
+      '<section class="dd-add-words" aria-labelledby="dd-add-title"><button class="sheet-x" id="dd-add-cancel-top" type="button" aria-label="Fermer">×</button><h3 class="sh-t" id="dd-add-title">' +
+         (existing ? "Déjà dans Mes mots" : "Ajouter à Mes mots") +
+         '</h3><div class="dd-add-word"><b>' + esc(entry.simplified) + "</b><span>" + colorPinyin(dictionaryEntryPinyinText(entry)) + "</span></div>" +
+         (existing ? '<p class="dd-unique-card-note">La carte personnelle et toute sa progression SRS seront conservées.</p>' + dictionaryPlacementLocationsHtml(existing) : "") +
+         frenchBlock +
+         '<div class="dd-placement-head"><div><div class="eyebrow">Packs et sous-catégories</div><p>Tu peux choisir plusieurs emplacements.</p></div><button class="btn ghost" id="dd-collapse-packs" type="button">Tout replier</button></div>' +
+         (db.packs.length > 5 ? '<label class="dd-pack-search"><span class="sr-only">Rechercher un pack</span><input class="search" id="dd-pack-search" value="' + esc(state.filter) + '" placeholder="Rechercher un pack…"></label>' : "") +
+         '<div class="dd-add-packs" id="dd-add-packs">' +
+         (packs.length ? packs.map((pack) => dictionaryPlacementPackHtml(pack, state)).join("") : '<p class="sh-note">Aucun pack correspondant.</p>') +
+         '</div><details class="dd-quick-create"><summary>+ Créer rapidement un pack</summary><div class="dd-pack-create"><input class="search" id="dd-add-pack-name" placeholder="Nom du nouveau pack"><button class="btn" id="dd-add-pack-create" type="button">Créer le pack</button></div></details>' +
+         (!db.packs.length ? '<p class="sh-note">Tu peux aussi ajouter le mot à Mes mots sans le ranger dans un pack.</p>' : "") +
+         (state.error ? '<p class="dd-placement-error" id="dd-placement-error" role="alert">' + esc(state.error) + "</p>" : '<p class="dd-placement-error" id="dd-placement-error" role="alert" hidden></p>') +
+         '<div class="dd-placement-actions"><button class="btn ghost" id="dd-add-cancel" type="button">Annuler</button><button class="btn primary" id="dd-add-confirm" type="button">' +
+         (existing ? "Enregistrer les emplacements" : "Ajouter à Mes mots") +
+         "</button></div></section>",
+   );
+
+   const preserveFrench = () => {
+      if (!existing && $("dd-add-fr")) state.french = $("dd-add-fr").value;
+   };
+   document.querySelectorAll("[data-dd-pack-block]").forEach((details) => {
+      details.ontoggle = () => {
+         if (details.open) state.openPackIds.add(details.dataset.ddPackBlock);
+         else state.openPackIds.delete(details.dataset.ddPackBlock);
+      };
+   });
+   document.querySelectorAll("[data-dd-add-pack]").forEach((input) => {
+      input.onchange = (event) => {
+         event.stopPropagation();
+         const packId = input.dataset.ddAddPack;
+         if (input.checked) {
+            state.selectedPackIds.add(packId);
+            state.openPackIds.add(packId);
+         } else {
+            state.selectedPackIds.delete(packId);
+            state.withoutCategoryPackIds.delete(packId);
+            categoriesForPack(packId).forEach((category) => state.selectedCategoryIds.delete(category.id));
+         }
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+      };
+   });
+   document.querySelectorAll("[data-dd-add-category]").forEach((input) => {
+      input.onchange = () => {
+         const category = categoryById(input.dataset.ddAddCategory);
+         if (!category) return;
+         if (input.checked) {
+            state.selectedCategoryIds.add(category.id);
+            state.selectedPackIds.add(category.packId);
+            state.withoutCategoryPackIds.delete(category.packId);
+            state.openPackIds.add(category.packId);
+         } else state.selectedCategoryIds.delete(category.id);
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+      };
+   });
+   document.querySelectorAll("[data-dd-without-category]").forEach((input) => {
+      input.onchange = () => {
+         const packId = input.dataset.ddWithoutCategory;
+         if (input.checked) {
+            state.withoutCategoryPackIds.add(packId);
+            state.selectedPackIds.add(packId);
+            categoriesForPack(packId).forEach((category) => state.selectedCategoryIds.delete(category.id));
+         } else state.withoutCategoryPackIds.delete(packId);
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+      };
+   });
+   document.querySelectorAll("[data-dd-category-create]").forEach((button) => {
+      button.onclick = () => {
+         if (button.disabled) return;
+         const packId = button.dataset.ddCategoryCreate;
+         const input = document.querySelector('[data-dd-category-name="' + CSS.escape(packId) + '"]');
+         const name = input ? input.value.trim() : "";
+         if (!name) return toast("Donne un nom à la sous-catégorie.");
+         if (categoriesForPack(packId).some((category) => category.name.localeCompare(name, "fr", { sensitivity: "accent" }) === 0))
+            return toast("Cette sous-catégorie existe déjà dans ce pack.");
+         button.disabled = true;
+         const category = createPersonalCategory(packId, name);
+         if (!category) { button.disabled = false; return toast("Sous-catégorie non créée."); }
+         state.selectedPackIds.add(packId);
+         state.selectedCategoryIds.add(category.id);
+         state.withoutCategoryPackIds.delete(packId);
+         state.openPackIds.add(packId);
+         preserveFrench();
+         openDictionaryAddToWords(entry, options, state);
+         toast("Sous-catégorie créée et sélectionnée.");
+      };
+   });
    $("dd-add-pack-create").onclick = () => {
+      const button = $("dd-add-pack-create");
+      if (button.disabled) return;
       const name = $("dd-add-pack-name").value.trim();
       if (!name) return toast("Donne un nom au pack.");
-      if (db.packs.some((pack) => pack.name.toLowerCase() === name.toLowerCase()))
+      if (db.packs.some((pack) => pack.name.localeCompare(name, "fr", { sensitivity: "accent" }) === 0))
          return toast("Ce pack existe déjà.");
-      const pack = { id: uid(), name, cardIds: [] };
-      db.packs.push(pack);
-      save();
-      openDictionaryAddToWords(entry, options, {
-         french: existing ? french : $("dd-add-fr").value,
-         packIds: currentSelection().concat(pack.id),
-      });
+      button.disabled = true;
+      const pack = createPersonalPack(name);
+      if (!pack) { button.disabled = false; return toast("Pack non créé."); }
+      state.selectedPackIds.add(pack.id);
+      state.openPackIds.add(pack.id);
+      preserveFrench();
+      openDictionaryAddToWords(entry, options, state);
       toast("Pack créé et sélectionné.");
    };
-   $("dd-add-cancel").onclick = () => returnFromDictionaryAdd(entry, options);
+   if ($("dd-pack-search")) $("dd-pack-search").oninput = () => {
+      state.filter = $("dd-pack-search").value;
+      preserveFrench();
+      openDictionaryAddToWords(entry, options, state);
+      if ($("dd-pack-search")) {
+         $("dd-pack-search").focus({ preventScroll: true });
+         $("dd-pack-search").setSelectionRange(state.filter.length, state.filter.length);
+      }
+   };
+   $("dd-collapse-packs").onclick = () => {
+      state.openPackIds.clear();
+      preserveFrench();
+      openDictionaryAddToWords(entry, options, state);
+   };
+   const cancel = () => returnFromDictionaryAdd(entry, options);
+   $("dd-add-cancel").onclick = cancel;
+   $("dd-add-cancel-top").onclick = cancel;
    $("dd-add-confirm").onclick = () => {
+      if ($("dd-add-confirm").disabled) return;
+      preserveFrench();
+      const undecided = Array.from(state.selectedPackIds).filter((packId) => {
+         const hasCategory = categoriesForPack(packId).some((category) => state.selectedCategoryIds.has(category.id));
+         return !hasCategory && !state.withoutCategoryPackIds.has(packId);
+      });
+      if (undecided.length) {
+         const names = undecided.map((id) => db.packs.find((pack) => pack.id === id)?.name).filter(Boolean);
+         state.error = "Choisis une sous-catégorie ou « Ajouter sans sous-catégorie » pour : " + names.join(", ") + ".";
+         undecided.forEach((id) => state.openPackIds.add(id));
+         openDictionaryAddToWords(entry, options, state);
+         return;
+      }
       let card = findPersonalCardForEntry(entry);
       const wasExisting = !!card;
+      if (!card && !state.french.trim()) return toast("La définition française est obligatoire pour créer ta carte.");
+      $("dd-add-confirm").disabled = true;
+      makeBackup();
+      state.withoutCategoryPackIds.forEach((packId) => {
+         let category = categoriesForPack(packId).find((item) => item.name === "Tous les mots");
+         if (!category) category = createPersonalCategory(packId, "Tous les mots");
+         if (category) state.selectedCategoryIds.add(category.id);
+      });
       if (!card) {
-         const definition = $("dd-add-fr").value.trim();
-         if (!definition) return toast("La définition française est obligatoire.");
-         card = normalizeCard(
-            {
-               hz: entry.simplified,
-               py: detailPinyin(entry, "marked").join(" / "),
-               fr: definition,
-               cat: "",
-            },
-            false,
-         );
+         card = normalizeCard({
+            hz: entry.simplified,
+            py: detailPinyin(entry, "marked").join(" / "),
+            fr: state.french.trim(),
+            cat: "",
+            traditional: entry.traditional || "",
+            dictionaryEntryId: entry.dictionaryEntryId || entry.id || "",
+         }, false);
          if (!card) return;
          db.cards.push(card);
          invalidateDictIndex();
       }
-      const memberships = new Set(currentSelection());
-      db.packs.forEach((pack) => {
-         const ids = new Set(pack.cardIds);
-         if (memberships.has(pack.id)) ids.add(card.id);
-         else if (wasExisting) ids.delete(card.id);
-         pack.cardIds = Array.from(ids);
-      });
+      setCardMemberships(card.id, Array.from(state.selectedCategoryIds));
       entry.personalCard = card;
       save();
-      toast(
-         wasExisting
-            ? "Packs de « " + entry.simplified + " » mis à jour."
-            : "« " + entry.simplified + " » ajouté à Mes mots.",
-      );
+      rememberDictionaryPlacement(Array.from(state.selectedPackIds), Array.from(state.selectedCategoryIds));
+      toast(wasExisting ? "Emplacements mis à jour, progression conservée." : "« " + entry.simplified + " » ajouté à Mes mots.");
       returnFromDictionaryAdd(entry, options);
    };
 }
@@ -11413,15 +12683,15 @@ function openDictDetail(rawEntry, options) {
          '<button class="dd-top-close" id="dd-close-top" data-sheet-close aria-label="Fermer la fiche">×</button></div></div>' +
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
+         dictionaryVariantExplanationHtml(entry) +
          dictionaryDefinitionsHtml(entry) +
          dictionaryHskSourceHtml(entry) +
          '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
          (card
             ? cardActionsHtml(card)
             : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
-         '<div class="dd-meta"><span class="cd-cat">' +
-         (entry.entryType === "character" ? "Caractère" : "Mot") +
-         "</span>" +
+         '<div class="dd-meta">' +
+         dictionaryEntryTypeLabels(entry).map((label) => '<span class="cd-cat">' + esc(label) + "</span>").join("") +
          verifiedHskBadges(entry) +
          (Number.isFinite(entry.frequencyRank)
             ? '<span class="cd-cat">Fréquence vérifiée · ' + esc(entry.frequencyRank) + "</span>"
@@ -11445,25 +12715,49 @@ async function renderDictionaryRelatedWords(character, token) {
    target.setAttribute("aria-busy", "true");
    target.innerHTML = '<span class="muted">Chargement des mots liés à ' + esc(character) + "…</span>";
    try {
-      const related = await loadDictionaryCharacterLinks(character, 10);
+      const related = await loadDictionaryCharacterLinks(character, 240);
+      try { await loadHskSearchIndex(); } catch (error) { /* Le dictionnaire reste utilisable sans index HSK. */ }
       if (token !== dictionaryDetailToken || ddChar !== character || !$("dd-related")) return;
       target.setAttribute("aria-busy", "false");
-      if (!related.words.length) {
+      const words = related.words
+         .filter((word) => word.simplified !== character && Array.from(word.simplified).length > 1)
+         .map(attachHskMetadata);
+      const usefulHskLevel = (word) => {
+         const exactLevel = verifiedHskLevel(word);
+         if (exactLevel != null) return exactLevel;
+         const withoutErhua = (value) => String(value || "").replace(/儿$/u, "");
+         const normalizedWord = withoutErhua(word.simplified);
+         const linkedForm = (hskDataState.searchEntries || []).find(
+            (item) => withoutErhua(item.chinese) === normalizedWord,
+         );
+         return linkedForm ? linkedForm.firstHskLevel : null;
+      };
+      const compareUseful = (left, right) => {
+         const leftLevel = usefulHskLevel(left) ?? 99;
+         const rightLevel = usefulHskLevel(right) ?? 99;
+         return leftLevel - rightLevel ||
+            Number(!(left.definitionsFr || []).length) - Number(!(right.definitionsFr || []).length) ||
+            Array.from(left.simplified).length - Array.from(right.simplified).length ||
+            left.simplified.localeCompare(right.simplified, "zh");
+      };
+      const groups = [
+         { label: "Commencent par " + character, words: words.filter((word) => word.simplified.startsWith(character)).sort(compareUseful).slice(0, 12) },
+         { label: "Contiennent " + character, words: words.filter((word) => !word.simplified.startsWith(character)).sort(compareUseful).slice(0, 12) },
+      ].filter((group) => group.words.length);
+      const visibleWords = groups.flatMap((group) => group.words);
+      if (!visibleWords.length) {
          target.innerHTML = '<span class="muted">Aucun mot lié classé par les sources.</span>';
          return;
       }
       target.innerHTML =
-         '<div class="eyebrow">Mots liés vérifiés</div><div class="dd-related-list">' +
-         related.words
-            .map(
-               (word, index) =>
-                  '<button class="chip hzchip" data-related="' + index + '">' + esc(word.simplified) + "</button>",
-            )
-            .join("") +
-         "</div>";
-      target.querySelectorAll("[data-related]").forEach((button) => {
+         '<div class="eyebrow">Mots associés utiles · présents dans les données</div>' +
+         groups.map((group) => '<div class="dd-related-group"><small>' + esc(group.label) + '</small><div class="dd-related-list">' +
+            group.words.map((word) => '<button class="chip hzchip" data-related-id="' + esc(word.id) + '">' + esc(word.simplified) + "</button>").join("") +
+            "</div></div>").join("");
+      target.querySelectorAll("[data-related-id]").forEach((button) => {
          button.onclick = () => {
-            const word = related.words[Number(button.dataset.related)];
+            const word = visibleWords.find((item) => item.id === button.dataset.relatedId);
+            if (!word) return;
             if (typeof openSearchDictionaryDetail === "function" && activeView === "search")
                openSearchDictionaryDetail(word, true);
             else openDictDetail(word);
@@ -11569,7 +12863,8 @@ function wireDictDetail(entry, characters, card, token, options) {
                refreshActive();
             }
          };
-      if ($("dd-manage")) $("dd-manage").onclick = () => openCardDetail(card.id);
+      if ($("dd-manage")) $("dd-manage").onclick = () => openDictionaryAddToWords(entry, options);
+      if ($("dd-edit-personal")) $("dd-edit-personal").onclick = () => openCardDetail(card.id);
    }
    if ($("dd-addcard"))
       $("dd-addcard").onclick = () => openDictionaryAddToWords(entry, options);
@@ -11837,7 +13132,8 @@ async function renderSequence() {
       (pinyin ? '<div class="pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       verifiedHskBadges(entry) +
       '<div class="sep"></div><div class="fr">' +
-      (definition.english ? '<small class="search-fallback">EN · repli</small>' : "") + esc(definition.text) + "</div>" +
+      (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
+      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" +
        '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
        '<div class="sh-btns"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></div>' +
        (card

@@ -102,10 +102,26 @@ function dictionaryEntryPinyinText(entry) {
 
 function dictionaryResultDefinition(entry) {
    if (entry.definitionsFr && entry.definitionsFr.length)
-      return { text: entry.definitionsFr[0], english: false };
+      return { text: entry.definitionsFr[0], english: false, unavailable: false };
    if (entry.definitionsEn && entry.definitionsEn.length)
-      return { text: entry.definitionsEn[0], english: true };
-   return { text: "Définition indisponible", english: false };
+      return { text: "Traduction française indisponible", english: true, englishText: entry.definitionsEn[0], unavailable: true };
+   return { text: "Traduction française indisponible", english: false, unavailable: true };
+}
+
+function dictionaryEntryTypeLabels(entry) {
+   const definitions = [...(entry.definitionsFr || []), ...(entry.definitionsEn || [])].join(" ");
+   const parts = (entry.hskVerified || []).map((item) => item.partOfSpeech || "").join("、");
+   const labels = [];
+   if (dictionaryVariantStatus(entry) !== "modern") labels.push("variante");
+   if (/classifier|classificateur|measure word|\bCL:/iu.test(definitions + " " + parts)) labels.push("classificateur");
+   if (/suffix|suffixe/iu.test(definitions + " " + parts)) labels.push("suffixe");
+   if (/proper noun|surname|nom propre/iu.test(definitions + " " + parts)) labels.push("nom");
+   if (/\bverb\b|verbe|动词|動詞/iu.test(parts)) labels.push("verbe");
+   if (/\bnoun\b|\bnom\b|名词|名詞/iu.test(parts)) labels.push("nom");
+   const structural = entry.visualEntryTypes?.length > 1
+      ? "mot + caractère"
+      : entry.entryType === "character" ? "caractère" : "mot";
+   return Array.from(new Set([structural, ...labels]));
 }
 
 function verifiedResultHskBadge(entry) {
@@ -134,18 +150,18 @@ function dictionaryResultHtml(item, index) {
    const entry = item.entry;
    const definition = dictionaryResultDefinition(entry);
    const traditional = entry.traditional !== entry.simplified ? entry.traditional : "";
+   const typeLabels = dictionaryEntryTypeLabels(entry);
    return (
       '<button class="dict-result" data-result-index="' + index + '" data-entry-id="' + esc(entry.id) + '">' +
       '<span class="dict-result-hanzi"><b>' + esc(entry.simplified) + "</b>" +
-      (traditional ? '<small>繁 · ' + esc(traditional) + "</small>" : "") +
+      (traditional ? '<small>' + (dictionaryVariantStatus(entry) !== "modern" ? "Variante traditionnelle" : "Traditionnel") + ' · ' + esc(traditional) + "</small>" : "") +
       "</span>" +
       '<span class="dict-result-main"><span class="row-py">' + colorPinyin(dictionaryEntryPinyinText(entry)) + "</span>" +
       '<span class="row-fr' + (definition.english ? " english" : "") + '">' +
-      (definition.english ? "EN · " : "") + esc(definition.text) + "</span>" +
+      esc(definition.text) + "</span>" +
+      (definition.englishText ? '<small class="dict-english-reference">Sens anglais de référence · ' + esc(definition.englishText) + "</small>" : "") +
       '<small class="dict-match">' + esc(item.rank.explanation) + "</small></span>" +
-      '<span class="row-badges"><i class="b u">' +
-      (entry.entryType === "character" ? "caractère" : "mot") +
-      "</i>" + verifiedResultHskBadge(entry) +
+      '<span class="row-badges">' + typeLabels.map((label) => '<i class="b u">' + esc(label) + "</i>").join("") + verifiedResultHskBadge(entry) +
       (entry.__hskSource
          ? '<i class="b hsk-source-status">' +
            esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
@@ -329,6 +345,7 @@ async function launchDictionarySearch(value, options) {
       } catch (hskError) {
          response.hskError = hskError.message;
       }
+      mergeDictionaryVisualResults(response);
       srch.search = response;
       srch.mode = "results";
       if (response.query.valid) rememberRecentSearch(srch.q);
@@ -357,12 +374,30 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
       writeSearchHistory("detail", entry.id, false);
    }
    srch.mode = "detail";
+   const visualGroup = Array.isArray(entry.visualGroup) ? entry.visualGroup.slice() : [];
    if (entry.__preview) {
       openSheet(
          '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche complète…</b></div>',
       );
       try {
          entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
+         if (visualGroup.length > 1) {
+            const grouped = (await Promise.all(
+               visualGroup.filter((id) => id !== entry.id).map((id) => loadHskSearchDetailEntry(id)),
+            )).filter(Boolean);
+            const primaryMeanings = new Set(
+               [...(entry.definitionsFr || []), ...(entry.definitionsEn || [])].map(normalizeTranslation),
+            );
+            if (!(entry.definitionsFr || []).length) {
+               entry.definitionsFr = grouped
+                  .flatMap((item) => item.definitionsFr || [])
+                  .filter((definition) => primaryMeanings.has(normalizeTranslation(definition)));
+            }
+            entry.sources = Array.from(new Set([...(entry.sources || []), ...grouped.flatMap((item) => item.sources || [])]));
+            entry.sourceRefs = [...(entry.sourceRefs || []), ...grouped.flatMap((item) => item.sourceRefs || [])];
+            entry.visualGroup = visualGroup;
+            entry.visualEntryTypes = Array.from(new Set([entry.entryType, ...grouped.map((item) => item.entryType)]));
+         }
       } catch (error) {
          closeSheet();
          toast("Fiche détaillée indisponible hors ligne.");
