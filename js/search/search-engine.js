@@ -160,18 +160,72 @@ function dictionaryEntryPronunciationKeys(entry) {
 }
 
 function annotateDictionaryScriptVariants(entries, query) {
-   if (!query.type.startsWith("hanzi")) return;
    const modern = new Set();
    entries.forEach((entry) => {
       if (entry.entryType !== "word" || entry.simplified !== entry.traditional) return;
       dictionaryEntryPronunciationKeys(entry).forEach((pinyin) => modern.add(entry.simplified + "§" + pinyin));
    });
    entries.forEach((entry) => {
+      entry.__scriptVariant = false;
       if (entry.entryType !== "word" || entry.simplified === entry.traditional) return;
       entry.__scriptVariant = Array.from(dictionaryEntryPronunciationKeys(entry)).some((pinyin) =>
          modern.has(entry.simplified + "§" + pinyin),
       );
    });
+}
+
+function dictionaryEntriesSharePronunciation(left, right) {
+   const leftPinyin = dictionaryEntryPronunciationKeys(left);
+   return Array.from(dictionaryEntryPronunciationKeys(right)).some((pinyin) => leftPinyin.has(pinyin));
+}
+
+function dictionaryExplicitVariantTargets(entry) {
+   if (dictionaryVariantStatus(entry) === "modern") return new Set();
+   const definitions = [...(entry.definitionsFr || []), ...(entry.definitionsEn || [])].join(" ");
+   if (!/variante?|variant|ancienne?|archaic|old form/iu.test(definitions)) return new Set();
+   return new Set((definitions.match(/\p{Script=Han}+/gu) || []).flatMap((value) => Array.from(value)));
+}
+
+function isVisualScriptVariantOf(candidate, primary) {
+   if (!candidate || !primary || candidate.id === primary.id) return false;
+   if (primary.traditional !== primary.simplified) return false;
+   const traditionalWord =
+      candidate.entryType === "word" && candidate.simplified === primary.simplified &&
+      candidate.traditional && candidate.traditional !== candidate.simplified;
+   const explicitVariant = dictionaryExplicitVariantTargets(candidate).has(primary.simplified);
+   if (!traditionalWord && !explicitVariant) return false;
+   return dictionaryEntriesSharePronunciation(candidate, primary);
+}
+
+function querySelectsTraditionalEntry(query, entry) {
+   return !!(
+      query && query.type && query.type.startsWith("hanzi") &&
+      query.hanzi === entry.traditional && entry.traditional !== entry.simplified
+   );
+}
+
+function groupDictionaryScriptVariants(response) {
+   if (!response || !Array.isArray(response.results)) return response;
+   const hidden = new Set();
+   response.results.forEach((result) => {
+      const candidate = result.entry;
+      if (querySelectsTraditionalEntry(response.query, candidate)) return;
+      const primary = response.results.find((item) =>
+         !hidden.has(item.entry.id) && isVisualScriptVariantOf(candidate, item.entry),
+      );
+      if (!primary) return;
+      primary.entry.visualVariants = [...(primary.entry.visualVariants || []), candidate];
+      hidden.add(candidate.id);
+   });
+   response.results = response.results.filter((result) => !hidden.has(result.entry.id));
+   response.results.forEach((result) => {
+      if (!result.entry.visualVariants) return;
+      result.entry.visualVariants.sort((left, right) =>
+         (left.traditional || left.simplified).localeCompare(right.traditional || right.simplified, "zh"),
+      );
+   });
+   response.visualVariantsGrouped = hidden.size;
+   return response;
 }
 
 function dictionaryDefinitionKeys(entry) {
@@ -183,11 +237,13 @@ function dictionaryDefinitionKeys(entry) {
 }
 
 function visuallyEquivalentDictionaryEntries(left, right) {
-   if ((left.simplified || left.hz) !== (right.simplified || right.hz)) return false;
    if (left.entryType === right.entryType) return false;
    const word = left.entryType === "word" ? left : right.entryType === "word" ? right : null;
    const character = left.entryType === "character" ? left : right.entryType === "character" ? right : null;
-   if (!word || !character || word.traditional !== word.simplified) return false;
+   if (!word || !character) return false;
+   const sameModernForm = word.simplified === character.simplified && word.traditional === word.simplified;
+   const sameTraditionalForm = word.traditional !== word.simplified && word.traditional === character.simplified;
+   if (!sameModernForm && !sameTraditionalForm) return false;
    const leftPinyin = dictionaryEntryPronunciationKeys(left);
    if (!Array.from(dictionaryEntryPronunciationKeys(right)).some((pinyin) => leftPinyin.has(pinyin))) return false;
    const leftDefinitions = dictionaryDefinitionKeys(left);
@@ -224,6 +280,7 @@ function mergeDictionaryResultMetadata(primary, duplicate) {
 
 function mergeDictionaryVisualResults(response) {
    if (!response || !Array.isArray(response.results)) return response;
+   if (response.visualPresentationReady) return response;
    const output = [];
    let merged = 0;
    response.results.forEach((result) => {
@@ -238,6 +295,8 @@ function mergeDictionaryVisualResults(response) {
    });
    response.results = output.sort(compareRankedDictionaryEntries);
    response.visualDuplicatesMerged = merged;
+   groupDictionaryScriptVariants(response);
+   response.visualPresentationReady = true;
    return response;
 }
 

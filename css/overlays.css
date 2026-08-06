@@ -18,9 +18,13 @@
          .sheet-card {
             position: relative;
             width: 100%;
-            max-width: 560px;
-            max-height: 86dvh;
-            overflow: auto;
+            max-width: none;
+            max-height: min(92dvh, calc(100dvh - env(safe-area-inset-top)));
+            min-width: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             background: var(--paper-2);
             border-radius: 20px 20px 0 0;
             border: 1px solid var(--line);
@@ -28,6 +32,10 @@
             padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
             transform: translateY(30px);
             transition: transform 0.22s;
+         }
+         .sheet-card > * {
+            min-width: 0;
+            max-width: 100%;
          }
          .sheet-x {
             position: absolute;

@@ -1,7 +1,7 @@
 "use strict";
 
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +12,10 @@ const debugPort = 9349;
 const url = `http://127.0.0.1:${port}/`;
 const edge = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const profile = await mkdtemp(path.join(os.tmpdir(), "mo-dictionary-placement-"));
+const visualProofs = {
+   placement: path.join(os.tmpdir(), "mo-studio-placement-430.png"),
+   paging: path.join(os.tmpdir(), "mo-studio-paging-360.png"),
+};
 let server, browser, cdp;
 
 function assert(value, message) { if (!value) throw new Error(message); }
@@ -64,6 +68,19 @@ async function navigate() {
 async function click(selector) {
    return evaluate(`(() => { const node=document.querySelector(${JSON.stringify(selector)}); if(!node) throw new Error('missing ${selector}'); node.click(); return true; })()`);
 }
+async function pointerGesture(selector, { deltaX = 0, deltaY = 0, pointerType = "touch", pointerId = 41 } = {}) {
+   return evaluate(`(async()=>{
+      const node=document.querySelector(${JSON.stringify(selector)});
+      if(!node) throw new Error('missing ${selector}');
+      const rect=node.getBoundingClientRect(),x=rect.left+rect.width/2,y=rect.top+rect.height/2;
+      const emit=(type,clientX,clientY)=>node.dispatchEvent(new PointerEvent(type,{bubbles:true,cancelable:true,composed:true,pointerId:${pointerId},pointerType:${JSON.stringify(pointerType)},isPrimary:true,button:0,buttons:type==='pointerup'?0:1,clientX,clientY}));
+      emit('pointerdown',x,y); await new Promise(r=>setTimeout(r,18));
+      emit('pointermove',x+${deltaX},y+${deltaY}); await new Promise(r=>setTimeout(r,18));
+      emit('pointerup',x+${deltaX},y+${deltaY});
+      await new Promise(r=>setTimeout(r,260));
+      return {character:ddChar,selection:String(getSelection()),offset:getComputedStyle(document.querySelector('.character-swipe-zone')).getPropertyValue('--character-swipe-offset')};
+   })()`);
+}
 async function search(query) {
    await evaluate(`(() => { if(activeView!=='search') setView('search'); return launchDictionarySearch(${JSON.stringify(query)}); })()`);
    const response = await waitFor(async () => {
@@ -73,8 +90,9 @@ async function search(query) {
             pinyin:(item.entry.pinyin||[]).map((p)=>p.numbered), fr:item.entry.definitionsFr,
             en:item.entry.definitionsEn, types:item.entry.visualEntryTypes||[item.entry.entryType],
             group:item.entry.visualGroup||[], hsk:(item.entry.hskVerified||[]).map((h)=>h.firstHskLevel),
+            variants:(item.entry.visualVariants||[]).map((variant)=>({id:variant.id,hz:variant.simplified,traditional:variant.traditional,pinyin:(variant.pinyin||[]).map((p)=>p.numbered),fr:variant.definitionsFr,en:variant.definitionsEn})),
             status:typeof dictionaryVariantStatus==='function'?dictionaryVariantStatus(item.entry):''
-         })), merged:srch.search.visualDuplicatesMerged||0, html:document.querySelector('#dresults').textContent
+         })), merged:srch.search.visualDuplicatesMerged||0, grouped:srch.search.visualVariantsGrouped||0, html:document.querySelector('#dresults').textContent
       }) : document.querySelector('.search-empty.error') ? ({error:document.querySelector('.search-empty.error').textContent}) : null`);
       return result;
    }, `search failed: ${query}`);
@@ -168,7 +186,12 @@ async function main() {
    assert(face.results[0].group.length === 2 && face.merged >= 1, "character/word visual duplicate not merged");
    assert(!face.results[0].en.some((value) => /^flour$/i.test(value)), "flour incorrectly became the main 面 definition");
    assert(face.html.includes("Traduction française indisponible") && face.html.includes("Sens anglais de référence"), "French/English fallback labeling unclear");
-   assert(face.results.some((item) => item.traditional === "麵" && item.status !== "modern"), "traditional script collision not explained");
+   assert(face.results[0].variants.some((item) => item.traditional === "麵") && face.results[0].variants.some((item) => item.traditional === "麪") && face.grouped >= 2, "traditional variants were not grouped under the modern entry");
+   assert(await evaluate("document.querySelectorAll('.dict-result:first-of-type .dict-result-meta .b').length <= 2 && !document.querySelector('.dict-result:first-of-type .dict-result-meta').textContent.includes('mot + caractère')"), "result badges are not compact");
+   assert(await evaluate("document.querySelector('.dict-result:first-of-type .dict-result-variants:not([open])')?.textContent.includes('2 variantes traditionnelles')"), "variant disclosure is not collapsed or clear");
+   assert(await evaluate("[...document.querySelectorAll('.dict-result-meta')].every((meta)=>meta.querySelectorAll('.b').length<=3)"), "a result exceeds the badge limit");
+   const cachedFace = await search("面");
+   assert(cachedFace.results[0].variants.length === face.results[0].variants.length, "cached search lost its visual variant group");
    pass("面 : mot moderne prioritaire, sens HSK distincts, variante reléguée, doublon fusionné");
 
    await evaluate("openSearchDictionaryDetail(srch.search.results[0].entry, false)");
@@ -177,43 +200,120 @@ async function main() {
          text:document.querySelector('#sheet').textContent,
          englishOpen:document.querySelector('.dd-definitions.english')?.open,
          hsk:document.querySelectorAll('.dd-hsk-source-item').length,
-         add:!!document.querySelector('#dd-addcard')
+         add:!!document.querySelector('#dd-addcard'),
+         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-hsk-source','.dd-card-actions','.dd-character-interaction','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
+         englishHeight:document.querySelector('.dd-definitions.english')?.getBoundingClientRect().height
       }) : null`);
       return value;
    }, "detail/related words failed");
    for (const word of ["面粉", "面条", "方面", "见面"]) assert(detail.text.includes(word), `related word missing: ${word}`);
-   assert(detail.englishOpen === false && detail.hsk === 2 && detail.add, "detail sections/actions are unclear");
+   assert(detail.englishOpen === false && detail.englishHeight <= 48 && detail.hsk === 2 && detail.add && detail.order.every((position,index,values)=>index===0||position>values[index-1]), "detail sections/actions are unclear");
    await click("#dd-close");
    pass("fiche détaillée structurée, anglais replié, deux sens HSK et mots associés issus des données");
 
    const flour = await search("面粉");
    const noodles = await search("面条");
+   const bread = await search("面包");
    assert(flour.results[0].fr.includes("farine") && noodles.results[0].fr.includes("nouilles"), "verified French compound definitions missing");
+   assert(bread.results.length && bread.results[0].hz === "面包" && !bread.results[0].variants.length, "variant grouping altered the distinct modern word 面包");
    const marked = await search("miàn");
    const numbered = await search("mian4");
    assert(marked.results[0].pinyin.includes("mian4") && numbered.results[0].pinyin.includes("mian4"), "toned/numbered exact pinyin ranking failed");
+   assert(marked.grouped >= 2 && numbered.grouped >= 2 && marked.results.some((item)=>item.variants.length >= 2) && numbered.results.some((item)=>item.variants.length >= 2), `pinyin variant grouping failed: ${JSON.stringify({marked:marked.results.slice(0,8),numbered:numbered.results.slice(0,8),markedGrouped:marked.grouped,numberedGrouped:numbered.grouped})}`);
    pass("面粉, 面条, miàn et mian4 correctement retrouvés et classés");
 
    const homograph = await search("行");
    const pronunciations = new Set(homograph.results.filter((item)=>item.hz==='行').flatMap((item)=>item.pinyin));
    assert([...pronunciations].some((p)=>p.startsWith('xing2')) && [...pronunciations].some((p)=>p.startsWith('hang2')), "homograph pronunciations were merged");
    const traditional = await search("麵");
-   assert(traditional.results.some((item)=>item.hz==='麵'||item.traditional==='麵'), "traditional query missing");
+   assert(traditional.results.some((item)=>item.hz==='麵'||item.traditional==='麵') && traditional.results[0].traditional === "麵", "exact traditional query did not keep 麵 at the first level");
+   await click("#dresults .dict-result-primary");
+   await waitFor(() => evaluate("document.querySelector('.dd-entry .cd-hz')?.textContent.trim()==='麵'"), "exact 麵 detail did not preserve the chosen form");
+   const variantDetailFrench = await evaluate("[...document.querySelectorAll('.dd-definitions:not(.english) li')].map((item)=>item.textContent.trim()).join(' ; ')");
+   await click("#dd-addcard");
+   const variantPlacement = await evaluate("({hanzi:document.querySelector('.dd-add-word > b')?.textContent.trim(),identity:document.querySelector('.dd-add-word small')?.textContent||'',definition:document.querySelector('#dd-add-fr')?.value||''})");
+   assert(variantPlacement.hanzi==='麵' && variantPlacement.definition===variantDetailFrench && (variantPlacement.identity.includes('Traditionnel') || variantPlacement.identity.includes('Variante')), `add modal mixed the modern entry with the selected variant: ${JSON.stringify(variantPlacement)}`);
+   await click("#dd-add-cancel");
+   await click("#dd-close");
+   const ordinary = await search("菜");
+   assert(!ordinary.results[0].variants.length, "variant grouping created an artificial group for an ordinary word");
    pass("homographes/prononciations distincts et recherche traditionnelle conservés");
 
    await evaluate("openDictionaryAddToWords(window.__cai)");
-   for (const width of [360, 430, 1024]) {
+   for (const width of [360, 430, 768, 1024, 1440]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 820, deviceScaleFactor: 1, mobile: width <= 430 });
-      const layout = await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth+1,short:[...document.querySelectorAll('#sheet button,#sheet label')].filter(n=>getComputedStyle(n).display!=='none').map(n=>({text:n.textContent.trim().slice(0,24),height:n.getBoundingClientRect().height})).filter(n=>n.height>0&&n.height<43),dialog:document.querySelector('#sheet').getAttribute('role'),modal:document.querySelector('#sheet').getAttribute('aria-modal')})`);
-      assert(!layout.overflow && !layout.short.length && layout.dialog === "dialog" && layout.modal === "true", `responsive/a11y failed at ${width}: ${JSON.stringify(layout)}`);
+      const layout = await evaluate(`(() => {
+         const measure=(selector)=>{const node=document.querySelector(selector),rect=node?.getBoundingClientRect();return node?{client:node.clientWidth,scroll:node.scrollWidth,left:rect.left,right:rect.right,width:rect.width,center:rect.left+rect.width/2}:null};
+         return {viewport:innerWidth,root:measure('html'),sheet:measure('#sheet'),card:measure('.sheet-card'),words:measure('.dd-add-words'),actions:measure('.dd-placement-actions'),actionsPosition:getComputedStyle(document.querySelector('.dd-placement-actions')).position,actionsBottom:getComputedStyle(document.querySelector('.dd-placement-actions')).bottom,overflow:document.documentElement.scrollWidth>innerWidth+1,short:[...document.querySelectorAll('#sheet button,#sheet label')].filter(n=>getComputedStyle(n).display!=='none').map(n=>({text:n.textContent.trim().slice(0,24),height:n.getBoundingClientRect().height})).filter(n=>n.height>0&&n.height<43),dialog:document.querySelector('#sheet').getAttribute('role'),modal:document.querySelector('#sheet').getAttribute('aria-modal')};
+      })()`);
+      console.log(`AUDIT placement ${width}px ${JSON.stringify(layout)}`);
+      const exactWidths = [layout.root, layout.sheet, layout.card, layout.words].every((item) => item && item.scroll === item.client);
+      const centered = width < 768 || Math.abs(layout.card.center - width / 2) < 0.25;
+      assert(!layout.overflow && exactWidths && centered && layout.actionsPosition === "sticky" && layout.actionsBottom === "0px" && !layout.short.length && layout.dialog === "dialog" && layout.modal === "true", `responsive/a11y failed at ${width}: ${JSON.stringify(layout)}`);
    }
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:430, height:820, deviceScaleFactor:1, mobile:true });
+   await evaluate("document.querySelector('.dd-placement-actions').scrollIntoView({block:'end'})");
+   const placementScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true});
+   await writeFile(visualProofs.placement, Buffer.from(placementScreenshot.data, "base64"));
    await cdp.send("Input.dispatchKeyEvent", { type:"keyDown", key:"Escape", code:"Escape", windowsVirtualKeyCode:27 });
    await cdp.send("Input.dispatchKeyEvent", { type:"keyUp", key:"Escape", code:"Escape", windowsVirtualKeyCode:27 });
    assert(!(await evaluate("sheetOpen()")), "Escape did not close modal");
-   pass("360/430/1024 px, cibles tactiles, absence de scroll horizontal, dialogue et fermeture clavier");
+   pass("360/430/768/1024/1440 px, cibles tactiles, absence de scroll horizontal, dialogue et fermeture clavier");
+
+   await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'你好',py:'nǐ hǎo',fr:'bonjour'}))");
+   await waitFor(() => evaluate("ddChar==='你' && !!document.querySelector('#dd-target svg')"), "long dictionary detail did not load");
+   for (const width of [360, 430, 768, 1024, 1440]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 820, deviceScaleFactor: 1, mobile: width <= 430 });
+      const detailLayout = await evaluate(`(() => {
+         const measure=(selector)=>{const node=document.querySelector(selector),rect=node?.getBoundingClientRect();return node?{client:node.clientWidth,scroll:node.scrollWidth,left:rect.left,right:rect.right,width:rect.width,center:rect.left+rect.width/2,height:rect.height}:null};
+         return {viewport:innerWidth,root:measure('html'),sheet:measure('#sheet'),card:measure('.sheet-card'),entry:measure('.dd-entry'),stage:measure('.stroke-character-stage'),overflow:document.documentElement.scrollWidth>innerWidth};
+      })()`);
+      const exactWidths = [detailLayout.root, detailLayout.sheet, detailLayout.card, detailLayout.entry].every((item)=>item && item.client===item.scroll);
+      const centered = width < 768 || Math.abs(detailLayout.card.center-width/2)<0.25;
+      assert(exactWidths && centered && !detailLayout.overflow && detailLayout.card.height <= 820-(width>=768?48:0)+1, `detail overflow/centering failed at ${width}: ${JSON.stringify(detailLayout)}`);
+   }
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:360, height:820, deviceScaleFactor:1, mobile:true });
+   const stage = await evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi').getBoundingClientRect(),p=document.querySelector('#dd-character-prev').getBoundingClientRect(),n=document.querySelector('#dd-character-next').getBoundingClientRect();return {pair:document.querySelectorAll('#dd-character-prev,#dd-character-next').length,direct:document.querySelector('#dd-character-prev').parentElement.id==='dd-character-stage'&&document.querySelector('#dd-character-next').parentElement.id==='dd-character-stage',sizes:[p.width,p.height,n.width,n.height],vertical:[Math.abs(p.top+p.height/2-(m.top+m.height/2)),Math.abs(n.top+n.height/2-(m.top+m.height/2))],horizontal:[Math.abs(p.left+p.width/2-m.left),Math.abs(n.left+n.width/2-m.right)],overflow:document.querySelector('.sheet-card').scrollWidth!==document.querySelector('.sheet-card').clientWidth};})()`);
+   assert(stage.pair===2 && stage.direct && stage.sizes.every((size)=>size>=44) && stage.vertical.every((gap)=>gap<10) && stage.horizontal.every((gap)=>gap<24) && !stage.overflow, `chevrons are not wrapped around the grid: ${JSON.stringify(stage)}`);
+   await evaluate("document.querySelector('#dd-character-stage').scrollIntoView({block:'center'})");
+   const pagingScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true});
+   await writeFile(visualProofs.paging, Buffer.from(pagingScreenshot.data, "base64"));
+
+   await pointerGesture("#dd-target svg", {deltaX:-38,deltaY:2,pointerType:"touch",pointerId:51});
+   assert(await evaluate("ddChar==='好'"), "38px touch swipe on Hanzi Writer did not advance");
+   await pointerGesture(".dd-character-study-hanzi", {pointerType:"touch",pointerId:52});
+   await pointerGesture(".dd-character-study-hanzi", {deltaX:10,deltaY:1,pointerType:"touch",pointerId:53});
+   await pointerGesture(".dd-character-study-hanzi", {deltaX:5,deltaY:90,pointerType:"touch",pointerId:54});
+   assert(await evaluate("ddChar==='好'"), "tap, 10px move, or vertical gesture changed character");
+   await pointerGesture(".dd-character-study-hanzi", {deltaX:38,deltaY:2,pointerType:"touch",pointerId:55});
+   assert(await evaluate("ddChar==='你'"), "38px touch swipe on large character did not return");
+   await pointerGesture("#dd-anim", {deltaX:-100,deltaY:1,pointerType:"touch",pointerId:56});
+   assert(await evaluate("ddChar==='你'"), "swipe starting on a button navigated");
+   await pointerGesture(".dd-character-study-hanzi", {deltaX:38,deltaY:1,pointerType:"touch",pointerId:57});
+   assert(await evaluate("ddChar==='你'"), "swipe crossed the first-character boundary");
+   await pointerGesture("#dd-target svg", {deltaX:-52,deltaY:1,pointerType:"mouse",pointerId:58});
+   assert(await evaluate("ddChar==='好'"), "52px mouse swipe did not advance");
+   await pointerGesture("#dd-target svg", {deltaX:40,deltaY:1,pointerType:"pen",pointerId:59});
+   assert(await evaluate("ddChar==='你'"), "40px pen swipe did not return");
+   await click('[data-stroke-tab="steps"]');
+   await waitFor(() => evaluate("document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected')==='true' && !!document.querySelector('#dd-gallery')"), "steps mode did not activate");
+   await evaluate("if(!document.querySelector('#dd-gallery .stroke-panel')){const panel=document.createElement('button');panel.className='stroke-panel';panel.type='button';panel.textContent='Étape de test';document.querySelector('#dd-gallery').append(panel)}");
+   await pointerGesture("#dd-gallery .stroke-panel", {deltaX:-38,deltaY:1,pointerType:"touch",pointerId:60});
+   assert(await evaluate("ddChar==='好' && document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected')==='true'"), "steps swipe failed or lost its tab");
+   await click('[data-stroke-tab="practice"]');
+   await pointerGesture("#dd-practice-target", {deltaX:100,deltaY:2,pointerType:"touch",pointerId:61});
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}))");
+   await click('#dd-picker .hzchip:first-child');
+   assert(await evaluate("ddChar==='好' && [...document.querySelectorAll('#dd-picker .hzchip')].every((button)=>button.disabled)"), "practice allowed swipe, keyboard, or chip navigation");
+   await click('#dd-character-prev');
+   await waitFor(() => evaluate("ddChar==='你' && ddWriterTarget?.id==='dd-practice-target'"), "practice chevron did not remain available");
+   assert(await evaluate("document.querySelectorAll('#dd-target svg,#dd-practice-target svg').length===1"), "rapid paging left an obsolete writer instance");
+   await click('#dd-close');
+   assert(!(await evaluate("sheetOpen()")), "long detail did not close");
+   pass("fiche longue mesurée sur cinq largeurs, chevrons autour de la grille et Pointer Events touch/pen/mouse validés");
 
    assert(!cdp.errors.length, "runtime errors: " + cdp.errors.join(" | "));
-   console.log(`RESULT ${version.Browser} — placement et dictionnaire validés`);
+   console.log(`RESULT ${version.Browser} — placement et dictionnaire validés · captures ${visualProofs.placement} · ${visualProofs.paging}`);
 }
 
 try { await main(); }

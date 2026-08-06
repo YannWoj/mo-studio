@@ -906,7 +906,7 @@ async function main() {
       `4x CPU: ${lowerEndSearch.engineDurationMs.toFixed(2)} ms search, ${lowerEndSearch.maximumEventLoopGapMs.toFixed(2)} ms maximum event-loop gap`,
    );
 
-   await click('#dresults .dict-result:has([data-hsk-badge="5"])');
+   await click('#dresults .dict-result:has([data-hsk-badge="5"]) .dict-result-primary');
    await waitFor(() => evaluate("!!document.querySelector('#dd-target')"), "Dictionary detail did not open");
    const hskDetail = await evaluate(`({
       badge: document.querySelector('.dd-entry [data-hsk-badge="5"]')?.textContent,
@@ -1141,7 +1141,7 @@ async function main() {
    await waitFor(() => evaluate("document.querySelector('#dresults .dict-result')?.textContent.includes('你好')"), "History test results missing", 20_000);
    await evaluate("window.scrollTo(0, Math.min(280, document.documentElement.scrollHeight - innerHeight))");
    const historyScroll = await evaluate("window.scrollY");
-   await click("#dresults .dict-result");
+   await click("#dresults .dict-result-primary");
    await waitFor(() => evaluate("!!document.querySelector('#sheet .dd-entry')"), "History detail did not open", 20_000);
    await waitFor(
       () => evaluate("!document.hasFocus() || document.activeElement?.id === 'dd-close-top'"),
@@ -1198,7 +1198,7 @@ async function main() {
             sources: position('.dd-sources'),
             picker: interactionPosition('#dd-picker'),
             characterCard: interactionPosition('#dd-character-study-card'),
-            navigation: interactionPosition('#dd-character-nav'),
+            navigation: interactionPosition('#dd-character-stage'),
             workspace: interactionPosition('.stroke-workspace'),
             related: interactionPosition('#dd-related'),
          };
@@ -1238,7 +1238,7 @@ async function main() {
    await evaluate("launchDictionarySearch('aardvark')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "English fallback UI result missing", 20_000);
    assert((await evaluate("document.querySelector('#dresults .dict-result').textContent")).includes("EN ·"), "English fallback result was not labelled");
-   await click("#dresults .dict-result");
+   await click("#dresults .dict-result-primary");
    await waitFor(() => evaluate("!!document.querySelector('#sheet .dd-entry')"), "English fallback detail missing", 20_000);
    assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Anglais · repli"), "English fallback detail was not labelled");
    await click("#dd-close");
@@ -1246,7 +1246,7 @@ async function main() {
    await evaluate("launchDictionarySearch('你')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "Personal-card dictionary result missing", 20_000);
    assert((await evaluate("document.querySelector('#dresults .dict-result').textContent")).includes("Mes mots"), "Personal-word result badge missing");
-   await click("#dresults .dict-result");
+   await click("#dresults .dict-result-primary");
    await waitFor(() => evaluate("!!document.querySelector('#dd-manage')"), "Edit/manage personal-card action missing", 20_000);
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "Personal-card detail did not close", 20_000);
@@ -1272,7 +1272,7 @@ async function main() {
    })()`);
    await evaluate("launchDictionarySearch('你')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "你 search failed", 20_000);
-   await click("#dresults .dict-result");
+   await click("#dresults .dict-result-primary");
    await waitFor(
       () => evaluate("ddCharacterData?.character === '你' && ddCharacterData.strokeCount === 7 && window.__strokeWriterAudit.animations.length === 1"),
       "Real 你 stroke data did not load",
@@ -1533,7 +1533,7 @@ async function main() {
    await evaluate("ddStrokeTab = 'animation'");
    await evaluate("launchDictionarySearch('你好')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "你好 search failed", 20_000);
-   await click("#dresults .dict-result");
+   await click("#dresults .dict-result-primary");
    await waitFor(
       () => evaluate(`ddCharacterData?.character === '你' && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 1}`),
       "你好 first character did not autoplay",
@@ -1547,7 +1547,7 @@ async function main() {
    const initialWordNavigation = await evaluate(`(() => {
       const previous = document.querySelector('#dd-character-prev');
       const next = document.querySelector('#dd-character-next');
-      const nav = document.querySelector('#dd-character-nav').getBoundingClientRect();
+      const nav = document.querySelector('#dd-character-stage').getBoundingClientRect();
       const previousRect = previous.getBoundingClientRect();
       const nextRect = next.getBoundingClientRect();
       const studyCard = document.querySelector('#dd-character-study-card');
@@ -1571,7 +1571,7 @@ async function main() {
          studyAudio: document.querySelector('.dd-character-audio')?.getAttribute('data-say'),
          cardActionReady: !!document.querySelector('#dd-character-manage') ||
             !!document.querySelector('#dd-character-addcard')?.dataset.entryId,
-         navigationSvgCount: document.querySelectorAll('#dd-character-nav svg').length,
+         navigationSvgCount: document.querySelectorAll('#dd-character-stage > .character-nav-button svg').length,
          definitionSelectable: getComputedStyle(document.querySelector('.dd-definitions')).userSelect !== 'none',
          gestureCardUnselectable: getComputedStyle(studyCard).userSelect === 'none',
          translationSelectable: getComputedStyle(document.querySelector('.dd-character-study-translation')).userSelect !== 'none',
@@ -1670,7 +1670,7 @@ async function main() {
       20_000,
    );
    const dictionarySwipeRight = await pointerGesture(".dd-character-study-card", {
-      deltaX: 155,
+      deltaX: 38,
       deltaY: 2,
       pointerType: "touch",
       pointerId: 51,
@@ -1681,7 +1681,7 @@ async function main() {
       20_000,
    );
    const dictionarySwipeLeft = await pointerGesture(".dd-character-study-hanzi", {
-      deltaX: -155,
+      deltaX: -38,
       deltaY: 2,
       pointerType: "touch",
       pointerId: 52,
@@ -1698,7 +1698,7 @@ async function main() {
       pointerId: 50,
    });
    const smallDictionaryGesture = await pointerGesture(".dd-character-study-card", {
-      deltaX: 22,
+      deltaX: 10,
       deltaY: 2,
       pointerType: "touch",
       pointerId: 53,
@@ -1732,7 +1732,7 @@ async function main() {
       `A vertical touch begun on the character did not scroll the sheet: ${dictionaryTouchScrollTop}`,
    );
    const animationGridSwipe = await pointerGesture("#dd-target", {
-      deltaX: 155,
+      deltaX: 40,
       deltaY: 2,
       pointerType: "pen",
       pointerId: 55,
@@ -1772,7 +1772,7 @@ async function main() {
       20_000,
    );
    await pointerGesture("#dd-gallery .stroke-panel", {
-      deltaX: 155,
+      deltaX: 38,
       deltaY: 2,
       pointerType: "touch",
       pointerId: 56,
@@ -1951,19 +1951,19 @@ async function main() {
    await waitFor(() => evaluate("!sheetOpen()"), "你好吗 detail did not close", 20_000);
    await evaluate("ddStrokeTab = 'animation'; openDictDetail(normalizeDetailEntry({ hz: '人', py: 'rén', fr: 'personne' }))");
    await waitFor(
-      () => evaluate("ddCharacterData?.character === '人' && !!document.querySelector('#dd-character-nav')"),
+      () => evaluate("ddCharacterData?.character === '人' && !!document.querySelector('#dd-character-stage')"),
       "Single-character dictionary detail did not load",
       20_000,
    );
    const singleCharacterNavigation = await evaluate(`({
-      position: document.querySelector('#dd-character-position').textContent.trim(),
-      previousDisabled: document.querySelector('#dd-character-prev').disabled,
-      nextDisabled: document.querySelector('#dd-character-next').disabled,
+      positionCount: document.querySelectorAll('#dd-character-position').length,
+      previousCount: document.querySelectorAll('#dd-character-prev').length,
+      nextCount: document.querySelectorAll('#dd-character-next').length,
       pickerCount: document.querySelectorAll('#dd-picker .hzchip').length,
    })`);
    assert(
-      singleCharacterNavigation.position === "人 · 1 / 1" &&
-         singleCharacterNavigation.previousDisabled && singleCharacterNavigation.nextDisabled &&
+      singleCharacterNavigation.positionCount === 0 &&
+         singleCharacterNavigation.previousCount === 0 && singleCharacterNavigation.nextCount === 0 &&
          singleCharacterNavigation.pickerCount === 0,
       `Single-character navigation is wrong: ${JSON.stringify(singleCharacterNavigation)}`,
    );
@@ -2110,7 +2110,7 @@ async function main() {
          `Sequence previous control is not disabled at position 1 / 7 at ${width}px`,
       );
       const sharedSequenceControls = await evaluate(`(() => {
-         const nav = document.querySelector('#seq-nav').getBoundingClientRect();
+         const nav = document.querySelector('#seq-stage').getBoundingClientRect();
          const previous = document.querySelector('#seq-prev');
          const next = document.querySelector('#seq-next');
          const previousRect = previous.getBoundingClientRect();
@@ -2120,7 +2120,7 @@ async function main() {
             nextLabel: next.getAttribute('aria-label'),
             previousSize: [previousRect.width, previousRect.height],
             nextSize: [nextRect.width, nextRect.height],
-            svgCount: document.querySelectorAll('#seq-nav svg').length,
+            svgCount: document.querySelectorAll('#seq-stage > .character-nav-button svg').length,
             nextBackground: getComputedStyle(next).backgroundColor,
             insideViewport: nav.left >= 0 && nav.right <= innerWidth,
             noOverflow: document.documentElement.scrollWidth <= innerWidth,
@@ -2135,7 +2135,7 @@ async function main() {
             sharedSequenceControls.noOverflow && sharedSequenceControls.nextBackground !== "rgb(23, 20, 15)",
          `Shared sequence controls are not compact or responsive at ${width}px: ${JSON.stringify(sharedSequenceControls)}`,
       );
-      await evaluate("document.querySelector('#seq-nav').scrollIntoView({ block: 'center', inline: 'center' })");
+      await evaluate("document.querySelector('#seq-stage').scrollIntoView({ block: 'center', inline: 'center' })");
       const sequenceNavigationScreenshot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
       await writeFile(
          path.join(screenshotDirectory, `sequence-character-navigation-${width}.png`),
@@ -2631,7 +2631,7 @@ async function main() {
       );
 
       if ([320, 390, 768, 1440].includes(width)) {
-         await click("#dresults .dict-result");
+         await click("#dresults .dict-result-primary");
          await waitFor(() => evaluate("!!document.querySelector('.dd-entry')"), `Detail did not open at ${width}px`, 20_000);
          if (width <= 430) {
             await waitFor(() => evaluate("!!ddCharacterData && ddCharacterData.character === ddChar"), `Stroke data did not load at ${width}px`, 20_000);

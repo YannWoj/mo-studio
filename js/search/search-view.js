@@ -108,7 +108,7 @@ function dictionaryResultDefinition(entry) {
    return { text: "Traduction française indisponible", english: false, unavailable: true };
 }
 
-function dictionaryEntryTypeLabels(entry) {
+function dictionaryEntryDetailedTypeLabels(entry) {
    const definitions = [...(entry.definitionsFr || []), ...(entry.definitionsEn || [])].join(" ");
    const parts = (entry.hskVerified || []).map((item) => item.partOfSpeech || "").join("、");
    const labels = [];
@@ -118,27 +118,23 @@ function dictionaryEntryTypeLabels(entry) {
    if (/proper noun|surname|nom propre/iu.test(definitions + " " + parts)) labels.push("nom");
    if (/\bverb\b|verbe|动词|動詞/iu.test(parts)) labels.push("verbe");
    if (/\bnoun\b|\bnom\b|名词|名詞/iu.test(parts)) labels.push("nom");
-   const structural = entry.visualEntryTypes?.length > 1
-      ? "mot + caractère"
+   const structural = (entry.visualEntryTypes || []).includes("word") || entry.entryType === "word"
+      ? "mot"
       : entry.entryType === "character" ? "caractère" : "mot";
    return Array.from(new Set([structural, ...labels]));
+}
+
+function dictionaryEntryTypeLabels(entry) {
+   if (dictionaryVariantStatus(entry) !== "modern") return ["Variante"];
+   if ((entry.visualEntryTypes || []).includes("word") || entry.entryType === "word") return ["Mot"];
+   return ["Caractère"];
 }
 
 function verifiedResultHskBadge(entry) {
    const verified = verifiedHskLevels(entry);
    if (verified.length)
-      return verified
-         .map(
-            (level) =>
-               '<i class="b hsk-badge hsk-level-' +
-               level +
-               '" data-hsk-badge="' +
-               level +
-               '">HSK ' +
-               esc(level) +
-               "</i>",
-         )
-         .join("");
+      return '<i class="b hsk-badge hsk-level-' + verified[0] + '" data-hsk-badge="' +
+         esc(verified.join(" ")) + '">HSK ' + verified.map(esc).join(" · ") + "</i>";
    if (entry.hskLegacy && entry.hskLegacy.length)
       return '<i class="b u">HSK ' + esc(entry.hskLegacy[0]) + "</i>";
    if (entry.hsk30 && entry.hsk30.length)
@@ -146,30 +142,62 @@ function verifiedResultHskBadge(entry) {
    return "";
 }
 
+function dictionaryResultDisplayHanzi(entry) {
+   const query = srch.search && srch.search.query;
+   if (
+      query && query.type && query.type.startsWith("hanzi") &&
+      query.hanzi === entry.traditional && entry.traditional !== entry.simplified
+   ) return entry.traditional;
+   if (entry.__selectedHanzi) return entry.__selectedHanzi;
+   if (dictionaryVariantStatus(entry) !== "modern" && entry.traditional !== entry.simplified)
+      return entry.traditional;
+   return entry.simplified;
+}
+
+function dictionaryResultBadgesHtml(entry) {
+   const badges = dictionaryEntryTypeLabels(entry)
+      .map((label) => '<i class="b u">' + esc(label) + "</i>");
+   const hsk = verifiedResultHskBadge(entry);
+   if (hsk) badges.push(hsk);
+   if (entry.personalCard) badges.push('<i class="b jade">Mes mots</i>');
+   return badges.slice(0, entry.personalCard ? 3 : 2).join("");
+}
+
+function dictionaryResultVariantsHtml(entry, resultIndex) {
+   const variants = Array.isArray(entry.visualVariants) ? entry.visualVariants : [];
+   if (!variants.length) return "";
+   const allTraditional = variants.every((variant) => variant.traditional !== variant.simplified);
+   const label = variants.length + " variante" + (variants.length > 1 ? "s" : "") +
+      (allTraditional ? " traditionnelle" + (variants.length > 1 ? "s" : "") : " graphique" + (variants.length > 1 ? "s" : ""));
+   return '<details class="dict-result-variants"><summary>' + esc(label) +
+      '</summary><div class="dict-result-variant-list">' +
+      variants.map((variant, variantIndex) => {
+         const form = variant.traditional || variant.simplified;
+         return '<button class="dict-result-variant" type="button" data-result-variant="' +
+            resultIndex + ':' + variantIndex + '" aria-label="Ouvrir la fiche exacte de ' + esc(form) +
+            '"><b>' + esc(form) + '</b><span>→ ' + esc(variant.simplified) + ' · ' +
+            colorPinyin(dictionaryEntryPinyinText(variant)) + '</span></button>';
+      }).join("") + "</div></details>";
+}
+
 function dictionaryResultHtml(item, index) {
    const entry = item.entry;
    const definition = dictionaryResultDefinition(entry);
-   const traditional = entry.traditional !== entry.simplified ? entry.traditional : "";
-   const typeLabels = dictionaryEntryTypeLabels(entry);
+   const displayHanzi = dictionaryResultDisplayHanzi(entry);
+   const traditional = entry.traditional !== entry.simplified && entry.traditional !== displayHanzi ? entry.traditional : "";
    return (
-      '<button class="dict-result" data-result-index="' + index + '" data-entry-id="' + esc(entry.id) + '">' +
-      '<span class="dict-result-hanzi"><b>' + esc(entry.simplified) + "</b>" +
+      '<article class="dict-result" data-entry-id="' + esc(entry.id) + '"><button class="dict-result-primary" type="button" data-result-index="' + index + '">' +
+      '<span class="dict-result-hanzi"><b>' + esc(displayHanzi) + "</b>" +
       (traditional ? '<small>' + (dictionaryVariantStatus(entry) !== "modern" ? "Variante traditionnelle" : "Traditionnel") + ' · ' + esc(traditional) + "</small>" : "") +
       "</span>" +
       '<span class="dict-result-main"><span class="row-py">' + colorPinyin(dictionaryEntryPinyinText(entry)) + "</span>" +
       '<span class="row-fr' + (definition.english ? " english" : "") + '">' +
       esc(definition.text) + "</span>" +
       (definition.englishText ? '<small class="dict-english-reference">Sens anglais de référence · ' + esc(definition.englishText) + "</small>" : "") +
-      '<small class="dict-match">' + esc(item.rank.explanation) + "</small></span>" +
-      '<span class="row-badges">' + typeLabels.map((label) => '<i class="b u">' + esc(label) + "</i>").join("") + verifiedResultHskBadge(entry) +
-      (entry.__hskSource
-         ? '<i class="b hsk-source-status">' +
-           esc(hskLinkStatusLabel(entry.dictionaryLinkStatus)) +
-           "</i>"
-         : "") +
-      (entry.personalCard ? '<i class="b jade">Mes mots</i>' : "") +
-      (Number.isFinite(entry.frequencyRank) ? '<i class="b u">fréq. ' + esc(entry.frequencyRank) + "</i>" : "") +
-      "</span></button>"
+      '<small class="dict-match">' + esc(item.rank.explanation) +
+      '</small><span class="dict-result-meta" aria-label="Métadonnées">' +
+      dictionaryResultBadgesHtml(entry) + "</span></span></button>" +
+      dictionaryResultVariantsHtml(entry, index) + "</article>"
    );
 }
 
@@ -206,7 +234,23 @@ function renderDictionaryResults() {
          ? '<div class="search-more"><button class="btn ghost" id="dshow-more">Afficher plus</button></div>'
          : "");
    box.querySelectorAll("[data-result-index]").forEach((button) => {
-      button.onclick = () => openSearchDictionaryDetail(response.results[Number(button.dataset.resultIndex)].entry, true);
+      button.onclick = () => {
+         const entry = response.results[Number(button.dataset.resultIndex)].entry;
+         const displayHanzi = dictionaryResultDisplayHanzi(entry);
+         if (displayHanzi !== entry.simplified) entry.__selectedHanzi = displayHanzi;
+         openSearchDictionaryDetail(entry, true);
+      };
+   });
+   box.querySelectorAll("[data-result-variant]").forEach((button) => {
+      button.onclick = () => {
+         const [resultIndex, variantIndex] = button.dataset.resultVariant.split(":").map(Number);
+         const variant = response.results[resultIndex]?.entry.visualVariants?.[variantIndex];
+         if (!variant) return;
+         openSearchDictionaryDetail({
+            ...variant,
+            __selectedHanzi: variant.traditional || variant.simplified,
+         }, true);
+      };
    });
    if ($("dshow-more"))
       $("dshow-more").onclick = () => {
@@ -374,6 +418,7 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
       writeSearchHistory("detail", entry.id, false);
    }
    srch.mode = "detail";
+   const selectedHanzi = entry.__selectedHanzi || "";
    const visualGroup = Array.isArray(entry.visualGroup) ? entry.visualGroup.slice() : [];
    if (entry.__preview) {
       openSheet(
@@ -381,6 +426,7 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
       );
       try {
          entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
+         if (selectedHanzi) entry.__selectedHanzi = selectedHanzi;
          if (visualGroup.length > 1) {
             const grouped = (await Promise.all(
                visualGroup.filter((id) => id !== entry.id).map((id) => loadHskSearchDetailEntry(id)),

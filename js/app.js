@@ -56,6 +56,10 @@
                   return;
                }
                if (seq) {
+                  if (typeof ddStrokeTab !== "undefined" && ddStrokeTab === "practice") {
+                     if (e.key === "Escape") closeSequence();
+                     return;
+                  }
                   if (
                      e.defaultPrevented ||
                      (e.target.closest && e.target.closest(".stroke-workspace, .stroke-focus"))

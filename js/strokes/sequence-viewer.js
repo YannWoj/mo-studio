@@ -6,23 +6,30 @@ async function seqEntry(character) {
    return dictionaryCharacterStudyEntry(character);
 }
 
-function characterNavigationHtml(prefix, character, index, total) {
+function characterChevronHtml(direction) {
+   return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' +
+      (direction === "left" ? "M14.5 6.5 9 12l5.5 5.5" : "M9.5 6.5 15 12l-5.5 5.5") +
+      '"></path></svg>';
+}
+
+function strokeCharacterStageHtml(prefix, character, index, total) {
    const previousDisabled = index <= 0 ? " disabled" : "";
    const nextDisabled = index >= total - 1 ? " disabled" : "";
    const positionClass = prefix === "seq" ? " s-count" : "";
-   const chevron = (direction) =>
-      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' +
-      (direction === "left" ? "M14.5 6.5 9 12l5.5 5.5" : "M9.5 6.5 15 12l-5.5 5.5") +
-      '"></path></svg>';
+   const hasNavigation = total > 1;
    return (
-      '<nav class="character-nav" id="' + prefix + '-nav" aria-label="Navigation entre les caractères">' +
-      '<button class="character-nav-button" id="' + prefix + '-prev" type="button" aria-label="Caractère précédent"' +
-      previousDisabled + ">" + chevron("left") + "</button>" +
-      '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
+      (hasNavigation ? '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
       '-position" role="status" aria-live="polite" aria-atomic="true">' +
-      esc(character) + " · " + (index + 1) + " / " + total + "</strong>" +
-      '<button class="character-nav-button" id="' + prefix + '-next" type="button" aria-label="Caractère suivant"' +
-      nextDisabled + ">" + chevron("right") + "</button></nav>"
+      esc(character) + " · " + (index + 1) + " / " + total + "</strong>" : "") +
+      '<div class="stroke-character-stage" id="' + prefix + '-stage">' +
+      (hasNavigation ? '<button class="character-nav-button character-nav-previous" id="' + prefix +
+         '-prev" type="button" aria-label="Caractère précédent"' + previousDisabled + ">" +
+         characterChevronHtml("left") + "</button>" : "") +
+      '<div class="stroke-character-stage-main">' + strokeBoxHtml() + "</div>" +
+      (hasNavigation ? '<button class="character-nav-button character-nav-next" id="' + prefix +
+         '-next" type="button" aria-label="Caractère suivant"' + nextDisabled + ">" +
+         characterChevronHtml("right") + "</button>" : "") +
+      "</div>"
    );
 }
 
@@ -115,14 +122,23 @@ function setupSwipe(element, onLeft, onRight, options) {
    if (!element) return;
    const settings = options || {};
    const ignoredTarget =
-      "button, input, textarea, select, a, [contenteditable='true'], .stroke-focus";
+      "button, input, textarea, select, a, label, [contenteditable='true'], [role='tab'], [role='slider'], .stroke-focus";
+   const profiles = {
+      touch: { recognition: 8, navigation: 34, dominance: 1.18, fastMinimum: 25, velocity: 0.5, maximumOffset: 34 },
+      pen: { recognition: 9, navigation: 39, dominance: 1.22, fastMinimum: 29, velocity: 0.55, maximumOffset: 31 },
+      mouse: { recognition: 12, navigation: 50, dominance: 1.35, fastMinimum: 42, velocity: 0.7, maximumOffset: 28 },
+   };
    let pointerId = null;
+   let pointerType = "mouse";
    let startX = 0;
    let startY = 0;
+   let startTime = 0;
    let currentX = 0;
    let currentY = 0;
    let horizontalGesture = false;
+   let verticalGesture = false;
    let transitioning = false;
+   let suppressClickUntil = 0;
    const disabled = () =>
       typeof settings.disabled === "function" && settings.disabled();
    const setOffset = (value) =>
@@ -135,14 +151,19 @@ function setupSwipe(element, onLeft, onRight, options) {
       if (pointerId == null || (event && event.pointerId !== pointerId)) return;
       const deltaX = currentX - startX;
       const deltaY = currentY - startY;
+      const profile = profiles[pointerType] || profiles.mouse;
+      const duration = Math.max(1, (event?.timeStamp || performance.now()) - startTime);
+      const speed = Math.abs(deltaX) / duration;
       const qualifies =
-         horizontalGesture && Math.abs(deltaX) >= 54 &&
-         Math.abs(deltaX) > Math.abs(deltaY) * 1.45;
+         horizontalGesture && Math.abs(deltaX) > Math.abs(deltaY) * profile.dominance &&
+         (Math.abs(deltaX) >= profile.navigation ||
+            (Math.abs(deltaX) >= profile.fastMinimum && speed >= profile.velocity));
       if (horizontalGesture || Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4)
          clearSelection();
       const finishedPointerId = pointerId;
       pointerId = null;
       horizontalGesture = false;
+      verticalGesture = false;
       try {
          if (element.hasPointerCapture(finishedPointerId)) element.releasePointerCapture(finishedPointerId);
       } catch (error) {}
@@ -151,6 +172,7 @@ function setupSwipe(element, onLeft, onRight, options) {
          qualifies && navigate && !disabled() &&
          (!settings.canNavigate || settings.canNavigate(direction));
       if (canNavigate) {
+         suppressClickUntil = performance.now() + 160;
          transitioning = true;
          element.classList.remove("is-pointer-swiping");
          element.classList.add("is-swipe-committing");
@@ -179,9 +201,12 @@ function setupSwipe(element, onLeft, onRight, options) {
       const blocked = event.target.closest(ignoredTarget);
       if (blocked && !event.target.closest(".stroke-panel")) return;
       pointerId = event.pointerId;
+      pointerType = profiles[event.pointerType] ? event.pointerType : "mouse";
       startX = currentX = event.clientX;
       startY = currentY = event.clientY;
+      startTime = event.timeStamp || performance.now();
       horizontalGesture = false;
+      verticalGesture = false;
    });
    element.addEventListener("pointermove", (event) => {
       if (pointerId == null || event.pointerId !== pointerId) return;
@@ -189,14 +214,20 @@ function setupSwipe(element, onLeft, onRight, options) {
       currentY = event.clientY;
       const deltaX = currentX - startX;
       const deltaY = currentY - startY;
-      if (!horizontalGesture && Math.abs(deltaX) >= 12 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35) {
+      const profile = profiles[pointerType] || profiles.mouse;
+      if (!horizontalGesture && !verticalGesture && Math.abs(deltaY) >= profile.recognition && Math.abs(deltaY) > Math.abs(deltaX) * 1.1)
+         verticalGesture = true;
+      if (!horizontalGesture && !verticalGesture && Math.abs(deltaX) >= profile.recognition && Math.abs(deltaX) > Math.abs(deltaY) * profile.dominance) {
          horizontalGesture = true;
          element.classList.add("is-pointer-swiping");
          clearSelection();
          try { element.setPointerCapture(pointerId); } catch (error) {}
       }
       if (horizontalGesture) {
-         setOffset(Math.max(-28, Math.min(28, deltaX * 0.18)));
+         const direction = deltaX < 0 ? "left" : "right";
+         const atLimit = settings.canNavigate && !settings.canNavigate(direction);
+         const distance = deltaX * (atLimit ? 0.12 : 0.38);
+         setOffset(Math.max(-profile.maximumOffset, Math.min(profile.maximumOffset, distance)));
          clearSelection();
          event.preventDefault();
       }
@@ -211,6 +242,12 @@ function setupSwipe(element, onLeft, onRight, options) {
    element.addEventListener("pointercancel", (event) => finish(event, false));
    element.addEventListener("lostpointercapture", (event) => finish(event, false));
    element.addEventListener("dragstart", (event) => event.preventDefault());
+   element.addEventListener("click", (event) => {
+      if (performance.now() > suppressClickUntil) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      suppressClickUntil = 0;
+   }, true);
 }
 
 async function renderSequence() {
@@ -249,13 +286,12 @@ async function renderSequence() {
       '<div class="sep"></div><div class="fr">' +
       (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
       (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" +
-       '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
+       '<div class="eyebrow">Ordre des traits</div>' + strokeCharacterStageHtml("seq", character, index, current.chars.length) +
        '<div class="sh-btns"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></div>' +
        (card
           ? cardActionsHtml(card)
           : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></div>') +
-      "</div>" + characterNavigationHtml("seq", character, index, current.chars.length) +
-      "</section>";
+      "</div></section>";
    wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
       strokeSelectionKey: () => `sequence:${index}:${character}`,
       sequenceIndex: index,
@@ -265,12 +301,23 @@ async function renderSequence() {
    $("seq-prev").onclick = () => moveSequence(-1);
    $("seq-next").onclick = () => moveSequence(1);
    document.querySelectorAll("#seq-character-strip [data-i]").forEach((button) => {
-      button.onclick = () => setSequenceIndex(Number(button.dataset.i), true);
-   });
+      button.disabled = ddStrokeTab === "practice";
+      button.setAttribute("aria-disabled", String(ddStrokeTab === "practice"));
+      button.onclick = () => {
+         if (ddStrokeTab === "practice") return;
+         setSequenceIndex(Number(button.dataset.i), true);
+      };
+   }, { passive: false });
    setupSwipe(
       $("seq-flash"),
       () => moveSequence(1),
       () => moveSequence(-1),
+      {
+         disabled: () => ddStrokeTab === "practice",
+         canNavigate: (direction) => direction === "left"
+            ? current.index < current.chars.length - 1
+            : current.index > 0,
+      },
    );
    if (preserveScroll)
       requestAnimationFrame(() => {

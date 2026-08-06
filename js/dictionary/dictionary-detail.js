@@ -52,6 +52,15 @@ function uniqueDetailValues(values) {
    return Array.from(new Set(values));
 }
 
+function dictionaryDetailDisplayHanzi(entry) {
+   if (entry.__selectedHanzi) return entry.__selectedHanzi;
+   if (
+      dictionaryVariantStatus(entry) !== "modern" &&
+      entry.traditional && entry.traditional !== entry.simplified
+   ) return entry.traditional;
+   return entry.simplified;
+}
+
 async function dictionaryCharacterStudyEntry(character) {
    const personal = db.cards.find((card) => card.hz === character);
    if (personal) return attachHskMetadata(personalCardAsDictionaryEntry(personal));
@@ -133,9 +142,8 @@ function dictionaryCharacterInteractionHtml(characters) {
               esc(character) + "</button>",
            ).join("") + "</div>" + dictionaryCharacterStudyCardShell(characters[0])
          : "") +
-      characterNavigationHtml("dd-character", characters[0], 0, characters.length) +
-      '<div class="eyebrow">Ordre des traits</div>' + strokeBoxHtml() +
-      '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
+      '<div class="eyebrow">Ordre des traits</div>' +
+      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length) +
       "</section>"
    );
 }
@@ -192,21 +200,27 @@ function dictionaryHskSourceHtml(entry) {
    );
 }
 
-function dictionaryDefinitionsHtml(entry) {
-   const splitSenses = (values) => Array.from(new Set(
-      (values || []).flatMap((definition) => String(definition).split(/\s*;\s*/u)).map((sense) => sense.trim()).filter(Boolean),
+function dictionarySplitSenses(values) {
+   return Array.from(new Set(
+      (values || []).flatMap((definition) => String(definition).split(/\s*;\s*/u))
+         .map((sense) => sense.trim()).filter(Boolean),
    ));
-   const french = splitSenses(entry.definitionsFr);
-   const english = splitSenses(entry.definitionsEn);
-   const frenchSection = french.length
+}
+
+function dictionaryFrenchDefinitionsHtml(entry) {
+   const french = dictionarySplitSenses(entry.definitionsFr);
+   return french.length
       ? '<section class="dd-definitions"><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
         french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></section>"
       : '<section class="dd-definitions dd-french-unavailable"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
-   const englishSection = english.length
+}
+
+function dictionaryEnglishDefinitionsHtml(entry) {
+   const english = dictionarySplitSenses(entry.definitionsEn);
+   return english.length
       ? '<details class="dd-definitions english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
         english.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></details>"
       : "";
-   return frenchSection + englishSection;
 }
 
 function dictionaryVariantExplanationHtml(entry) {
@@ -397,10 +411,18 @@ function openDictionaryAddToWords(entry, options, suppliedState) {
       ? '<section class="dd-personal-definition"><div class="eyebrow">Définition française personnelle</div><p>' + (esc(existing.fr) || '<span class="muted">Non renseignée</span>') + "</p></section>"
       : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' + esc(state.french) + '" autocomplete="off"></label>' +
         (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Traduction française indisponible dans les sources. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
+   const selectedHanzi = dictionaryDetailDisplayHanzi(entry);
+   const identity = entry.traditional && entry.traditional !== entry.simplified
+      ? (dictionaryVariantStatus(entry) !== "modern"
+         ? 'Variante traditionnelle · simplifié <b>' + esc(entry.simplified) + "</b>"
+         : 'Traditionnel · <b>' + esc(entry.traditional) + "</b>")
+      : "";
    openSheet(
       '<section class="dd-add-words" aria-labelledby="dd-add-title"><button class="sheet-x" id="dd-add-cancel-top" type="button" aria-label="Fermer">×</button><h3 class="sh-t" id="dd-add-title">' +
          (existing ? "Déjà dans Mes mots" : "Ajouter à Mes mots") +
-         '</h3><div class="dd-add-word"><b>' + esc(entry.simplified) + "</b><span>" + colorPinyin(dictionaryEntryPinyinText(entry)) + "</span></div>" +
+         '</h3><div class="dd-add-word"><b>' + esc(selectedHanzi) + '</b><span class="dd-add-word-main"><span>' +
+         colorPinyin(dictionaryEntryPinyinText(entry)) + "</span>" +
+         (identity ? "<small>" + identity + "</small>" : "") + "</span></div>" +
          (existing ? '<p class="dd-unique-card-note">La carte personnelle et toute sa progression SRS seront conservées.</p>' + dictionaryPlacementLocationsHtml(existing) : "") +
          frenchBlock +
          '<div class="dd-placement-head"><div><div class="eyebrow">Packs et sous-catégories</div><p>Tu peux choisir plusieurs emplacements.</p></div><button class="btn ghost" id="dd-collapse-packs" type="button">Tout replier</button></div>' +
@@ -573,7 +595,8 @@ function openDictDetail(rawEntry, options) {
    if (!currentDetail || currentDetail.dataset.entryId !== String(entry.id))
       resetStrokeAutoplaySelection();
    const card = findPersonalCardForEntry(entry);
-   const characters = Array.from(entry.simplified).filter((character) => HAN_PATTERN.test(character));
+   const displayHanzi = dictionaryDetailDisplayHanzi(entry);
+   const characters = Array.from(displayHanzi).filter((character) => HAN_PATTERN.test(character));
    const marked = uniqueDetailValues(detailPinyin(entry, "marked"));
    const numbered = uniqueDetailValues(detailPinyin(entry, "numbered"));
    const traditional = entry.traditional && entry.traditional !== entry.simplified ? entry.traditional : "";
@@ -581,23 +604,23 @@ function openDictDetail(rawEntry, options) {
 
    openSheet(
       '<article class="dd-entry" data-entry-id="' + esc(entry.id) + '">' +
-         '<div class="cd-head"><div><div class="cd-hz" data-say="' + esc(entry.simplified) + '">' +
-         esc(entry.simplified) +
+         '<div class="cd-head"><div><div class="cd-hz" data-say="' + esc(displayHanzi) + '">' +
+         esc(displayHanzi) +
          '</div>' +
-         (traditional ? '<div class="dd-traditional">Traditionnel · ' + esc(traditional) + "</div>" : "") +
-         '</div><div class="dd-top-actions"><button class="seal" data-say="' + esc(entry.simplified) + '" aria-label="Écouter">听</button>' +
+         (traditional ? '<div class="dd-traditional">' + (displayHanzi === traditional ? "Simplifié · " + esc(entry.simplified) : "Traditionnel · " + esc(traditional)) + "</div>" : "") +
+         '</div><div class="dd-top-actions"><button class="seal" data-say="' + esc(displayHanzi) + '" aria-label="Écouter">听</button>' +
          '<button class="dd-top-close" id="dd-close-top" data-sheet-close aria-label="Fermer la fiche">×</button></div></div>' +
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
          dictionaryVariantExplanationHtml(entry) +
-         dictionaryDefinitionsHtml(entry) +
+         dictionaryFrenchDefinitionsHtml(entry) +
          dictionaryHskSourceHtml(entry) +
          '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
          (card
             ? cardActionsHtml(card)
             : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
          '<div class="dd-meta">' +
-         dictionaryEntryTypeLabels(entry).map((label) => '<span class="cd-cat">' + esc(label) + "</span>").join("") +
+         dictionaryEntryDetailedTypeLabels(entry).map((label) => '<span class="cd-cat">' + esc(label) + "</span>").join("") +
          verifiedHskBadges(entry) +
          (Number.isFinite(entry.frequencyRank)
             ? '<span class="cd-cat">Fréquence vérifiée · ' + esc(entry.frequencyRank) + "</span>"
@@ -607,7 +630,9 @@ function openDictDetail(rawEntry, options) {
          (card && card.exHz ? exampleHtml(card) : "") +
          (card && card.note ? noteHtml(card) : "") +
          dictionaryCharacterInteractionHtml(characters) +
+         dictionaryEnglishDefinitionsHtml(entry) +
          dictionarySourcesHtml(entry) +
+         '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
          '<div class="sh-btns"><button class="btn ghost wide" id="dd-close">' +
          (settings.fromSearch ? "← Retour aux résultats" : "Fermer") +
          "</button></div></article>",
@@ -682,7 +707,7 @@ function updateDictionaryPagingMode() {
    const interaction = $("dd-character-interaction");
    if (interaction)
       interaction.classList.toggle("is-practice-paging-locked", locked);
-   document.querySelectorAll("#dd-picker .hzchip").forEach((button) => {
+   document.querySelectorAll("#dd-picker .hzchip, #seq-character-strip .hzchip").forEach((button) => {
       button.disabled = locked;
       button.setAttribute("aria-disabled", String(locked));
    });
