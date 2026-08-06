@@ -243,40 +243,59 @@ function cardDetailWordNavigationHtml(card, context) {
    if (context.cardIds.length <= 1) return "";
    const index = context.cardIds.indexOf(card.id);
    return (
-      '<nav class="card-detail-word-nav" aria-label="Navigation entre les mots de cette liste">' +
-      '<button class="character-nav-button character-nav-previous" id="card-word-prev" type="button" aria-label="Mot précédent"' +
-      (index <= 0 ? " disabled" : "") + ">" + characterChevronHtml("left") + "</button>" +
+      '<div class="card-detail-word-nav">' +
       '<strong class="card-detail-word-position" id="card-word-position" role="status" aria-live="polite">' +
       esc(card.hz) + " · " + (index + 1) + " / " + context.cardIds.length + "</strong>" +
-      '<button class="character-nav-button character-nav-next" id="card-word-next" type="button" aria-label="Mot suivant"' +
-      (index >= context.cardIds.length - 1 ? " disabled" : "") + ">" +
-      characterChevronHtml("right") + "</button></nav>"
+      "</div>"
    );
 }
 
-function wireCardStrokeWorkspace(card, characters) {
+function wireCardStrokeWorkspace(card, characters, context, initialCharacterIndex) {
    if (!characters.length) return;
    wireStrokeWorkspace();
    let selectedIndex = 0;
+   const listIndex = context.cardIds.indexOf(card.id);
    const selectCharacter = (index) => {
       selectedIndex = Math.max(0, Math.min(Number(index) || 0, characters.length - 1));
       const character = characters[selectedIndex];
       updateCharacterNavigation("card", characters, selectedIndex);
+      if ($("card-prev"))
+         $("card-prev").disabled = selectedIndex === 0 && listIndex === 0;
+      if ($("card-next"))
+         $("card-next").disabled =
+            selectedIndex === characters.length - 1 && listIndex === context.cardIds.length - 1;
       loadDDChar(character, characters, {
          selectionKey: `card:${card.id}:${selectedIndex}:${character}`,
          selectionIndex: selectedIndex,
       });
    };
-   if ($("card-prev")) $("card-prev").onclick = () => selectCharacter(selectedIndex - 1);
-   if ($("card-next")) $("card-next").onclick = () => selectCharacter(selectedIndex + 1);
-   selectCharacter(0);
+   if ($("card-prev")) $("card-prev").onclick = () => {
+      if (selectedIndex > 0) selectCharacter(selectedIndex - 1);
+      else if (listIndex > 0)
+         openCardDetail(context.cardIds[listIndex - 1], {
+            ...context,
+            initialCharacterIndex: -1,
+         });
+   };
+   if ($("card-next")) $("card-next").onclick = () => {
+      if (selectedIndex < characters.length - 1) selectCharacter(selectedIndex + 1);
+      else if (listIndex < context.cardIds.length - 1)
+         openCardDetail(context.cardIds[listIndex + 1], {
+            ...context,
+            initialCharacterIndex: 0,
+         });
+   };
+   const startIndex = initialCharacterIndex === -1
+      ? characters.length - 1
+      : initialCharacterIndex == null ? 0 : initialCharacterIndex;
+   selectCharacter(startIndex);
 }
 
 function openCardDetail(id, options) {
    const card = db.cards.find((item) => item.id === id);
    if (!card) return;
    const context = cardDetailContext(id, options);
-   const listIndex = context.cardIds.indexOf(id);
+   const initialCharacterIndex = options && options.initialCharacterIndex;
    const characters = Array.from(card.hz || "").filter((character) => HAN_PATTERN.test(character));
    resetStrokeAutoplaySelection();
    openSheet(
@@ -297,16 +316,18 @@ function openCardDetail(id, options) {
       (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div>' +
       (characters.length
          ? '<section class="dd-character-interaction card-detail-strokes" id="card-stroke-interaction"><div class="eyebrow">Ordre des traits</div>' +
-           strokeCharacterStageHtml("card", characters[0], 0, characters.length) + "</section>"
+           strokeCharacterStageHtml(
+              "card",
+              characters[0],
+              0,
+              characters.length,
+              context.cardIds.length > 1,
+           ) + "</section>"
          : "") +
       '<div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) +
       '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div></article>',
    );
-   wireCardStrokeWorkspace(card, characters);
-   if ($("card-word-prev"))
-      $("card-word-prev").onclick = () => openCardDetail(context.cardIds[listIndex - 1], context);
-   if ($("card-word-next"))
-      $("card-word-next").onclick = () => openCardDetail(context.cardIds[listIndex + 1], context);
+   wireCardStrokeWorkspace(card, characters, context, initialCharacterIndex);
    $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id, context); };
    $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id, context); };
    $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id, context); };

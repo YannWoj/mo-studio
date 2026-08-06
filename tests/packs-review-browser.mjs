@@ -109,9 +109,9 @@ async function main() {
    const firstDetailId = await evaluate("document.querySelector('.card-detail-sheet').dataset.cardId");
    for (const width of [360, 1024]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
-      await waitFor(() => evaluate(`(() => {const stage=document.querySelector('#card-stage'),visual=stage?.querySelector('.stroke-tab-panel:not([hidden]) .mizi'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');if(!stage||!visual||!previous||!next)return false;const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect();return Math.abs(p.right-v.left)<1&&Math.abs(n.left-v.right)<1&&Math.abs(p.top+p.height/2-v.top-v.height/2)<1;})()`), `card stroke navigation did not settle at ${width}px`);
-      const layout = await evaluate(`(() => {const sheet=document.querySelector('.sheet-card'),listen=document.querySelector('.card-detail-sheet .seal'),close=document.querySelector('#card-close-top'),wordPrevious=document.querySelector('#card-word-prev'),wordNext=document.querySelector('#card-word-next'),a=listen.getBoundingClientRect(),b=close.getBoundingClientRect();return {overlap:!(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top),sizes:[a.width,a.height,b.width,b.height],wordButtons:!!wordPrevious&&!!wordNext,wordPositions:[getComputedStyle(wordPrevious).position,getComputedStyle(wordNext).position],wordState:[wordPrevious.disabled,wordNext.disabled],wordPosition:document.querySelector('#card-word-position').textContent.trim(),actions:['card-favorite','card-difficult','card-mastered','card-review-one','card-edit','card-delete','card-close'].every((id)=>!!document.getElementById(id)),membershipHandlers:[...document.querySelectorAll('[data-card-category]')].every((input)=>typeof input.onchange==='function'),overflow:sheet.scrollWidth>sheet.clientWidth||document.documentElement.scrollWidth>innerWidth};})()`);
-      assert(!layout.overlap && layout.sizes.every((size)=>size>=44) && layout.wordButtons && layout.wordPositions.every((position)=>position!=="absolute") && layout.wordState[0] && !layout.wordState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
+      await waitFor(() => evaluate(`(() => {const stage=document.querySelector('#card-stage'),visual=stage?.querySelector('.stroke-tab-panel:not([hidden]) .mizi'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');if(!stage||!visual||!previous||!next)return false;const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect();return Math.abs(v.left-p.right-8)<1&&Math.abs(n.left-v.right-8)<1&&Math.abs(p.top+p.height/2-v.top-v.height/2)<1;})()`), `card stroke navigation did not settle at ${width}px`);
+      const layout = await evaluate(`(() => {const sheet=document.querySelector('.sheet-card'),listen=document.querySelector('.card-detail-sheet .seal'),close=document.querySelector('#card-close-top'),previous=document.querySelector('#card-prev'),next=document.querySelector('#card-next'),a=listen.getBoundingClientRect(),b=close.getBoundingClientRect();return {overlap:!(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top),sizes:[a.width,a.height,b.width,b.height],obsoleteWordButtons:!!document.querySelector('#card-word-prev,#card-word-next'),characterButtons:!!previous&&!!next,characterState:[previous.disabled,next.disabled],wordPosition:document.querySelector('#card-word-position').textContent.trim(),actions:['card-favorite','card-difficult','card-mastered','card-review-one','card-edit','card-delete','card-close'].every((id)=>!!document.getElementById(id)),membershipHandlers:[...document.querySelectorAll('[data-card-category]')].every((input)=>typeof input.onchange==='function'),overflow:sheet.scrollWidth>sheet.clientWidth||document.documentElement.scrollWidth>innerWidth};})()`);
+      assert(!layout.overlap && layout.sizes.every((size)=>size>=44) && !layout.obsoleteWordButtons && layout.characterButtons && layout.characterState[0] && !layout.characterState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
       await evaluate("document.querySelector('.sheet-card').scrollTop=0");
       const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
       await writeFile(width === 360 ? cardDetailScreenshots.mobile : cardDetailScreenshots.desktop, Buffer.from(screenshot.data, "base64"));
@@ -122,9 +122,11 @@ async function main() {
    assert((await evaluate("db.cards.find((card)=>card.id===document.querySelector('.card-detail-sheet').dataset.cardId).fav")) !== favoriteBefore && /1 \/ 2$/.test(await evaluate("document.querySelector('#card-word-position').textContent.trim()")), "favorite action lost state or list context");
    await click("#card-favorite");
    await waitFor(() => evaluate("!!document.querySelector('#card-stage.is-navigation-positioned')"), "favorite restore did not reload strokes");
-   await click("#card-word-next");
+   await click("#card-next");
+   assert(await evaluate("document.querySelector('#card-position').textContent.trim().endsWith('2 / 2') && !document.querySelector('#card-next').disabled"), "next character stopped at the word boundary");
+   await click("#card-next");
    await waitFor(() => evaluate(`document.querySelector('.card-detail-sheet')?.dataset.cardId!==${JSON.stringify(firstDetailId)}&&!!ddCharacterData&&!!document.querySelector('#card-stage.is-navigation-positioned')`), "next word did not load its strokes");
-   assert(await evaluate("!document.querySelector('#card-word-prev').disabled&&document.querySelector('#card-word-next').disabled&&document.querySelector('#card-word-position').textContent.trim().endsWith('2 / 2')"), "next-word boundary state is wrong");
+   assert(await evaluate("!document.querySelector('#card-prev').disabled&&document.querySelector('#card-position').textContent.trim().endsWith('1 / 2')&&document.querySelector('#card-word-position').textContent.trim().endsWith('2 / 2')"), "next-word boundary state is wrong");
    await click('[data-stroke-tab="steps"]');
    await waitFor(() => evaluate("document.querySelectorAll('#dd-gallery .stroke-panel').length>0"), "personal card stroke steps did not render");
    await click('[data-stroke-tab="practice"]');
@@ -133,6 +135,49 @@ async function main() {
    await waitFor(() => evaluate("ddWriterTarget?.id==='dd-target'"), "personal card animation did not return");
    await click("#card-close-top");
    assert(!(await evaluate("sheetOpen()")), "personal card top close did not close the sheet");
+
+   await evaluate(`(() => {
+      const samples = [
+         { id:'nav-hello', hz:'\u4f60\u597d', py:'ni hao', fr:'bonjour' },
+         { id:'nav-question', hz:'\u4f60\u597d\u5417', py:'ni hao ma', fr:'comment vas-tu' },
+         { id:'nav-single', hz:'\u4e2d', py:'zhong', fr:'milieu' },
+         { id:'nav-last', hz:'\u9762\u5305', py:'mian bao', fr:'pain' },
+      ].map((card) => normalizeCard(card, true));
+      db.cards.push(...samples.filter((sample) => !db.cards.some((card) => card.id === sample.id)));
+      openCardDetail('nav-hello', { cardIds:samples.map((card) => card.id) });
+   })()`);
+   await waitFor(() => evaluate("ddChar==='\u4f60' && !!document.querySelector('#card-stage.is-navigation-positioned')"), "continuous card navigation did not start");
+   assert(await evaluate(`(() => ({
+      word:document.querySelector('#card-word-position').textContent.trim(),
+      character:document.querySelector('#card-position').textContent.trim(),
+      previous:document.querySelector('#card-prev').disabled,
+      next:document.querySelector('#card-next').disabled,
+      obsolete:!!document.querySelector('#card-word-prev,#card-word-next'),
+   }))()` ).then((state) => state.word.endsWith("1 / 4") && state.character.endsWith("1 / 2") && state.previous && !state.next && !state.obsolete), "continuous navigation initial state is wrong");
+   await click("#card-next");
+   assert(await evaluate("ddChar==='\u597d' && document.querySelector('#card-position').textContent.trim().endsWith('2 / 2') && !document.querySelector('#card-next').disabled"), "same-word next navigation failed");
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}))");
+   await waitFor(() => evaluate("document.querySelector('.card-detail-sheet')?.dataset.cardId==='nav-question' && ddChar==='\u4f60'"), "keyboard next did not cross the word boundary");
+   assert(await evaluate("document.querySelector('#card-word-position').textContent.trim().endsWith('2 / 4') && document.querySelector('#card-position').textContent.trim().endsWith('1 / 3')"), "next word did not start on its first character");
+   await click("#card-next");
+   assert(await evaluate("ddChar==='\u597d' && document.querySelector('#card-position').textContent.trim().endsWith('2 / 3')"), "continuous next sequence is wrong");
+   await click("#card-next");
+   await click("#card-next");
+   await waitFor(() => evaluate("document.querySelector('.card-detail-sheet')?.dataset.cardId==='nav-single' && ddChar==='\u4e2d'"), "single-character word was not reached");
+   assert(await evaluate("document.querySelector('#card-position').textContent.trim().endsWith('1 / 1') && !document.querySelector('#card-prev').disabled && !document.querySelector('#card-next').disabled"), "single-character word did not keep continuous navigation available");
+   await click("#card-prev");
+   await waitFor(() => evaluate("document.querySelector('.card-detail-sheet')?.dataset.cardId==='nav-question' && ddChar==='\u5417'"), "previous word did not open on its last character");
+   assert(await evaluate("document.querySelector('#card-position').textContent.trim().endsWith('3 / 3')"), "initialCharacterIndex -1 sentinel failed");
+   await click('[data-stroke-tab="practice"]');
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}))");
+   assert(await evaluate("ddChar==='\u5417'"), "practice mode keyboard guard regressed in personal cards");
+   await click('[data-stroke-tab="animation"]');
+   await evaluate("openCardDetail('nav-last',{cardIds:['nav-hello','nav-question','nav-single','nav-last'],initialCharacterIndex:-1})");
+   await waitFor(() => evaluate("ddChar==='\u5305' && !!document.querySelector('#card-stage.is-navigation-positioned')"), "last card sentinel did not load");
+   assert(await evaluate("document.querySelector('#card-position').textContent.trim().endsWith('2 / 2') && !document.querySelector('#card-prev').disabled && document.querySelector('#card-next').disabled"), "last character/list boundary is wrong");
+   await click("#card-close-top");
+   await evaluate("db.cards = db.cards.filter((card) => !card.id.startsWith('nav-'))");
+   pass("progression continue mot/caractère, clavier, sentinelle -1, mot d’un caractère et bornes");
 
    await evaluate(`lib.level='category';lib.categoryId=${JSON.stringify(detailCategories.single)};lib.q='';lib.flt='all';renderLib()`);
    assert((await evaluate("document.querySelectorAll('[data-word-open]').length")) === 1, "single-word category did not render one card");

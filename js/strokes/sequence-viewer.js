@@ -12,11 +12,11 @@ function characterChevronHtml(direction) {
       '"></path></svg>';
 }
 
-function strokeCharacterStageHtml(prefix, character, index, total) {
+function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation) {
    const previousDisabled = index <= 0 ? " disabled" : "";
    const nextDisabled = index >= total - 1 ? " disabled" : "";
    const positionClass = prefix === "seq" ? " s-count" : "";
-   const hasNavigation = total > 1;
+   const hasNavigation = total > 1 || forceNavigation;
    return (
       (hasNavigation ? '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
       '-position" role="status" aria-live="polite" aria-atomic="true">' +

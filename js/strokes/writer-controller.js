@@ -37,6 +37,7 @@ function destroyStrokeCharacterNavigation(prefix) {
 }
 
 function measureStrokeCharacterNavigation(prefix) {
+   const navigationGap = 8;
    const state = strokeCharacterNavigationStates.get(prefix);
    const stage = $(prefix + "-stage");
    const previous = $(prefix + "-prev");
@@ -67,11 +68,11 @@ function measureStrokeCharacterNavigation(prefix) {
    );
    stage.style.setProperty(
       "--nav-left",
-      visualRect.left - stageRect.left - previousRect.width + "px",
+      visualRect.left - stageRect.left - previousRect.width - navigationGap + "px",
    );
    stage.style.setProperty(
       "--nav-right",
-      stageRect.right - visualRect.right - nextRect.width + "px",
+      stageRect.right - visualRect.right - nextRect.width - navigationGap + "px",
    );
    stage.classList.add("is-navigation-positioned");
    return true;

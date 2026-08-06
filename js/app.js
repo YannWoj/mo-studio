@@ -39,9 +39,9 @@
                   if (e.defaultPrevented || editing) return;
                   const characterButton =
                      e.key === "ArrowLeft"
-                        ? $("dd-character-prev")
+                        ? $("dd-character-prev") || $("card-prev")
                         : e.key === "ArrowRight"
-                          ? $("dd-character-next")
+                          ? $("dd-character-next") || $("card-next")
                           : null;
                   if (
                      characterButton &&
