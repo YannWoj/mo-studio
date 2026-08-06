@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,6 +10,7 @@ const debugPort = 9345;
 const url = `http://127.0.0.1:${port}/`;
 const edge = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const profile = await mkdtemp(path.join(os.tmpdir(), "mo-review-simple-"));
+const reviewWritingScreenshot = path.join(os.tmpdir(), "mo-review-writing-practice-360.png");
 let server, browser, cdp;
 
 function assert(value, message) { if (!value) throw new Error(message); }
@@ -90,11 +91,11 @@ async function main() {
 
    await evaluate("document.body.style.minHeight='1800px';window.scrollTo(0,240)");
    await openDetail(); await click("#card-close"); await closedCorrectly("bottom close"); pass("23 Annuler/Fermer et restauration focus/scroll");
-   await openDetail(); await click(".sheet-x"); await closedCorrectly("top close"); pass("croix de fermeture");
+   await openDetail(); await click("#card-close-top"); await closedCorrectly("top close"); pass("croix de fermeture");
    await openDetail(); await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))"); await closedCorrectly("escape"); pass("24 touche Échap");
    await openDetail(); await click("#sheet"); await closedCorrectly("backdrop"); pass("25 clic extérieur");
    await openDetail(); await click(".cd-head"); assert(await evaluate("sheetOpen()"), "inside click closed dialog"); await click("#card-close"); pass("26 clic intérieur sans fermeture");
-   for (let index=0; index<5; index++) { await openDetail(); await click(index % 2 ? ".sheet-x" : "#card-close"); await closedCorrectly("repeat " + index); }
+   for (let index=0; index<5; index++) { await openDetail(); await click(index % 2 ? "#card-close-top" : "#card-close"); await closedCorrectly("repeat " + index); }
    pass("non-régression ouvertures et fermetures répétées");
 
    await evaluate("setView('learn',{fromHistory:true});reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewSelectionMode='all';renderLearn()");
@@ -153,6 +154,41 @@ async function main() {
    await evaluate("window.__previousReviewWriter=reviewStrokeWriter;true"); await click("#review-stroke-replay"); assert(await evaluate("!!reviewStrokeWriter&&reviewStrokeWriter!==window.__previousReviewWriter"), "replay did not recreate animation"); pass("ordre des traits · Animation et Rejouer");
    await click('[data-review-stroke-tab="steps"]'); await waitFor(() => evaluate("document.querySelectorAll('.review-stroke-step').length===reviewStrokeData?.strokeCount"), "stroke steps missing"); pass("ordre des traits · Étapes");
    await click("#review-stroke-character-next"); await waitFor(() => evaluate("reviewStrokeData?.character==='好'"), "second character did not load"); assert(await evaluate("document.querySelector('#review-stroke-count').textContent.trim()==='2 / 3'"), "second character counter failed");
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:360, height:800, deviceScaleFactor:2, mobile:true });
+   await click("#review-stroke-practice");
+   await waitFor(() => evaluate("sheetOpen()&&document.querySelector('#review-writing-canvas')?.width>1"), "review writing practice did not open");
+   const practiceLayout = await evaluate(`(() => {
+      const sheet=document.querySelector('.sheet-card'),rect=sheet.getBoundingClientRect(),canvas=document.querySelector('#review-writing-canvas'),model=document.querySelector('#review-writing-model'),surface=document.querySelector('#review-writing-surface'),surfaceRect=surface.getBoundingClientRect();
+      return {character:document.querySelector('.review-writing-practice').dataset.reviewWritingCharacter,model:model.textContent.trim(),sheetHeight:rect.height,viewport:innerHeight,top:rect.top,width:rect.width,surfaceSize:[surfaceRect.width,surfaceRect.height],surfaceMinHeight:getComputedStyle(surface).minHeight,overflow:document.documentElement.scrollWidth>innerWidth,canvasTouch:getComputedStyle(canvas).touchAction,grids:document.querySelectorAll('.review-writing-practice [data-writing-grid]').length,touchTargets:[...document.querySelectorAll('.review-writing-practice button,.review-writing-practice input')].every((node)=>node.type==='range'||node.type==='checkbox'||node.getBoundingClientRect().height>=44),session:{active:session.active,index:session.index,card:currentCard().id,stroke:getState(session.index).strokeCharacterIndex,tab:reviewStrokeTab},inert:document.querySelector('#view').inert};
+   })()`);
+   assert(practiceLayout.character==='好'&&practiceLayout.model==='好'&&practiceLayout.sheetHeight<=practiceLayout.viewport*.78+1&&practiceLayout.top>0&&practiceLayout.width<practiceLayout.viewport&&Math.abs(practiceLayout.surfaceSize[0]-practiceLayout.surfaceSize[1])<1&&!practiceLayout.overflow&&practiceLayout.canvasTouch==='none'&&practiceLayout.grids===4&&practiceLayout.touchTargets&&practiceLayout.session.active&&practiceLayout.session.index===0&&practiceLayout.session.card==='c1'&&practiceLayout.session.stroke===1&&practiceLayout.session.tab==='steps'&&practiceLayout.inert, `compact review writing layout/state failed: ${JSON.stringify(practiceLayout)}`);
+   await click("#review-writing-model-visible");
+   assert(await evaluate("document.querySelector('#review-writing-model').hidden"), "review writing model toggle did not hide the guide");
+   await click("#review-writing-model-visible");
+   await evaluate("(() => {const input=document.querySelector('#review-writing-opacity');input.value='31';input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-writing-grid=mi]').click();})()");
+   const practiceGesture = await evaluate(`(() => {
+      const canvas=document.querySelector('#review-writing-canvas'),rect=canvas.getBoundingClientRect(),x=rect.left+rect.width*.35,y=rect.top+rect.height*.35,init={bubbles:true,cancelable:true,isPrimary:true,pointerId:71,pointerType:'touch',button:0};
+      canvas.dispatchEvent(new PointerEvent('pointerdown',{...init,clientX:x,clientY:y}));
+      canvas.dispatchEvent(new PointerEvent('pointermove',{...init,clientX:x+32,clientY:y+22}));
+      canvas.dispatchEvent(new PointerEvent('pointermove',{...init,clientX:x+64,clientY:y+48}));
+      canvas.dispatchEvent(new PointerEvent('pointerup',{...init,clientX:x+64,clientY:y+48}));
+      return {selection:getSelection().toString(),clearDisabled:document.querySelector('#review-writing-clear').disabled,grid:document.querySelector('#review-writing-surface').dataset.grid,opacity:document.querySelector('#review-writing-opacity-value').textContent,modelHidden:document.querySelector('#review-writing-model').hidden};
+   })()`);
+   assert(!practiceGesture.selection&&!practiceGesture.clearDisabled&&practiceGesture.grid==='mi'&&practiceGesture.opacity==='31%'&&!practiceGesture.modelHidden, `review writing controls/touch failed: ${JSON.stringify(practiceGesture)}`);
+   await evaluate("document.querySelector('.review-writing-practice .sheet-x').focus({preventScroll:true});document.querySelector('.sheet-card').scrollTop=0");
+   await new Promise((resolve) => setTimeout(resolve, 300));
+   const practiceImage = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
+   await writeFile(reviewWritingScreenshot, Buffer.from(practiceImage.data, "base64"));
+   await click("#review-writing-clear");
+   assert(await evaluate("document.querySelector('#review-writing-clear').disabled"), "review writing restart did not clear the disposable drawing");
+   await click(".review-writing-practice .sheet-x");
+   assert(await evaluate("!sheetOpen()&&session.active&&session.index===0&&currentCard().id==='c1'&&getState(0).strokeCharacterIndex===1&&reviewStrokeTab==='steps'&&document.querySelector('[data-review-stroke-character=\"1\"]').getAttribute('aria-pressed')==='true'&&!document.querySelector('.sheet-card').classList.contains('review-writing-sheet-card')"), "closing review writing practice changed the review session");
+   await click("#review-stroke-practice");
+   await waitFor(() => evaluate("sheetOpen()&&!!document.querySelector('#review-writing-clear')"), "review writing practice did not reopen");
+   assert(await evaluate("document.querySelector('#review-writing-clear').disabled&&document.querySelector('.review-writing-practice').dataset.reviewWritingCharacter==='好'"), "review writing drawing persisted after close");
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))");
+   await waitFor(() => evaluate("!sheetOpen()&&session.active&&session.index===0"), "Escape left the review writing practice or session open incorrectly");
+   pass(`essai tactile jetable sur le caractère sélectionné, sheet compacte 360 px · capture ${reviewWritingScreenshot}`);
    await click('[data-review-stroke-character="2"]'); await waitFor(() => evaluate("reviewStrokeData?.character==='吗'"), "third character did not load"); assert(await evaluate(`document.querySelector('#review-stroke-count').textContent.trim()==='3 / 3'&&document.querySelector('[data-review-stroke-character="2"]').getAttribute('aria-pressed')==='true'`), "third character state failed"); pass("navigation entre 你, 好 et 吗");
    const listenerCount = await evaluate("reviewStrokeWriterListeners.length"); await click("#s-next"); assert(await evaluate("session.index===1&&reviewStrokeWriter===null&&reviewStrokeWriterListeners.length===0"), "writer was not destroyed on card change"); await click("#s-flip"); await waitFor(() => evaluate("reviewStrokeData?.character==='书'"), "next card stroke data did not load"); assert((await evaluate("reviewStrokeWriterListeners.length")) <= Math.max(listenerCount, 2), "writer listeners leaked"); assert(await evaluate("document.querySelector('#s-next').textContent.includes('Terminer')&&!document.querySelector('#s-prev').disabled"), "last card navigation failed"); await click("#s-prev"); assert((await evaluate("session.index")) === 0, "previous navigation failed"); pass("nettoyage Hanzi Writer et barre Précédent / Passer / Terminer");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();startCardsWith([{id:'latin',hz:'hello',py:'',fr:'bonjour',lvl:0,due:null,acquired:false}],'Sans hanzi','cards')"); await click("#s-flip"); assert(!(await evaluate("!!document.querySelector('#review-strokes')")), "stroke block shown without Han character"); await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()"); pass("verso sans caractère chinois");
@@ -189,6 +225,14 @@ async function main() {
       await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
    }
    pass("session responsive 360, 430 et 1024 px sans chevauchement");
+
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:2, mobile:true });
+   await evaluate("writingState.mode='free';writingState.free={actions:[],redo:[]};setView('write',{fromHistory:true});renderWriting()");
+   await waitFor(() => evaluate("document.querySelector('#writing-canvas')?.width>1&&!!writingCanvasController"), "shared writing canvas did not initialize on the Écrire page");
+   const sharedCanvas = await evaluate(`(() => {const canvas=document.querySelector('#writing-canvas'),rect=canvas.getBoundingClientRect(),x=rect.left+rect.width*.4,y=rect.top+rect.height*.3,init={bubbles:true,cancelable:true,isPrimary:true,pointerId:72,pointerType:'pen',pressure:.7,button:0};canvas.dispatchEvent(new PointerEvent('pointerdown',{...init,clientX:x,clientY:y}));canvas.dispatchEvent(new PointerEvent('pointermove',{...init,clientX:x+45,clientY:y+40}));canvas.dispatchEvent(new PointerEvent('pointerup',{...init,clientX:x+45,clientY:y+40}));return {actions:writingState.free.actions.length,points:writingState.free.actions.at(-1)?.points.length,touch:getComputedStyle(canvas).touchAction};})()`);
+   assert(sharedCanvas.actions===1&&sharedCanvas.points>=2&&sharedCanvas.touch==='none', `shared writing canvas regressed: ${JSON.stringify(sharedCanvas)}`);
+   await evaluate("setView('learn',{fromHistory:true});renderLearn()");
+   pass("moteur de canevas partagé sans régression sur la page Écrire");
 
    const finalState = await evaluate("({srs:JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,acquired:c.acquired,history:c.reviewHistory}))),structure:JSON.stringify({packs:db.packs,categories:db.categories,memberships:db.memberships})})");
    assert(finalState.srs === seeded.srs && finalState.structure === seeded.structure, "packs or SRS changed"); pass("22 aucune perte de packs ou progression");

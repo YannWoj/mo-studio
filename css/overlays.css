@@ -81,6 +81,45 @@
          .sh-btns .btn {
             flex: 1;
          }
+         .settings-group {
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--line-soft);
+         }
+         .settings-group > .eyebrow:first-child {
+            margin: 16px 0 0;
+         }
+         .settings-group-help {
+            margin: 4px 0 12px;
+            line-height: 1.45;
+         }
+         .settings-field-title {
+            margin: 12px 0 7px;
+            color: var(--ink-soft);
+            font-size: 13px;
+            font-weight: 600;
+         }
+         .settings-tone-colors {
+            margin-top: 4px;
+         }
+         .settings-data-actions {
+            margin-top: 10px;
+         }
+         .settings-data-actions .btn {
+            flex: 1 1 calc(50% - 9px);
+         }
+         .settings-danger-zone {
+            margin-top: 16px;
+            padding: 0 12px 12px;
+            border: 1px solid rgba(158, 43, 37, 0.28);
+            border-radius: 12px;
+            background: rgba(158, 43, 37, 0.035);
+         }
+         .settings-danger-zone > .eyebrow:first-child {
+            color: var(--lacquer);
+         }
+         .settings-close {
+            margin-top: 12px;
+         }
          .delay-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;

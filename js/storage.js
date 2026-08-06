@@ -11,8 +11,6 @@
             voice: "",
             direction: "zh2fr", // zh2fr | fr2zh | mix
             writeModes: { pinyin: true, fr: true, trace: true },
-            sessionSize: 20, // taille max de « Continuer » (0 = tout)
-            newPerSession: 5, // nouvelles cartes par séance
             freeSize: 20, // taille des séances libres (0 = tout)
             listenLevel: 1, // 1 = 汉字+FR, 2 = 汉字, 3 = FR
             strokeSpeed: 1, // vitesse d'animation du tracé (0.25 à 2×)
@@ -97,7 +95,15 @@
                raw = localStorage.getItem(DB_KEY);
                if (raw) {
                   const d = JSON.parse(raw);
-                  const s = Object.assign(defaultSettings(), d.settings || {});
+                  const storedSettings =
+                     d.settings && typeof d.settings === "object"
+                        ? Object.assign({}, d.settings)
+                        : {};
+                  // Anciennes sauvegardes : ces options de séance ne sont plus
+                  // utilisées. Elles restent acceptées, mais ne sont pas chargées.
+                  delete storedSettings.sessionSize;
+                  delete storedSettings.newPerSession;
+                  const s = Object.assign(defaultSettings(), storedSettings);
                   s.writeModes = Object.assign(
                      { pinyin: true, fr: true, trace: true },
                      (d.settings && d.settings.writeModes) || {},

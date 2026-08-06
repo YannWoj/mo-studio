@@ -27,55 +27,34 @@
                '">' +
                l +
                "</button>";
-            const selOpt = (arr, cur) =>
-               arr
-                  .map(
-                     (o) =>
-                        '<option value="' +
-                        o[0] +
-                        '"' +
-                        (cur === o[0] ? " selected" : "") +
-                        ">" +
-                        o[1] +
-                        "</option>",
-                  )
-                  .join("");
             openSheet(
                '<h3 class="sh-t">设 · Réglages</h3>' +
-                  '<div class="eyebrow" style="margin-top:6px">Séance « Continuer »</div>' +
-                  '<label class="f-lab">Taille maximale<select class="search" id="st-size">' +
-                  selOpt(
-                     [
-                        [10, "10 cartes"],
-                        [15, "15 cartes"],
-                        [20, "20 cartes"],
-                        [30, "30 cartes"],
-                        [0, "Tout ce qui est dû"],
-                     ],
-                     s.sessionSize,
-                  ) +
-                  "</select></label>" +
-                  '<label class="f-lab">Nouvelles cartes par séance<select class="search" id="st-new">' +
-                  selOpt(
-                     [
-                        [0, "0"],
-                        [3, "3"],
-                        [5, "5"],
-                        [10, "10"],
-                     ],
-                     s.newPerSession,
-                  ) +
-                  "</select></label>" +
-                  '<div class="eyebrow">Pinyin</div>' +
+                  '<section class="settings-group" aria-labelledby="settings-review-title">' +
+                  '<div class="eyebrow" id="settings-review-title">Pendant la révision</div>' +
+                  '<p class="sh-note settings-group-help">Ce qui s’affiche et ce qu’on te demande de faire sur chaque carte pendant une révision.</p>' +
+                  '<div class="settings-field-title">Pinyin</div>' +
                   '<div class="chips" id="st-py">' +
                   pyChip("always", "Toujours") +
                   pyChip("reveal", "Au verso") +
                   pyChip("never", "Jamais") +
                   "</div>" +
-                  '<label class="ck" style="margin-top:8px"><input type="checkbox" id="st-col"' +
+                  '<label class="ck settings-tone-colors"><input type="checkbox" id="st-col"' +
                   (s.toneColors ? " checked" : "") +
                   "> Colorer les tons</label>" +
-                  '<div class="eyebrow">Audio</div>' +
+                  '<div class="settings-field-title">Exercices écrits</div>' +
+                  '<label class="ck"><input type="checkbox" id="wm-py"' +
+                  (s.writeModes.pinyin ? " checked" : "") +
+                  "> Taper le pinyin</label>" +
+                  '<label class="ck"><input type="checkbox" id="wm-fr"' +
+                  (s.writeModes.fr ? " checked" : "") +
+                  "> Taper le français</label>" +
+                  '<label class="ck"><input type="checkbox" id="wm-tr"' +
+                  (s.writeModes.trace ? " checked" : "") +
+                  "> Tracer les caractères</label>" +
+                  "</section>" +
+                  '<section class="settings-group" aria-labelledby="settings-audio-title">' +
+                  '<div class="eyebrow" id="settings-audio-title">Audio</div>' +
+                  '<p class="sh-note settings-group-help">Utilisé partout où tu vois le bouton 听 (écouter).</p>' +
                   '<label class="f-lab">Vitesse · <span id="rate-lab">' +
                   s.rate.toFixed(2) +
                   '×</span><input type="range" id="st-rate" min="0.5" max="1.2" step="0.05" value="' +
@@ -87,18 +66,11 @@
                   (voices.length
                      ? ""
                      : '<p class="sh-note">Aucune voix chinoise détectée. Installe une voix « Chinois (Chine) » dans ton système pour activer l\'audio.</p>') +
-                  '<div class="eyebrow">Exercices écrits</div>' +
-                  '<label class="ck"><input type="checkbox" id="wm-py"' +
-                  (s.writeModes.pinyin ? " checked" : "") +
-                  "> Taper le pinyin</label>" +
-                  '<label class="ck"><input type="checkbox" id="wm-fr"' +
-                  (s.writeModes.fr ? " checked" : "") +
-                  "> Taper le français</label>" +
-                  '<label class="ck"><input type="checkbox" id="wm-tr"' +
-                  (s.writeModes.trace ? " checked" : "") +
-                  "> Tracer les caractères</label>" +
-                  '<div class="eyebrow">Données</div>' +
-                  '<div class="sh-btns">' +
+                  "</section>" +
+                  '<section class="settings-group" aria-labelledby="settings-data-title">' +
+                  '<div class="eyebrow" id="settings-data-title">Données</div>' +
+                  '<p class="sh-note settings-group-help">Sauvegarde ou recharge tes mots et packs personnels.</p>' +
+                  '<div class="sh-btns settings-data-actions">' +
                   '<button class="btn" id="st-import">Importer</button>' +
                   '<button class="btn" id="st-export">Exporter</button>' +
                   '<button class="btn ghost" id="st-format">Voir le format JSON</button>' +
@@ -109,17 +81,14 @@
                        fmtDate(backup.ts) +
                        "</button>"
                      : "") +
+                  "</section>" +
+                  '<section class="settings-group settings-danger-zone" aria-labelledby="settings-danger-title">' +
+                  '<div class="eyebrow" id="settings-danger-title">Zone dangereuse</div>' +
+                  '<p class="sh-note settings-group-help">Supprime tes cartes, packs et progression. Une sauvegarde de secours est créée automatiquement et restera restaurable ici.</p>' +
                   '<button class="btn danger wide" id="st-reset">Tout effacer</button>' +
-                  '<button class="btn ghost wide" id="st-close">Fermer</button>',
+                  "</section>" +
+                  '<button class="btn ghost wide settings-close" id="st-close">Fermer</button>',
             );
-            $("st-size").onchange = (e) => {
-               s.sessionSize = +e.target.value;
-               save();
-            };
-            $("st-new").onchange = (e) => {
-               s.newPerSession = +e.target.value;
-               save();
-            };
             document.querySelectorAll("#st-py .chip").forEach(
                (b) =>
                   (b.onclick = () => {

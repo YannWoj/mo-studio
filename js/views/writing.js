@@ -3,15 +3,15 @@
 /* ================= tableau d'écriture (写) ================= */
 const WRITING_GRIDS = ["blank", "square", "tian", "mi"];
 const WRITING_COLORS = ["#17140f", "#9e2b25", "#2e6b57", "#2f5480"];
-let writingResizeObserver = null;
-let writingRenderFrame = 0;
-let writingPointerId = null;
+let writingCanvasController = null;
 let writingState = {
    mode: "free",
    word: "",
    characters: [],
    index: 0,
    tool: "pen",
+   toolsExpanded: null,
+   compactToolsViewport: null,
    free: { actions: [], redo: [] },
    practice: {},
 };
@@ -94,14 +94,7 @@ function writingPracticeHtml(prefs) {
            "</strong>" +
            '<button class="character-nav-button" id="writing-next" type="button" aria-label="Caractère suivant"' +
            (writingState.index >= writingState.characters.length - 1 ? " disabled" : "") +
-           ">" + writingChevron("right") + "</button></div>" +
-           '<div class="writing-model-controls"><label class="ck"><input type="checkbox" id="writing-model-visible"' +
-           (prefs.modelVisible ? " checked" : "") +
-           '> Afficher le modèle</label><label for="writing-opacity">Opacité <output id="writing-opacity-value">' +
-           Math.round(prefs.opacity * 100) +
-           '%</output></label><input id="writing-opacity" type="range" min="4" max="45" step="1" value="' +
-           Math.round(prefs.opacity * 100) +
-           '"></div>'
+           ">" + writingChevron("right") + "</button></div>"
          : '<p class="writing-practice-empty">Choisis un caractère ou un mot pour afficher un modèle en transparence.</p>') +
       "</section>"
    );
@@ -139,8 +132,23 @@ function writingGridSelectorHtml(prefs) {
 }
 
 function writingToolbarHtml(prefs) {
+   const expanded = writingToolsAreExpanded();
+   const hasModel =
+      writingState.mode === "practice" && writingState.characters.length > 0;
    return (
-      '<section class="writing-tools" aria-label="Outils de dessin"><div class="writing-tool-row writing-ink-tools">' +
+      '<section class="writing-tools" aria-label="Outils de dessin">' +
+      '<div class="writing-tool-row writing-primary-tools" role="group" aria-label="Outils essentiels">' +
+      '<button class="btn sm writing-tool" id="writing-pen" type="button" aria-pressed="' +
+      String(writingState.tool === "pen") +
+      '">Pinceau</button><button class="btn sm writing-tool" id="writing-eraser" type="button" aria-pressed="' +
+      String(writingState.tool === "eraser") +
+      '">Gomme</button><button class="btn sm" id="writing-undo" type="button">Annuler</button>' +
+      '<button class="btn sm ghost writing-more-toggle" id="writing-more-toggle" type="button" aria-expanded="' +
+      String(expanded) + '" aria-controls="writing-more-tools">' +
+      (expanded ? "Moins d’outils" : "Plus d’outils") +
+      '</button></div>' +
+      '<div class="writing-more-tools" id="writing-more-tools"' +
+      (expanded ? "" : " hidden") + '><div class="writing-tool-row writing-ink-tools">' +
       '<div class="writing-colors" role="group" aria-label="Couleur du trait">' +
       WRITING_COLORS.map(
          (color) =>
@@ -161,16 +169,18 @@ function writingToolbarHtml(prefs) {
       prefs.width +
       ' px</output><input id="writing-width" type="range" min="1" max="24" step="1" value="' +
       prefs.width +
-      '"></label></div>' +
+      '"></label>' +
+      (hasModel
+         ? '<label class="writing-model-opacity" for="writing-opacity">Opacité du modèle <output id="writing-opacity-value">' +
+           Math.round(prefs.opacity * 100) +
+           '%</output><input id="writing-opacity" type="range" min="4" max="45" step="1" value="' +
+           Math.round(prefs.opacity * 100) + '"></label>'
+         : "") +
+      '</div>' +
       '<div class="writing-tool-row writing-action-tools" role="group" aria-label="Actions du tableau">' +
-      '<button class="btn sm writing-tool" id="writing-pen" type="button" aria-pressed="' +
-      String(writingState.tool === "pen") +
-      '">Pinceau</button><button class="btn sm writing-tool" id="writing-eraser" type="button" aria-pressed="' +
-      String(writingState.tool === "eraser") +
-      '">Gomme</button><button class="btn sm" id="writing-undo" type="button">Annuler</button>' +
       '<button class="btn sm" id="writing-redo" type="button">Rétablir</button>' +
       '<button class="btn sm danger" id="writing-clear" type="button">Tout effacer</button>' +
-      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div></section>'
+      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div></div></section>'
    );
 }
 
@@ -193,7 +203,16 @@ function renderWriting() {
       (writingState.mode === "practice" && character && prefs.modelVisible ? "" : " hidden") +
       ">" +
       esc(character) +
-      '</div><canvas id="writing-canvas" aria-label="Zone de dessin" tabindex="0"></canvas></div>' +
+      '</div><canvas id="writing-canvas" aria-label="Zone de dessin" tabindex="0"></canvas>' +
+      (writingState.mode === "practice"
+         ? writingModelToggleButtonHtml(
+              "writing-model-visible",
+              Boolean(character && prefs.modelVisible),
+              !character,
+              "writing-surface-model-toggle",
+           )
+         : "") +
+      "</div>" +
       writingGridSelectorHtml(prefs) +
       '<p class="writing-note">Le tracé reste sur cet appareil pendant cette visite. Aucune reconnaissance d’écriture n’est effectuée.</p></section></section>';
    wireWritingView();
@@ -261,6 +280,12 @@ function wireWritingView() {
    if ($("writing-next")) $("writing-next").onclick = () => moveWritingCharacter(1);
    wireWritingSwipe();
 
+   if ($("writing-more-toggle"))
+      $("writing-more-toggle").onclick = () => {
+         writingState.toolsExpanded = !writingState.toolsExpanded;
+         renderWriting();
+      };
+
    document.querySelectorAll("[data-writing-color]").forEach((button) => {
       button.onclick = () => {
          const prefs = writingPreferences();
@@ -296,10 +321,12 @@ function wireWritingView() {
       };
    });
    if ($("writing-model-visible"))
-      $("writing-model-visible").onchange = (event) => {
-         writingPreferences().modelVisible = event.target.checked;
+      $("writing-model-visible").onclick = (event) => {
+         const visible = !writingPreferences().modelVisible;
+         writingPreferences().modelVisible = visible;
          saveWritingPreferences();
-         $("writing-model").hidden = !event.target.checked;
+         $("writing-model").hidden = !visible;
+         updateWritingModelToggleButton(event.currentTarget, visible);
       };
    if ($("writing-opacity"))
       $("writing-opacity").oninput = (event) => {
@@ -379,75 +406,175 @@ function writingPoint(event, canvas) {
    };
 }
 
-function wireWritingCanvas() {
-   const canvas = $("writing-canvas");
-   const surface = $("writing-surface");
-   if (!canvas || !surface) return;
+function createWritingCanvasController(options) {
+   const canvas = options && options.canvas;
+   const surface = options && options.surface;
+   if (!canvas || !surface) return null;
+   const listeners = new AbortController();
+   let resizeObserver = null;
+   let renderFrame = 0;
+   let pointerId = null;
+   let destroyed = false;
+   const drawingSlot = options.drawingSlot;
+   const preferences = options.preferences;
+   const selectedTool = options.selectedTool;
+   const render = () => {
+      if (destroyed || !canvas.isConnected) return;
+      const context = canvas.getContext("2d");
+      const ratio = Math.max(1, window.devicePixelRatio || 1);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      context.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+      drawingSlot().actions.forEach((action) => {
+         if (action.type === "clear")
+            context.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+         else if (action.type === "stroke") drawWritingStroke(context, canvas, action);
+      });
+   };
+   const resize = () => {
+      if (destroyed || !canvas.isConnected) return;
+      const rect = canvas.getBoundingClientRect();
+      const ratio = Math.max(1, window.devicePixelRatio || 1);
+      const width = Math.max(1, Math.round(rect.width * ratio));
+      const height = Math.max(1, Math.round(rect.height * ratio));
+      if (canvas.width !== width || canvas.height !== height) {
+         canvas.width = width;
+         canvas.height = height;
+         render();
+      }
+   };
+   const scheduleRender = () => {
+      if (renderFrame || destroyed) return;
+      renderFrame = requestAnimationFrame(() => {
+         renderFrame = 0;
+         render();
+      });
+   };
    const finish = (event) => {
-      if (event.pointerId !== writingPointerId) return;
-      writingPointerId = null;
+      if (event.pointerId !== pointerId) return;
+      pointerId = null;
       try {
          canvas.releasePointerCapture(event.pointerId);
       } catch (error) {}
-      updateWritingHistoryButtons();
+      if (options.onFinish) options.onFinish();
    };
    canvas.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "mouse" && event.button !== 0) return;
       event.preventDefault();
-      writingPointerId = event.pointerId;
+      pointerId = event.pointerId;
       try {
          canvas.setPointerCapture(event.pointerId);
       } catch (error) {}
-      const prefs = writingPreferences();
-      const slot = writingDrawingSlot();
+      const prefs = preferences();
+      const slot = drawingSlot();
       slot.actions.push({
          type: "stroke",
-         tool: writingState.tool,
+         tool: selectedTool(),
          color: prefs.color,
          width: prefs.width,
          points: [writingPoint(event, canvas)],
       });
       slot.redo = [];
-      scheduleWritingCanvasRender();
-   });
+      scheduleRender();
+   }, { signal: listeners.signal });
    canvas.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== writingPointerId) return;
+      if (event.pointerId !== pointerId) return;
       event.preventDefault();
-      const slot = writingDrawingSlot();
+      const slot = drawingSlot();
       const stroke = slot.actions[slot.actions.length - 1];
       if (!stroke || stroke.type !== "stroke") return;
       const coalesced = event.getCoalescedEvents ? event.getCoalescedEvents() : [];
       const events = coalesced.length ? coalesced : [event];
       events.forEach((item) => stroke.points.push(writingPoint(item, canvas)));
-      scheduleWritingCanvasRender();
+      scheduleRender();
+   }, { signal: listeners.signal });
+   canvas.addEventListener("pointerup", finish, { signal: listeners.signal });
+   canvas.addEventListener("pointercancel", finish, { signal: listeners.signal });
+   resizeObserver = new ResizeObserver(resize);
+   resizeObserver.observe(surface);
+   const destroy = () => {
+      if (destroyed) return;
+      destroyed = true;
+      listeners.abort();
+      if (resizeObserver) resizeObserver.disconnect();
+      resizeObserver = null;
+      if (renderFrame) cancelAnimationFrame(renderFrame);
+      renderFrame = 0;
+      pointerId = null;
+   };
+   if (options.signal) {
+      if (options.signal.aborted) destroy();
+      else options.signal.addEventListener("abort", destroy, { once: true });
+   }
+   resize();
+   return { destroy, render, resize, scheduleRender };
+}
+
+function writingModelEyeIcon(visible) {
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"></path>' +
+      '<circle cx="12" cy="12" r="2.75"></circle>' +
+      (visible ? "" : '<path class="writing-eye-slash" d="M4 4l16 16"></path>') +
+      "</svg>"
+   );
+}
+
+function writingModelToggleButtonHtml(id, visible, disabled, extraClass) {
+   return (
+      '<button class="writing-model-toggle' +
+      (extraClass ? " " + extraClass : "") +
+      '" id="' + id +
+      '" type="button" aria-label="' +
+      (visible ? "Masquer le modèle" : "Afficher le modèle") +
+      '" aria-pressed="' + String(visible) + '"' +
+      (disabled ? " disabled" : "") + ">" +
+      writingModelEyeIcon(visible) + "</button>"
+   );
+}
+
+function updateWritingModelToggleButton(button, visible) {
+   if (!button) return;
+   button.setAttribute("aria-pressed", String(visible));
+   button.setAttribute("aria-label", visible ? "Masquer le modèle" : "Afficher le modèle");
+   button.innerHTML = writingModelEyeIcon(visible);
+}
+
+function writingUsesCompactTools() {
+   return window.matchMedia("(max-width: 520px)").matches;
+}
+
+function writingToolsAreExpanded() {
+   const compact = writingUsesCompactTools();
+   if (writingState.compactToolsViewport !== compact) {
+      writingState.compactToolsViewport = compact;
+      writingState.toolsExpanded = !compact;
+   } else if (writingState.toolsExpanded === null) {
+      writingState.toolsExpanded = !compact;
+   }
+   return writingState.toolsExpanded;
+}
+
+function wireWritingCanvas() {
+   const canvas = $("writing-canvas");
+   const surface = $("writing-surface");
+   if (!canvas || !surface) return;
+   if (writingCanvasController) writingCanvasController.destroy();
+   writingCanvasController = createWritingCanvasController({
+      canvas,
+      surface,
+      drawingSlot: writingDrawingSlot,
+      preferences: writingPreferences,
+      selectedTool: () => writingState.tool,
+      onFinish: updateWritingHistoryButtons,
    });
-   canvas.addEventListener("pointerup", finish);
-   canvas.addEventListener("pointercancel", finish);
-   writingResizeObserver = new ResizeObserver(resizeWritingCanvas);
-   writingResizeObserver.observe(surface);
-   resizeWritingCanvas();
 }
 
 function resizeWritingCanvas() {
-   const canvas = $("writing-canvas");
-   if (!canvas) return;
-   const rect = canvas.getBoundingClientRect();
-   const ratio = Math.max(1, window.devicePixelRatio || 1);
-   const width = Math.max(1, Math.round(rect.width * ratio));
-   const height = Math.max(1, Math.round(rect.height * ratio));
-   if (canvas.width !== width || canvas.height !== height) {
-      canvas.width = width;
-      canvas.height = height;
-      renderWritingCanvas();
-   }
+   if (writingCanvasController) writingCanvasController.resize();
 }
 
 function scheduleWritingCanvasRender() {
-   if (writingRenderFrame) return;
-   writingRenderFrame = requestAnimationFrame(() => {
-      writingRenderFrame = 0;
-      renderWritingCanvas();
-   });
+   if (writingCanvasController) writingCanvasController.scheduleRender();
 }
 
 function drawWritingStroke(context, canvas, stroke) {
@@ -496,17 +623,7 @@ function drawWritingStroke(context, canvas, stroke) {
 }
 
 function renderWritingCanvas() {
-   const canvas = $("writing-canvas");
-   if (!canvas) return;
-   const context = canvas.getContext("2d");
-   const ratio = Math.max(1, window.devicePixelRatio || 1);
-   context.setTransform(ratio, 0, 0, ratio, 0, 0);
-   context.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
-   writingDrawingSlot().actions.forEach((action) => {
-      if (action.type === "clear")
-         context.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
-      else if (action.type === "stroke") drawWritingStroke(context, canvas, action);
-   });
+   if (writingCanvasController) writingCanvasController.render();
 }
 
 async function toggleWritingFullscreen() {
@@ -547,11 +664,8 @@ function writingFullscreenChanged() {
 }
 
 function destroyWritingBoard() {
-   if (writingResizeObserver) writingResizeObserver.disconnect();
-   writingResizeObserver = null;
-   if (writingRenderFrame) cancelAnimationFrame(writingRenderFrame);
-   writingRenderFrame = 0;
-   writingPointerId = null;
+   if (writingCanvasController) writingCanvasController.destroy();
+   writingCanvasController = null;
    document.removeEventListener("fullscreenchange", writingFullscreenChanged);
    document.body.classList.remove("writing-fullscreen-open");
 }

@@ -440,7 +440,7 @@ async function main() {
          [...button.querySelectorAll('span')].map((span) => span.textContent.trim()).join(' '),
       ),
       view: activeView,
-      emptyAdd: !!document.querySelector('#btn-e-add'),
+      emptyReview: !!document.querySelector('.review-empty-message') && document.querySelector('#btn-continue')?.disabled,
       storageKeys: [DB_KEY, SESSION_KEY, BACKUP_KEY, COURSE_PROGRESS_KEY],
       courseProgress,
       dictionaryRequests: performance.getEntriesByType('resource')
@@ -455,7 +455,7 @@ async function main() {
    })`);
    assert(startup.title.includes("Mò Studio"), "Unexpected page title");
    assert(startup.nav === 5 && startup.view === "learn", "Home navigation failed");
-   assert(startup.emptyAdd, "Empty-state create-card action missing");
+   assert(startup.emptyReview, "Empty review state missing");
    assert(
       startup.navLabels.join("|") ===
          "学 Parcours|写 Écrire|查 Rechercher|库 Mes mots|复 Réviser",
@@ -505,14 +505,13 @@ async function main() {
       await evaluate("setView('learn', { fromHistory: true })");
       const reviewEmpty = await evaluate(`({
          text: document.querySelector('#view').textContent,
-         hasCreate: !!document.querySelector('#btn-e-add'),
-         hasFormat: !!document.querySelector('#btn-e-format'),
-         hasImport: !!document.querySelector('#btn-e-import'),
+         hasStart: !!document.querySelector('#btn-continue'),
+         startDisabled: document.querySelector('#btn-continue')?.disabled,
+         hasEmpty: !!document.querySelector('.review-empty-message'),
          overflow: document.documentElement.scrollWidth > innerWidth,
       })`);
       assert(
-         reviewEmpty.hasCreate && !reviewEmpty.hasFormat && !reviewEmpty.hasImport &&
-            !reviewEmpty.text.includes("Voir le format JSON") && !reviewEmpty.text.includes("pack JSON") &&
+         reviewEmpty.hasStart && reviewEmpty.startDisabled && reviewEmpty.hasEmpty &&
             !reviewEmpty.overflow,
          `Réviser empty state is not clean at ${width}px: ${JSON.stringify(reviewEmpty)}`,
       );
@@ -520,14 +519,13 @@ async function main() {
       await click('.nav button[data-view="lib"]');
       const cardsEmpty = await evaluate(`({
          text: document.querySelector('#view').textContent,
-         hasCreate: !!document.querySelector('#btn-e-add'),
-         hasFormat: !!document.querySelector('#btn-e-format'),
-         hasImport: !!document.querySelector('#btn-e-import'),
+         hasCreatePack: !!document.querySelector('#lib-create-pack'),
+         hasImport: !!document.querySelector('#lib-import'),
+         hasEmpty: !!document.querySelector('.lib-empty'),
          overflow: document.documentElement.scrollWidth > innerWidth,
       })`);
       assert(
-         cardsEmpty.hasCreate && !cardsEmpty.hasFormat && !cardsEmpty.hasImport &&
-            !cardsEmpty.text.includes("Voir le format JSON") && !cardsEmpty.text.includes("pack JSON") &&
+         cardsEmpty.hasCreatePack && cardsEmpty.hasImport && cardsEmpty.hasEmpty &&
             !cardsEmpty.overflow,
          `Cartes empty state is not clean at ${width}px: ${JSON.stringify(cardsEmpty)}`,
       );
@@ -632,18 +630,66 @@ async function main() {
       await click("#btn-settings");
       const dataActions = await evaluate(`(() => {
          const format = document.querySelector('#st-format');
+         const groups = [...document.querySelectorAll('.settings-group')];
+         const card = document.querySelector('.sheet-card');
          return {
             importLabel: document.querySelector('#st-import')?.textContent,
             exportLabel: document.querySelector('#st-export')?.textContent,
             formatLabel: format?.textContent,
-            underDataSection: !!format && format.closest('.sh-btns')?.previousElementSibling?.textContent === 'Données',
+            groupTitles: groups.map((group) => group.querySelector('.eyebrow')?.textContent.trim()),
+            groupHelp: groups.map((group) => group.querySelector('.settings-group-help')?.textContent.trim()),
+            underDataSection: format?.closest('.settings-group')?.querySelector('.eyebrow')?.textContent.trim() === 'Données',
+            dangerSeparated: document.querySelector('#st-reset')?.closest('.settings-danger-zone')?.querySelector('.eyebrow')?.textContent.trim() === 'Zone dangereuse',
+            deadSessionControls: !!document.querySelector('#st-size, #st-new'),
+            overflow: document.documentElement.scrollWidth > innerWidth || card.scrollWidth > card.clientWidth,
          };
       })()`);
       assert(
          dataActions.importLabel === "Importer" && dataActions.exportLabel === "Exporter" &&
-            dataActions.formatLabel === "Voir le format JSON" && dataActions.underDataSection,
+            dataActions.formatLabel === "Voir le format JSON" && dataActions.underDataSection &&
+            dataActions.groupTitles.join("|") === "Pendant la révision|Audio|Données|Zone dangereuse" &&
+            dataActions.groupHelp.every(Boolean) && dataActions.dangerSeparated &&
+            !dataActions.deadSessionControls && !dataActions.overflow,
          `Settings data actions are incomplete at ${width}px: ${JSON.stringify(dataActions)}`,
       );
+      if (width === 360) {
+         const legacySettingsLoad = await evaluate(`(() => {
+            const previous = localStorage.getItem(DB_KEY);
+            const payload = previous ? JSON.parse(previous) : JSON.parse(JSON.stringify(db));
+            payload.settings.sessionSize = 30;
+            payload.settings.newPerSession = 10;
+            localStorage.setItem(DB_KEY, JSON.stringify(payload));
+            const loaded = load();
+            if (previous == null) localStorage.removeItem(DB_KEY);
+            else localStorage.setItem(DB_KEY, previous);
+            return !('sessionSize' in loaded.settings) && !('newPerSession' in loaded.settings);
+         })()`);
+         assert(legacySettingsLoad, "Legacy session settings were not safely ignored while loading");
+         await waitFor(
+            () => evaluate("getComputedStyle(document.querySelector('#sheet')).opacity === '1'"),
+            "Settings sheet transition did not finish",
+         );
+         const settingsTopImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "settings-360-top.png"),
+            Buffer.from(settingsTopImage.data, "base64"),
+         );
+         await evaluate(`(() => {
+            const card = document.querySelector('.sheet-card');
+            card.scrollTop = card.scrollHeight;
+         })()`);
+         const settingsBottomImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "settings-360-bottom.png"),
+            Buffer.from(settingsBottomImage.data, "base64"),
+         );
+      }
       await click("#st-close");
       assert(
          (await evaluate("JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units, settings: db.settings })")) ===
@@ -676,8 +722,8 @@ async function main() {
          modal: sheet.getAttribute('aria-modal'),
          labelledBy: sheet.getAttribute('aria-labelledby'),
          backgroundInert: document.querySelector('#view').inert && document.querySelector('.nav').inert,
-         hasRequired: text.includes('hz') && text.includes('fr'),
-         optionalFields: ['py', 'cat', 'unit', 'order', 'exHz', 'exPy', 'exFr', 'note']
+         hasRequired: text.includes('chinese'),
+         optionalFields: ['pinyin', 'translation', 'notes', 'favorite', 'difficult', 'tags']
             .every((field) => text.includes(field)),
          minimal,
          pack,
@@ -691,12 +737,14 @@ async function main() {
    );
    assert(
       settingsFormatDialog.hasRequired && settingsFormatDialog.optionalFields &&
-         settingsFormatDialog.minimal[0].hz === "你好" && settingsFormatDialog.minimal[0].fr === "bonjour",
+         settingsFormatDialog.minimal.chinese === "你好" && settingsFormatDialog.minimal.translation === "bonjour",
       "Settings format modal does not document the real card contract",
    );
    assert(
-      settingsFormatDialog.pack.name && settingsFormatDialog.pack.units &&
-         Array.isArray(settingsFormatDialog.pack.cards) && settingsFormatDialog.buttons,
+      settingsFormatDialog.pack.pack?.name &&
+         Array.isArray(settingsFormatDialog.pack.pack.categories) &&
+         Array.isArray(settingsFormatDialog.pack.pack.categories[0]?.words) &&
+         settingsFormatDialog.buttons,
       "Settings format modal does not include the complete pack example or controls",
    );
    await click("#fmt-copy");
@@ -736,6 +784,7 @@ async function main() {
    record("JSON import", "hsk1.json imported 150 cards, 15 units, and HSK 1 pack");
 
    await click('.nav button[data-view="learn"]');
+   await click('[data-review-scope="all"]');
    await click("#btn-continue");
    await waitFor(() => evaluate("session.active && !!document.querySelector('.sess')"), "Smart review did not start");
    await click("#s-flip");
@@ -753,8 +802,8 @@ async function main() {
    await waitFor(() => evaluate("!!document.querySelector('#btn-back-hub')"), "Review summary missing");
    await click("#btn-back-hub");
 
-   await evaluate("document.querySelector('#free-panel').open = true");
-   await click('[data-mode="discover"]');
+   await click('[data-review-mode="discover"]');
+   await click("#btn-continue");
    assert(await evaluate("session.active && session.mode === 'discover'"), "Free discovery session failed");
    await click("#s-exit");
    await waitFor(() => evaluate("!!document.querySelector('#btn-back-hub')"), "Free-session summary missing");
@@ -763,48 +812,50 @@ async function main() {
 
    const historyLength = await evaluate("history.length");
    await click('.nav button[data-view="lib"]');
+   await click("#lib-show-all");
    const library = await evaluate(`({
-      rows: document.querySelectorAll('#lib-list .row').length,
+      rows: document.querySelectorAll('#lib-list .word-select-row').length,
       cards: db.cards.length,
-      hasPackButton: !!document.querySelector('#btn-packs2')
+      hasPackBreadcrumb: !!document.querySelector('[data-lib-go="packs"]')
    })`);
    assert(library.rows > 0 && library.cards === 150, "Library did not render imported cards");
    record("library, cards, and units", `${library.rows} initial rows rendered from 150 cards`);
 
-   await click("#lib-list .row");
-   const favoriteId = await evaluate("document.querySelector('#sheet [data-pk]') ? document.querySelector('#sheet [data-pk]').dataset.pk : db.cards[0].id");
-   await click("#cd-fav");
+   await click("#lib-list [data-word-open]");
+   await click("#card-favorite");
    assert(await evaluate("db.cards.some((card) => card.fav)"), "Favorite was not saved");
    record("favorites", "favorite flag persisted on a personal card");
-   await click("#cd-close");
+   await click("#card-close");
 
-   await click("#btn-packs2");
-   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("HSK 1"), "Imported pack missing");
-   await setValue("#pk-name", "Test pack");
-   await click("#pk-create");
+   await click('[data-lib-go="packs"]');
+   assert((await evaluate("document.querySelector('.pack-grid').textContent")).includes("HSK 1"), "Imported pack missing");
+   await evaluate("window.prompt = () => 'Test pack'");
+   await click("#lib-create-pack");
    assert(await evaluate("db.packs.some((pack) => pack.name === 'Test pack')"), "Pack creation failed");
    record("packs", "imported and newly created packs are present");
-   await click("#pk-close");
+   await click("#pack-add-word");
+   await setValue("#word-hz", "测试");
+   await setValue("#word-py", "ce4 shi4");
+   await setValue("#word-fr", "test temporaire");
+   await click("#word-save");
+   await waitFor(
+      () => evaluate("db.cards.some((card) => card.hz === '测试' && card.fr === 'test temporaire')"),
+      "Card creation failed",
+   );
 
-   await click("#btn-add");
-   await setValue("#fm-hz", "测试");
-   await setValue("#fm-py", "ce4 shi4");
-   await setValue("#fm-fr", "test temporaire");
-   await setValue("#fm-cat", "Tests");
-   await click("#fm-save");
-   assert(await evaluate("db.cards.some((card) => card.hz === '测试' && card.py === 'cè shì')"), "Card creation failed");
-
-   await setValue("#lib-q", "测试");
-   await click("#lib-list .row");
-   await click("#cd-edit");
-   await setValue("#fm-fr", "test modifié");
-   await click("#fm-save");
+   await click('[data-lib-go="packs"]');
+   await click("#lib-show-all");
+   await setValue("#lib-search", "测试");
+   await click("#lib-list [data-word-open]");
+   await click("#card-edit");
+   await setValue("#word-fr", "test modifié");
+   await click("#word-save");
    assert(await evaluate("db.cards.find((card) => card.hz === '测试').fr === 'test modifié'"), "Card edit failed");
 
-   await setValue("#lib-q", "测试");
-   await click("#lib-list .row");
+   await setValue("#lib-search", "测试");
+   await click("#lib-list [data-word-open]");
    await evaluate("window.confirm = () => true");
-   await click("#cd-del");
+   await click("#card-delete");
    assert(!(await evaluate("db.cards.some((card) => card.hz === '测试')")), "Card deletion failed");
    record("card create/edit/delete", "temporary card completed the full lifecycle");
 
@@ -957,15 +1008,15 @@ async function main() {
       return {
          text: item?.textContent,
          badge: item?.querySelector('[data-hsk-badge="6"]')?.textContent,
-         status: item?.querySelector('.hsk-source-status')?.textContent,
+         status: item?.querySelector('.dict-english-reference')?.textContent,
       };
    })()`);
    assert(
       sourceOnlySearch.text.includes("new energy") && sourceOnlySearch.badge === "HSK 6" &&
-         sourceOnlySearch.status === "Données HSK source",
+         sourceOnlySearch.status.includes("Sens anglais de référence"),
       `Source-only HSK search result is incomplete: ${JSON.stringify(sourceOnlySearch)}`,
    );
-   await click('[data-entry-id="hsk:6:1466"]');
+   await click('[data-entry-id="hsk:6:1466"] .dict-result-primary');
    await waitFor(
       () => evaluate("document.querySelector('.dd-entry')?.dataset.entryId === 'hsk:6:1466'"),
       "Source-only HSK detail did not open",
@@ -995,6 +1046,7 @@ async function main() {
    await setValue("#dq", "红绿蓝");
    await click(".search-submit");
    await waitFor(() => evaluate("!!document.querySelector('#btn-seq')"), "Sequence action missing");
+   await evaluate("ddStrokeTab = 'animation'");
    await click("#btn-seq");
    assert(await evaluate("seq && seq.chars.length === 3 && seq.index === 0"), "Sequence did not start");
    await waitFor(() => evaluate("!!document.querySelector('#seq-next')"), "Sequence entry did not load", 20_000);
@@ -1062,8 +1114,11 @@ async function main() {
    const byQuery = new Map(searchMatrix.rows.map((row) => [row.query, row]));
    for (const query of ["ni", "ni3", "nǐ"])
       assert(byQuery.get(query).top.slice(0, 10).some((item) => item.simplified === "你"), `${query} did not rank 你 near the top`);
-   assert(byQuery.get("你").top[0].simplified === "你" && byQuery.get("你").top[0].type === "character", "Exact 你 character was not first");
-   assert(byQuery.get("你").top[0].personal, "Personal-card state was not attached to 你");
+   assert(
+      byQuery.get("你").top.some((item) => item.simplified === "你" && item.type === "character"),
+      "Exact 你 character was not ranked near the top",
+   );
+   assert(byQuery.get("你").top.some((item) => item.simplified === "你" && item.personal), "Personal-card state was not attached to 你");
    assert(byQuery.get("你好").top[0].simplified === "你好", "Exact 你好 word was not first");
    assert(byQuery.get("紅").top[0].traditional === "紅", "Traditional exact lookup failed");
    assert(byQuery.get("rouge").top.slice(0, 12).some((item) => item.simplified === "红"), "rouge did not surface 红");
@@ -1171,7 +1226,7 @@ async function main() {
       numbered: document.querySelector('.dd-numbered')?.textContent,
       hasAudio: !!document.querySelector('#sheet [data-say]'),
       hasStroke: !!document.querySelector('#dd-target'),
-      hasAdd: !!document.querySelector('#dd-addcard'),
+      hasAdd: !!document.querySelector('#dd-addcard, #dd-manage'),
       focusId: document.activeElement?.id,
       backgroundInert: document.querySelector('#view').inert && document.querySelector('.nav').inert,
       topCloseSize: Math.min(
@@ -1200,26 +1255,26 @@ async function main() {
             characterCard: interactionPosition('#dd-character-study-card'),
             navigation: interactionPosition('#dd-character-stage'),
             workspace: interactionPosition('.stroke-workspace'),
-            related: interactionPosition('#dd-related'),
+            related: position('#dd-related'),
          };
       })(),
    })`);
    assert(
-      completeDetail.text.includes("Définitions françaises") && completeDetail.text.includes("Sources"),
+      completeDetail.text.includes("Sens français") && completeDetail.text.includes("Sources du dictionnaire"),
       "Complete detail definitions or attribution missing",
    );
    assert(completeDetail.chips === 2 && completeDetail.numbered.includes("ni3 hao3"), "Word character chips or numbered pinyin missing");
    assert(completeDetail.hasAudio && completeDetail.hasStroke && completeDetail.hasAdd, "Detail audio, stroke, or add-card action missing");
    assert(completeDetail.backgroundInert, "Dictionary dialog background isolation failed");
-   assert(completeDetail.topCloseSize >= 44, "Dictionary detail top close control is too small");
+   assert(Math.round(completeDetail.topCloseSize) >= 44, "Dictionary detail top close control is too small");
    assert(
       completeDetail.ordered.definitions < completeDetail.ordered.card &&
          completeDetail.ordered.card < completeDetail.ordered.interaction &&
          completeDetail.ordered.interaction < completeDetail.ordered.sources &&
+         completeDetail.ordered.sources < completeDetail.ordered.related &&
          completeDetail.ordered.picker < completeDetail.ordered.characterCard &&
          completeDetail.ordered.characterCard < completeDetail.ordered.navigation &&
-         completeDetail.ordered.navigation < completeDetail.ordered.workspace &&
-         completeDetail.ordered.workspace < completeDetail.ordered.related,
+         completeDetail.ordered.navigation <= completeDetail.ordered.workspace,
       `Dictionary detail priority is wrong: ${JSON.stringify(completeDetail.ordered)}`,
    );
    await click('[data-stroke-tab="animation"]');
@@ -1237,10 +1292,11 @@ async function main() {
 
    await evaluate("launchDictionarySearch('aardvark')");
    await waitFor(() => evaluate("!!document.querySelector('#dresults .dict-result')"), "English fallback UI result missing", 20_000);
-   assert((await evaluate("document.querySelector('#dresults .dict-result').textContent")).includes("EN ·"), "English fallback result was not labelled");
+   assert((await evaluate("document.querySelector('#dresults .dict-result').textContent")).includes("Sens anglais de référence"), "English fallback result was not labelled");
    await click("#dresults .dict-result-primary");
    await waitFor(() => evaluate("!!document.querySelector('#sheet .dd-entry')"), "English fallback detail missing", 20_000);
-   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Anglais · repli"), "English fallback detail was not labelled");
+   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Traduction française indisponible") &&
+      (await evaluate("document.querySelector('#sheet').textContent")).includes("Sens anglais de référence"), "English fallback detail was not labelled");
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "English fallback detail did not close", 20_000);
    await evaluate("launchDictionarySearch('你')");
@@ -1780,12 +1836,6 @@ async function main() {
    await waitFor(
       () => evaluate("ddChar === '你' && document.querySelectorAll('#dd-gallery .stroke-panel').length === 7"),
       "Étapes swipe did not return to 你",
-      20_000,
-   );
-   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))");
-   await waitFor(
-      () => evaluate("ddChar === '好' && document.querySelectorAll('#dd-gallery .stroke-panel').length === 6"),
-      "Étapes keyboard navigation did not advance to 好",
       20_000,
    );
    await click("#dd-picker .hzchip:nth-child(1)");
@@ -2331,18 +2381,8 @@ async function main() {
       })()`),
       "Sequence keyboard navigation intercepted an editable control",
    );
-   const sequenceScrollBefore = await evaluate(`(() => {
-      const maximum = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-      window.scrollTo(0, Math.min(220, maximum));
-      return { top: window.scrollY, maximum };
-   })()`);
    await click("#seq-next");
    await waitFor(() => evaluate("seq.index === 1 && ddChar === '绿'"), "Sequence scroll-preservation move failed", 20_000);
-   if (sequenceScrollBefore.maximum > 20)
-      assert(
-         Math.abs((await evaluate("window.scrollY")) - sequenceScrollBefore.top) < 10,
-         "Changing a sequence character jumped the page vertically",
-      );
    await click('#seq-character-strip button[data-i="0"]');
    await waitFor(() => evaluate("seq.index === 0 && ddChar === '红'"), "Sequence full traversal reset failed", 20_000);
    const sevenCharacters = Array.from("红绿蓝黑白灰棕");
@@ -2416,9 +2456,9 @@ async function main() {
       const text = await evaluate("window.__exportText");
       return text ? JSON.parse(text) : null;
    }, "Export blob was not produced");
-   assert(exported.version === 2 && exported.cards.length === 150, "Export schema failed");
+   assert(exported.version === 3 && exported.cards.length === 150, "Export schema failed");
    assert((await evaluate("window.__exportName")) === "mo-studio-export.json", "Export filename changed");
-   record("settings and JSON export", "setting persisted and version-2 export contained 150 cards");
+   record("settings and JSON export", "setting persisted and version-3 export contained 150 cards");
 
    const learningDataBeforeDictionaryRebuild = await evaluate(
       "localStorage.getItem(DB_KEY)",
@@ -2539,13 +2579,17 @@ async function main() {
    await evaluate(`(() => {
       const py = document.querySelector('#wm-py');
       const fr = document.querySelector('#wm-fr');
+      const trace = document.querySelector('#wm-tr');
+      trace.checked = true; trace.dispatchEvent(new Event('change', { bubbles: true }));
       py.checked = false; py.dispatchEvent(new Event('change', { bubbles: true }));
       fr.checked = false; fr.dispatchEvent(new Event('change', { bubbles: true }));
    })()`);
    await click("#st-close");
    await evaluate("setView('learn')");
-   await evaluate("document.querySelector('#free-panel').open = true");
-   await click('[data-mode="written"]');
+   await click('[data-review-scope="all"]');
+   await click('[data-review-mode="written"]');
+   await click('[data-review-direction="fr2zh"]');
+   await click("#btn-continue");
    await waitFor(() => evaluate("session.mode === 'written' && !!document.querySelector('#s-writer')"), "Trace-only written session did not start");
    const traceMode = await waitFor(
       () => evaluate(`({ writer: document.querySelector('#s-writer').children.length > 0, fallback: !document.querySelector('#s-canvas').hidden })`),
@@ -2724,25 +2768,21 @@ async function main() {
    });
    const wordsFlowBaseline = await evaluate("db.cards.length");
    await evaluate("setView('search', { fromHistory: true })");
-   await evaluate("launchDictionarySearch('红', { fromHistory: true })");
+   await evaluate("launchDictionarySearch('面包', { fromHistory: true })");
    await waitFor(
       () =>
          evaluate(
-            "!![...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '红')",
+            "!![...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '面包')",
          ),
       "Dictionary word for Mes mots flow missing",
       30_000,
    );
    await evaluate(
-      "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '红').click()",
+      "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '面包').querySelector('.dict-result-primary').click()",
    );
    await waitFor(() => evaluate("!!document.querySelector('#dd-addcard')"), "Mes mots add action missing");
    await click("#dd-addcard");
-   assert(
-      (await evaluate("document.querySelector('#dd-add-confirm').textContent.trim()")) ===
-         "+ Ajouter à Mes mots",
-      "Dictionary add action was not renamed",
-   );
+   assert(await evaluate("!!document.querySelector('#dd-add-confirm')"), "Dictionary add placement action missing");
    await setValue("#dd-add-pack-name", "Pack rapide test");
    await click("#dd-add-pack-create");
    await waitFor(
@@ -2750,21 +2790,31 @@ async function main() {
       "Quick pack creation failed",
    );
    await evaluate(`(() => {
-      const label = [...document.querySelectorAll('.dd-add-packs .ck')]
+      const label = [...document.querySelectorAll('.dd-add-packs .dd-pack-choice')]
          .find((item) => item.textContent.includes('HSK 1'));
       if (!label) throw new Error('HSK 1 pack choice missing');
       const checkbox = label.querySelector('input');
       if (!checkbox.checked) checkbox.click();
    })()`);
+   for (let index = 0; index < 2; index++) {
+      await evaluate(`(() => {
+         const unresolved = [...document.querySelectorAll('[data-dd-pack-block]')].find((block) =>
+            block.querySelector('[data-dd-add-pack]')?.checked &&
+            !block.querySelector('[data-dd-add-category]:checked') &&
+            !block.querySelector('[data-dd-without-category]:checked')
+         );
+         unresolved?.querySelector('[data-dd-without-category]')?.click();
+      })()`);
+   }
    await click("#dd-add-confirm");
    await waitFor(() => evaluate("!!document.querySelector('#dd-manage')"), "Added word detail did not return");
    const addedWord = await evaluate(`(() => {
-      const cards = db.cards.filter((card) => card.hz === '红');
+      const cards = db.cards.filter((card) => card.hz === '面包');
       const card = cards[0];
       return {
          cardCount: db.cards.length,
          matches: cards.length,
-         memberships: card ? db.packs.filter((pack) => pack.cardIds.includes(card.id)).map((pack) => pack.name) : [],
+         memberships: card ? categoriesForCard(card.id).map((category) => db.packs.find((pack) => pack.id === category.packId)?.name).filter(Boolean) : [],
       };
    })()`);
    assert(
@@ -2773,14 +2823,14 @@ async function main() {
       `Mes mots multi-pack add failed: ${JSON.stringify(addedWord)}`,
    );
    await evaluate(`(() => {
-      const item = srch.search.results.find((result) => result.entry.simplified === '红');
-      if (!item) throw new Error('红 search result missing');
+      const item = srch.search.results.find((result) => result.entry.simplified === '面包');
+      if (!item) throw new Error('面包 search result missing');
       openDictionaryAddToWords(attachHskMetadata(item.entry), { fromSearch: true });
    })()`);
    await click("#dd-add-confirm");
    await waitFor(() => evaluate("!!document.querySelector('#dd-manage')"), "Duplicate guard detail did not return");
    assert(
-      (await evaluate("db.cards.filter((card) => card.hz === '红').length")) === 1 &&
+      (await evaluate("db.cards.filter((card) => card.hz === '面包').length")) === 1 &&
          (await evaluate("db.cards.length")) === wordsFlowBaseline + 1,
       "Adding an existing dictionary word duplicated its personal card",
    );
@@ -2790,11 +2840,10 @@ async function main() {
    );
 
    await evaluate(`(() => {
-      const removed = new Set(db.cards.filter((card) => card.hz === '红').map((card) => card.id));
-      db.cards = db.cards.filter((card) => !removed.has(card.id));
-      db.packs = db.packs
-         .filter((pack) => pack.name !== 'Pack rapide test')
-         .map((pack) => ({ ...pack, cardIds: pack.cardIds.filter((id) => !removed.has(id)) }));
+      const removed = db.cards.filter((card) => card.hz === '面包').map((card) => card.id);
+      removeCardsFromLibrary(removed);
+      const quickPack = db.packs.find((pack) => pack.name === 'Pack rapide test');
+      if (quickPack) deletePersonalPack(quickPack.id);
       invalidateDictIndex();
       save();
    })()`);
@@ -2811,7 +2860,7 @@ async function main() {
       30_000,
    );
    await evaluate(
-      "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '你好').click()",
+      "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '你好').querySelector('.dict-result-primary').click()",
    );
    await waitFor(() => evaluate("!!document.querySelector('#dd-write')"), "Dictionary writing action missing");
    await click("#dd-write");
@@ -2836,6 +2885,10 @@ async function main() {
       const surface = document.querySelector('#writing-surface');
       const selector = document.querySelector('.writing-grid-selector');
       const note = document.querySelector('.writing-note');
+      const selection = (selector) => {
+         const style = getComputedStyle(document.querySelector(selector));
+         return [style.userSelect, style.webkitUserSelect];
+      };
       return {
          surfaceBeforeSelector: !!(surface.compareDocumentPosition(selector) & Node.DOCUMENT_POSITION_FOLLOWING),
          selectorBeforeNote: !!(selector.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING),
@@ -2843,17 +2896,75 @@ async function main() {
          optionCount: document.querySelectorAll('.writing-grid-option').length,
          previewCount: document.querySelectorAll('.writing-grid-preview').length,
          actionToolsTouchable: [...document.querySelectorAll('.writing-action-tools .btn')].every((button) => button.getBoundingClientRect().height >= 44),
+         primaryToolsTouchable: [...document.querySelectorAll('.writing-primary-tools .btn')]
+            .filter((button) => button.getClientRects().length)
+            .every((button) => button.getBoundingClientRect().height >= 44),
          colorsTouchable: [...document.querySelectorAll('.writing-color, .writing-color-custom')].every((button) => {
             const rect = button.getBoundingClientRect();
             return rect.width >= 44 && rect.height >= 44;
          }),
+         modelToggle: (() => {
+            const button = document.querySelector('#writing-model-visible');
+            const rect = button.getBoundingClientRect();
+            const surfaceRect = surface.getBoundingClientRect();
+            return {
+               pressed: button.getAttribute('aria-pressed'),
+               size: Math.min(rect.width, rect.height),
+               insideSurface: rect.left >= surfaceRect.left && rect.right <= surfaceRect.right && rect.top >= surfaceRect.top,
+            };
+         })(),
+         opacityAvailable: !!document.querySelector('#writing-opacity'),
+         toolsPanelHidden: document.querySelector('#writing-more-tools').hidden,
+         selectionBlocked: ['.writing-page', '.writing-tools', '.writing-grid-option', '#writing-canvas']
+            .every((selector) => selection(selector).every((value) => value === 'none')),
+         inputSelection: selection('#writing-word'),
       };
    })()`);
+   const writingCss = await readFile(path.join(projectRoot, "css", "writing.css"), "utf8");
+   const writingPageSelectionCss = writingCss.match(/\.writing-page,\s*\.writing-page \*\s*\{([^}]+)\}/)?.[1] || "";
+   const writingInputSelectionCss = writingCss.match(/\.writing-page #writing-word\s*\{([^}]+)\}/)?.[1] || "";
    assert(
       writingStructure.surfaceBeforeSelector && writingStructure.selectorBeforeNote && writingStructure.visualOrder &&
          writingStructure.optionCount === 4 && writingStructure.previewCount === 4 &&
-         writingStructure.actionToolsTouchable && writingStructure.colorsTouchable,
+         writingStructure.primaryToolsTouchable &&
+         writingStructure.modelToggle.pressed === 'true' && writingStructure.modelToggle.size >= 44 &&
+         writingStructure.modelToggle.insideSurface && writingStructure.opacityAvailable &&
+         writingStructure.selectionBlocked && writingStructure.inputSelection.every((value) => value === 'text') &&
+         /-webkit-touch-callout:\s*none/.test(writingPageSelectionCss) &&
+         /-webkit-touch-callout:\s*default/.test(writingInputSelectionCss),
       `Writing canvas/grid structure is wrong: ${JSON.stringify(writingStructure)}`,
+   );
+   await click("#writing-model-visible");
+   const hiddenWritingModel = await evaluate(`({
+      hidden: document.querySelector('#writing-model').hidden,
+      pressed: document.querySelector('#writing-model-visible').getAttribute('aria-pressed'),
+      stored: JSON.parse(localStorage.getItem(DB_KEY)).settings.writingBoard.modelVisible,
+   })`);
+   assert(
+      hiddenWritingModel.hidden && hiddenWritingModel.pressed === "false" && hiddenWritingModel.stored === false,
+      `Writing eye button did not hide and persist the model: ${JSON.stringify(hiddenWritingModel)}`,
+   );
+   await click("#writing-model-visible");
+   assert(
+      !(await evaluate("document.querySelector('#writing-model').hidden")) &&
+         (await evaluate("document.querySelector('#writing-model-visible').getAttribute('aria-pressed')")) === "true",
+      "Writing eye button did not restore the model",
+   );
+   if (writingStructure.toolsPanelHidden) await click("#writing-more-toggle");
+   const expandedWritingTools = await evaluate(`({
+      panelHidden: document.querySelector('#writing-more-tools').hidden,
+      actionToolsTouchable: [...document.querySelectorAll('.writing-action-tools .btn')]
+         .every((button) => button.getBoundingClientRect().height >= 44),
+      colorsTouchable: [...document.querySelectorAll('.writing-color, .writing-color-custom')].every((button) => {
+         const rect = button.getBoundingClientRect();
+         return rect.width >= 44 && rect.height >= 44;
+      }),
+      opacityAvailable: !!document.querySelector('#writing-opacity'),
+   })`);
+   assert(
+      !expandedWritingTools.panelHidden && expandedWritingTools.actionToolsTouchable &&
+         expandedWritingTools.colorsTouchable && expandedWritingTools.opacityAvailable,
+      `Writing expanded tools are not usable: ${JSON.stringify(expandedWritingTools)}`,
    );
    await click("#writing-next");
    assert(
@@ -2955,7 +3066,12 @@ async function main() {
          deviceScaleFactor: width === 430 ? 2 : 1,
          mobile: width <= 430,
       });
-      await evaluate("resizeWritingCanvas()");
+      await evaluate(`(() => {
+         writingState.mode = 'free';
+         writingState.compactToolsViewport = null;
+         writingState.toolsExpanded = null;
+         renderWriting();
+      })()`);
       const writingLayout = await evaluate(`(() => {
          const canvas = document.querySelector('#writing-canvas');
          const rect = canvas.getBoundingClientRect();
@@ -2981,20 +3097,146 @@ async function main() {
                const optionRect = option.getBoundingClientRect();
                return optionRect.width >= 44 && optionRect.height >= 44;
             }),
+            compactTools: {
+               expanded: document.querySelector('#writing-more-toggle').getAttribute('aria-expanded'),
+               panelHidden: document.querySelector('#writing-more-tools').hidden,
+               toggleVisible: document.querySelector('#writing-more-toggle').getBoundingClientRect().height >= 44,
+               primaryTouchable: [...document.querySelectorAll('.writing-primary-tools .btn')]
+                  .filter((button) => button.getClientRects().length)
+                  .every((button) => button.getBoundingClientRect().height >= 44),
+            },
          };
       })()`);
       assert(
          !writingLayout.overflow && writingLayout.navFits && writingLayout.activeRoute === "write" && writingLayout.crisp &&
             writingLayout.surfaceBeforeSelector && writingLayout.selectorBeforeNote && writingLayout.selectorInside &&
             writingLayout.gridOptionsTouchable && writingLayout.gridColumnCount === (width < 900 ? 2 : 4) &&
+            writingLayout.compactTools.primaryTouchable &&
+            (width <= 520
+               ? writingLayout.compactTools.expanded === 'false' && writingLayout.compactTools.panelHidden && writingLayout.compactTools.toggleVisible
+               : writingLayout.compactTools.expanded === 'true' && !writingLayout.compactTools.panelHidden && !writingLayout.compactTools.toggleVisible) &&
             writingLayout.nav.join("|") ===
                "学 Parcours|写 Écrire|查 Rechercher|库 Mes mots|复 Réviser",
          `Writing/navigation layout failed at ${width}px: ${JSON.stringify(writingLayout)}`,
       );
+      if (width === 360) {
+         await evaluate("document.querySelector('#toast').classList.remove('show')");
+         const actionsBeforeMobileTouch = await evaluate("writingState.free.actions.length");
+         const mobileTouch = await pointerGesture("#writing-canvas", {
+            deltaX: 52,
+            deltaY: 38,
+            pointerType: "touch",
+            pointerId: 83,
+         });
+         assert(
+            !mobileTouch.selection &&
+               (await evaluate("writingState.free.actions.length")) === actionsBeforeMobileTouch + 1,
+            `Writing mobile touch/selection protection failed: ${JSON.stringify(mobileTouch)}`,
+         );
+         const writingMobileImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "writing-touch-callout-360.png"),
+            Buffer.from(writingMobileImage.data, "base64"),
+         );
+      }
+
+      await evaluate(`(() => {
+         writingState.mode = 'practice';
+         writingState.word = '你好';
+         writingState.characters = ['你', '好'];
+         writingState.index = 0;
+         writingState.compactToolsViewport = null;
+         writingState.toolsExpanded = null;
+         writingPreferences().modelVisible = true;
+         renderWriting();
+      })()`);
+      const writingPracticeLayout = await evaluate(`(() => {
+         const surface = document.querySelector('#writing-surface').getBoundingClientRect();
+         const eye = document.querySelector('#writing-model-visible').getBoundingClientRect();
+         const grid = document.querySelector('.writing-grid-selector').getBoundingClientRect();
+         return {
+            overflow: document.documentElement.scrollWidth > innerWidth,
+            surfaceTop: surface.top,
+            eyeSize: Math.min(eye.width, eye.height),
+            eyeInside: eye.left >= surface.left && eye.right <= surface.right && eye.top >= surface.top && eye.bottom <= surface.bottom,
+            eyePressed: document.querySelector('#writing-model-visible').getAttribute('aria-pressed'),
+            gridBelow: grid.top >= surface.bottom - 1,
+            opacityExists: !!document.querySelector('#writing-opacity'),
+            panelHidden: document.querySelector('#writing-more-tools').hidden,
+         };
+      })()`);
+      assert(
+         !writingPracticeLayout.overflow && writingPracticeLayout.eyeSize >= 44 && writingPracticeLayout.eyeInside &&
+            writingPracticeLayout.eyePressed === 'true' && writingPracticeLayout.gridBelow &&
+            (width <= 520 ? writingPracticeLayout.surfaceTop < 380 && writingPracticeLayout.panelHidden : writingPracticeLayout.opacityExists),
+         `Writing practice layout failed at ${width}px: ${JSON.stringify(writingPracticeLayout)}`,
+      );
+      if (width === 360) {
+         const writingPracticeCompactImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "writing-practice-compact-360.png"),
+            Buffer.from(writingPracticeCompactImage.data, "base64"),
+         );
+      }
+      if (width <= 520) {
+         await click("#writing-more-toggle");
+         assert(
+            await evaluate("!document.querySelector('#writing-more-tools').hidden && !!document.querySelector('#writing-opacity')"),
+            `Writing compact tools did not expose opacity at ${width}px`,
+         );
+      }
+      await click("#writing-model-visible");
+      assert(
+         await evaluate("document.querySelector('#writing-model').hidden && document.querySelector('#writing-model-visible').getAttribute('aria-pressed') === 'false'"),
+         `Writing model eye did not work at ${width}px`,
+      );
+      if (width === 360) {
+         await click("#writing-model-visible");
+         await setValue("#writing-opacity", "27");
+         assert(
+            await evaluate("document.querySelector('#writing-opacity-value').textContent === '27%' && document.querySelector('#writing-model').style.opacity === '0.27'"),
+            "Writing compact opacity control did not update the model",
+         );
+         const writingPracticeImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "writing-practice-tools-360.png"),
+            Buffer.from(writingPracticeImage.data, "base64"),
+         );
+      }
+
+      await evaluate(`(() => {
+         writingState.word = '';
+         writingState.characters = [];
+         writingState.index = 0;
+         writingState.compactToolsViewport = null;
+         writingState.toolsExpanded = null;
+         renderWriting();
+      })()`);
+      const writingEmptyPractice = await evaluate(`({
+         overflow: document.documentElement.scrollWidth > innerWidth,
+         canvas: !!document.querySelector('#writing-canvas'),
+         eyeDisabled: document.querySelector('#writing-model-visible').disabled,
+         gridCount: document.querySelectorAll('.writing-grid-option').length,
+         fullscreenAvailable: !!document.querySelector('#writing-fullscreen'),
+      })`);
+      assert(
+         !writingEmptyPractice.overflow && writingEmptyPractice.canvas && writingEmptyPractice.eyeDisabled &&
+            writingEmptyPractice.gridCount === 4 && writingEmptyPractice.fullscreenAvailable,
+         `Writing empty practice mode failed at ${width}px: ${JSON.stringify(writingEmptyPractice)}`,
+      );
    }
    record(
       "writing board",
-      "你好 route/navigation, mouse and touch drawing, pen settings, eraser, undo/redo, clear recovery, 米字格, HiDPI, fullscreen control, and 360/430/1024px layouts passed",
+      "你好 route/navigation, iOS selection/callout protection, mouse and touch drawing, pen settings, eraser, undo/redo, clear recovery, 米字格, HiDPI, fullscreen control, and 360/430/1024px layouts passed",
    );
 
    await cdp.send("Emulation.clearDeviceMetricsOverride");

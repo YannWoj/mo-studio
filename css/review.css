@@ -399,11 +399,32 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px;
-            margin-top: 8px;
             padding: 3px;
             border: 1px solid var(--line-soft);
             border-radius: 10px;
             background: var(--card-2);
+         }
+         .review-stroke-actions {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: stretch;
+            gap: 6px;
+            margin-top: 8px;
+         }
+         .review-stroke-practice {
+            min-height: 44px;
+            padding: 8px 12px;
+            border: 1px solid color-mix(in srgb, var(--lacquer) 45%, var(--line));
+            border-radius: 10px;
+            background: color-mix(in srgb, var(--lacquer) 8%, var(--card));
+            color: var(--lacquer);
+            font-size: 13px;
+            font-weight: 650;
+         }
+         .review-stroke-practice:hover,
+         .review-stroke-practice:focus-visible {
+            border-color: var(--lacquer);
+            background: color-mix(in srgb, var(--lacquer) 13%, var(--card));
          }
          .review-stroke-tabs button {
             min-height: 44px;
@@ -487,6 +508,106 @@
             font-size: 10px;
             box-shadow: 0 1px 5px rgba(23, 20, 15, .12);
          }
+         .sheet-card.review-writing-sheet-card {
+            width: min(480px, calc(100% - 16px));
+            max-height: min(78dvh, 680px);
+            margin: 0 8px max(8px, env(safe-area-inset-bottom));
+            padding: 16px 14px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+         }
+         .review-writing-practice,
+         .review-writing-practice * {
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+         }
+         .review-writing-head {
+            min-height: 44px;
+            padding-right: 48px;
+         }
+         .review-writing-head .eyebrow {
+            margin-bottom: 2px;
+         }
+         .review-writing-head .sh-t {
+            margin: 0;
+         }
+         .review-writing-head .sh-t span {
+            color: var(--lacquer);
+            font: 600 30px var(--serif);
+         }
+         .review-writing-model-controls {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 6px 12px;
+            margin: 8px 0 10px;
+            color: var(--ink-soft);
+            font-size: 12px;
+         }
+         .review-writing-model-controls .ck {
+            min-height: 44px;
+            align-items: center;
+            margin: 0;
+         }
+         .review-writing-model-controls > label:not(.ck) {
+            white-space: nowrap;
+         }
+         #review-writing-opacity {
+            width: 100%;
+            grid-column: 1 / -1;
+         }
+         .writing-surface.review-writing-surface {
+            width: min(100%, 270px);
+            min-height: 0;
+            aspect-ratio: 1;
+            margin: 0 auto;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: inset 0 0 12px rgba(23, 20, 15, .05);
+         }
+         .review-writing-model {
+            font-size: clamp(150px, 50vw, 220px);
+         }
+         .review-writing-grids {
+            margin-top: 10px;
+         }
+         .review-writing-grid-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+         }
+         .review-writing-grid-head h4 {
+            font: 600 15px var(--disp);
+         }
+         .review-writing-grid-head small {
+            color: var(--ink-faint);
+            font-size: 10px;
+         }
+         .review-writing-grids .writing-grid-options {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 6px;
+         }
+         .review-writing-grids .writing-grid-option {
+            min-height: 70px;
+            grid-template-columns: 1fr;
+            justify-items: center;
+            gap: 4px;
+            padding: 6px 3px;
+            text-align: center;
+         }
+         .review-writing-grids .writing-grid-preview {
+            width: 38px;
+            height: 38px;
+         }
+         .review-writing-grids .writing-grid-name {
+            font-size: 10px;
+         }
+         .review-writing-buttons {
+            margin-top: 12px;
+         }
          .gr {
             border-radius: 12px;
             padding: 10px 4px 8px;
@@ -548,6 +669,15 @@
             .review-stroke-count {
                grid-column: 1 / -1;
                text-align: center;
+            }
+            .writing-surface.review-writing-surface {
+               width: min(100%, 230px);
+            }
+            .review-writing-model {
+               font-size: 180px;
+            }
+            .review-writing-grids .writing-grid-option {
+               min-height: 62px;
             }
          }
          .w-lab {
