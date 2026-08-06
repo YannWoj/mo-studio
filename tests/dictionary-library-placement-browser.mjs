@@ -226,13 +226,20 @@ async function main() {
          englishOpen:document.querySelector('.dd-definitions.english')?.open,
          hsk:document.querySelectorAll('.dd-hsk-source-item').length,
          add:!!document.querySelector('#dd-addcard'),
-         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-hsk-source','.dd-card-actions','.dd-character-interaction','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
+         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-meta','.dd-character-interaction','.dd-learning-actions','.dd-card-actions','.dd-hsk-source','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
+         emptyEnglishHidden:dictionaryEnglishDefinitionsHtml({definitionsEn:['', ' ; ', '...', '1.']})==='',
+         vulgarFilter:[
+            dictionaryRelatedWordIsVulgar({simplified:'肏你妈',definitionsEn:['fuck your mother (vulgar)']}),
+            dictionaryRelatedWordIsVulgar({simplified:'操你妈',definitionsEn:['variant of 肏你妈']}),
+            dictionaryRelatedWordIsVulgar({simplified:'干你妈',definitionsEn:[]}),
+            dictionaryRelatedWordIsVulgar({simplified:'操作',definitionsEn:['to work']})
+         ],
          englishHeight:document.querySelector('.dd-definitions.english')?.getBoundingClientRect().height
       }) : null`);
       return value;
    }, "detail/related words failed");
    for (const word of ["面粉", "面条", "方面", "见面"]) assert(detail.text.includes(word), `related word missing: ${word}`);
-   assert(detail.englishOpen === false && detail.englishHeight <= 48 && detail.hsk === 2 && detail.add && detail.order.every((position,index,values)=>index===0||position>values[index-1]), "detail sections/actions are unclear");
+   assert(detail.englishOpen === false && detail.englishHeight <= 48 && detail.hsk === 2 && detail.add && detail.emptyEnglishHidden && detail.vulgarFilter.join(',') === 'true,true,true,false' && detail.order.every((position,index,values)=>index===0||position>values[index-1]), "detail sections/actions are unclear");
    await click("#dd-close");
    pass("fiche détaillée structurée, anglais replié, deux sens HSK et mots associés issus des données");
 
@@ -377,12 +384,27 @@ async function main() {
             tab,
             visualProofs[`sequenceStroke${tab === "animation" ? "" : tab[0].toUpperCase() + tab.slice(1)}${width}`],
          );
+   await evaluate("window.__sequenceNode=document.querySelector('#seq-flash');window.__sequenceWriter=ddWriter;scrollTo(0,96);window.__sequenceScrollY=scrollY");
+   await click("#dd-write");
+   await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "mianbao writing practice did not open");
+   const sequencePractice = await evaluate(`(() => {
+      const dialog=document.querySelector('.writing-practice-dialog');
+      return {word:dialog.dataset.writingPracticeWord,pills:dialog.querySelectorAll('[data-writing-practice-character]').length,model:document.querySelector('#review-writing-model').textContent.trim(),sequence:seq?.chars.join(''),index:seq?.index,viewInert:document.querySelector('#view').inert,sheetOpen:sheetOpen()};
+   })()`);
+   assert(sequencePractice.word === "面包" && sequencePractice.pills === 2 && sequencePractice.model === "面" && sequencePractice.sequence === "面包" && sequencePractice.index === 0 && sequencePractice.viewInert && !sequencePractice.sheetOpen, `mianbao writing practice failed: ${JSON.stringify(sequencePractice)}`);
+   await click(".writing-practice-close");
+   assert(await evaluate("!document.querySelector('.writing-practice-backdrop')&&window.__sequenceNode===document.querySelector('#seq-flash')&&window.__sequenceWriter===ddWriter&&seq?.chars.join('')==='面包'&&seq.index===0&&!document.querySelector('#view').inert&&scrollY===window.__sequenceScrollY"), "closing writing practice changed the mianbao sequence");
    await evaluate("closeSequence({fromHistory:true})");
 
    await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'\u9762',py:'mian',fr:'face'}))");
    await waitFor(() => evaluate("ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "single-character detail did not load");
    const singleCharacterLayout = await evaluate(`(() => {const stage=document.querySelector('#dd-character-stage'),mizi=stage.querySelector('.mizi'),s=stage.getBoundingClientRect(),m=mizi.getBoundingClientRect();return {buttons:stage.querySelectorAll(':scope > .character-nav-button').length,inside:m.left>=s.left&&m.right<=s.right,overflow:document.documentElement.scrollWidth>innerWidth};})()`);
    assert(singleCharacterLayout.buttons === 0 && singleCharacterLayout.inside && !singleCharacterLayout.overflow, `single-character layout failed: ${JSON.stringify(singleCharacterLayout)}`);
+   await click("#dd-write");
+   await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "single-character writing practice did not open");
+   assert(await evaluate("document.querySelectorAll('[data-writing-practice-character]').length===0&&document.querySelector('#review-writing-model').textContent.trim()==='面'&&sheetOpen()&&document.querySelector('#sheet').inert"), "single-character writing practice showed a character picker or lost its detail");
+   await click(".writing-practice-close");
+   assert(await evaluate("sheetOpen()&&!document.querySelector('#sheet').inert&&ddChar==='面'"), "single-character detail was not restored");
    await click('#dd-close');
    pass("stroke navigation in all tabs at 360/1440 px, dictionary, mianbao sequence, and single character");
 

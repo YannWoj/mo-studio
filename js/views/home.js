@@ -159,12 +159,20 @@ function reviewSegment(value, label, help) {
    return '<button class="review-segment" data-review-scope="' + value + '" aria-pressed="' + String(reviewSelectionMode === value) + '"><span>' + label + "</span>" + (help ? '<small>' + help + "</small>" : "") + "</button>";
 }
 
-function reviewModeCard(value, title, description) {
-   return '<button class="review-mode-card" data-review-mode="' + value + '" aria-pressed="' + String(reviewMode === value) + '"><span class="review-mode-mark">' + ({ cards: "卡", written: "写", discover: "览" })[value] + '</span><span><strong>' + title + '</strong><small>' + description + "</small></span></button>";
+function reviewModeSegment(value, label, description) {
+   return '<button class="review-segment review-mode-segment" type="button" data-review-mode="' + value + '" aria-pressed="' + String(reviewMode === value) + '" aria-label="' + esc(label + " — " + description) + '" title="' + esc(description) + '">' + esc(label) + "</button>";
 }
 
-function directionSegment(value, label) {
-   return '<button class="review-segment direction" data-review-direction="' + value + '" aria-pressed="' + String(db.settings.direction === value) + '">' + label + "</button>";
+function reviewModeDescription() {
+   return ({
+      cards: "Je révèle la réponse et je m’auto-évalue.",
+      written: "J’écris la réponse avant de la vérifier.",
+      discover: "Je feuillette sans modifier ma progression.",
+   })[reviewMode];
+}
+
+function directionSegment(value, label, accessibleLabel) {
+   return '<button class="review-segment direction" type="button" data-review-direction="' + value + '" aria-pressed="' + String(db.settings.direction === value) + '" aria-label="' + esc(accessibleLabel || label) + '" title="' + esc(accessibleLabel || label) + '">' + label + "</button>";
 }
 
 function conditionalReviewSelectorHtml() {
@@ -213,10 +221,13 @@ function renderLearn() {
    const resume = loadSavedSession();
    root.innerHTML = '<section class="review-page review-page-simple"><header class="review-simple-heading"><p class="eyebrow">Révision personnelle</p><h2 class="v-t">复 · Réviser</h2></header>' +
       '<section class="review-block card" aria-labelledby="review-content-title"><div class="review-block-title"><span>1</span><div><h3 id="review-content-title">Choisir le contenu</h3><p>Que veux-tu réviser ?</p></div></div><div class="review-segments review-scope-segments">' + reviewSegment("all", "Tous mes mots") + reviewSegment("pack", "Un ou plusieurs packs") + reviewSegment("category", "Une ou plusieurs sous-catégories") + reviewSegment("due", "À revoir aujourd’hui", "Cartes prévues par ton système de révision.") + '</div><div id="review-conditional">' + conditionalReviewSelectorHtml() + "</div></section>" +
-      '<section class="review-block card" aria-labelledby="review-mode-title"><div class="review-block-title"><span>2</span><div><h3 id="review-mode-title">Choisir le mode</h3><p>Comment veux-tu réviser ?</p></div></div><div class="review-mode-grid">' + reviewModeCard("cards", "Cartes", "Je révèle la réponse et je m’auto-évalue") + reviewModeCard("written", "Écriture", "J’écris la réponse avant de la vérifier") + reviewModeCard("discover", "Découverte", "Je feuillette sans modifier ma progression") + "</div></section>" +
-      '<section class="review-block card" aria-labelledby="review-direction-title"><div class="review-block-title"><span>3</span><div><h3 id="review-direction-title">Choisir le sens</h3><p>Dans quel sens ?</p></div></div><div class="review-segments review-direction-segments">' + directionSegment("zh2fr", "中文 → Français") + directionSegment("fr2zh", "Français → 中文") + directionSegment("mix", "Mélanger les deux") + "</div></section>" +
+      '<section class="review-block review-preferences-block card" aria-label="Mode et sens de révision">' +
+      '<div class="review-choice-row"><div class="review-choice-label"><span>2</span><h3 id="review-mode-title">Mode</h3></div>' +
+      '<div class="review-segments review-mode-segments" aria-labelledby="review-mode-title">' + reviewModeSegment("cards", "卡 Cartes", "Je révèle la réponse et je m’auto-évalue") + reviewModeSegment("written", "写 Écriture", "J’écris la réponse avant de la vérifier") + reviewModeSegment("discover", "览 Découverte", "Je feuillette sans modifier ma progression") + '</div><p class="review-mode-description" aria-live="polite">' + esc(reviewModeDescription()) + "</p></div>" +
+      '<div class="review-choice-row"><div class="review-choice-label"><span>3</span><h3 id="review-direction-title">Sens</h3></div>' +
+      '<div class="review-segments review-direction-segments" aria-labelledby="review-direction-title">' + directionSegment("zh2fr", "中文 → Fr", "Chinois vers français") + directionSegment("fr2zh", "Fr → 中文", "Français vers chinois") + directionSegment("mix", "混 · Mixte", "Mélanger les deux sens") + "</div></div></section>" +
       '<details class="review-advanced card" id="review-options"' + (reviewOptionsOpen ? " open" : "") + '><summary>Réglages avancés</summary><div class="review-filter-grid">' + extraFilterCheckbox("newOnly", "Uniquement les nouveaux mots") + extraFilterCheckbox("favoritesOnly", "Uniquement les favoris") + extraFilterCheckbox("difficultOnly", "Uniquement les mots difficiles") + extraFilterCheckbox("includeLearned", "Inclure les cartes déjà maîtrisées") + (reviewMode === "written" ? '<div class="review-writing-options"><p>Exercices d’écriture</p>' + writingSettingCheckbox("fr", "Traduction française") + writingSettingCheckbox("pinyin", "Pinyin") + writingSettingCheckbox("trace", "Tracé des caractères") + "</div>" : "") + "</div></details>" +
-      '<section class="review-block review-start-block card" aria-labelledby="review-summary-title"><div class="review-block-title"><span>4</span><h3 id="review-summary-title">Résumé et démarrage</h3></div>' + (resume ? '<div class="resume review-resume"><span>Séance en cours · ' + Math.min(resume.snap.index + 1, resume.cards.length) + ' / ' + resume.cards.length + '</span><span><button class="btn sm" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">Ignorer</button></span></div>' : "") + '<p class="review-compact-summary" aria-live="polite"><strong>' + cards.length + ' carte' + (cards.length > 1 ? "s" : "") + '</strong> · environ ' + minutes + ' min</p>' + (!cards.length ? '<p class="review-empty-message">Aucune carte disponible avec cette sélection.</p>' : "") + '<button class="btn primary big review-start" id="btn-continue"' + (cards.length ? "" : " disabled") + '>Commencer</button></section></section>';
+      '<section class="review-block review-start-block card" aria-labelledby="review-summary-title"><div class="review-block-title"><span>4</span><h3 id="review-summary-title">Démarrer</h3></div>' + (resume ? '<div class="resume review-resume"><span>Séance en cours · ' + Math.min(resume.snap.index + 1, resume.cards.length) + ' / ' + resume.cards.length + '</span><span><button class="btn sm" id="btn-resume">Reprendre</button><button class="btn sm ghost" id="btn-resume-x">Ignorer</button></span></div>' : "") + '<p class="review-compact-summary" aria-live="polite"><strong>' + cards.length + ' carte' + (cards.length > 1 ? "s" : "") + '</strong> · environ ' + minutes + ' min</p>' + (!cards.length ? '<p class="review-empty-message">Aucune carte disponible avec cette sélection.</p>' : "") + '<button class="btn primary big review-start" id="btn-continue"' + (cards.length ? "" : " disabled") + '>Commencer</button></section></section>';
 
    document.querySelectorAll("[data-review-scope]").forEach((button) => button.onclick = () => {
       reviewSelectionMode = button.dataset.reviewScope;

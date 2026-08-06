@@ -396,11 +396,74 @@ async function previewPackImportText(text, type) {
    }
 }
 
+function packImportPreviewSummaryHtml(preview, names) {
+   const words = preview.wordCount + " mot" + (preview.wordCount === 1 ? "" : "s");
+   const categories = preview.categoryCount + " sous-catégorie" + (preview.categoryCount === 1 ? "" : "s");
+   let existingSentence = "Ils seront ajoutés à ta bibliothèque.";
+   if (preview.existing) {
+      const subject = preview.existing === 1 ? "1 est déjà dans ta bibliothèque" : preview.existing + " sont déjà dans ta bibliothèque";
+      const reuse = preview.existing === 1 ? "il sera réutilisé et sa progression est conservée" : "ils seront réutilisés et leur progression est conservée";
+      existingSentence = subject + " : " + reuse + ".";
+   }
+   const chips = [
+      '<span class="import-summary-chip">' + words + "</span>",
+      '<span class="import-summary-chip">' + categories + "</span>",
+      preview.existing ? '<span class="import-summary-chip">' + preview.existing + " déjà présent" + (preview.existing > 1 ? "s" : "") + "</span>" : "",
+      preview.duplicates ? '<span class="import-summary-chip warning">' + preview.duplicates + " doublon" + (preview.duplicates > 1 ? "s" : "") + "</span>" : "",
+      preview.missingDictionary ? '<span class="import-summary-chip warning">' + preview.missingDictionary + " inconnu" + (preview.missingDictionary > 1 ? "s" : "") + " du dictionnaire</span>" : "",
+      preview.incomplete ? '<span class="import-summary-chip warning">' + preview.incomplete + " incomplet" + (preview.incomplete > 1 ? "s" : "") + "</span>" : "",
+   ].filter(Boolean).join("");
+   const notices = [
+      preview.duplicates ? "Le fichier répète " + preview.duplicates + " mot" + (preview.duplicates > 1 ? "s" : "") + " — une seule copie de chacun sera gardée." : "",
+      preview.missingDictionary ? preview.missingDictionary + " mot" + (preview.missingDictionary > 1 ? "s ne sont" : " n’est") + " pas reconnu" + (preview.missingDictionary > 1 ? "s" : "") + " par le dictionnaire — " + (preview.missingDictionary > 1 ? "ils peuvent" : "il peut") + " être importé" + (preview.missingDictionary > 1 ? "s" : "") + " comme carte" + (preview.missingDictionary > 1 ? "s" : "") + " personnelle" + (preview.missingDictionary > 1 ? "s" : "") + "." : "",
+      preview.incomplete ? preview.incomplete + " mot" + (preview.incomplete > 1 ? "s n’ont" : " n’a") + " pas toutes " + (preview.incomplete > 1 ? "leurs" : "ses") + " informations — tu pourras " + (preview.incomplete > 1 ? "les" : "le") + " compléter à la main." : "",
+   ].filter(Boolean);
+   return (
+      '<section class="import-preview-summary" aria-label="Résumé de l’import"><p class="import-summary-sentence"><strong>' +
+      words + " dans « " + esc(names) + " »</strong> (" + categories + "). " + esc(existingSentence) +
+      '</p><div class="import-summary-chips">' + chips + "</div>" +
+      (notices.length ? '<div class="import-preview-notices">' + notices.map((notice) => "<p>" + esc(notice) + "</p>").join("") + "</div>" : "") +
+      "</section>"
+   );
+}
+
 function openPackImportPreview(preview) {
-   const names = preview.packs.map((pack) => pack.name).join(", ") || "—";
-   const errors = preview.errors.length ? '<div class="import-error" role="alert"><strong>Erreurs de structure</strong><ul>' + preview.errors.map((error) => '<li>' + esc(error) + "</li>").join("") + "</ul></div>" : "";
-   openSheet('<h3 class="sh-t">Aperçu avant import</h3><p class="sh-p"><strong>' + esc(names) + '</strong> · source ' + preview.sourceType.toUpperCase() + '</p><div class="import-stats"><div><b>' + preview.categoryCount + '</b><span>Sous-catégories</span></div><div><b>' + preview.wordCount + '</b><span>Mots</span></div><div><b>' + preview.duplicates + '</b><span>Doublons du fichier</span></div><div><b>' + preview.existing + '</b><span>Déjà présents</span></div><div><b>' + preview.missingDictionary + '</b><span>Absents du dictionnaire</span></div><div><b>' + preview.incomplete + '</b><span>Incomplets</span></div></div>' + errors + (preview.errors.length ? "" : '<fieldset class="import-options"><legend>Mode d’import</legend><label class="ck"><input type="radio" name="import-mode" value="new" checked> Créer un nouveau pack</label><label class="ck"><input type="radio" name="import-mode" value="merge"> Fusionner avec un pack existant</label><select class="search" id="import-target"><option value="">Choisir un pack existant</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '">' + esc(pack.name) + "</option>").join("") + '</select><label class="ck"><input type="checkbox" id="import-skip" checked> Ignorer les doublons internes</label><label class="ck"><input type="checkbox" id="import-replace-structure"> Remplacer uniquement la structure du pack, sans supprimer les cartes ni leur progression</label><label class="ck"><input type="checkbox" id="import-missing" checked> Importer les mots absents ou incomplets comme cartes personnelles</label></fieldset>') + '<div class="sh-btns">' + (preview.errors.length ? "" : '<button class="btn primary" id="import-confirm">Confirmer l’import</button>') + '<button class="btn ghost" id="import-cancel">Annuler</button></div><p class="sh-note">Aucune donnée n’a été modifiée pendant cet aperçu.</p>');
+   const names = preview.packs.map((pack) => pack.name).join(", ") || "Sans nom";
+   const newModeLabel = preview.packs.length === 1
+      ? "Créer un nouveau pack « " + names + " »"
+      : "Créer " + preview.packs.length + " nouveaux packs";
+   const errors = preview.errors.length
+      ? '<div class="import-error" role="alert"><strong>Ce fichier ne peut pas être importé tel quel :</strong><span>Erreurs de structure</span><ul>' + preview.errors.map((error) => '<li>' + esc(error) + "</li>").join("") + "</ul></div>"
+      : "";
+   const options = preview.errors.length ? "" :
+      '<fieldset class="import-options"><legend>Comment veux-tu importer ?</legend><div class="import-mode-choices">' +
+      '<label class="import-mode-choice"><input type="radio" name="import-mode" value="new" checked><span><strong>' + esc(newModeLabel) + '</strong><small>Un pack séparé sera ajouté à ta bibliothèque.</small></span></label>' +
+      '<label class="import-mode-choice"><input type="radio" name="import-mode" value="merge"><span><strong>Ajouter à un pack que j’ai déjà</strong><small>Les mots seront rangés dans un pack existant.</small></span></label></div>' +
+      '<label class="import-target-field" id="import-target-field" for="import-target" hidden><span>Dans quel pack ?</span><select class="search" id="import-target"><option value="">Choisir un pack existant</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '">' + esc(pack.name) + "</option>").join("") + "</select></label>" +
+      '<label class="import-replace-option" id="import-replace-field" hidden><input type="checkbox" id="import-replace-structure"><span><strong>Réorganiser les sous-catégories selon le fichier</strong><small>Aucune carte ne sera supprimée et toute progression sera conservée.</small></span></label>' +
+      '<details class="import-advanced" id="import-advanced"><summary>Options avancées</summary><div class="import-advanced-options">' +
+      '<label class="import-advanced-option"><input type="checkbox" id="import-skip" checked><span><strong>Ignorer les doublons du fichier</strong><small>Si le fichier contient deux fois le même mot, un seul est gardé.</small></span></label>' +
+      '<label class="import-advanced-option"><input type="checkbox" id="import-missing" checked><span><strong>Importer aussi les mots inconnus du dictionnaire</strong><small>Ils deviennent des cartes personnelles que tu peux compléter à la main.</small></span></label>' +
+      "</div></details></fieldset>";
+   openSheet('<article class="pack-import-preview"><h3 class="sh-t">Aperçu avant import</h3><p class="sh-p">Source ' + preview.sourceType.toUpperCase() + "</p>" + packImportPreviewSummaryHtml(preview, names) + errors + options + '<div class="sh-btns">' + (preview.errors.length ? "" : '<button class="btn primary" id="import-confirm"></button>') + '<button class="btn ghost" id="import-cancel">Annuler</button></div><p class="sh-note">Aucune donnée n’a été modifiée pendant cet aperçu.</p></article>');
    $("import-cancel").onclick = closeSheet;
+   const updateImportMode = () => {
+      const mode = document.querySelector('input[name="import-mode"]:checked').value;
+      const merge = mode === "merge";
+      $("import-target-field").hidden = !merge;
+      $("import-replace-field").hidden = !merge;
+      const target = db.packs.find((pack) => pack.id === $("import-target").value);
+      $("import-confirm").textContent = merge
+         ? target
+            ? "Ajouter " + preview.wordCount + " mot" + (preview.wordCount > 1 ? "s" : "") + " à « " + target.name + " »"
+            : "Choisir le pack à compléter (" + preview.wordCount + " mot" + (preview.wordCount > 1 ? "s" : "") + ")"
+         : preview.packs.length === 1
+            ? "Créer le pack « " + names + " » (" + preview.wordCount + " mot" + (preview.wordCount > 1 ? "s" : "") + ")"
+            : "Créer " + preview.packs.length + " packs (" + preview.wordCount + " mots)";
+   };
+   document.querySelectorAll('input[name="import-mode"]').forEach((input) => input.onchange = updateImportMode);
+   if ($("import-target")) $("import-target").onchange = updateImportMode;
+   if ($("import-confirm")) updateImportMode();
    if ($("import-confirm")) $("import-confirm").onclick = () => {
       const mode = document.querySelector('input[name="import-mode"]:checked').value;
       if (mode === "merge" && !$("import-target").value) { toast("Choisis le pack à fusionner."); return; }

@@ -7,7 +7,6 @@ let reviewStrokeLoadToken = 0;
 let reviewStrokeData = null;
 let reviewStrokeTab = "animation";
 let reviewStrokeExpanded = false;
-let reviewWritingPracticeController = null;
 
 function reviewHanzi(value) {
    return Array.from(String(value || "")).filter((character) =>
@@ -174,80 +173,6 @@ function activateReviewStrokeTab(tab) {
    } else createReviewStrokeAnimation(reviewStrokeData, false);
 }
 
-function openReviewWritingPractice(character) {
-   if (!character || typeof createWritingCanvasController !== "function") return;
-   const basePreferences = writingPreferences();
-   const preferences = {
-      color: basePreferences.color,
-      width: basePreferences.width,
-      grid: basePreferences.grid,
-      opacity: basePreferences.opacity,
-      modelVisible: basePreferences.modelVisible,
-   };
-   const slot = { actions: [], redo: [] };
-   openSheet(
-      '<article class="review-writing-practice" data-review-writing-character="' + esc(character) + '">' +
-      '<button class="sheet-x" type="button" data-sheet-close aria-label="Fermer">×</button>' +
-      '<header class="review-writing-head"><div><p class="eyebrow">Essai rapide</p><h3 class="sh-t">Tracer <span>' + esc(character) + "</span></h3></div></header>" +
-      '<div class="review-writing-model-controls"><label for="review-writing-opacity">Opacité du modèle <output id="review-writing-opacity-value">' + Math.round(preferences.opacity * 100) + '%</output></label>' +
-      '<input id="review-writing-opacity" type="range" min="4" max="45" step="1" value="' + Math.round(preferences.opacity * 100) + '"></div>' +
-      '<div class="writing-surface review-writing-surface" id="review-writing-surface" data-grid="' + preferences.grid + '">' +
-      '<div class="writing-model review-writing-model" id="review-writing-model" aria-hidden="true" style="opacity:' + preferences.opacity + '"' +
-      (preferences.modelVisible ? "" : " hidden") + ">" + esc(character) + "</div>" +
-      '<canvas class="writing-canvas" id="review-writing-canvas" aria-label="Zone d’essai pour ' + esc(character) + '" tabindex="0"></canvas>' +
-      writingModelToggleButtonHtml("review-writing-model-visible", preferences.modelVisible, false, "writing-surface-model-toggle") + "</div>" +
-      '<section class="review-writing-grids" aria-labelledby="review-writing-grid-title"><div class="review-writing-grid-head"><h4 id="review-writing-grid-title">Grille</h4><small>Le tracé reste intact</small></div>' +
-      '<div class="writing-grid-options">' + writingGridButtonsHtml(preferences) + "</div></section>" +
-      '<div class="sh-btns review-writing-buttons"><button class="btn" type="button" id="review-writing-clear" disabled>Recommencer</button>' +
-      '<button class="btn primary" type="button" data-sheet-close>Fermer</button></div></article>',
-   );
-   const sheetCard = $("sheet").querySelector(".sheet-card");
-   sheetCard.classList.add("review-writing-sheet-card");
-   const canvas = $("review-writing-canvas");
-   const surface = $("review-writing-surface");
-   const clear = $("review-writing-clear");
-   const updateClearState = () => { if (clear) clear.disabled = !slot.actions.length; };
-   reviewWritingPracticeController = createWritingCanvasController({
-      canvas,
-      surface,
-      drawingSlot: () => slot,
-      preferences: () => preferences,
-      selectedTool: () => "pen",
-      onFinish: updateClearState,
-      signal: sheetAbortController.signal,
-   });
-   $("review-writing-model-visible").onclick = (event) => {
-      preferences.modelVisible = !preferences.modelVisible;
-      $("review-writing-model").hidden = !preferences.modelVisible;
-      updateWritingModelToggleButton(event.currentTarget, preferences.modelVisible);
-   };
-   $("review-writing-opacity").oninput = (event) => {
-      preferences.opacity = Number(event.target.value) / 100;
-      $("review-writing-opacity-value").textContent = event.target.value + "%";
-      $("review-writing-model").style.opacity = preferences.opacity;
-   };
-   document.querySelectorAll(".review-writing-practice [data-writing-grid]").forEach((button) => {
-      button.onclick = () => {
-         preferences.grid = button.dataset.writingGrid;
-         surface.dataset.grid = preferences.grid;
-         document.querySelectorAll(".review-writing-practice [data-writing-grid]").forEach((item) =>
-            item.setAttribute("aria-pressed", String(item === button)),
-         );
-      };
-   });
-   clear.onclick = () => {
-      slot.actions.length = 0;
-      slot.redo.length = 0;
-      reviewWritingPracticeController.render();
-      updateClearState();
-   };
-   sheetAbortController.signal.addEventListener("abort", () => {
-      if (reviewWritingPracticeController) reviewWritingPracticeController.destroy();
-      reviewWritingPracticeController = null;
-      sheetCard.classList.remove("review-writing-sheet-card");
-   }, { once: true });
-}
-
 function wireReviewStrokeBlock(c, st) {
    const root = $("review-strokes");
    if (!root) return;
@@ -285,7 +210,7 @@ function wireReviewStrokeBlock(c, st) {
    );
    $("review-stroke-practice").onclick = () => {
       const index = Math.max(0, Math.min(Number(st.strokeCharacterIndex) || 0, characters.length - 1));
-      openReviewWritingPractice(characters[index]);
+      openWritingPracticeSheet(c.hz, { initialIndex: index });
    };
    $("review-stroke-replay").onclick = () => {
       if (reviewStrokeData) createReviewStrokeAnimation(reviewStrokeData, true);

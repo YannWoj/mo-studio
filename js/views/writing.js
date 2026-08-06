@@ -2,7 +2,6 @@
 
 /* ================= tableau d'écriture (写) ================= */
 const WRITING_GRIDS = ["blank", "square", "tian", "mi"];
-const WRITING_COLORS = ["#17140f", "#9e2b25", "#2e6b57", "#2f5480"];
 let writingCanvasController = null;
 let writingState = {
    mode: "free",
@@ -10,8 +9,6 @@ let writingState = {
    characters: [],
    index: 0,
    tool: "pen",
-   toolsExpanded: null,
-   compactToolsViewport: null,
    free: { actions: [], redo: [] },
    practice: {},
 };
@@ -80,7 +77,7 @@ function writingPracticeHtml(prefs) {
       esc(writingState.word) +
       '" placeholder="Ex. 你好" autocomplete="off" inputmode="text">' +
       '<button class="btn primary" type="submit">Afficher</button></div></form>' +
-      (hasCharacters
+      (writingState.characters.length > 1
          ? '<div class="writing-character-nav" id="writing-character-nav" aria-label="Glisser ou utiliser les chevrons pour changer de caractère">' +
            '<button class="character-nav-button" id="writing-prev" type="button" aria-label="Caractère précédent"' +
            (writingState.index <= 0 ? " disabled" : "") +
@@ -95,7 +92,9 @@ function writingPracticeHtml(prefs) {
            '<button class="character-nav-button" id="writing-next" type="button" aria-label="Caractère suivant"' +
            (writingState.index >= writingState.characters.length - 1 ? " disabled" : "") +
            ">" + writingChevron("right") + "</button></div>"
-         : '<p class="writing-practice-empty">Choisis un caractère ou un mot pour afficher un modèle en transparence.</p>') +
+         : hasCharacters
+            ? ""
+            : '<p class="writing-practice-empty">Choisis un caractère ou un mot pour afficher un modèle en transparence.</p>') +
       "</section>"
    );
 }
@@ -131,56 +130,70 @@ function writingGridSelectorHtml(prefs) {
    );
 }
 
+function writingToolIcon(name) {
+   const paths = {
+      pen:
+         '<path d="m14.5 4.5 5 5-9.3 9.3-6.5 1.5 1.5-6.5 9.3-9.3Z"></path>' +
+         '<path d="m12.7 6.3 5 5M5.2 13.8l5 5M3.7 20.3c1.8.3 3.5.1 5-.7"></path>',
+      eraser:
+         '<path d="m14.8 4.7 4.5 4.5a2 2 0 0 1 0 2.8l-6.5 6.5H7.2l-2.5-2.5a2 2 0 0 1 0-2.8l7.3-8.5a2 2 0 0 1 2.8 0Z"></path>' +
+         '<path d="m8.5 9.3 6.2 6.2M12.8 18.5h7"></path>',
+      undo:
+         '<path d="M9 7 4 12l5 5"></path><path d="M5 12h8a6 6 0 0 1 6 6"></path>',
+      redo:
+         '<path d="m15 7 5 5-5 5"></path><path d="M19 12h-8a6 6 0 0 0-6 6"></path>',
+      clear:
+         '<path d="M4.5 7h15M9 3.5h6L16 7H8l1-3.5ZM7 7l.8 13h8.4L17 7M10 10.5v6M14 10.5v6"></path>',
+      fullscreen:
+         '<path d="M8.5 4H4v4.5M15.5 4H20v4.5M20 15.5V20h-4.5M8.5 20H4v-4.5"></path>',
+      "fullscreen-exit":
+         '<path d="M4 8.5h4.5V4M20 8.5h-4.5V4M15.5 20v-4.5H20M8.5 20v-4.5H4"></path>',
+   };
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      paths[name] +
+      "</svg>"
+   );
+}
+
 function writingToolbarHtml(prefs) {
-   const expanded = writingToolsAreExpanded();
    const hasModel =
       writingState.mode === "practice" && writingState.characters.length > 0;
    return (
       '<section class="writing-tools" aria-label="Outils de dessin">' +
-      '<div class="writing-tool-row writing-primary-tools" role="group" aria-label="Outils essentiels">' +
-      '<button class="btn sm writing-tool" id="writing-pen" type="button" aria-pressed="' +
+      '<div class="writing-icon-tools" role="group" aria-label="Outils et actions du tableau">' +
+      '<button class="writing-icon-button writing-tool" id="writing-pen" type="button" aria-label="Pinceau" title="Pinceau" aria-pressed="' +
       String(writingState.tool === "pen") +
-      '">Pinceau</button><button class="btn sm writing-tool" id="writing-eraser" type="button" aria-pressed="' +
+      '">' + writingToolIcon("pen") + '</button>' +
+      '<button class="writing-icon-button writing-tool" id="writing-eraser" type="button" aria-label="Gomme" title="Gomme" aria-pressed="' +
       String(writingState.tool === "eraser") +
-      '">Gomme</button><button class="btn sm" id="writing-undo" type="button">Annuler</button>' +
-      '<button class="btn sm ghost writing-more-toggle" id="writing-more-toggle" type="button" aria-expanded="' +
-      String(expanded) + '" aria-controls="writing-more-tools">' +
-      (expanded ? "Moins d’outils" : "Plus d’outils") +
-      '</button></div>' +
-      '<div class="writing-more-tools" id="writing-more-tools"' +
-      (expanded ? "" : " hidden") + '><div class="writing-tool-row writing-ink-tools">' +
-      '<div class="writing-colors" role="group" aria-label="Couleur du trait">' +
-      WRITING_COLORS.map(
-         (color) =>
-            '<button class="writing-color" type="button" data-writing-color="' +
-            color +
-            '" aria-label="Choisir la couleur ' +
-            color +
-            '" aria-pressed="' +
-            String(prefs.color.toLowerCase() === color) +
-            '" style="--writing-color:' +
-            color +
-            '"></button>',
-      ).join("") +
-      '<label class="writing-color-custom" title="Couleur personnalisée"><span>Couleur</span><input id="writing-color" type="color" value="' +
+      '">' + writingToolIcon("eraser") + '</button>' +
+      '<button class="writing-icon-button" id="writing-undo" type="button" aria-label="Annuler" title="Annuler">' +
+      writingToolIcon("undo") + '</button>' +
+      '<button class="writing-icon-button" id="writing-redo" type="button" aria-label="Rétablir" title="Rétablir">' +
+      writingToolIcon("redo") + '</button>' +
+      '<button class="writing-icon-button writing-clear-button" id="writing-clear" type="button" aria-label="Tout effacer" title="Tout effacer">' +
+      writingToolIcon("clear") + '</button>' +
+      '<button class="writing-icon-button" id="writing-fullscreen" type="button" aria-label="Plein écran" title="Plein écran">' +
+      writingToolIcon("fullscreen") + '</button>' +
+      '<button class="writing-color-current" id="writing-color-button" type="button" aria-label="Choisir la couleur du trait" title="Couleur du trait" style="--writing-color:' +
       esc(prefs.color) +
-      '"></label></div>' +
-      '<label class="writing-width" for="writing-width">Épaisseur <output id="writing-width-value">' +
+      '"></button><input class="writing-color-input" id="writing-color" type="color" value="' +
+      esc(prefs.color) +
+      '" aria-label="Couleur du trait"></div>' +
+      '<div class="writing-slider-tools">' +
+      '<label class="writing-slider writing-width" for="writing-width"><span>Trait</span><output id="writing-width-value">' +
       prefs.width +
       ' px</output><input id="writing-width" type="range" min="1" max="24" step="1" value="' +
       prefs.width +
       '"></label>' +
       (hasModel
-         ? '<label class="writing-model-opacity" for="writing-opacity">Opacité du modèle <output id="writing-opacity-value">' +
+         ? '<label class="writing-slider writing-model-opacity" for="writing-opacity"><span>Modèle</span><output id="writing-opacity-value">' +
            Math.round(prefs.opacity * 100) +
            '%</output><input id="writing-opacity" type="range" min="4" max="45" step="1" value="' +
            Math.round(prefs.opacity * 100) + '"></label>'
          : "") +
-      '</div>' +
-      '<div class="writing-tool-row writing-action-tools" role="group" aria-label="Actions du tableau">' +
-      '<button class="btn sm" id="writing-redo" type="button">Rétablir</button>' +
-      '<button class="btn sm danger" id="writing-clear" type="button">Tout effacer</button>' +
-      '<button class="btn sm ghost writing-fullscreen-button" id="writing-fullscreen" type="button">Plein écran</button></div></div></section>'
+      '</div></section>'
    );
 }
 
@@ -280,28 +293,12 @@ function wireWritingView() {
    if ($("writing-next")) $("writing-next").onclick = () => moveWritingCharacter(1);
    wireWritingSwipe();
 
-   if ($("writing-more-toggle"))
-      $("writing-more-toggle").onclick = () => {
-         writingState.toolsExpanded = !writingState.toolsExpanded;
-         renderWriting();
-      };
-
-   document.querySelectorAll("[data-writing-color]").forEach((button) => {
-      button.onclick = () => {
-         const prefs = writingPreferences();
-         prefs.color = button.dataset.writingColor;
-         writingState.tool = "pen";
-         saveWritingPreferences();
-         renderWriting();
-      };
-   });
+   $("writing-color-button").onclick = () => $("writing-color").click();
    $("writing-color").oninput = (event) => {
       writingPreferences().color = event.target.value;
       writingState.tool = "pen";
       saveWritingPreferences();
-      document.querySelectorAll("[data-writing-color]").forEach((button) =>
-         button.setAttribute("aria-pressed", "false"),
-      );
+      $("writing-color-button").style.setProperty("--writing-color", event.target.value);
       updateWritingToolState();
    };
    $("writing-width").oninput = (event) => {
@@ -539,21 +536,6 @@ function updateWritingModelToggleButton(button, visible) {
    button.innerHTML = writingModelEyeIcon(visible);
 }
 
-function writingUsesCompactTools() {
-   return window.matchMedia("(max-width: 520px)").matches;
-}
-
-function writingToolsAreExpanded() {
-   const compact = writingUsesCompactTools();
-   if (writingState.compactToolsViewport !== compact) {
-      writingState.compactToolsViewport = compact;
-      writingState.toolsExpanded = !compact;
-   } else if (writingState.toolsExpanded === null) {
-      writingState.toolsExpanded = !compact;
-   }
-   return writingState.toolsExpanded;
-}
-
 function wireWritingCanvas() {
    const canvas = $("writing-canvas");
    const surface = $("writing-surface");
@@ -654,12 +636,16 @@ async function toggleWritingFullscreen() {
 function writingFullscreenChanged() {
    const button = $("writing-fullscreen");
    const workspace = $("writing-workspace");
-   if (button)
-      button.textContent =
-         document.fullscreenElement ||
-         (workspace && workspace.classList.contains("writing-fullscreen-fallback"))
-            ? "Quitter le plein écran"
-            : "Plein écran";
+   const active = Boolean(
+      document.fullscreenElement ||
+         (workspace && workspace.classList.contains("writing-fullscreen-fallback")),
+   );
+   if (button) {
+      const label = active ? "Quitter le plein écran" : "Plein écran";
+      button.setAttribute("aria-label", label);
+      button.title = label;
+      button.innerHTML = writingToolIcon(active ? "fullscreen-exit" : "fullscreen");
+   }
    requestAnimationFrame(resizeWritingCanvas);
 }
 

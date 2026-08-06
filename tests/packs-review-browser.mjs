@@ -14,6 +14,10 @@ const cardDetailScreenshots = {
    mobile: path.join(os.tmpdir(), "mo-library-card-detail-360.png"),
    desktop: path.join(os.tmpdir(), "mo-library-card-detail-1024.png"),
 };
+const importPreviewScreenshots = {
+   mobile: path.join(os.tmpdir(), "mo-pack-import-preview-390.png"),
+   desktop: path.join(os.tmpdir(), "mo-pack-import-preview-1024.png"),
+};
 let server, browser, cdp;
 
 function assert(value, message) { if (!value) throw new Error(message); }
@@ -206,13 +210,73 @@ async function main() {
    await evaluate("setView('lib'); lib.level='packs'; renderLib()");
    await click("#lib-import");
    assert(await evaluate("!!document.querySelector('#pack-file-json') && !!document.querySelector('#pack-file-csv') && !!document.querySelector('#import-paste')"), "import sources missing");
-   const pasteJson = JSON.stringify({ version: 1, pack: { name: "Collé", categories: [{ name: "Direct", words: [{ chinese: "书", translation: "livre" }] }] } });
+   const pasteJson = JSON.stringify({ version: 1, pack: { name: "Collé", categories: [{ name: "Direct", words: [{ chinese: "你好", pinyin: "nǐ hǎo", translation: "bonjour" }] }] } });
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:2, mobile:true });
    await evaluate(`document.querySelector('#import-paste').value=${JSON.stringify(pasteJson)}`);
    await click("#import-paste-preview");
    await waitFor(() => evaluate("!!document.querySelector('#import-confirm')"), "pasted JSON preview missing");
-   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Collé"), "pasted pack name absent");
+   const cleanPreviewUi = await evaluate(`(() => ({
+      name:document.querySelector('.import-summary-sentence').textContent,
+      legacyStats:!!document.querySelector('.import-stats'),
+      problems:document.querySelectorAll('.import-preview-notices p').length,
+      chips:document.querySelectorAll('.import-summary-chip').length,
+      modes:document.querySelectorAll('[name=import-mode]').length,
+      targetHidden:document.querySelector('#import-target-field').hidden,
+      replaceHidden:document.querySelector('#import-replace-field').hidden,
+      advancedOpen:document.querySelector('#import-advanced').open,
+      defaults:[document.querySelector('#import-skip').checked,document.querySelector('#import-missing').checked],
+      confirm:document.querySelector('#import-confirm').textContent,
+      note:document.querySelector('.sh-note').textContent,
+      overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
+   }))()`);
+   assert(cleanPreviewUi.name.includes('1 mot dans « Collé »')&&cleanPreviewUi.name.includes('progression est conservée')&&!cleanPreviewUi.legacyStats&&cleanPreviewUi.problems===0&&cleanPreviewUi.chips>=3&&cleanPreviewUi.modes===2&&cleanPreviewUi.targetHidden&&cleanPreviewUi.replaceHidden&&!cleanPreviewUi.advancedOpen&&cleanPreviewUi.defaults.every(Boolean)&&cleanPreviewUi.confirm==='Créer le pack « Collé » (1 mot)'&&cleanPreviewUi.note.includes('Aucune donnée')&&!cleanPreviewUi.overflow, `clean import preview failed: ${JSON.stringify(cleanPreviewUi)}`);
+   await click('[name="import-mode"][value="merge"]');
+   assert(await evaluate("!document.querySelector('#import-target-field').hidden&&!document.querySelector('#import-replace-field').hidden&&document.querySelector('#import-confirm').textContent.includes('Choisir le pack')"), "merge controls did not appear progressively");
+   await click('[name="import-mode"][value="new"]');
+   assert(await evaluate("document.querySelector('#import-target-field').hidden&&document.querySelector('#import-replace-field').hidden&&document.querySelector('#import-confirm').textContent==='Créer le pack « Collé » (1 mot)'"), "new mode did not hide merge-only controls");
+   await evaluate("document.querySelector('#toast').classList.remove('show');document.querySelector('.sheet-card').scrollTop=0");
+   const cleanPreviewImage = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
+   await writeFile(importPreviewScreenshots.mobile, Buffer.from(cleanPreviewImage.data,"base64"));
+   await click("#import-confirm");
+   await waitFor(() => evaluate("!sheetOpen()&&db.packs.some((pack)=>pack.name==='Collé')"), "clean preview creation did not apply");
+   assert(await evaluate("categoriesForPack(db.packs.find((pack)=>pack.name==='Collé').id).some((category)=>category.name==='Direct')&&document.querySelector('#toast').textContent.includes('nouvelle(s) carte(s)')"), "clean UI import changed its result toast or structure");
+
+   const problematicJson = JSON.stringify({ version:1, pack:{ name:"Ajouts guidés", categories:[{ name:"Cas limites", words:[
+      { chinese:"龘龘龘龘", pinyin:"dá dá dá dá", translation:"mot de test" },
+      { chinese:"龘龘龘龘", pinyin:"dá dá dá dá", translation:"mot de test" },
+      { chinese:"䨻䨻" }
+   ] }] } });
+   const mergeTargetId = await evaluate("db.packs.find((pack)=>pack.name==='Livres').id");
+   await evaluate(`(async()=>{const preview=await buildPackImportPreview(parsePackJson(${JSON.stringify(problematicJson)}),'json');openPackImportPreview(preview)})()`);
+   await waitFor(() => evaluate("!!document.querySelector('#import-confirm')&&document.querySelectorAll('.import-preview-notices p').length>=2"), "problematic preview missing its explanations");
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:1024, height:900, deviceScaleFactor:1, mobile:false });
+   await click('[name="import-mode"][value="merge"]');
+   await evaluate(`(() => {const select=document.querySelector('#import-target');select.value=${JSON.stringify(mergeTargetId)};select.dispatchEvent(new Event('change',{bubbles:true}))})()`);
+   const problemPreviewUi = await evaluate(`(() => ({
+      warnings:document.querySelectorAll('.import-summary-chip.warning').length,
+      explanations:[...document.querySelectorAll('.import-preview-notices p')].map((item)=>item.textContent),
+      targetVisible:!document.querySelector('#import-target-field').hidden,
+      replaceVisible:!document.querySelector('#import-replace-field').hidden,
+      replaceLabel:document.querySelector('#import-replace-field').textContent,
+      confirm:document.querySelector('#import-confirm').textContent,
+      advancedOpen:document.querySelector('#import-advanced').open,
+      options:[document.querySelector('#import-skip').checked,document.querySelector('#import-missing').checked],
+      overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
+   }))()`);
+   assert(problemPreviewUi.warnings>=2&&problemPreviewUi.explanations.some((line)=>line.includes('répète'))&&problemPreviewUi.explanations.some((line)=>line.includes('dictionnaire'))&&problemPreviewUi.targetVisible&&problemPreviewUi.replaceVisible&&problemPreviewUi.replaceLabel.includes('Aucune carte ne sera supprimée')&&problemPreviewUi.confirm==='Ajouter 3 mots à « Livres »'&&!problemPreviewUi.advancedOpen&&problemPreviewUi.options.every(Boolean)&&!problemPreviewUi.overflow, `problematic merge preview failed: ${JSON.stringify(problemPreviewUi)}`);
+   await click("#import-advanced summary");
+   assert(await evaluate("document.querySelector('#import-advanced').open&&document.querySelector('#import-skip').closest('label').textContent.includes('un seul est gardé')&&document.querySelector('#import-missing').closest('label').textContent.includes('cartes personnelles')"), "advanced import explanations are inaccessible");
+   await evaluate("document.querySelector('#toast').classList.remove('show');document.querySelector('.sheet-card').scrollTop=0");
+   const problemPreviewImage = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
+   await writeFile(importPreviewScreenshots.desktop, Buffer.from(problemPreviewImage.data,"base64"));
+   await click("#import-confirm");
+   await waitFor(() => evaluate("!sheetOpen()&&categoriesForPack(db.packs.find((pack)=>pack.name==='Livres').id).some((category)=>category.name==='Cas limites')"), "problematic merge preview did not apply");
+   assert(await evaluate("db.cards.filter((card)=>card.hz==='龘龘龘龘').length===1&&db.cards.some((card)=>card.hz==='䨻䨻'&&card.incomplete)"), "merge UI changed duplicate or personal-card import behavior");
+
+   await evaluate("openPackImportPreview({packs:[],sourceType:'json',categoryCount:0,wordCount:0,duplicates:0,existing:0,missingDictionary:0,incomplete:0,errors:['Le champ pack est obligatoire.']})");
+   assert(await evaluate("document.querySelector('.import-error').firstElementChild.textContent==='Ce fichier ne peut pas être importé tel quel :'&&!document.querySelector('#import-confirm')"), "structural error introduction is unclear");
    await click("#import-cancel");
-   pass("fichiers JSON/CSV, collage direct et aperçu UI");
+   pass(`fichiers JSON/CSV, création et fusion guidées, aperçus propre/problématique · captures ${importPreviewScreenshots.mobile} · ${importPreviewScreenshots.desktop}`);
 
    const srs = await evaluate(`(async () => {
       const card=db.cards.find(c=>c.hz==='你好'); const id=card.id; card.lvl=5; card.due=1900000000000; card.reviewHistory=[{at:1800000000000,grade:'good'}]; save();

@@ -216,7 +216,9 @@ function dictionaryFrenchDefinitionsHtml(entry) {
 }
 
 function dictionaryEnglishDefinitionsHtml(entry) {
-   const english = dictionarySplitSenses(entry.definitionsEn);
+   const english = dictionarySplitSenses(entry.definitionsEn).filter((definition) =>
+      /\p{L}/u.test(definition),
+   );
    return english.length
       ? '<details class="dd-definitions english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
         english.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></details>"
@@ -614,11 +616,6 @@ function openDictDetail(rawEntry, options) {
          (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
          dictionaryVariantExplanationHtml(entry) +
          dictionaryFrenchDefinitionsHtml(entry) +
-         dictionaryHskSourceHtml(entry) +
-         '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
-         (card
-            ? cardActionsHtml(card)
-            : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
          '<div class="dd-meta">' +
          dictionaryEntryDetailedTypeLabels(entry).map((label) => '<span class="cd-cat">' + esc(label) + "</span>").join("") +
          verifiedHskBadges(entry) +
@@ -627,9 +624,14 @@ function openDictDetail(rawEntry, options) {
             : "") +
          (card ? '<span class="cd-cat jade">Dans Mes mots</span>' : "") +
          "</div>" +
+         dictionaryCharacterInteractionHtml(characters) +
+         '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
+         (card
+            ? cardActionsHtml(card)
+            : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
          (card && card.exHz ? exampleHtml(card) : "") +
          (card && card.note ? noteHtml(card) : "") +
-         dictionaryCharacterInteractionHtml(characters) +
+         dictionaryHskSourceHtml(entry) +
          dictionaryEnglishDefinitionsHtml(entry) +
          dictionarySourcesHtml(entry) +
          '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
@@ -638,6 +640,17 @@ function openDictDetail(rawEntry, options) {
          "</button></div></article>",
    );
    wireDictDetail(entry, characters, card, token, settings);
+}
+
+function dictionaryRelatedWordIsVulgar(word) {
+   const english = (word.definitionsEn || []).join(" ");
+   if (/\b(?:vulgar|coarse)\b/i.test(english)) return true;
+   const hanzi = String(word.simplified || "");
+   // Certains aperçus de variantes ne répètent pas le marqueur anglais et ne
+   // contiennent qu'un renvoi. Ce repli ciblé ne s'applique qu'aux suggestions.
+   return /妈卖(?:批|屄)|媽賣(?:批|屄)|(?:操|肏|屄|屌).{0,4}你|你.{0,4}(?:操|肏|屄|屌|老母)|(?:干|幹|日)你(?:妈|媽|老母)/u.test(
+      hanzi,
+   );
 }
 
 async function renderDictionaryRelatedWords(character, token) {
@@ -651,7 +664,12 @@ async function renderDictionaryRelatedWords(character, token) {
       if (token !== dictionaryDetailToken || ddChar !== character || !$("dd-related")) return;
       target.setAttribute("aria-busy", "false");
       const words = related.words
-         .filter((word) => word.simplified !== character && Array.from(word.simplified).length > 1)
+         .filter(
+            (word) =>
+               word.simplified !== character &&
+               Array.from(word.simplified).length > 1 &&
+               !dictionaryRelatedWordIsVulgar(word),
+         )
          .map(attachHskMetadata);
       const usefulHskLevel = (word) => {
          const exactLevel = verifiedHskLevel(word);
@@ -800,7 +818,10 @@ function wireDictDetail(entry, characters, card, token, options) {
    if ($("dd-addcard"))
       $("dd-addcard").onclick = () => openDictionaryAddToWords(entry, options);
    if ($("dd-write"))
-      $("dd-write").onclick = () => openWritingWord(entry.simplified);
+      $("dd-write").onclick = () =>
+         openWritingPracticeSheet(
+            options && options.writingWord ? options.writingWord : entry.simplified,
+         );
    const closeDetail = () => {
          if (options && options.fromSearch && typeof closeSearchDictionaryDetail === "function")
             closeSearchDictionaryDetail();

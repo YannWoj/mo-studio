@@ -508,13 +508,25 @@
             font-size: 10px;
             box-shadow: 0 1px 5px rgba(23, 20, 15, .12);
          }
-         .sheet-card.review-writing-sheet-card {
-            width: min(480px, calc(100% - 16px));
-            max-height: min(78dvh, 680px);
-            margin: 0 8px max(8px, env(safe-area-inset-bottom));
+         .writing-practice-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 130;
+            display: grid;
+            place-items: center;
+            padding: 8px;
+            background: rgba(23, 20, 15, .68);
+         }
+         .writing-practice-dialog {
+            position: relative;
+            width: min(480px, 100%);
+            max-height: calc(100dvh - 16px);
+            overflow: auto;
             padding: 16px 14px;
             border: 1px solid var(--line);
             border-radius: 20px;
+            background: var(--paper-2);
+            box-shadow: 0 22px 70px rgba(23, 20, 15, .35);
          }
          .review-writing-practice,
          .review-writing-practice * {
@@ -536,25 +548,36 @@
             color: var(--lacquer);
             font: 600 30px var(--serif);
          }
+         .writing-practice-character-picker {
+            gap: 6px;
+            margin: 8px 0 6px;
+            padding-bottom: 2px;
+         }
          .review-writing-model-controls {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 6px 12px;
-            margin: 8px 0 10px;
+            gap: 6px 14px;
+            margin: 6px 0 10px;
             color: var(--ink-soft);
             font-size: 12px;
          }
-         .review-writing-model-controls .ck {
-            min-height: 44px;
+         .review-writing-model-controls > label {
+            display: grid;
+            min-width: 0;
+            flex: 1 1 180px;
+            grid-template-columns: auto auto;
             align-items: center;
-            margin: 0;
+            justify-content: space-between;
+            gap: 3px 8px;
          }
-         .review-writing-model-controls > label:not(.ck) {
-            white-space: nowrap;
+         .review-writing-model-controls output {
+            color: var(--ink-faint);
+            font-variant-numeric: tabular-nums;
          }
+         #review-writing-width,
          #review-writing-opacity {
-            width: 100%;
+            width: min(150px, 100%);
             grid-column: 1 / -1;
          }
          .writing-surface.review-writing-surface {
@@ -606,7 +629,14 @@
             font-size: 10px;
          }
          .review-writing-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             margin-top: 12px;
+         }
+         .writing-practice-dialog button:focus-visible,
+         .writing-practice-dialog input:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--lacquer) 36%, transparent);
+            outline-offset: 2px;
          }
          .gr {
             border-radius: 12px;

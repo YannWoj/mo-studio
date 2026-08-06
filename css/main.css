@@ -96,6 +96,12 @@
             padding: 14px 18px 10px;
             background: linear-gradient(var(--paper) 75%, transparent);
          }
+         .nav,
+         .top .brand {
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+         }
          .brand {
             display: flex;
             align-items: center;

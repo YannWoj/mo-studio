@@ -295,6 +295,7 @@ async function renderSequence() {
    wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
       strokeSelectionKey: () => `sequence:${index}:${character}`,
       sequenceIndex: index,
+      writingWord: current.chars.join(""),
       onCardStateChange: () => renderSequence(),
    });
    $("seq-exit").onclick = () => closeSequence();
