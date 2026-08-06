@@ -169,7 +169,10 @@ function wireWordList(visibleCards) {
       if (input.checked) lib.selected.add(input.dataset.wordCheck); else lib.selected.delete(input.dataset.wordCheck);
       renderWordList();
    });
-   document.querySelectorAll("[data-word-open]").forEach((button) => button.onclick = () => openCardDetail(button.dataset.wordOpen));
+   const detailContext = { cardIds: visibleCards.map((card) => card.id) };
+   document.querySelectorAll("[data-word-open]").forEach((button) => button.onclick = () =>
+      openCardDetail(button.dataset.wordOpen, detailContext),
+   );
    document.querySelectorAll("[data-select-mode]").forEach((button) => button.onclick = () => {
       if (button.dataset.selectMode === "none") lib.selected.clear();
       else {
@@ -229,13 +232,84 @@ function cardCategoryCheckboxes(card, checkedIds) {
    return '<div class="category-check-groups">' + db.packs.map((pack) => '<fieldset><legend>' + esc(pack.name) + '</legend>' + (categoriesForPack(pack.id).map((category) => '<label class="ck"><input type="checkbox" data-card-category="' + esc(category.id) + '"' + (checked.has(category.id) ? " checked" : "") + '> ' + esc(category.name) + "</label>").join("") || '<span class="sh-note">Aucune sous-catégorie</span>') + "</fieldset>").join("") + "</div>";
 }
 
-function openCardDetail(id) {
+function cardDetailContext(id, options) {
+   const requestedIds = options && Array.isArray(options.cardIds) ? options.cardIds : [id];
+   const existingIds = new Set(db.cards.map((card) => card.id));
+   const cardIds = Array.from(new Set(requestedIds)).filter((cardId) => existingIds.has(cardId));
+   return { cardIds: cardIds.includes(id) ? cardIds : [id] };
+}
+
+function cardDetailWordNavigationHtml(card, context) {
+   if (context.cardIds.length <= 1) return "";
+   const index = context.cardIds.indexOf(card.id);
+   return (
+      '<nav class="card-detail-word-nav" aria-label="Navigation entre les mots de cette liste">' +
+      '<button class="character-nav-button character-nav-previous" id="card-word-prev" type="button" aria-label="Mot précédent"' +
+      (index <= 0 ? " disabled" : "") + ">" + characterChevronHtml("left") + "</button>" +
+      '<strong class="card-detail-word-position" id="card-word-position" role="status" aria-live="polite">' +
+      esc(card.hz) + " · " + (index + 1) + " / " + context.cardIds.length + "</strong>" +
+      '<button class="character-nav-button character-nav-next" id="card-word-next" type="button" aria-label="Mot suivant"' +
+      (index >= context.cardIds.length - 1 ? " disabled" : "") + ">" +
+      characterChevronHtml("right") + "</button></nav>"
+   );
+}
+
+function wireCardStrokeWorkspace(card, characters) {
+   if (!characters.length) return;
+   wireStrokeWorkspace();
+   let selectedIndex = 0;
+   const selectCharacter = (index) => {
+      selectedIndex = Math.max(0, Math.min(Number(index) || 0, characters.length - 1));
+      const character = characters[selectedIndex];
+      updateCharacterNavigation("card", characters, selectedIndex);
+      loadDDChar(character, characters, {
+         selectionKey: `card:${card.id}:${selectedIndex}:${character}`,
+         selectionIndex: selectedIndex,
+      });
+   };
+   if ($("card-prev")) $("card-prev").onclick = () => selectCharacter(selectedIndex - 1);
+   if ($("card-next")) $("card-next").onclick = () => selectCharacter(selectedIndex + 1);
+   selectCharacter(0);
+}
+
+function openCardDetail(id, options) {
    const card = db.cards.find((item) => item.id === id);
    if (!card) return;
-   openSheet('<button class="sheet-x" data-sheet-close aria-label="Fermer la fiche">×</button><div class="cd-head"><div><div class="cd-hz" data-say="' + esc(card.hz) + '">' + esc(card.hz) + '</div><div class="cd-py">' + (card.py ? colorPinyin(card.py) : "Pinyin manquant") + '</div><div class="cd-fr">' + (esc(card.fr) || "Traduction manquante") + '</div></div><button class="seal" data-say="' + esc(card.hz) + '" aria-label="Écouter">听</button></div>' + (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") + '<div class="acts"><button class="act' + (card.fav ? " on" : "") + '" id="card-favorite">Favori</button><button class="act' + (card.difficult ? " on" : "") + '" id="card-difficult">Difficile</button><button class="act' + (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div><div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) + '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div>');
-   $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id); };
-   $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id); };
-   $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id); };
+   const context = cardDetailContext(id, options);
+   const listIndex = context.cardIds.indexOf(id);
+   const characters = Array.from(card.hz || "").filter((character) => HAN_PATTERN.test(character));
+   resetStrokeAutoplaySelection();
+   openSheet(
+      '<article class="card-detail-sheet" data-card-id="' + esc(card.id) + '">' +
+      '<div class="cd-head"><div><div class="cd-hz" data-say="' + esc(card.hz) + '">' +
+      esc(card.hz) + '</div><div class="cd-py">' +
+      (card.py ? colorPinyin(card.py) : "Pinyin manquant") + '</div><div class="cd-fr">' +
+      (esc(card.fr) || "Traduction manquante") +
+      '</div></div><div class="dd-top-actions"><button class="seal" data-say="' +
+      esc(card.hz) + '" aria-label="Écouter">听</button>' +
+      '<button class="dd-top-close" id="card-close-top" data-sheet-close aria-label="Fermer la fiche">×</button></div></div>' +
+      cardDetailWordNavigationHtml(card, context) +
+      (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") +
+      '<div class="acts"><button class="act' + (card.fav ? " on" : "") +
+      '" id="card-favorite">Favori</button><button class="act' +
+      (card.difficult ? " on" : "") +
+      '" id="card-difficult">Difficile</button><button class="act' +
+      (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div>' +
+      (characters.length
+         ? '<section class="dd-character-interaction card-detail-strokes" id="card-stroke-interaction"><div class="eyebrow">Ordre des traits</div>' +
+           strokeCharacterStageHtml("card", characters[0], 0, characters.length) + "</section>"
+         : "") +
+      '<div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) +
+      '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div></article>',
+   );
+   wireCardStrokeWorkspace(card, characters);
+   if ($("card-word-prev"))
+      $("card-word-prev").onclick = () => openCardDetail(context.cardIds[listIndex - 1], context);
+   if ($("card-word-next"))
+      $("card-word-next").onclick = () => openCardDetail(context.cardIds[listIndex + 1], context);
+   $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id, context); };
+   $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id, context); };
+   $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id, context); };
    document.querySelectorAll("[data-card-category]").forEach((input) => input.onchange = () => {
       if (input.checked) addCardMembership(card.id, input.dataset.cardCategory);
       else db.memberships = db.memberships.filter((membership) => !(membership.cardId === card.id && membership.categoryId === input.dataset.cardCategory));

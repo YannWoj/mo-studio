@@ -276,6 +276,7 @@
 }
 
 .stroke-character-stage {
+   --character-nav-size: 44px;
    position: relative;
    min-width: 0;
    width: 100%;
@@ -283,25 +284,39 @@
 .stroke-character-stage-main {
    min-width: 0;
 }
+.stroke-character-stage:has(> .character-nav-button) .mizi {
+   width: min(
+      300px,
+      calc(100% - var(--character-nav-size) - var(--character-nav-size))
+   );
+}
+.stroke-character-stage:has(> .character-nav-button) .stroke-gallery {
+   width: calc(100% - var(--character-nav-size) - var(--character-nav-size));
+   margin-inline: auto;
+}
 .stroke-character-stage > .character-nav-button {
    position: absolute;
    z-index: 5;
-   top: calc(90px + min(150px, (100vw - 80px) / 2));
-   width: 44px;
-   height: 44px;
+   top: var(--nav-center-y);
+   width: var(--character-nav-size);
+   height: var(--character-nav-size);
    border-color: color-mix(in srgb, var(--seal) 34%, var(--line));
    border-radius: 50%;
    background: color-mix(in srgb, var(--paper-2) 88%, transparent);
    color: var(--seal);
    box-shadow: 0 4px 12px rgba(23, 20, 15, 0.12);
    backdrop-filter: blur(7px);
+   visibility: hidden;
    transform: translateY(-50%);
 }
+.stroke-character-stage.is-navigation-positioned > .character-nav-button {
+   visibility: visible;
+}
 .stroke-character-stage > .character-nav-previous {
-   left: max(0px, calc(50% - 172px));
+   left: var(--nav-left);
 }
 .stroke-character-stage > .character-nav-next {
-   right: max(0px, calc(50% - 172px));
+   right: var(--nav-right);
 }
 .stroke-character-stage > .character-nav-button:active:not(:disabled) {
    transform: translateY(-50%) scale(0.96);

@@ -279,6 +279,34 @@
    text-align: center;
 }
 
+.card-detail-sheet .cd-head {
+   align-items: flex-start;
+}
+
+.card-detail-word-nav {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+   margin: 14px 0;
+}
+
+.card-detail-word-nav > .character-nav-button {
+   flex: 0 0 auto;
+}
+
+.card-detail-word-position {
+   min-width: 92px;
+   color: var(--ink);
+   font: 600 15px var(--ui);
+   text-align: center;
+   white-space: nowrap;
+}
+
+.card-detail-strokes {
+   margin-block: 18px;
+}
+
 .category-check-groups {
    display: grid;
    gap: 10px;

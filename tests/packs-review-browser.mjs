@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,6 +10,10 @@ const debugPort = 9344;
 const url = `http://127.0.0.1:${port}/`;
 const edge = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const profile = await mkdtemp(path.join(os.tmpdir(), "mo-packs-test-"));
+const cardDetailScreenshots = {
+   mobile: path.join(os.tmpdir(), "mo-library-card-detail-360.png"),
+   desktop: path.join(os.tmpdir(), "mo-library-card-detail-1024.png"),
+};
 let server, browser, cdp;
 
 function assert(value, message) { if (!value) throw new Error(message); }
@@ -95,6 +99,57 @@ async function main() {
    const imported = await evaluate(`(() => { const card=db.cards.find(c=>c.hz==='你好'); const cats=categoriesForCard(card.id); return { unique:db.cards.filter(c=>c.hz==='你好').length, memberships:cats.length, favorite:card.fav, friend:db.cards.find(c=>c.hz==='朋友') }; })()`);
    assert(imported.unique === 1 && imported.memberships === 2 && imported.favorite && imported.friend.difficult, "dedup/multi-membership failed");
    pass("import JSON, aperçu sans mutation, doublon partagé et favoris/difficiles");
+
+   const detailCategories = await evaluate(`(() => {const pack=db.packs.find((item)=>item.name==='Import JSON'),categories=categoriesForPack(pack.id);return {single:categories.find((item)=>item.name==='Chapitre 1').id,multiple:categories.find((item)=>item.name==='Chapitre 2').id};})()`);
+   await evaluate(`lib.level='category';lib.packId=db.packs.find((item)=>item.name==='Import JSON').id;lib.categoryId=${JSON.stringify(detailCategories.multiple)};lib.q='';lib.flt='all'`);
+   await evaluate("setView('lib');renderLib()");
+   assert((await evaluate("document.querySelectorAll('[data-word-open]').length")) === 2, "multi-word category did not render two cards");
+   await click("[data-word-open]");
+   await waitFor(() => evaluate("!!ddCharacterData && !!document.querySelector('#card-stage.is-navigation-positioned')"), "personal card stroke workspace did not load");
+   const firstDetailId = await evaluate("document.querySelector('.card-detail-sheet').dataset.cardId");
+   for (const width of [360, 1024]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
+      await waitFor(() => evaluate(`(() => {const stage=document.querySelector('#card-stage'),visual=stage?.querySelector('.stroke-tab-panel:not([hidden]) .mizi'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');if(!stage||!visual||!previous||!next)return false;const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect();return Math.abs(p.right-v.left)<1&&Math.abs(n.left-v.right)<1&&Math.abs(p.top+p.height/2-v.top-v.height/2)<1;})()`), `card stroke navigation did not settle at ${width}px`);
+      const layout = await evaluate(`(() => {const sheet=document.querySelector('.sheet-card'),listen=document.querySelector('.card-detail-sheet .seal'),close=document.querySelector('#card-close-top'),wordPrevious=document.querySelector('#card-word-prev'),wordNext=document.querySelector('#card-word-next'),a=listen.getBoundingClientRect(),b=close.getBoundingClientRect();return {overlap:!(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top),sizes:[a.width,a.height,b.width,b.height],wordButtons:!!wordPrevious&&!!wordNext,wordPositions:[getComputedStyle(wordPrevious).position,getComputedStyle(wordNext).position],wordState:[wordPrevious.disabled,wordNext.disabled],wordPosition:document.querySelector('#card-word-position').textContent.trim(),actions:['card-favorite','card-difficult','card-mastered','card-review-one','card-edit','card-delete','card-close'].every((id)=>!!document.getElementById(id)),membershipHandlers:[...document.querySelectorAll('[data-card-category]')].every((input)=>typeof input.onchange==='function'),overflow:sheet.scrollWidth>sheet.clientWidth||document.documentElement.scrollWidth>innerWidth};})()`);
+      assert(!layout.overlap && layout.sizes.every((size)=>size>=44) && layout.wordButtons && layout.wordPositions.every((position)=>position!=="absolute") && layout.wordState[0] && !layout.wordState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
+      await evaluate("document.querySelector('.sheet-card').scrollTop=0");
+      const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
+      await writeFile(width === 360 ? cardDetailScreenshots.mobile : cardDetailScreenshots.desktop, Buffer.from(screenshot.data, "base64"));
+   }
+   const favoriteBefore = await evaluate("db.cards.find((card)=>card.id===document.querySelector('.card-detail-sheet').dataset.cardId).fav");
+   await click("#card-favorite");
+   await waitFor(() => evaluate(`document.querySelector('.card-detail-sheet')?.dataset.cardId===${JSON.stringify(firstDetailId)}&&!!document.querySelector('#card-stage.is-navigation-positioned')`), "favorite rerender lost the card detail");
+   assert((await evaluate("db.cards.find((card)=>card.id===document.querySelector('.card-detail-sheet').dataset.cardId).fav")) !== favoriteBefore && /1 \/ 2$/.test(await evaluate("document.querySelector('#card-word-position').textContent.trim()")), "favorite action lost state or list context");
+   await click("#card-favorite");
+   await waitFor(() => evaluate("!!document.querySelector('#card-stage.is-navigation-positioned')"), "favorite restore did not reload strokes");
+   await click("#card-word-next");
+   await waitFor(() => evaluate(`document.querySelector('.card-detail-sheet')?.dataset.cardId!==${JSON.stringify(firstDetailId)}&&!!ddCharacterData&&!!document.querySelector('#card-stage.is-navigation-positioned')`), "next word did not load its strokes");
+   assert(await evaluate("!document.querySelector('#card-word-prev').disabled&&document.querySelector('#card-word-next').disabled&&document.querySelector('#card-word-position').textContent.trim().endsWith('2 / 2')"), "next-word boundary state is wrong");
+   await click('[data-stroke-tab="steps"]');
+   await waitFor(() => evaluate("document.querySelectorAll('#dd-gallery .stroke-panel').length>0"), "personal card stroke steps did not render");
+   await click('[data-stroke-tab="practice"]');
+   await waitFor(() => evaluate("ddWriterTarget?.id==='dd-practice-target'||!document.querySelector('#dd-practice-target')?.hidden"), "personal card practice did not initialize");
+   await click('[data-stroke-tab="animation"]');
+   await waitFor(() => evaluate("ddWriterTarget?.id==='dd-target'"), "personal card animation did not return");
+   await click("#card-close-top");
+   assert(!(await evaluate("sheetOpen()")), "personal card top close did not close the sheet");
+
+   await evaluate(`lib.level='category';lib.categoryId=${JSON.stringify(detailCategories.single)};lib.q='';lib.flt='all';renderLib()`);
+   assert((await evaluate("document.querySelectorAll('[data-word-open]').length")) === 1, "single-word category did not render one card");
+   await click("[data-word-open]");
+   await waitFor(() => evaluate("!!document.querySelector('#card-stage.is-navigation-positioned')"), "single-category card strokes did not load");
+   assert(await evaluate("!document.querySelector('.card-detail-word-nav')&&!!document.querySelector('#card-close')"), "single-word category rendered word navigation");
+   await click("#card-close");
+   assert(!(await evaluate("sheetOpen()")), "personal card bottom close did not close the sheet");
+
+   await evaluate(`lib.level='category';lib.categoryId=${JSON.stringify(detailCategories.multiple)};lib.q='ami';lib.flt='all';renderLib()`);
+   assert((await evaluate("document.querySelectorAll('[data-word-open]').length")) === 1, "library search did not narrow the detail context");
+   await click("[data-word-open]");
+   await waitFor(() => evaluate("!!document.querySelector('#card-stage.is-navigation-positioned')"), "filtered card strokes did not load");
+   assert(await evaluate("!document.querySelector('.card-detail-word-nav')"), "filtered single result rendered word navigation");
+   await click("#card-close-top");
+   await evaluate("lib.q='';lib.flt='all'");
+   pass(`fiche Mes mots complète, navigation contextualisée, traits et responsive · captures ${cardDetailScreenshots.mobile} · ${cardDetailScreenshots.desktop}`);
 
    const invalidSource = '{\n "pack": [}';
    const invalid = await evaluate(`(() => { try { parsePackJson(${JSON.stringify(invalidSource)}); return ''; } catch(e) { return e.message; } })()`);

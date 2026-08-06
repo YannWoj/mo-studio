@@ -15,6 +15,18 @@ const profile = await mkdtemp(path.join(os.tmpdir(), "mo-dictionary-placement-")
 const visualProofs = {
    placement: path.join(os.tmpdir(), "mo-studio-placement-430.png"),
    paging: path.join(os.tmpdir(), "mo-studio-paging-360.png"),
+   dictionaryStroke360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-360.png"),
+   dictionaryStroke1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-1440.png"),
+   dictionaryStrokeSteps360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-360.png"),
+   dictionaryStrokeSteps1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-1440.png"),
+   dictionaryStrokePractice360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-practice-360.png"),
+   dictionaryStrokePractice1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-practice-1440.png"),
+   sequenceStroke360: path.join(os.tmpdir(), "mo-studio-sequence-strokes-360.png"),
+   sequenceStroke1440: path.join(os.tmpdir(), "mo-studio-sequence-strokes-1440.png"),
+   sequenceStrokeSteps360: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-360.png"),
+   sequenceStrokeSteps1440: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-1440.png"),
+   sequenceStrokePractice360: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-360.png"),
+   sequenceStrokePractice1440: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-1440.png"),
 };
 let server, browser, cdp;
 
@@ -67,6 +79,19 @@ async function navigate() {
 }
 async function click(selector) {
    return evaluate(`(() => { const node=document.querySelector(${JSON.stringify(selector)}); if(!node) throw new Error('missing ${selector}'); node.click(); return true; })()`);
+}
+async function captureStrokeNavigation(stageSelector, screenshotPath) {
+   const clip = await evaluate(`(async () => {
+      const stage=document.querySelector(${JSON.stringify(stageSelector)}),panel=stage?.querySelector('.stroke-tab-panel:not([hidden])'),visual=panel?.querySelector('.mizi') || panel?.querySelector('.stroke-gallery'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');
+      if(!stage||!visual||!previous||!next)throw new Error('incomplete stroke navigation capture');
+      visual.scrollIntoView({block:'center',inline:'center'});
+      await new Promise((resolve)=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect(),padding=12;
+      const left=Math.max(0,Math.min(p.left,v.left)-padding),top=Math.max(0,Math.min(p.top,v.top)-padding),right=Math.min(innerWidth,Math.max(n.right,v.right)+padding),bottom=Math.min(innerHeight,Math.max(p.bottom,n.bottom,v.bottom)+padding);
+      return {x:left+scrollX,y:top+scrollY,width:right-left,height:bottom-top,scale:1};
+   })()`);
+   const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true, captureBeyondViewport:false, clip });
+   await writeFile(screenshotPath, Buffer.from(screenshot.data, "base64"));
 }
 async function pointerGesture(selector, { deltaX = 0, deltaY = 0, pointerType = "touch", pointerId = 41 } = {}) {
    return evaluate(`(async()=>{
@@ -273,6 +298,7 @@ async function main() {
       assert(exactWidths && centered && !detailLayout.overflow && detailLayout.card.height <= 820-(width>=768?48:0)+1, `detail overflow/centering failed at ${width}: ${JSON.stringify(detailLayout)}`);
    }
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:360, height:820, deviceScaleFactor:1, mobile:true });
+   await waitFor(() => evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi')?.getBoundingClientRect(),p=document.querySelector('#dd-character-prev')?.getBoundingClientRect(),n=document.querySelector('#dd-character-next')?.getBoundingClientRect();return !!m&&!!p&&!!n&&Math.abs(p.top+p.height/2-(m.top+m.height/2))<1&&Math.abs(n.top+n.height/2-(m.top+m.height/2))<1&&Math.abs(p.right-m.left)<1&&Math.abs(n.left-m.right)<1;})()`), "chevrons did not settle around the animation grid after resize");
    const stage = await evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi').getBoundingClientRect(),p=document.querySelector('#dd-character-prev').getBoundingClientRect(),n=document.querySelector('#dd-character-next').getBoundingClientRect();return {pair:document.querySelectorAll('#dd-character-prev,#dd-character-next').length,direct:document.querySelector('#dd-character-prev').parentElement.id==='dd-character-stage'&&document.querySelector('#dd-character-next').parentElement.id==='dd-character-stage',sizes:[p.width,p.height,n.width,n.height],vertical:[Math.abs(p.top+p.height/2-(m.top+m.height/2)),Math.abs(n.top+n.height/2-(m.top+m.height/2))],horizontal:[Math.abs(p.left+p.width/2-m.left),Math.abs(n.left+n.width/2-m.right)],overflow:document.querySelector('.sheet-card').scrollWidth!==document.querySelector('.sheet-card').clientWidth};})()`);
    assert(stage.pair===2 && stage.direct && stage.sizes.every((size)=>size>=44) && stage.vertical.every((gap)=>gap<10) && stage.horizontal.every((gap)=>gap<24) && !stage.overflow, `chevrons are not wrapped around the grid: ${JSON.stringify(stage)}`);
    await evaluate("document.querySelector('#dd-character-stage').scrollIntoView({block:'center'})");
@@ -312,8 +338,56 @@ async function main() {
    assert(!(await evaluate("sheetOpen()")), "long detail did not close");
    pass("fiche longue mesurée sur cinq largeurs, chevrons autour de la grille et Pointer Events touch/pen/mouse validés");
 
+   async function assertStrokeNavigationLayout(stageSelector, width, tab, screenshotPath) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
+      await click(`[data-stroke-tab="${tab}"]`);
+      if (tab === "steps")
+         await waitFor(() => evaluate("document.querySelectorAll('#dd-gallery .stroke-panel').length > 0"), "stroke gallery did not render");
+      await waitFor(() => evaluate(`document.querySelector(${JSON.stringify(stageSelector)})?.classList.contains('is-navigation-positioned')`), "stroke navigation was not measured");
+      const layout = await evaluate(`(() => {
+         const stage=document.querySelector(${JSON.stringify(stageSelector)}),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');
+         const panel=document.querySelector('.stroke-tab-panel:not([hidden])'),visual=panel?.querySelector('.mizi') || panel?.querySelector('.stroke-gallery');
+         if(!stage||!previous||!next||!visual)return null;
+         const s=stage.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect(),v=visual.getBoundingClientRect(),style=getComputedStyle(stage),previousStyle=getComputedStyle(previous),nextStyle=getComputedStyle(next);
+         return {stagePosition:style.position,positions:[previousStyle.position,nextStyle.position],visibility:[previousStyle.visibility,nextStyle.visibility],variables:['--nav-center-y','--nav-left','--nav-right'].map((property)=>style.getPropertyValue(property).trim()),vertical:[Math.abs(p.top+p.height/2-(v.top+v.height/2)),Math.abs(n.top+n.height/2-(v.top+v.height/2))],edgeGaps:[Math.abs(p.right-v.left),Math.abs(n.left-v.right)],ordered:p.left<v.left&&n.right>v.right,buttonsInside:p.left>=s.left-0.5&&n.right<=s.right+0.5,inside:s.left>=0&&s.right<=innerWidth,overflow:document.documentElement.scrollWidth>innerWidth};
+      })()`);
+      assert(layout && layout.stagePosition === "relative" && layout.positions.every((position) => position === "absolute") && layout.visibility.every((value) => value === "visible") && layout.variables.every(Boolean) && layout.vertical.every((gap) => gap < 1) && layout.edgeGaps.every((gap) => gap < 1) && layout.ordered && layout.buttonsInside && layout.inside && !layout.overflow, `${stageSelector} ${tab} layout failed at ${width}px: ${JSON.stringify(layout)}`);
+      if (screenshotPath) await captureStrokeNavigation(stageSelector, screenshotPath);
+   }
+
+   await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'\u4f60\u597d',py:'ni hao',fr:'bonjour'}))");
+   await waitFor(() => evaluate("ddChar==='\u4f60' && !!document.querySelector('#dd-target svg')"), "dictionary layout detail did not load");
+   for (const width of [360, 1440])
+      for (const tab of ["animation", "steps", "practice"])
+         await assertStrokeNavigationLayout(
+            "#dd-character-stage",
+            width,
+            tab,
+            visualProofs[`dictionaryStroke${tab === "animation" ? "" : tab[0].toUpperCase() + tab.slice(1)}${width}`],
+         );
+   await click('#dd-close');
+
+   await evaluate("ddStrokeTab='animation';openSequence(Array.from('\u9762\u5305'))");
+   await waitFor(() => evaluate("seq?.chars.join('')==='\u9762\u5305' && ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "mianbao sequence did not load");
+   for (const width of [360, 1440])
+      for (const tab of ["animation", "steps", "practice"])
+         await assertStrokeNavigationLayout(
+            "#seq-stage",
+            width,
+            tab,
+            visualProofs[`sequenceStroke${tab === "animation" ? "" : tab[0].toUpperCase() + tab.slice(1)}${width}`],
+         );
+   await evaluate("closeSequence({fromHistory:true})");
+
+   await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'\u9762',py:'mian',fr:'face'}))");
+   await waitFor(() => evaluate("ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "single-character detail did not load");
+   const singleCharacterLayout = await evaluate(`(() => {const stage=document.querySelector('#dd-character-stage'),mizi=stage.querySelector('.mizi'),s=stage.getBoundingClientRect(),m=mizi.getBoundingClientRect();return {buttons:stage.querySelectorAll(':scope > .character-nav-button').length,inside:m.left>=s.left&&m.right<=s.right,overflow:document.documentElement.scrollWidth>innerWidth};})()`);
+   assert(singleCharacterLayout.buttons === 0 && singleCharacterLayout.inside && !singleCharacterLayout.overflow, `single-character layout failed: ${JSON.stringify(singleCharacterLayout)}`);
+   await click('#dd-close');
+   pass("stroke navigation in all tabs at 360/1440 px, dictionary, mianbao sequence, and single character");
+
    assert(!cdp.errors.length, "runtime errors: " + cdp.errors.join(" | "));
-   console.log(`RESULT ${version.Browser} — placement et dictionnaire validés · captures ${visualProofs.placement} · ${visualProofs.paging}`);
+   console.log(`RESULT ${version.Browser} — placement et dictionnaire validés · captures ${Object.values(visualProofs).join(" · ")}`);
 }
 
 try { await main(); }

@@ -12,6 +12,115 @@ let ddWriterDocumentListeners = [];
 let ddAutoplaySelectionKey = null;
 let ddAutoplayPending = false;
 let ddAutoplayLoadToken = 0;
+const strokeCharacterNavigationStates = new Map();
+let strokeCharacterNavigationResizeTimer = 0;
+
+function strokeCharacterNavigationVisual(stage) {
+   const activePanel = stage && stage.querySelector(".stroke-tab-panel:not([hidden])");
+   return activePanel &&
+      (activePanel.querySelector(".mizi") || activePanel.querySelector(".stroke-gallery"));
+}
+
+function destroyStrokeCharacterNavigation(prefix) {
+   const state = strokeCharacterNavigationStates.get(prefix);
+   if (state) {
+      if (state.frame) cancelAnimationFrame(state.frame);
+      if (state.observer) state.observer.disconnect();
+      strokeCharacterNavigationStates.delete(prefix);
+   }
+   const stage = $(prefix + "-stage");
+   if (!stage) return;
+   stage.classList.remove("is-navigation-positioned");
+   ["--nav-center-y", "--nav-left", "--nav-right"].forEach((property) =>
+      stage.style.removeProperty(property),
+   );
+}
+
+function measureStrokeCharacterNavigation(prefix) {
+   const state = strokeCharacterNavigationStates.get(prefix);
+   const stage = $(prefix + "-stage");
+   const previous = $(prefix + "-prev");
+   const next = $(prefix + "-next");
+   const visual = strokeCharacterNavigationVisual(stage);
+   if (!state || !stage || !previous || !next || !visual) {
+      destroyStrokeCharacterNavigation(prefix);
+      return false;
+   }
+
+   if (state.visual !== visual) {
+      if (state.observer) state.observer.disconnect();
+      state.visual = visual;
+      if (typeof ResizeObserver === "function") {
+         state.observer = new ResizeObserver(() => scheduleStrokeCharacterNavigation(prefix));
+         state.observer.observe(stage);
+         state.observer.observe(visual);
+      }
+   }
+
+   const stageRect = stage.getBoundingClientRect();
+   const visualRect = visual.getBoundingClientRect();
+   const previousRect = previous.getBoundingClientRect();
+   const nextRect = next.getBoundingClientRect();
+   stage.style.setProperty(
+      "--nav-center-y",
+      visualRect.top - stageRect.top + visualRect.height / 2 + "px",
+   );
+   stage.style.setProperty(
+      "--nav-left",
+      visualRect.left - stageRect.left - previousRect.width + "px",
+   );
+   stage.style.setProperty(
+      "--nav-right",
+      stageRect.right - visualRect.right - nextRect.width + "px",
+   );
+   stage.classList.add("is-navigation-positioned");
+   return true;
+}
+
+function scheduleStrokeCharacterNavigation(prefix) {
+   const state = strokeCharacterNavigationStates.get(prefix);
+   if (!state) return;
+   if (state.frame) cancelAnimationFrame(state.frame);
+   state.frame = requestAnimationFrame(() => {
+      state.frame = 0;
+      measureStrokeCharacterNavigation(prefix);
+   });
+}
+
+function setupStrokeCharacterNavigation(prefix) {
+   destroyStrokeCharacterNavigation(prefix);
+   const stage = $(prefix + "-stage");
+   if (!stage || !$(prefix + "-prev") || !$(prefix + "-next")) return;
+   strokeCharacterNavigationStates.set(prefix, {
+      frame: 0,
+      observer: null,
+      visual: null,
+   });
+   scheduleStrokeCharacterNavigation(prefix);
+   if (document.fonts && document.fonts.ready)
+      document.fonts.ready.then(() => scheduleStrokeCharacterNavigation(prefix));
+}
+
+function setupRenderedStrokeCharacterNavigation() {
+   document.querySelectorAll(".stroke-character-stage[id$='-stage']").forEach((stage) => {
+      setupStrokeCharacterNavigation(stage.id.slice(0, -6));
+   });
+}
+
+function destroyRenderedStrokeCharacterNavigation() {
+   Array.from(strokeCharacterNavigationStates.keys()).forEach((prefix) =>
+      destroyStrokeCharacterNavigation(prefix),
+   );
+}
+
+window.addEventListener("resize", () => {
+   clearTimeout(strokeCharacterNavigationResizeTimer);
+   strokeCharacterNavigationResizeTimer = setTimeout(() => {
+      strokeCharacterNavigationStates.forEach((state, prefix) =>
+         scheduleStrokeCharacterNavigation(prefix),
+      );
+   }, 80);
+});
 
 function resetStrokeAutoplaySelection() {
    ddAutoplaySelectionKey = null;
@@ -125,6 +234,7 @@ function destroyDDWriter() {
 
 function destroyStrokeWorkspace() {
    ddCharacterLoadToken++;
+   destroyRenderedStrokeCharacterNavigation();
    destroyDDWriter();
    ddChar = null;
    ddCharacterData = null;
@@ -256,6 +366,7 @@ function activateStrokeTab(tab, focus) {
    });
    destroyDDWriter();
    renderActiveStrokeTab();
+   setupRenderedStrokeCharacterNavigation();
    if (typeof updateDictionaryPagingMode === "function")
       updateDictionaryPagingMode();
 }
@@ -328,6 +439,7 @@ function wireStrokeWorkspace() {
          if (ddCharacterData) renderStrokeGallery(ddCharacterData);
       };
    });
+   setupRenderedStrokeCharacterNavigation();
 }
 
 async function loadDDChar(character, characters, options) {
