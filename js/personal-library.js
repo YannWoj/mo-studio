@@ -30,6 +30,93 @@ function personalCardKey(card) {
    ].join("§");
 }
 
+// The dictionary stores French definitions as one or more strings whose senses
+// are separated by semicolons.  Keep this fallback identical to the detail
+// sheet's dictionarySplitSenses; the latter is loaded after this file, so use it
+// when available and retain a safe early-call fallback for imports/tests.
+function personalDictionarySplitSenses(values) {
+   if (typeof dictionarySplitSenses === "function") return dictionarySplitSenses(values);
+   return Array.from(new Set(
+      (values || []).flatMap((definition) => String(definition).split(/\s*;\s*/u))
+         .map((sense) => sense.trim()).filter(Boolean),
+   ));
+}
+
+function dictionaryCompletionTranslation(entry, limit) {
+   return personalDictionarySplitSenses(entry && entry.definitionsFr)
+      .slice(0, Number.isFinite(limit) ? limit : 12)
+      .join("; ");
+}
+
+function dictionaryCompletionSenseCount(entry) {
+   return personalDictionarySplitSenses(entry && entry.definitionsFr).length;
+}
+
+function dictionaryCompletionPinyinMatches(entry, pinyinHint) {
+   const hint = normalizePinyinIdentity(pinyinHint);
+   if (!hint) return false;
+   return (entry.pinyin || []).some((variant) =>
+      [variant.marked, variant.numbered, variant.plain]
+         .filter(Boolean)
+         .some((value) => normalizePinyinIdentity(value) === hint),
+   );
+}
+
+function personalMeaningSenses(value) {
+   return personalDictionarySplitSenses(value == null ? [] : [value]).map(normalizeMeaningIdentity).filter(Boolean);
+}
+
+function personalMeaningSubset(left, right) {
+   const leftSenses = new Set(personalMeaningSenses(left));
+   const rightSenses = new Set(personalMeaningSenses(right));
+   if (!leftSenses.size || !rightSenses.size) return false;
+   return Array.from(leftSenses).every((sense) => rightSenses.has(sense)) ||
+      Array.from(rightSenses).every((sense) => leftSenses.has(sense));
+}
+
+function personalCardEquivalent(card, candidate) {
+   const cardSource = String(card.dictionaryEntryId || card.sourceId || "").trim();
+   const candidateSource = String(candidate.dictionaryEntryId || candidate.dictionaryId || candidate.sourceId || "").trim();
+   if (cardSource && candidateSource && cardSource === candidateSource) return true;
+
+   const cardHanzi = String(card.hz || card.chinese || "").trim();
+   const candidateHanzi = String(candidate.hz || candidate.chinese || "").trim();
+   if (!cardHanzi || cardHanzi !== candidateHanzi) return false;
+   const cardPinyin = normalizePinyinIdentity(card.py || card.pinyin);
+   const candidatePinyin = normalizePinyinIdentity(candidate.py || candidate.pinyin);
+   if (cardPinyin !== candidatePinyin) return false;
+
+   const cardMeaning = card.fr || card.translation || "";
+   const candidateMeaning = candidate.fr || candidate.translation || "";
+   return personalMeaningSubset(cardMeaning, candidateMeaning) || personalCardKey(card) === personalCardKey(candidate);
+}
+
+function chooseDictionaryCompletionEntry(entries, chinese, pinyinHint) {
+   const exact = (entries || []).filter((entry) => entry.simplified === chinese || entry.traditional === chinese);
+   if (!exact.length) return null;
+   return exact
+      .map((entry, index) => ({
+         entry,
+         index,
+         senseCount: dictionaryCompletionSenseCount(entry),
+         pinyinMatch: dictionaryCompletionPinyinMatches(entry, pinyinHint),
+      }))
+      .sort((left, right) =>
+         right.senseCount - left.senseCount ||
+         Number(right.pinyinMatch) - Number(left.pinyinMatch) ||
+         left.index - right.index,
+      )[0].entry;
+}
+
+function dictionaryCompletionPinyin(entry, pinyinHint) {
+   const variants = entry && entry.pinyin || [];
+   const matching = variants.find((variant) =>
+      dictionaryCompletionPinyinMatches({ pinyin: [variant] }, pinyinHint),
+   );
+   const selected = matching || variants[0];
+   return selected ? selected.marked || selected.numbered || selected.plain || "" : "";
+}
+
 function categoryById(id) {
    return db.categories.find((category) => category.id === id) || null;
 }
@@ -473,18 +560,19 @@ function validatePackPayload(payload) {
    return { errors, packs };
 }
 
-async function dictionaryCompletion(chinese) {
+async function dictionaryCompletion(chinese, pinyinHint) {
    try {
       const index = await loadDictionaryIndex("exactHanzi", false);
       const references = index[chinese] || [];
       if (!references.length) return null;
-      const entries = await loadDictionaryPreviewsByReferences(references.slice(0, 8));
+      const entries = await loadDictionaryEntriesByReferences(references.slice(0, 8));
       const exact = entries.filter((entry) => entry.simplified === chinese || entry.traditional === chinese);
       if (!exact.length) return null;
-      const entry = exact[0];
+      const entry = chooseDictionaryCompletionEntry(exact, chinese, pinyinHint);
+      if (!entry) return null;
       return {
-         pinyin: entry.pinyin && entry.pinyin[0] ? entry.pinyin[0].marked : "",
-         translation: entry.definitionsFr && entry.definitionsFr[0] ? entry.definitionsFr[0] : "",
+         pinyin: dictionaryCompletionPinyin(entry, pinyinHint),
+         translation: dictionaryCompletionTranslation(entry),
          dictionaryId: entry.id,
       };
    } catch (error) {
@@ -493,19 +581,20 @@ async function dictionaryCompletion(chinese) {
    }
 }
 
-async function dictionaryCompletions(chineseValues) {
+async function dictionaryCompletions(chineseValues, pinyinHints) {
    try {
       const index = await loadDictionaryIndex("exactHanzi", false);
       const wanted = uniqueStrings(chineseValues);
       const refs = uniqueStrings(wanted.flatMap((chinese) => (index[chinese] || []).slice(0, 8))).map(Number);
-      const entries = await loadDictionaryPreviewsByReferences(refs);
+      const entries = await loadDictionaryEntriesByReferences(refs);
       const output = new Map();
       wanted.forEach((chinese) => {
-         const entry = entries.find((item) => item.simplified === chinese || item.traditional === chinese);
+         const hint = pinyinHints && typeof pinyinHints.get === "function" ? pinyinHints.get(chinese) : "";
+         const entry = chooseDictionaryCompletionEntry(entries, chinese, hint);
          if (!entry) return;
          output.set(chinese, {
-            pinyin: entry.pinyin && entry.pinyin[0] ? entry.pinyin[0].marked : "",
-            translation: entry.definitionsFr && entry.definitionsFr[0] ? entry.definitionsFr[0] : "",
+            pinyin: dictionaryCompletionPinyin(entry, hint),
+            translation: dictionaryCompletionTranslation(entry),
             dictionaryId: entry.id,
          });
       });
@@ -536,9 +625,14 @@ async function buildPackImportPreview(payload, sourceType) {
          rawCategory.words.map((rawWord) => String(rawWord.chinese || rawWord.hz || "").trim()),
       ),
    );
-   const dictionaryMatches = await dictionaryCompletions(chineseValues);
+   const pinyinHints = new Map();
+   validation.packs.forEach((rawPack) => rawPack.categories.forEach((rawCategory) => rawCategory.words.forEach((rawWord) => {
+      const chinese = String(rawWord.chinese || rawWord.hz || "").trim();
+      const pinyin = String(rawWord.pinyin || rawWord.py || "").trim();
+      if (chinese && pinyin) pinyinHints.set(chinese, pinyin);
+   })));
+   const dictionaryMatches = await dictionaryCompletions(chineseValues, pinyinHints);
    const seenIncoming = new Map();
-   const existingCards = db.cards.slice();
    for (const rawPack of validation.packs) {
       const pack = { name: String(rawPack.name).trim(), description: String(rawPack.description || "").trim(), unclassified: !!rawPack.__unclassified, categories: [] };
       for (const rawCategory of rawPack.categories) {
@@ -565,7 +659,7 @@ async function buildPackImportPreview(payload, sourceType) {
             };
             if (word.incomplete) preview.incomplete++;
             const key = personalCardKey({ hz: chinese, py: pinyin, fr: translation, senseId: word.senseId });
-            const exactExisting = existingCards.find((card) => personalCardKey(card) === key);
+            const exactExisting = findReusableCard(word);
             word.existingCardId = exactExisting ? exactExisting.id : "";
             if (exactExisting) preview.existing++;
             if (seenIncoming.has(key)) { preview.duplicates++; word.duplicateOf = seenIncoming.get(key); }
@@ -586,8 +680,15 @@ function findReusableCard(word) {
       const byId = db.cards.find((card) => card.id === word.sourceId);
       if (byId) return byId;
    }
-   const key = personalCardKey({ hz: word.chinese, py: word.pinyin, fr: word.translation, senseId: word.senseId });
-   return db.cards.find((card) => personalCardKey(card) === key) || null;
+   const candidate = {
+      hz: word.chinese,
+      py: word.pinyin,
+      fr: word.translation,
+      senseId: word.senseId,
+      dictionaryEntryId: word.dictionaryId || word.dictionaryEntryId || "",
+      sourceId: word.sourceId || "",
+   };
+   return db.cards.find((card) => personalCardEquivalent(card, candidate)) || null;
 }
 
 function createCardFromImportedWord(word) {

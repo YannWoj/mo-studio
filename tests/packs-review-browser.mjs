@@ -99,6 +99,23 @@ async function main() {
    assert(structure.packs === 1 && structure.categories === 30, "pack / 30 categories creation failed");
    pass("création d’un pack et de 30 sous-catégories");
 
+   const dictionarySenseCheck = await evaluate(`(async () => {
+      const what = await dictionaryCompletion("\\u4ec0\\u4e48");
+      const want = await dictionaryCompletion("\\u8981");
+      const absent = await dictionaryCompletion("\\u9fa5\\u9fa5");
+      const imported = await buildPackImportPreview(parsePackJson(JSON.stringify({version:1,pack:{name:"Sens",categories:[{name:"A",words:[{chinese:"\\u4ec0\\u4e48"}]}]}})), "json");
+      const old = {hz:"\\u4ec0\\u4e48",py:what && what.pinyin,fr:"que"};
+      const enriched = {hz:"\\u4ec0\\u4e48",py:what && what.pinyin,fr:what && what.translation};
+      const draft = dictionaryEntryCardDraft(await loadDictionaryEntryById(what.dictionaryId));
+      return {what, want, absent, draft:draft.fr, imported:imported.packs[0].categories[0].words[0].translation, equivalent:personalCardEquivalent(old,enriched)};
+   })()`);
+   assert(dictionarySenseCheck.what && dictionarySenseCheck.what.translation.split(";").length===6, `dictionary completion lost 什么 senses: ${JSON.stringify(dictionarySenseCheck.what)}`);
+   assert(dictionarySenseCheck.draft.split(";").length===6, "card draft did not preview every dictionary sense");
+   assert(dictionarySenseCheck.want && dictionarySenseCheck.want.translation.split(";").length===12, `dictionary completion did not keep the 12-sense limit: ${JSON.stringify(dictionarySenseCheck.want)}`);
+   assert(dictionarySenseCheck.absent===null, "missing dictionary completion changed behavior");
+   assert(dictionarySenseCheck.imported.split(";").length===6 && dictionarySenseCheck.equivalent, "import completion or enriched-card deduplication failed");
+   pass("complétions dictionnaire: tous les sens, limite, absence et ancienne traduction abrégée");
+
    const addWordCategoryId = await evaluate("categoriesForPack(db.packs[0].id).find((category)=>category.name==='Chapitre 2').id");
    await cdp.send("Emulation.setDeviceMetricsOverride", {width:390,height:844,deviceScaleFactor:1,mobile:true});
    await evaluate(`setView('lib');lib.level='category';lib.packId=db.packs[0].id;lib.categoryId=${JSON.stringify(addWordCategoryId)};lib.q='';renderLib()`);

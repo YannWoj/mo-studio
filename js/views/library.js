@@ -355,12 +355,23 @@ function personalCardForDictionarySelection(entry) {
       : null;
 }
 
+async function dictionaryEntryWithAllFrenchSenses(entry) {
+   if (!entry || !entry.id || typeof loadDictionaryEntryById !== "function") return entry;
+   try {
+      const full = await loadDictionaryEntryById(entry.id);
+      return full ? { ...entry, ...full } : entry;
+   } catch (error) {
+      console.error("Chargement des sens complets impossible", error);
+      return entry;
+   }
+}
+
 function dictionaryEntryCardDraft(entry) {
    const existing = personalCardForDictionarySelection(entry);
    return {
       hz: existing ? existing.hz : entry.simplified,
       py: existing ? existing.py : (entry.pinyin && entry.pinyin[0] ? entry.pinyin[0].marked : ""),
-      fr: existing ? existing.fr : (entry.definitionsFr && entry.definitionsFr[0] ? entry.definitionsFr[0] : ""),
+      fr: existing ? existing.fr : dictionaryCompletionTranslation(entry),
       note: existing ? existing.note : "",
       tags: existing ? existing.tags : [],
       senseId: existing ? existing.senseId : "",
@@ -373,10 +384,11 @@ function dictionaryEntryCardDraft(entry) {
 
 function dictionarySelectionHtml(entry, existing) {
    const definition = dictionaryResultDefinition(entry);
+   const translation = dictionaryCompletionTranslation(entry) || definition.text;
    return (
       '<section class="word-dictionary-choice" aria-label="Entrée du dictionnaire choisie"><div class="word-dictionary-choice-main"><b>' +
       esc(entry.simplified) + '</b><span>' + colorPinyin(dictionaryEntryPinyinText(entry)) +
-      '</span><small>' + (definition.english ? "EN · " : "") + esc(definition.text) + "</small></div>" +
+      '</span><small>' + (definition.english ? "EN · " : "") + esc(translation) + "</small></div>" +
       (existing ? '<span class="word-dictionary-existing">Déjà dans Mes mots</span>' : "") +
       '<button class="btn ghost sm" id="word-change-dictionary" type="button">Changer de mot</button></section>'
    );
@@ -415,10 +427,10 @@ function openCardDictionarySearch(initialCategoryIds, state) {
       idPrefix: "word-dictionary-option",
       onSelect: async (entry) => {
          if ($("word-dictionary-state")) $("word-dictionary-state").textContent = "Préparation du mot…";
-         let completedEntry = entry;
+         let completedEntry = await dictionaryEntryWithAllFrenchSenses(entry);
          try {
             if (typeof dictionaryEntryWithFrenchSibling === "function")
-               completedEntry = await dictionaryEntryWithFrenchSibling(entry);
+               completedEntry = await dictionaryEntryWithFrenchSibling(completedEntry);
          } catch (error) {
             console.error("Complétion française de la suggestion impossible", error);
          }
@@ -526,12 +538,12 @@ function openCardForm(card, initialCategoryIds, creationState) {
       if (!chinese) { toast("Les caractères chinois sont obligatoires."); return; }
       let pinyin = $("word-py").value.trim(); let translation = $("word-fr").value.trim();
       let dictionaryEntryId = current.dictionaryEntryId || "";
-      if (!pinyin || !translation) { const match = await dictionaryCompletion(chinese); if (match) { pinyin ||= match.pinyin; translation ||= match.translation; dictionaryEntryId ||= match.dictionaryId; } }
+      if (!pinyin || !translation) { const match = await dictionaryCompletion(chinese, pinyin); if (match) { pinyin ||= match.pinyin; translation ||= match.translation; dictionaryEntryId ||= match.dictionaryId; } }
       const candidate = { hz: chinese, py: pinyin, fr: translation, senseId: current.senseId || "", dictionaryEntryId, traditional: current.traditional || "" };
       const selectedExisting = creationState && creationState.entry
          ? personalCardForDictionarySelection(creationState.entry)
          : null;
-      const duplicate = selectedExisting || db.cards.find((item) => item.id !== (existingCard && existingCard.id) && personalCardKey(item) === personalCardKey(candidate));
+      const duplicate = selectedExisting || db.cards.find((item) => item.id !== (existingCard && existingCard.id) && personalCardEquivalent(item, candidate));
       const saved = existingCard || duplicate || normalizeCard(candidate, false);
       saved.hz = chinese; saved.py = pinyin; saved.fr = translation; saved.note = $("word-note").value.trim(); saved.tags = $("word-tags").value.split(",").map((tag) => tag.trim()).filter(Boolean); saved.incomplete = !pinyin || !translation; saved.dictionaryEntryId = dictionaryEntryId || saved.dictionaryEntryId || ""; saved.traditional = current.traditional || saved.traditional || ""; saved.updated = Date.now();
       if (!existingCard && !duplicate) db.cards.push(saved);
