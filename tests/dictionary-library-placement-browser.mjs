@@ -251,8 +251,8 @@ async function main() {
    await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('吃饭')))()`);
    await waitFor(() => evaluate("!!document.querySelector('#dd-picker [data-character=\"饭\"]')"), "吃饭 character picker missing");
    await click('#dd-picker [data-character="饭"]');
-   await waitFor(() => evaluate("document.querySelector('.dd-character-study-translation')?.textContent.includes('riz cuit')"), "吃饭 → 饭 study card did not reuse French");
-   assert(!(await evaluate("document.querySelector('.dd-character-study-translation').textContent.includes('Traduction française indisponible')")), "吃饭 → 饭 study card kept the fallback");
+   await waitFor(() => evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭')?.querySelector('.dd-character-detail-translation').textContent.includes('riz cuit')"), "吃饭 → 饭 character detail did not reuse French");
+   assert(!(await evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭').textContent.includes('Traduction française indisponible')")), "吃饭 → 饭 character detail kept the fallback");
    await click("#dd-close");
 
    await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('你好')))()`);
@@ -279,16 +279,22 @@ async function main() {
    await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===3 && [...document.querySelectorAll('#dd-picker .dd-character-chip')].every((button)=>button.querySelector('[data-character-pinyin]').dataset.characterPinyinValue)"), "自行车 decomposition did not complete");
    const decomposition = await evaluate(`(() => {
       const chips=[...document.querySelectorAll('#dd-picker .dd-character-chip')];
-      return {text:chips.map((chip)=>chip.textContent.trim()),pinyin:chips.map((chip)=>chip.querySelector('[data-character-pinyin]').dataset.characterPinyinValue),titles:chips.map((chip)=>chip.title),overflow:document.querySelector('#dd-picker').scrollWidth>document.querySelector('#dd-picker').clientWidth};
+      const rows=[...document.querySelectorAll('.dd-character-detail-row')];
+      return {text:chips.map((chip)=>chip.textContent.trim()),pinyin:chips.map((chip)=>chip.querySelector('[data-character-pinyin]').dataset.characterPinyinValue),titles:chips.map((chip)=>chip.title),rows:rows.map((row)=>({hanzi:row.querySelector('.dd-character-detail-hanzi').textContent,pinyin:row.querySelector('.dd-character-detail-pinyin').textContent,translation:row.querySelector('.dd-character-detail-translation').textContent})),overflow:document.querySelector('#dd-picker').scrollWidth>document.querySelector('#dd-picker').clientWidth};
    })()`);
-   assert(decomposition.text.length===3 && decomposition.text.every((text)=>text.length===1) && decomposition.pinyin.every(Boolean) && decomposition.titles.every(Boolean), `自行车 decomposition is incomplete: ${JSON.stringify(decomposition)}`);
+   assert(decomposition.text.length===3 && decomposition.text.every((text)=>text.length===1) && decomposition.pinyin.every(Boolean) && decomposition.titles.every(Boolean) && decomposition.rows.length===3 && decomposition.rows.map((row)=>row.hanzi).join('')==='自行车' && decomposition.rows.every((row,index)=>row.pinyin&&row.translation===decomposition.titles[index]&&!row.translation.includes('…')), `自行车 decomposition is incomplete: ${JSON.stringify(decomposition)}`);
+   await evaluate("document.querySelector('#dd-character-details').scrollIntoView({block:'center'})");
    const decompositionScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
    await writeFile(visualProofs.decomposition390, Buffer.from(decompositionScreenshot.data, "base64"));
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:1024, height:900, deviceScaleFactor:1, mobile:false });
-   await evaluate("scrollTo(0,0)");
+   await evaluate("document.querySelector('#dd-character-details').scrollIntoView({block:'center'})");
    const decompositionDesktopScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
    await writeFile(visualProofs.decomposition1024, Buffer.from(decompositionDesktopScreenshot.data, "base64"));
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
+   await click('#dd-close');
+   await evaluate("(async()=>{openDictDetail(await findDictionaryEntryByHanzi('什么'))})()");
+   await waitFor(() => evaluate("document.querySelectorAll('.dd-character-detail-row').length===2 && document.querySelector('#dd-character-details')?.getAttribute('aria-busy')==='false'"), "什么 character detail did not render");
+   assert(await evaluate("[...document.querySelectorAll('.dd-character-detail-row')].map((row)=>row.querySelector('.dd-character-detail-hanzi').textContent).join('')==='什么' && [...document.querySelectorAll('.dd-character-detail-translation')].every((node)=>node.textContent.trim()&&!node.textContent.includes('…'))"), "什么 character detail is incomplete");
    await click('#dd-close');
    await evaluate("(async()=>{openDictDetail(await findDictionaryEntryByHanzi('企业管理'))})()");
    await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===4"), "four-character decomposition did not render");
@@ -331,7 +337,7 @@ async function main() {
          englishOpen:document.querySelector('.dd-definitions.english')?.open,
          hsk:document.querySelectorAll('.dd-hsk-source-item').length,
          add:!!document.querySelector('#dd-addcard'),
-         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-character-interaction','.dd-learning-actions','.dd-card-actions','.dd-meta','.dd-hsk-source','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
+         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-character-interaction','.dd-card-actions','.dd-meta','.dd-hsk-source','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
          emptyEnglishHidden:dictionaryEnglishDefinitionsHtml({definitionsEn:['', ' ; ', '...', '1.']})==='',
          vulgarFilter:[
             dictionaryRelatedWordIsVulgar({simplified:'肏你妈',definitionsEn:['fuck your mother (vulgar)']}),
@@ -398,7 +404,7 @@ async function main() {
    pass("360/430/768/1024/1440 px, cibles tactiles, absence de scroll horizontal, dialogue et fermeture clavier");
 
    await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'你好',py:'nǐ hǎo',fr:'bonjour'}))");
-   await waitFor(() => evaluate("ddChar==='你' && !!document.querySelector('#dd-target svg')"), "long dictionary detail did not load");
+   await waitFor(() => evaluate("ddChar==='你' && !!document.querySelector('#dd-target svg') && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy')==='false'"), "long dictionary detail did not load");
    for (const width of [360, 430, 768, 1024, 1440]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 820, deviceScaleFactor: 1, mobile: width <= 430 });
       const detailLayout = await evaluate(`(() => {
@@ -413,22 +419,26 @@ async function main() {
    await waitFor(() => evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi')?.getBoundingClientRect(),p=document.querySelector('#dd-character-prev')?.getBoundingClientRect(),n=document.querySelector('#dd-character-next')?.getBoundingClientRect();return !!m&&!!p&&!!n&&Math.abs(p.top+p.height/2-(m.top+m.height/2))<1&&Math.abs(n.top+n.height/2-(m.top+m.height/2))<1&&Math.abs(m.left-p.right-8)<1&&Math.abs(n.left-m.right-8)<1;})()`), "chevrons did not settle around the animation grid after resize");
    const stage = await evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi').getBoundingClientRect(),p=document.querySelector('#dd-character-prev').getBoundingClientRect(),n=document.querySelector('#dd-character-next').getBoundingClientRect();return {pair:document.querySelectorAll('#dd-character-prev,#dd-character-next').length,direct:document.querySelector('#dd-character-prev').parentElement.id==='dd-character-stage'&&document.querySelector('#dd-character-next').parentElement.id==='dd-character-stage',sizes:[p.width,p.height,n.width,n.height],vertical:[Math.abs(p.top+p.height/2-(m.top+m.height/2)),Math.abs(n.top+n.height/2-(m.top+m.height/2))],edgeGaps:[m.left-p.right,n.left-m.right],overflow:document.querySelector('.sheet-card').scrollWidth!==document.querySelector('.sheet-card').clientWidth};})()`);
    assert(stage.pair===2 && stage.direct && stage.sizes.every((size)=>size>=44) && stage.vertical.every((gap)=>gap<10) && stage.edgeGaps.every((gap)=>Math.abs(gap-8)<1) && !stage.overflow, `chevrons are not wrapped around the grid: ${JSON.stringify(stage)}`);
-   assert(await evaluate("document.querySelector('.stroke-animation-actions').children.length===2&&!!document.querySelector('#dd-anim')&&!!document.querySelector('#dd-write')"), "shared Rejouer/Écrire actions are incomplete");
+   const actionLayout = await evaluate(`(() => {
+      const replay=document.querySelector('#dd-anim'),animation=document.querySelector('.stroke-animation-actions'),study=document.querySelector('#dd-character-study-card'),buttons=[study.querySelector('.dd-character-audio'),study.querySelector('#dd-write'),study.querySelector('.dd-character-study-actions .btn')],rects=buttons.map((button)=>button.getBoundingClientRect());
+      return {replayOnly:animation.children.length===1&&animation.firstElementChild===replay,replayFull:Math.abs(replay.getBoundingClientRect().width-animation.getBoundingClientRect().width)<1,obsolete:!!document.querySelector('#dd-write-word'),labels:buttons.map((button)=>button.textContent.trim()),heights:rects.map((rect)=>rect.height),sameLine:rects.every((rect)=>Math.abs(rect.top-rects[0].top)<1),truncated:buttons.some((button)=>button.scrollWidth>button.clientWidth),overflow:study.scrollWidth>study.clientWidth};
+   })()`);
+   assert(actionLayout.replayOnly&&actionLayout.replayFull&&!actionLayout.obsolete&&actionLayout.labels[0]==='听'&&actionLayout.labels[1]==='写 Écrire'&&actionLayout.labels[2]==='+ Mes mots'&&actionLayout.heights.every((height)=>height>=40)&&actionLayout.sameLine&&!actionLayout.truncated&&!actionLayout.overflow, `dictionary action rows are incomplete: ${JSON.stringify(actionLayout)}`);
    await evaluate("document.querySelector('#dd-character-stage').scrollIntoView({block:'center'})");
    const pagingScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true});
    await writeFile(visualProofs.paging, Buffer.from(pagingScreenshot.data, "base64"));
 
    await pointerGesture("#dd-target svg", {deltaX:-38,deltaY:2,pointerType:"touch",pointerId:51});
    assert(await evaluate("ddChar==='好'"), "38px touch swipe on Hanzi Writer did not advance");
-   await pointerGesture(".dd-character-study-hanzi", {pointerType:"touch",pointerId:52});
-   await pointerGesture(".dd-character-study-hanzi", {deltaX:10,deltaY:1,pointerType:"touch",pointerId:53});
-   await pointerGesture(".dd-character-study-hanzi", {deltaX:5,deltaY:90,pointerType:"touch",pointerId:54});
+   await pointerGesture(".dd-character-study-card", {pointerType:"touch",pointerId:52});
+   await pointerGesture(".dd-character-study-card", {deltaX:10,deltaY:1,pointerType:"touch",pointerId:53});
+   await pointerGesture(".dd-character-study-card", {deltaX:5,deltaY:90,pointerType:"touch",pointerId:54});
    assert(await evaluate("ddChar==='好'"), "tap, 10px move, or vertical gesture changed character");
-   await pointerGesture(".dd-character-study-hanzi", {deltaX:38,deltaY:2,pointerType:"touch",pointerId:55});
+   await pointerGesture(".dd-character-study-card", {deltaX:38,deltaY:2,pointerType:"touch",pointerId:55});
    assert(await evaluate("ddChar==='你'"), "38px touch swipe on large character did not return");
    await pointerGesture("#dd-anim", {deltaX:-100,deltaY:1,pointerType:"touch",pointerId:56});
    assert(await evaluate("ddChar==='你'"), "swipe starting on a button navigated");
-   await pointerGesture(".dd-character-study-hanzi", {deltaX:38,deltaY:1,pointerType:"touch",pointerId:57});
+   await pointerGesture(".dd-character-study-card", {deltaX:38,deltaY:1,pointerType:"touch",pointerId:57});
    assert(await evaluate("ddChar==='你'"), "swipe crossed the first-character boundary");
    await pointerGesture("#dd-target svg", {deltaX:-52,deltaY:1,pointerType:"mouse",pointerId:58});
    assert(await evaluate("ddChar==='好'"), "52px mouse swipe did not advance");
@@ -496,23 +506,28 @@ async function main() {
             tab,
             visualProofs[`sequenceStroke${tab === "animation" ? "" : tab[0].toUpperCase() + tab.slice(1)}${width}`],
          );
+   await click('[data-stroke-tab="animation"]');
+   await click('#seq-next');
+   await waitFor(() => evaluate("seq?.index===1&&ddChar==='包'&&!!document.querySelector('#dd-target svg')"), "mianbao sequence did not advance before writing practice");
    await evaluate("window.__sequenceNode=document.querySelector('#seq-flash');window.__sequenceWriter=ddWriter;scrollTo(0,96);window.__sequenceScrollY=scrollY");
-   await click("#dd-write-word");
+   await click("#dd-write");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "mianbao writing practice did not open");
    const sequencePractice = await evaluate(`(() => {
       const dialog=document.querySelector('.writing-practice-dialog');
       return {word:dialog.dataset.writingPracticeWord,pills:dialog.querySelectorAll('[data-writing-practice-character]').length,model:document.querySelector('#review-writing-model').textContent.trim(),sequence:seq?.chars.join(''),index:seq?.index,viewInert:document.querySelector('#view').inert,sheetOpen:sheetOpen()};
    })()`);
-   assert(sequencePractice.word === "面包" && sequencePractice.pills === 2 && sequencePractice.model === "面" && sequencePractice.sequence === "面包" && sequencePractice.index === 0 && sequencePractice.viewInert && !sequencePractice.sheetOpen, `mianbao writing practice failed: ${JSON.stringify(sequencePractice)}`);
+   assert(sequencePractice.word === "面包" && sequencePractice.pills === 2 && sequencePractice.model === "包" && sequencePractice.sequence === "面包" && sequencePractice.index === 1 && sequencePractice.viewInert && !sequencePractice.sheetOpen, `mianbao writing practice failed: ${JSON.stringify(sequencePractice)}`);
    await click(".writing-practice-close");
-   assert(await evaluate("!document.querySelector('.writing-practice-backdrop')&&window.__sequenceNode===document.querySelector('#seq-flash')&&window.__sequenceWriter===ddWriter&&seq?.chars.join('')==='面包'&&seq.index===0&&!document.querySelector('#view').inert&&scrollY===window.__sequenceScrollY"), "closing writing practice changed the mianbao sequence");
+   const sequenceRestored = await evaluate(`({closed:!document.querySelector('.writing-practice-backdrop'),sameNode:window.__sequenceNode===document.querySelector('#seq-flash'),sameWriter:window.__sequenceWriter===ddWriter,word:seq?.chars.join(''),index:seq?.index,viewInert:document.querySelector('#view').inert,scrollY,expectedScrollY:window.__sequenceScrollY})`);
+   assert(sequenceRestored.closed&&sequenceRestored.sameNode&&sequenceRestored.sameWriter&&sequenceRestored.word==='面包'&&sequenceRestored.index===1&&!sequenceRestored.viewInert&&Math.abs(sequenceRestored.scrollY-sequenceRestored.expectedScrollY)<1, `closing writing practice changed the mianbao sequence: ${JSON.stringify(sequenceRestored)}`);
    await evaluate("closeSequence({fromHistory:true})");
 
    await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'\u9762',py:'mian',fr:'face'}))");
    await waitFor(() => evaluate("ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "single-character detail did not load");
    const singleCharacterLayout = await evaluate(`(() => {const stage=document.querySelector('#dd-character-stage'),mizi=stage.querySelector('.mizi'),s=stage.getBoundingClientRect(),m=mizi.getBoundingClientRect();return {buttons:stage.querySelectorAll(':scope > .character-nav-button').length,inside:m.left>=s.left&&m.right<=s.right,overflow:document.documentElement.scrollWidth>innerWidth};})()`);
    assert(singleCharacterLayout.buttons === 0 && singleCharacterLayout.inside && !singleCharacterLayout.overflow, `single-character layout failed: ${JSON.stringify(singleCharacterLayout)}`);
-   await click("#dd-write-word");
+   assert(await evaluate("!document.querySelector('#dd-character-details')&&document.querySelectorAll('#dd-write').length===1&&document.querySelector('.stroke-animation-actions').children.length===1"), "single-character detail kept a duplicate writing action or useless character detail");
+   await click("#dd-write");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "single-character writing practice did not open");
    assert(await evaluate("document.querySelectorAll('[data-writing-practice-character]').length===0&&document.querySelector('#review-writing-model').textContent.trim()==='面'&&sheetOpen()&&document.querySelector('#sheet').inert"), "single-character writing practice showed a character picker or lost its detail");
    await click(".writing-practice-close");

@@ -1058,7 +1058,7 @@ async function main() {
    const sequenceWritingCharacter = await evaluate("ddChar");
    await click("#dd-write");
    await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "Sequence stroke writing practice did not open");
-   assert(await evaluate(`document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter===${JSON.stringify(sequenceWritingCharacter)}`), "Sequence writing practice did not use its active character");
+   assert(await evaluate(`document.querySelector('.writing-practice-dialog').dataset.writingPracticeWord==='红绿蓝'&&document.querySelectorAll('[data-writing-practice-character]').length===3&&document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter===${JSON.stringify(sequenceWritingCharacter)}`), "Sequence writing practice did not use its complete word and active character");
    await click(".writing-practice-close");
    await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')&&!!seq"), "Sequence was not restored after writing practice");
    await click("#seq-next");
@@ -1261,7 +1261,7 @@ async function main() {
             definitions: position('.dd-definitions'),
             meta: position('.dd-meta'),
             interaction: position('#dd-character-interaction'),
-            write: position('.dd-learning-actions'),
+            characterDetails: position('#dd-character-details'),
             card: position('.dd-card-actions'),
             hsk: position('.dd-hsk-source'),
             english: position('.dd-definitions.english'),
@@ -1284,8 +1284,8 @@ async function main() {
    assert(Math.round(completeDetail.topCloseSize) >= 44, "Dictionary detail top close control is too small");
    assert(
       completeDetail.ordered.definitions < completeDetail.ordered.interaction &&
-         completeDetail.ordered.interaction < completeDetail.ordered.write &&
-         completeDetail.ordered.write < completeDetail.ordered.card &&
+         completeDetail.ordered.interaction < completeDetail.ordered.characterDetails &&
+         completeDetail.ordered.characterDetails < completeDetail.ordered.card &&
          completeDetail.ordered.card < completeDetail.ordered.meta &&
          completeDetail.ordered.meta < completeDetail.ordered.hsk &&
          completeDetail.ordered.hsk < completeDetail.ordered.english &&
@@ -1446,15 +1446,16 @@ async function main() {
       "Manual Rejouer did not animate",
    );
    assert(
-      await evaluate(`document.querySelector('.stroke-animation-actions').children.length===2 &&
-         !!document.querySelector('#dd-write') && ddChar==='你'`),
-      "Shared Rejouer/Écrire row is incomplete in dictionary detail",
+      await evaluate(`document.querySelector('.stroke-animation-actions').children.length===1 &&
+         !!document.querySelector('#dd-character-study-card > #dd-write') &&
+         !document.querySelector('#dd-write-word') && ddChar==='你'`),
+      "Dictionary Rejouer row or shared character actions are incomplete",
    );
    await click("#dd-write");
    await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "Dictionary stroke writing practice did not open");
    assert(
-      await evaluate("document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter==='你'&&document.querySelector('#sheet').inert"),
-      "Dictionary stroke writing practice did not use the active character",
+      await evaluate("document.querySelector('.writing-practice-dialog').dataset.writingPracticeWord==='你'&&document.querySelectorAll('[data-writing-practice-character]').length===0&&document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter==='你'&&document.querySelector('#sheet').inert"),
+      "Single-character dictionary writing practice is incorrect",
    );
    await click(".writing-practice-close");
    await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')&&sheetOpen()&&!document.querySelector('#sheet').inert"), "Dictionary detail was not restored after stroke writing practice");
@@ -1716,16 +1717,16 @@ async function main() {
          edgeInsets: [Math.abs(previousRect.left - studyCardRect.left), Math.abs(nextRect.right - studyCardRect.right)],
          insideViewport: nav.left >= 0 && nav.right <= innerWidth,
          noOverflow: document.querySelector('.sheet-card').scrollWidth <= document.querySelector('.sheet-card').clientWidth,
-         studyCharacter: document.querySelector('.dd-character-study-hanzi')?.textContent.trim(),
-         studyPinyin: document.querySelector('.dd-character-study-pinyin')?.textContent.trim(),
-         studyTranslation: document.querySelector('.dd-character-study-translation')?.textContent.trim(),
+         detailCharacter: document.querySelector('.dd-character-detail-hanzi')?.textContent.trim(),
+         detailPinyin: document.querySelector('.dd-character-detail-pinyin')?.textContent.trim(),
+         detailTranslation: document.querySelector('.dd-character-detail-translation')?.textContent.trim(),
          studyAudio: document.querySelector('.dd-character-audio')?.getAttribute('data-say'),
          cardActionReady: !!document.querySelector('#dd-character-manage') ||
             !!document.querySelector('#dd-character-addcard')?.dataset.entryId,
          navigationSvgCount: document.querySelectorAll('#dd-character-stage > .character-nav-button svg').length,
          definitionSelectable: getComputedStyle(document.querySelector('.dd-definitions')).userSelect !== 'none',
          gestureCardUnselectable: getComputedStyle(studyCard).userSelect === 'none',
-         translationSelectable: getComputedStyle(document.querySelector('.dd-character-study-translation')).userSelect !== 'none',
+         translationSelectable: getComputedStyle(document.querySelector('.dd-character-detail-translation')).userSelect !== 'none',
          tabsUnselectable: getComputedStyle(document.querySelector('.stroke-tabs')).userSelect === 'none',
          pickerUnselectable: getComputedStyle(document.querySelector('#dd-picker')).userSelect === 'none',
          nativeDragPrevented: !document.querySelector('#dd-character-interaction').dispatchEvent(
@@ -1738,8 +1739,8 @@ async function main() {
          !initialWordNavigation.nextDisabled && initialWordNavigation.currentChip === "你" &&
          initialWordNavigation.previousLabel === "Caractère précédent" &&
          initialWordNavigation.nextLabel === "Caractère suivant" && initialWordNavigation.positionLive === "polite" &&
-         initialWordNavigation.studyCharacter === "你" && initialWordNavigation.studyPinyin &&
-         initialWordNavigation.studyTranslation && initialWordNavigation.studyAudio === "你" &&
+         initialWordNavigation.detailCharacter === "你" && initialWordNavigation.detailPinyin &&
+         initialWordNavigation.detailTranslation && initialWordNavigation.studyAudio === "你" &&
          initialWordNavigation.cardActionReady && initialWordNavigation.navigationSvgCount === 2 &&
          initialWordNavigation.definitionSelectable && initialWordNavigation.gestureCardUnselectable &&
          initialWordNavigation.translationSelectable &&
@@ -1755,10 +1756,10 @@ async function main() {
       `你好 character controls are not usable at 360px: ${JSON.stringify(initialWordNavigation)}`,
    );
 
-   await mouseDrag(".dd-character-study-hanzi", -155, 2);
+   await mouseDrag(".dd-character-study-card", -155, 2);
    await waitFor(
-      () => evaluate(`ddChar === '好' && ddCharacterData?.strokeCount === 6 && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 2} && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy') === 'false' && document.querySelector('.dd-character-study-hanzi')?.textContent.trim() === '好'`),
-      "你好 mouse drag started on the large character did not load 好",
+      () => evaluate(`ddChar === '好' && ddCharacterData?.strokeCount === 6 && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 2} && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy') === 'false' && document.querySelector('.dd-character-audio')?.getAttribute('data-say') === '好'`),
+      "你好 mouse drag started on the study row did not load 好",
       20_000,
    );
    assert(
@@ -1766,8 +1767,8 @@ async function main() {
       "你好 last-character controls are wrong",
    );
    assert(
-      await evaluate("document.querySelector('.dd-character-audio').getAttribute('data-say') === '好' && document.querySelector('.dd-character-study-pinyin').textContent.trim() && document.querySelector('.dd-character-study-translation').textContent.trim() && (!!document.querySelector('#dd-character-manage') || !!document.querySelector('#dd-character-addcard')?.dataset.entryId)"),
-      "你好 Next did not refresh active-character pinyin, translation, or audio",
+      await evaluate("document.querySelector('.dd-character-audio').getAttribute('data-say') === '好' && document.querySelectorAll('.dd-character-detail-row').length === 2 && (!!document.querySelector('#dd-character-manage') || !!document.querySelector('#dd-character-addcard')?.dataset.entryId)"),
+      "你好 Next did not refresh the active-character audio or personal action",
    );
    await waitFor(
       () => evaluate("document.querySelector('#dd-related')?.getAttribute('aria-busy') === 'false'"),
@@ -1831,7 +1832,7 @@ async function main() {
       "你好 mobile swipe right failed",
       20_000,
    );
-   const dictionarySwipeLeft = await pointerGesture(".dd-character-study-hanzi", {
+   const dictionarySwipeLeft = await pointerGesture(".dd-character-study-card", {
       deltaX: -38,
       deltaY: 2,
       pointerType: "touch",
@@ -1842,7 +1843,7 @@ async function main() {
       "你好 mobile swipe left failed",
       20_000,
    );
-   const simpleDictionaryTap = await pointerGesture(".dd-character-study-hanzi", {
+   const simpleDictionaryTap = await pointerGesture(".dd-character-study-card", {
       deltaX: 0,
       deltaY: 0,
       pointerType: "touch",
@@ -1874,7 +1875,7 @@ async function main() {
       "Dictionary swipe blocked a vertical mobile gesture",
    );
    const dictionaryTouchScrollTop = await touchScrollContainer(
-      ".dd-character-study-hanzi",
+      ".dd-character-study-card",
       ".sheet-card",
       150,
    );
@@ -2074,7 +2075,7 @@ async function main() {
    );
    await click("#dd-character-next");
    assert(await evaluate("ddChar === '吗'"), "Disabled 你好吗 next chevron changed character");
-   await pointerGesture(".dd-character-study-hanzi", {
+   await pointerGesture(".dd-character-study-card", {
       deltaX: 155,
       deltaY: 2,
       pointerType: "touch",
@@ -2959,15 +2960,17 @@ async function main() {
    await evaluate(
       "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '你好').querySelector('.dict-result-primary').click()",
    );
-   await waitFor(() => evaluate("!!document.querySelector('#dd-write-word')"), "Dictionary word-writing action missing");
+   await waitFor(() => evaluate("!!document.querySelector('#dd-character-study-card > #dd-write') && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy')==='false'"), "Dictionary writing action missing");
    await cdp.send("Emulation.setDeviceMetricsOverride", {
       width: 390,
       height: 844,
       deviceScaleFactor: 3,
       mobile: true,
    });
+   await click('#dd-picker [data-character="好"]');
+   await waitFor(() => evaluate("ddChar==='好'"), "Writing practice did not start from a selectable dictionary character");
    await evaluate("document.querySelector('#sheet .sheet-card').scrollTop = 72; window.__writingDetailNode = document.querySelector('.dd')");
-   await click("#dd-write-word");
+   await click("#dd-write");
    await waitFor(
       () => evaluate("!!document.querySelector('.writing-practice-backdrop') && document.querySelector('#review-writing-canvas')?.width > 1"),
       "Dictionary did not open the writing practice dialog",
@@ -2997,7 +3000,7 @@ async function main() {
    assert(
       nestedWritingWord.activeView === "search" && nestedWritingWord.sheetOpen && nestedWritingWord.sheetInert &&
          nestedWritingWord.detailSameNode && nestedWritingWord.word === "你好" &&
-         nestedWritingWord.character === "你" && nestedWritingWord.model === "你" &&
+         nestedWritingWord.character === "好" && nestedWritingWord.model === "好" &&
          nestedWritingWord.pills === 2 && nestedWritingWord.noColor && nestedWritingWord.widthControl &&
          nestedWritingWord.undo && nestedWritingWord.grids === 4 && nestedWritingWord.fits &&
          nestedWritingWord.square && !nestedWritingWord.overflow,
@@ -3011,11 +3014,11 @@ async function main() {
       "Writing practice undo did not remove the last stroke",
    );
    await mouseDrag("#review-writing-canvas", -42, 50);
-   await click('[data-writing-practice-character="1"]');
+   await click('[data-writing-practice-character="0"]');
    assert(
-      await evaluate(`document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter === '好' &&
-         document.querySelector('#review-writing-model').textContent.trim() === '好' &&
-         document.querySelector('[data-writing-practice-character="1"]').getAttribute('aria-pressed') === 'true' &&
+      await evaluate(`document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter === '你' &&
+         document.querySelector('#review-writing-model').textContent.trim() === '你' &&
+         document.querySelector('[data-writing-practice-character="0"]').getAttribute('aria-pressed') === 'true' &&
          document.querySelector('#review-writing-clear').disabled`),
       "Changing the practice character did not update the model and clear the canvas",
    );
@@ -3029,7 +3032,7 @@ async function main() {
    assert(
       await evaluate(`sheetOpen() && !document.querySelector('#sheet').inert &&
          window.__writingDetailNode === document.querySelector('.dd') &&
-         document.querySelector('#sheet .sheet-card').scrollTop === 72 && activeView === 'search'`),
+         document.querySelector('#sheet .sheet-card').scrollTop === 72 && ddChar === '好' && activeView === 'search'`),
       "Closing writing practice did not restore the dictionary sheet and scroll",
    );
 
@@ -3049,7 +3052,7 @@ async function main() {
       deviceScaleFactor: 1,
       mobile: false,
    });
-   await click("#dd-write-word");
+   await click("#dd-write");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width > 1"), "Desktop writing practice did not open");
    const desktopPracticeLayout = await evaluate(`(() => {
       const dialog = document.querySelector('.writing-practice-dialog').getBoundingClientRect();

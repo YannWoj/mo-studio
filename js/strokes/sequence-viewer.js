@@ -12,7 +12,7 @@ function characterChevronHtml(direction) {
       '"></path></svg>';
 }
 
-function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation) {
+function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation, workspaceOptions) {
    const previousDisabled = index <= 0 ? " disabled" : "";
    const nextDisabled = index >= total - 1 ? " disabled" : "";
    const positionClass = prefix === "seq" ? " s-count" : "";
@@ -25,7 +25,7 @@ function strokeCharacterStageHtml(prefix, character, index, total, forceNavigati
       (hasNavigation ? '<button class="character-nav-button character-nav-previous" id="' + prefix +
          '-prev" type="button" aria-label="Caractère précédent"' + previousDisabled + ">" +
          characterChevronHtml("left") + "</button>" : "") +
-      '<div class="stroke-character-stage-main">' + strokeBoxHtml() + "</div>" +
+      '<div class="stroke-character-stage-main">' + strokeBoxHtml(workspaceOptions) + "</div>" +
       (hasNavigation ? '<button class="character-nav-button character-nav-next" id="' + prefix +
          '-next" type="button" aria-label="Caractère suivant"' + nextDisabled + ">" +
          characterChevronHtml("right") + "</button>" : "") +
@@ -288,7 +288,6 @@ async function renderSequence() {
       (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" +
        '<div class="eyebrow">Ordre des traits</div>' + strokeCharacterStageHtml("seq", character, index, current.chars.length) +
        '<div class="seq-meta">' + verifiedHskBadges(entry) + "</div>" +
-       '<div class="sh-btns"><button class="btn wide" id="dd-write-word" type="button">写 Écrire ce mot</button></div>' +
        (card
           ? cardActionsHtml(card)
           : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></div>') +
@@ -296,7 +295,7 @@ async function renderSequence() {
    wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
       strokeSelectionKey: () => `sequence:${index}:${character}`,
       sequenceIndex: index,
-      writingWord: current.chars.join(""),
+      workspaceCharacters: current.chars,
       onCardStateChange: () => renderSequence(),
    });
    $("seq-exit").onclick = () => closeSequence();

@@ -111,6 +111,40 @@ function updateDictionaryCharacterPicker(characters, completions) {
    });
 }
 
+function updateDictionaryCharacterDetails(characters, completions) {
+   const target = $("dd-character-details");
+   if (!target || characters.length <= 1) return;
+   target.setAttribute("aria-busy", "false");
+   target.innerHTML =
+      '<h3 class="eyebrow">Détail des caractères</h3><div class="dd-character-detail-list">' +
+      characters.map((character) => {
+         const completion = completions && typeof completions.get === "function"
+            ? completions.get(character)
+            : null;
+         const pinyin = completion && completion.pinyin ? completion.pinyin : "";
+         const translationSenses = completion && completion.entry
+            ? dictionarySplitSenses(completion.entry.definitionsFr)
+            : dictionarySplitSenses(completion && completion.translation ? [completion.translation] : []);
+         const translation = translationSenses.join(" ; ");
+         return (
+            '<div class="dd-character-detail-row"><b class="dd-character-detail-hanzi">' +
+            esc(character) + '</b><span class="dd-character-detail-pinyin">' +
+            (pinyin ? colorPinyin(pinyin) : "—") +
+            '</span><span class="dd-character-detail-translation">' +
+            (translation ? esc(translation) : "Données indisponibles") +
+            "</span></div>"
+         );
+      }).join("") + "</div>";
+}
+
+function dictionaryCharacterDetailsShellHtml(characters) {
+   if (characters.length <= 1) return "";
+   return (
+      '<section class="dd-character-details" id="dd-character-details" aria-busy="true" aria-label="Détail des caractères">' +
+      '<h3 class="eyebrow">Détail des caractères</h3><span class="muted">Chargement…</span></section>'
+   );
+}
+
 function dictionaryCharacterPinyinHints(entry, characters) {
    const hints = new Map();
    const pronunciation = (entry.pinyin || [])
@@ -138,6 +172,7 @@ async function loadDictionaryCharacterCompletions(characters, token, state, piny
       state.map = completions;
       state.ready = true;
       updateDictionaryCharacterPicker(characters, completions);
+      updateDictionaryCharacterDetails(characters, completions);
       if (characters.length > 1)
          renderDictionaryCharacterStudyCard(characters[state.selectedIndex || 0], token, state);
    } catch (error) {
@@ -145,6 +180,7 @@ async function loadDictionaryCharacterCompletions(characters, token, state, piny
       state.map = new Map();
       state.ready = true;
       updateDictionaryCharacterPicker(characters, state.map);
+      updateDictionaryCharacterDetails(characters, state.map);
       if (characters.length > 1)
          renderDictionaryCharacterStudyCard(characters[state.selectedIndex || 0], token, state);
    }
@@ -153,26 +189,20 @@ async function loadDictionaryCharacterCompletions(characters, token, state, piny
 function dictionaryCharacterStudyCardShell(character) {
    return (
       '<section class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
-      '<div class="dd-character-study-main dd-character-study-main-hidden" aria-hidden="true"><div class="dd-character-study-hanzi">' +
-      esc(character) + '</div><div class="dd-character-study-pinyin"></div><div class="dd-character-study-translation"></div></div>' +
       '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
       '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
       '<div class="dd-character-study-actions"><span class="muted">Chargement…</span></div></section>'
    );
 }
 
 function dictionaryCharacterStudyCardHtml(entry, character) {
    const card = findPersonalCardForEntry(entry);
-   const pinyin = dictionaryEntryPinyinText(entry);
-   const translation = dictionarySplitSenses(entry.definitionsFr || []).join(" ; ");
    return (
-      '<div class="dd-character-study-main dd-character-study-main-hidden" aria-hidden="true"><div class="dd-character-study-hanzi" data-say="' +
-      esc(character) + '">' + esc(character) + '</div><div class="dd-character-study-pinyin">' +
-      (pinyin ? colorPinyin(pinyin) : "") + '</div><div class="dd-character-study-translation">' + esc(translation) + '</div></div>' +
       '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
       '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
       '<div class="dd-character-study-actions">' +
-      (translation ? '<span class="dd-character-study-translation dd-character-study-translation-hidden" aria-hidden="true">' + esc(translation) + '</span>' : "") +
       (card
          ? '<button class="btn ghost" id="dd-character-manage" type="button">Ouvrir</button>'
          : '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
@@ -198,6 +228,7 @@ async function renderDictionaryCharacterStudyCard(character, detailToken, comple
       ) return;
       target.innerHTML = dictionaryCharacterStudyCardHtml(entry, character);
       target.setAttribute("aria-busy", "false");
+      wireDDWritingPracticeAction();
       if ($("dd-character-addcard"))
          $("dd-character-addcard").onclick = () => openDictionaryAddToWords(entry);
       if ($("dd-character-manage")) {
@@ -210,7 +241,9 @@ async function renderDictionaryCharacterStudyCard(character, detailToken, comple
       target.innerHTML =
          '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
          '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+         '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
          '<div class="dd-character-study-actions"><span class="muted">Données du caractère indisponibles.</span></div>';
+      wireDDWritingPracticeAction();
    }
 }
 
@@ -235,8 +268,10 @@ function dictionaryCharacterInteractionHtml(characters) {
             ).join("") + "</div></div>"
          : "") +
       '<div class="eyebrow">Ordre des traits</div>' +
-      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length) +
-      (characters.length > 1 ? dictionaryCharacterStudyCardShell(characters[0]) : "") +
+      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length, false, {
+         showWritingAction: false,
+      }) +
+      dictionaryCharacterStudyCardShell(characters[0]) +
       "</section>"
    );
 }
@@ -764,7 +799,7 @@ function openDictDetail(rawEntry, options) {
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
          dictionaryFrenchDefinitionsHtml(entry) +
          dictionaryCharacterInteractionHtml(characters) +
-         '<section class="dd-learning-actions"><button class="btn wide" id="dd-write-word" type="button">写 Écrire ce mot</button></section>' +
+         dictionaryCharacterDetailsShellHtml(characters) +
          (card
             ? cardActionsHtml(card)
             : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
@@ -928,9 +963,15 @@ function wireDictDetail(entry, characters, card, token, options) {
             : characters.length > 1
               ? `${entry.id}:${nextIndex}:${character}`
               : character;
-      loadDDChar(character, characters, {
+      const workspaceCharacters = options && Array.isArray(options.workspaceCharacters) && options.workspaceCharacters.length
+         ? options.workspaceCharacters
+         : characters;
+      const workspaceIndex = options && Number.isInteger(options.sequenceIndex)
+         ? options.sequenceIndex
+         : nextIndex;
+      loadDDChar(character, workspaceCharacters, {
          selectionKey,
-         selectionIndex: nextIndex,
+         selectionIndex: workspaceIndex,
          stripSelectionIndex:
             options && Number.isInteger(options.sequenceIndex)
                ? options.sequenceIndex
@@ -969,6 +1010,11 @@ function wireDictDetail(entry, characters, card, token, options) {
          },
       );
       updateDictionaryPagingMode();
+      if (characters.length === 1)
+         renderDictionaryCharacterStudyCard(characters[0], token, {
+            ready: true,
+            map: new Map([[characters[0], { entry }]]),
+         });
    }
    if (card) {
       if ($("dd-fav"))
@@ -996,11 +1042,6 @@ function wireDictDetail(entry, characters, card, token, options) {
    }
    if ($("dd-addcard"))
       $("dd-addcard").onclick = () => openDictionaryAddToWords(entry, options);
-   if ($("dd-write-word"))
-      $("dd-write-word").onclick = () =>
-         openWritingPracticeSheet(
-            options && options.writingWord ? options.writingWord : entry.simplified,
-         );
    const closeDetail = () => {
          if (options && options.fromSearch && typeof closeSearchDictionaryDetail === "function")
             closeSearchDictionaryDetail();

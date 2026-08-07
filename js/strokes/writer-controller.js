@@ -8,6 +8,7 @@ let ddStrokeTab = "animation";
 let ddWriterToken = 0;
 let ddCharacterLoadToken = 0;
 let ddWorkspaceCharacters = [];
+let ddWorkspaceCharacterIndex = -1;
 let ddWriterDocumentListeners = [];
 let ddAutoplaySelectionKey = null;
 let ddAutoplayPending = false;
@@ -180,10 +181,11 @@ function speedOpts(speed) {
    };
 }
 
-function strokeBoxHtml() {
+function strokeBoxHtml(options) {
    const speed = normalizedStrokeSpeed(db.settings.strokeSpeed);
    const gallery = strokeGallerySettings();
    const active = ddStrokeTab;
+   const showWritingAction = !options || options.showWritingAction !== false;
    return (
       '<section class="stroke-workspace" aria-label="Ordre des traits">' +
       '<div class="stroke-tabs" role="tablist" aria-label="Mode d’apprentissage des traits">' +
@@ -205,7 +207,8 @@ function strokeBoxHtml() {
       speed.toFixed(2) + '×</span></label>' +
       '<input type="range" id="dd-speed" min="0.25" max="2" step="0.05" value="' + speed + '" aria-label="Vitesse de l’animation">' +
       '<div class="sh-btns stroke-animation-actions"><button class="btn primary" id="dd-anim" type="button">Rejouer</button>' +
-      '<button class="btn" id="dd-write" type="button">写 Écrire</button></div>' +
+      (showWritingAction ? '<button class="btn" id="dd-write" type="button">写 Écrire</button>' : "") +
+      "</div>" +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-steps" aria-labelledby="stroke-tab-steps"' +
       (active === "steps" ? "" : " hidden") + '>' +
@@ -247,6 +250,7 @@ function destroyStrokeWorkspace() {
    ddChar = null;
    ddCharacterData = null;
    ddWorkspaceCharacters = [];
+   ddWorkspaceCharacterIndex = -1;
    if (strokeGalleryObserver) strokeGalleryObserver.disconnect();
    strokeGalleryObserver = null;
    closeStrokeFocus();
@@ -379,6 +383,21 @@ function activateStrokeTab(tab, focus) {
       updateDictionaryPagingMode();
 }
 
+function wireDDWritingPracticeAction() {
+   const button = $("dd-write");
+   if (!button) return;
+   button.onclick = () => {
+      if (!ddChar || typeof openWritingPracticeSheet !== "function") return;
+      const characters = ddWorkspaceCharacters.length
+         ? ddWorkspaceCharacters.slice()
+         : [ddChar];
+      const initialIndex = ddWorkspaceCharacterIndex >= 0 && ddWorkspaceCharacterIndex < characters.length
+         ? ddWorkspaceCharacterIndex
+         : Math.max(0, characters.indexOf(ddChar));
+      openWritingPracticeSheet(characters.join(""), { initialIndex });
+   };
+}
+
 function wireStrokeWorkspace() {
    const tabs = Array.from(document.querySelectorAll("[data-stroke-tab]"));
    tabs.forEach((button, index) => {
@@ -410,10 +429,7 @@ function wireStrokeWorkspace() {
       ddWriter.animateCharacter();
       setStrokeWorkspaceMessage("dd-note", "Lecture des traits dans l’ordre réel.");
    };
-   if ($("dd-write")) $("dd-write").onclick = () => {
-      if (ddChar && typeof openWritingPracticeSheet === "function")
-         openWritingPracticeSheet(ddChar);
-   };
+   wireDDWritingPracticeAction();
    if ($("dd-quiz")) $("dd-quiz").onclick = () => {
       if (!ddWriter) return toast("Quiz indisponible pour ce caractère.");
       if (typeof ddWriter.cancelQuiz === "function") ddWriter.cancelQuiz();
@@ -471,6 +487,7 @@ async function loadDDChar(character, characters, options) {
    const workspaceIndex = Number.isInteger(settings.selectionIndex)
       ? settings.selectionIndex
       : ddWorkspaceCharacters.indexOf(character);
+   ddWorkspaceCharacterIndex = workspaceIndex;
    const stripSelectionIndex = Number.isInteger(settings.stripSelectionIndex)
       ? settings.stripSelectionIndex
       : workspaceIndex;
