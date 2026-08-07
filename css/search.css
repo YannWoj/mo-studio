@@ -400,12 +400,46 @@
    font-size: 20px;
    line-height: 1.35;
 }
-.dd-french-compact p {
+.dd-french-preview {
    margin: 0;
 }
-.dd-french-compact span {
-   padding-inline: 3px;
-   color: var(--gold);
+.dd-french-short .dd-french-preview {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.dd-french-disclosure .dd-french-preview {
+   display: -webkit-box;
+   overflow: hidden;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+}
+.dd-french-expanded {
+   font-family: var(--sans);
+   font-size: 15px;
+   line-height: 1.45;
+}
+.dd-french-expanded .eyebrow {
+   margin-bottom: 5px;
+}
+.dd-french-toggle {
+   min-height: 30px;
+   margin-top: 2px;
+   padding: 2px 0;
+   border: 0;
+   background: transparent;
+   color: var(--seal);
+   font: 650 12.5px/1.2 var(--sans);
+   text-decoration: underline;
+   text-decoration-color: color-mix(in srgb, var(--seal) 36%, transparent);
+   text-underline-offset: 3px;
+}
+.dd-french-toggle:hover {
+   text-decoration-color: currentColor;
+}
+.dd-french-toggle:focus-visible {
+   outline: 2px solid color-mix(in srgb, var(--seal) 58%, transparent);
+   outline-offset: 2px;
 }
 .dd-definitions ul {
    margin: 6px 0 0;
@@ -637,21 +671,47 @@
 }
 #dd-picker .hzchip[aria-current="true"] {
    border-color: var(--seal);
-   background: var(--seal);
-   color: var(--card-2);
-   box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+   background: color-mix(in srgb, var(--seal) 10%, var(--card-2));
+   color: var(--ink);
+   box-shadow: inset 0 -2px var(--seal), 0 0 0 2px color-mix(in srgb, var(--seal) 12%, transparent);
+}
+#dd-picker .hzchip[aria-current="true"] .dd-character-chip-hanzi {
+   color: var(--seal);
 }
 #dd-picker .hzchip[aria-current="true"] .dd-character-chip-pinyin,
 #dd-picker .hzchip[aria-current="true"] .dd-character-chip-definition {
-   color: color-mix(in srgb, var(--card-2) 82%, transparent);
+   color: var(--ink-soft);
+}
+.dd-character-picker-rail {
+   position: relative;
+   min-width: 0;
+   margin: 12px 0 6px;
+}
+.dd-character-picker-rail::after {
+   position: absolute;
+   z-index: 2;
+   top: 2px;
+   right: 0;
+   bottom: 5px;
+   width: 30px;
+   background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--card-2) 94%, transparent) 72%);
+   content: "";
+   opacity: 0;
+   pointer-events: none;
+   transition: opacity 0.15s;
+}
+.dd-character-picker-rail.is-overflowing:not(.is-at-end)::after {
+   opacity: 1;
 }
 #dd-picker.dd-character-picker {
    flex-wrap: nowrap;
    max-height: none;
+   margin: 0;
    overflow-x: auto;
    overflow-y: hidden;
    align-items: stretch;
    padding: 2px 2px 5px;
+   scrollbar-width: thin;
 }
 #dd-picker .dd-character-chip {
    display: flex;
@@ -660,14 +720,17 @@
    justify-content: flex-start;
    flex: 1 1 0;
    min-width: 0;
-   height: 104px;
+   min-height: 86px;
+   height: auto;
+   max-height: 116px;
    padding: 8px 9px 7px;
+   border-radius: 15px;
    gap: 3px;
    overflow: hidden;
    text-align: center;
 }
 #dd-picker.dd-character-picker-many .dd-character-chip {
-   flex: 1 1 82px;
+   flex: 1 0 96px;
    max-width: 150px;
 }
 .dd-character-chip-hanzi {
@@ -686,17 +749,16 @@
    content: attr(data-character-pinyin-value);
 }
 .dd-character-chip-definition {
-   display: -webkit-box;
+   display: block;
    min-width: 0;
    max-width: 100%;
-   overflow: hidden;
    color: var(--ink-soft);
    font-family: var(--sans);
    font-size: 11px;
    line-height: 1.25;
-   -webkit-box-orient: vertical;
-   -webkit-line-clamp: 2;
-   overflow-wrap: anywhere;
+   hyphens: auto;
+   overflow-wrap: normal;
+   word-break: normal;
 }
 .dd-character-chip-definition::before {
    content: attr(data-character-definition-value);
@@ -707,8 +769,11 @@
 }
 #dd-character-interaction .character-nav-button:focus-visible,
 #dd-picker .hzchip:focus-visible {
-   outline: 3px solid #237a5a;
+   outline: 2px solid color-mix(in srgb, var(--seal) 62%, transparent);
    outline-offset: 2px;
+}
+#dd-picker .hzchip:active:not(:disabled) {
+   box-shadow: inset 0 -2px var(--seal), 0 0 0 2px color-mix(in srgb, var(--seal) 18%, transparent);
 }
 
 @media (max-width: 620px) {
@@ -730,6 +795,9 @@
       margin: 3px 0 7px;
       font-size: 18px;
    }
+   .dd-french-toggle {
+      min-height: 28px;
+   }
    .dd-character-interaction {
       margin-top: 7px;
       margin-inline: 0;
@@ -740,9 +808,11 @@
       margin-bottom: 4px;
       font-size: 10px;
    }
+   .dd-character-picker-rail {
+      margin: 6px 0;
+   }
    #dd-picker {
       gap: 6px;
-      margin-bottom: 6px;
    }
    #dd-picker .hzchip {
       min-height: 42px;
@@ -750,11 +820,13 @@
       font-size: 19px;
    }
    #dd-picker .dd-character-chip {
-      height: 100px;
+      min-height: 82px;
+      height: auto;
+      max-height: 108px;
       padding: 7px 6px 6px;
    }
    #dd-picker.dd-character-picker-many .dd-character-chip {
-      flex-basis: 82px;
+      flex-basis: 96px;
       max-width: none;
    }
    .dd-character-chip-hanzi {
@@ -764,7 +836,7 @@
       font-size: 12px;
    }
    .dd-character-chip-definition {
-      font-size: 10px;
+      font-size: 10.5px;
    }
    .dd-character-interaction .stroke-workspace {
       margin-top: 5px;

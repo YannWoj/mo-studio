@@ -2,6 +2,7 @@
 
 let dictionaryDetailToken = 0;
 let dictionaryCharacterCardToken = 0;
+let dictionaryPickerResizeObserver = null;
 
 function cardActionsHtml(card) {
    return (
@@ -81,19 +82,28 @@ function updateDictionaryCharacterPicker(characters, completions) {
       const definitionNode = button.querySelector("[data-character-definition]");
       const pinyin = completion && completion.pinyin ? completion.pinyin : "";
       const translation = completion && completion.translation ? completion.translation : "";
+      const entrySenses = completion && completion.entry
+         ? dictionarySplitSenses(completion.entry.definitionsFr)
+         : [];
+      const translationSenses = entrySenses.length
+         ? entrySenses
+         : dictionarySplitSenses(translation ? [translation] : []);
+      const fullTranslation = translationSenses.join(" ; ");
+      const compactTranslation = translationSenses.slice(0, 2).join(" ; ") +
+         (translationSenses.length > 2 ? " …" : "");
       if (pinyinNode) {
          pinyinNode.dataset.characterPinyinValue = pinyin;
          pinyinNode.innerHTML = "";
          pinyinNode.hidden = !pinyin;
       }
       if (definitionNode) {
-         definitionNode.dataset.characterDefinitionValue = translation;
+         definitionNode.dataset.characterDefinitionValue = compactTranslation;
          definitionNode.textContent = "";
-         definitionNode.hidden = !translation;
-         if (translation) button.title = translation;
+         definitionNode.hidden = !compactTranslation;
+         if (fullTranslation) button.title = fullTranslation;
          else button.removeAttribute("title");
       }
-      const parts = [character, pinyin, translation].filter(Boolean);
+      const parts = [character, pinyin, fullTranslation].filter(Boolean);
       button.setAttribute(
          "aria-label",
          "Afficher " + parts.join(" · ") + ", position " + (Number(button.dataset.i) + 1) + " sur " + characters.length,
@@ -206,12 +216,14 @@ async function renderDictionaryCharacterStudyCard(character, detailToken, comple
 
 function dictionaryCharacterInteractionHtml(characters) {
    if (!characters.length) return "";
-   const pickerClass = characters.length >= 4 ? "dd-character-picker dd-character-picker-many" : "dd-character-picker dd-character-picker-" + characters.length;
+   const manyCharacters = characters.length >= 4;
+   const pickerClass = manyCharacters ? "dd-character-picker dd-character-picker-many" : "dd-character-picker dd-character-picker-" + characters.length;
    return (
       '<section class="dd-character-interaction character-swipe-zone" id="dd-character-interaction" aria-label="Caractère étudié">' +
       (characters.length > 1
-         ? '<div class="eyebrow">Caractères du mot</div><div class="picker ' + pickerClass + '" id="dd-picker">' +
-           characters.map((character, index) =>
+         ? '<div class="eyebrow">Caractères du mot</div><div class="dd-character-picker-rail' +
+           (manyCharacters ? " dd-character-picker-rail-many" : "") + '"><div class="picker ' + pickerClass + '" id="dd-picker">' +
+            characters.map((character, index) =>
               '<button class="chip hzchip dd-character-chip" type="button" data-i="' + index +
               '" data-character="' + esc(character) + '" aria-label="Afficher ' + esc(character) +
               ', position ' + (index + 1) + " sur " + characters.length + '" aria-pressed="' +
@@ -220,7 +232,7 @@ function dictionaryCharacterInteractionHtml(characters) {
               '<span class="dd-character-chip-pinyin" data-character-pinyin aria-hidden="true"></span>' +
               '<span class="dd-character-chip-definition" data-character-definition aria-hidden="true"></span>' +
               "</button>",
-           ).join("") + "</div>"
+            ).join("") + "</div></div>"
          : "") +
       '<div class="eyebrow">Ordre des traits</div>' +
       strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length) +
@@ -290,14 +302,57 @@ function dictionarySplitSenses(values) {
 
 function dictionaryFrenchDefinitionsHtml(entry) {
    const french = dictionarySplitSenses(entry.definitionsFr);
-   const compact = french.length > 0 && french.length <= 4 && french.every((definition) => definition.length <= 40);
-   return french.length
-      ? compact
-        ? '<section class="dd-definitions dd-french-compact" id="dd-french-definitions" aria-label="Sens français"><p>' +
-          french.map(esc).join(' <span aria-hidden="true">·</span> ') + "</p></section>"
-        : '<section class="dd-definitions" id="dd-french-definitions"><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
-          french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></section>"
-      : '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+   if (!french.length)
+      return '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+   const joined = french.join(" ; ");
+   if (french.length <= 3)
+      return '<section class="dd-definitions dd-french-compact dd-french-short" id="dd-french-definitions" aria-label="Sens français"><p class="dd-french-preview" title="' +
+         esc(joined) + '">' + esc(joined) + "</p></section>";
+   return '<section class="dd-definitions dd-french-compact dd-french-disclosure" id="dd-french-definitions" aria-label="Sens français">' +
+      '<p class="dd-french-preview" title="' + esc(joined) + '">' + esc(joined) + "</p>" +
+      '<div class="dd-french-expanded" id="dd-french-expanded" hidden><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
+      french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></div>" +
+      '<button class="dd-french-toggle" type="button" data-french-disclosure aria-expanded="false" aria-controls="dd-french-expanded" data-sense-count="' +
+      french.length + '">voir les ' + french.length + " sens</button></section>";
+}
+
+function wireDictionaryFrenchDefinitions() {
+   const section = $("dd-french-definitions");
+   const button = section && section.querySelector("[data-french-disclosure]");
+   if (!button) return;
+   const preview = section.querySelector(".dd-french-preview");
+   const expandedContent = section.querySelector(".dd-french-expanded");
+   button.onclick = () => {
+      const expanded = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", String(expanded));
+      if (preview) preview.hidden = expanded;
+      if (expandedContent) expandedContent.hidden = !expanded;
+      button.textContent = expanded
+         ? "replier les " + button.dataset.senseCount + " sens"
+         : "voir les " + button.dataset.senseCount + " sens";
+   };
+}
+
+function wireDictionaryPickerOverflowCue() {
+   if (dictionaryPickerResizeObserver) {
+      dictionaryPickerResizeObserver.disconnect();
+      dictionaryPickerResizeObserver = null;
+   }
+   const picker = $("dd-picker");
+   const rail = picker && picker.closest(".dd-character-picker-rail");
+   if (!picker || !rail) return;
+   const update = () => {
+      const overflowing = picker.scrollWidth > picker.clientWidth + 1;
+      const atEnd = picker.scrollLeft + picker.clientWidth >= picker.scrollWidth - 1;
+      rail.classList.toggle("is-overflowing", overflowing);
+      rail.classList.toggle("is-at-end", !overflowing || atEnd);
+   };
+   picker.addEventListener("scroll", update, { passive: true });
+   if (typeof ResizeObserver === "function") {
+      dictionaryPickerResizeObserver = new ResizeObserver(update);
+      dictionaryPickerResizeObserver.observe(picker);
+   }
+   requestAnimationFrame(update);
 }
 
 function dictionaryEnglishDefinitionsHtml(entry) {
@@ -754,6 +809,7 @@ function openDictDetail(rawEntry, options) {
          entry.definitionsFr = resolved.definitionsFr.slice();
          entry.__frenchSiblingEntryId = resolved.__frenchSiblingEntryId;
          $('dd-french-definitions').outerHTML = dictionaryFrenchDefinitionsHtml(entry);
+         wireDictionaryFrenchDefinitions();
       }).catch(() => {
          /* Le repli anglais déjà affiché reste valable si l'index frère est indisponible. */
       });
@@ -850,6 +906,8 @@ function updateDictionaryPagingMode() {
 }
 
 function wireDictDetail(entry, characters, card, token, options) {
+   wireDictionaryFrenchDefinitions();
+   wireDictionaryPickerOverflowCue();
    if (characters.length) wireStrokeWorkspace();
    const completionState = options && options.characterCompletionState;
    let selectedCharacterIndex = 0;
