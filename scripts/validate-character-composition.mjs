@@ -7,6 +7,7 @@ import {
    buildCharacterComposition,
    compactIdsTree,
    compositionChunkKey,
+   idsTreeLeaves,
    parseIds,
 } from "./build-character-composition.mjs";
 
@@ -60,15 +61,22 @@ async function validateDeclaredHashes() {
             throw new Error(`Mauvais chunk pour ${character}`);
          if (record.character !== character || characterIndex[character]?.chunk !== chunk.key)
             throw new Error(`Index de caractère incohérent pour ${character}`);
-         const expectedTree = compactIdsTree(parseIds(record.decomposition));
+         const parsedTree = parseIds(record.decomposition);
+         const expectedTree = parsedTree && idsTreeLeaves(parsedTree).length
+            ? compactIdsTree(parsedTree)
+            : null;
          if (JSON.stringify(record.tree) !== JSON.stringify(expectedTree))
             throw new Error(`Arbre IDS généré incohérent pour ${character}`);
+         if (!record.tree && !record.etymology?.hint)
+            throw new Error(`Enregistrement sans IDS ni origine pour ${character}`);
          if (
-            record.etymology?.type === "pictophonetic" &&
-            !["semantic", "phonetic", "hint"].every((key) =>
+            record.etymology &&
+            !["type", "semantic", "phonetic", "hint", "hintFr"].every((key) =>
                record.etymology[key] == null || typeof record.etymology[key] === "string",
             )
-         ) throw new Error(`Étymologie pictophonétique invalide pour ${character}`);
+         ) throw new Error(`Étymologie invalide pour ${character}`);
+         if (record.etymology?.hintFr && !record.etymology.hint)
+            throw new Error(`Traduction française sans hint anglais pour ${character}`);
       }
    }
    if (seen.size !== manifest.characterIndex.count)
@@ -78,6 +86,15 @@ async function validateDeclaredHashes() {
       if (buffer.length !== licenseFile.bytes || sha256(buffer) !== licenseFile.sha256)
          throw new Error(`Copie de licence invalide : ${licenseFile.path}`);
    }
+   const hintTranslationsBuffer = await readFile(
+      path.join(projectRoot, manifest.hintTranslations.file),
+   );
+   const hintTranslations = JSON.parse(hintTranslationsBuffer.toString("utf8"));
+   if (
+      sha256(hintTranslationsBuffer) !== manifest.hintTranslations.sha256 ||
+      Object.keys(hintTranslations).length !== manifest.hintTranslations.entryCount ||
+      manifest.hintTranslations.upstreamLicenseApplies !== false
+   ) throw new Error("Métadonnées des traductions françaises d’origine invalides");
    return manifest;
 }
 
@@ -108,6 +125,7 @@ async function validateDeterministicRebuild() {
 const manifest = await validateDeclaredHashes();
 await validateDeterministicRebuild();
 console.log(
-   `PASS composition ${manifest.coverage.dictionaryWithUsableCompositionCount} utilisables, ` +
+   `PASS composition ${manifest.coverage.dictionaryWithCharacterCompositionBlockCount} blocs, ` +
+      `${manifest.coverage.dictionaryWithUsableCompositionCount} IDS utilisables, ` +
       `${manifest.coverage.dictionaryWithPictophoneticCompositionCount} pictophonétiques`,
 );

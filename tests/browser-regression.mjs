@@ -1727,15 +1727,34 @@ async function main() {
    assert(loaderCoverage.deduplicated, "Simultaneous character-data requests were duplicated");
    assert(loaderCoverage.missingRejected, "Missing character data received a fabricated fallback");
    record("local character-data loader", "一, 人, 你, 好, 谢, 龍 and high-stroke 鬱 loaded; concurrent request deduplication and missing-data rejection passed");
+   const compositionNormalization = await evaluate(`(() => {
+      const base={radical:'木',components:{},etymology:null,sourceLine:1};
+      return {
+         partial:!!normalizeCompositionRecord('林',{...base,character:'林',decomposition:'⿰？木',tree:{o:'⿰',c:[{u:true},{c:'木'}]}}),
+         unknownOnly:normalizeCompositionRecord('林',{...base,character:'林',decomposition:'⿰？？',tree:{o:'⿰',c:[{u:true},{u:true}]}})===null,
+         exactUnknown:normalizeCompositionRecord('林',{...base,character:'林',decomposition:'？',tree:{u:true}})===null,
+         hintOnly:normalizeCompositionRecord('林',{...base,character:'林',decomposition:'？',tree:null,etymology:{type:'pictographic',hint:'A tree'}})?.tree===null,
+         allUnknownHint:normalizeCompositionRecord('林',{...base,character:'林',decomposition:'⿰？？',tree:{o:'⿰',c:[{u:true},{u:true}]},etymology:{type:'pictographic',hint:'A tree'}})?.tree===null,
+      };
+   })()`);
+   assert(
+      compositionNormalization.partial&&compositionNormalization.unknownOnly&&compositionNormalization.exactUnknown&&compositionNormalization.hintOnly&&compositionNormalization.allUnknownHint,
+      `Composition normalization rejected the wrong IDS records: ${JSON.stringify(compositionNormalization)}`,
+   );
    const compositionCases = [
-      { character: "\u5988", leaves: "\u5973\u9a6c", roles: ["\u5973:sens", "\u9a6c:son"], sourceLine: 1602 },
+      { character: "\u5988", leaves: "\u5973\u9a6c", roles: ["\u5973:sens", "\u9a6c:son"], sourceLine: 1602, origin: "woman", originLang: "en", english: true },
       { character: "\u4f60", leaves: "\u4ebb\u5c14", roles: [], sourceLine: 273 },
-      { character: "\u5fae", leaves: "\u5f73\u5c71\u5140\u6535", roles: [], sourceLine: 2289, groups: 1 },
-      { character: "\u4ef7", leaves: "\u4ebb\u4ecb", roles: ["\u4ecb:son"], sourceLine: 212 },
+      { character: "\u5fae", leaves: "\u5f73\u5c71\u5140\u6535", roles: [], sourceLine: 2289, groups: 1, origin: null, originLang: null, english: false },
+      { character: "\u4ef7", leaves: "\u4ebb\u4ecb", roles: ["\u4ecb:son"], sourceLine: 212, origin: null, originLang: null, english: false },
       { character: "\u68ee", leaves: "\u6728\u6728\u6728", roles: [], sourceLine: 3405, groups: 1 },
       { character: "\u73ed", leaves: "\u738b\u5202\u738b", roles: [], sourceLine: 4571 },
       { character: "\u4eac", leaves: "\u4ea0\u53e3\u5c0f", roles: [], sourceLine: 161 },
       { character: "\u5b66", leaves: "\u2e8d\u5196\u5b50", roles: [], sourceLine: 1762, unglossed: "\u2e8d", groups: 1 },
+      { character: "\u6709", leaves: "\u6708", roles: ["\u6708:son"], sourceLine: 3185, unknowns: 1 },
+      { character: "\u96e8", leaves: "\u5e00", roles: [], sourceLine: 8670, unknowns: 1, origin: "Des gouttes de pluie tombant d’un nuage 帀", originLang: "fr", english: false },
+      { character: "\u5317", leaves: "\u5315", roles: [], sourceLine: 738, unknowns: 1 },
+      { character: "\u5148", leaves: "\u571f\u513f", roles: [], sourceLine: 482, unknowns: 1, groups: 1 },
+      { character: "\u6c34", leaves: "\u4e85", roles: [], sourceLine: 3726, unknowns: 1, origin: "Une rivière coulant entre deux rives ; comparer avec 川", originLang: "fr", english: false },
    ];
    for (const sample of compositionCases) {
       await evaluate(`ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:${JSON.stringify(sample.character)}}))`);
@@ -1753,15 +1772,38 @@ async function main() {
             rawIds:/[⿰-⿻]/u.test(block.textContent),
             source:block.querySelector('.composition-source').title,
             unglossed:[...formula.querySelectorAll('[data-composition-character]')].filter((button)=>!button.querySelector('small')).map((button)=>button.dataset.compositionCharacter),
+            unknowns:formula.querySelectorAll('.composition-unknown').length,
+            unknownGlosses:formula.querySelectorAll('.composition-unknown small').length,
+            rawUnknown:formula.textContent.includes('？'),
             lines:block.querySelectorAll('.composition-primary,.composition-secondary').length,
+            origin:block.querySelector('.composition-origin-text')?.textContent||null,
+            originLang:block.querySelector('.composition-origin-text')?.getAttribute('lang')||null,
+            originTitle:block.querySelector('.composition-origin-text')?.title||null,
+            english:!!block.querySelector('.composition-origin .search-fallback'),
+            lineClamp:block.querySelector('.composition-origin-text')?getComputedStyle(block.querySelector('.composition-origin-text')).webkitLineClamp:null,
          };
       })()`);
+      const originMatches=!Object.hasOwn(sample,'origin')||(rendered.origin===sample.origin&&rendered.originLang===sample.originLang&&rendered.english===sample.english&&(!sample.origin||(rendered.originTitle===sample.origin&&rendered.lineClamp==='2')));
       assert(
-         rendered.leaves===sample.leaves&&JSON.stringify(rendered.roles)===JSON.stringify(sample.roles)&&rendered.groups===(sample.groups||0)&&!rendered.rawIds&&rendered.source.includes('ligne '+sample.sourceLine)&&rendered.lines===2&&(!sample.unglossed||rendered.unglossed.includes(sample.unglossed)),
+         rendered.leaves===sample.leaves&&JSON.stringify(rendered.roles)===JSON.stringify(sample.roles)&&rendered.groups===(sample.groups||0)&&rendered.unknowns===(sample.unknowns||0)&&rendered.unknownGlosses===0&&!rendered.rawUnknown&&!rendered.rawIds&&rendered.source.includes('ligne '+sample.sourceLine)&&rendered.lines===2&&originMatches&&(!sample.unglossed||rendered.unglossed.includes(sample.unglossed)),
          `Composition case failed for ${sample.character}: ${JSON.stringify(rendered)}`,
       );
    }
-   for (const character of ["\u4e00"]) {
+   const hintOnlyCases = [
+      { character:"\u4eba", origin:"Les jambes d’un être humain" },
+      { character:"\u5973", origin:"Une femme tournée de côté" },
+   ];
+   for (const sample of hintOnlyCases) {
+      await evaluate(`ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:${JSON.stringify(sample.character)}}))`);
+      await waitFor(
+         () => evaluate(`document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character===${JSON.stringify(sample.character)}&&!document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition').classList.contains('is-loading')`),
+         `Hint-only composition did not render for ${sample.character}`,
+         20_000,
+      );
+      const rendered=await evaluate(`(() => {const block=document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition'),origin=block.querySelector('.composition-origin-text');return {hintOnly:block.classList.contains('is-hint-only'),formula:!!block.querySelector('.composition-formula'),secondary:!!block.querySelector('.composition-secondary'),origin:origin?.textContent,lang:origin?.lang,english:!!block.querySelector('.search-fallback')};})()`);
+      assert(rendered.hintOnly&&!rendered.formula&&!rendered.secondary&&rendered.origin===sample.origin&&rendered.lang==='fr'&&!rendered.english,`Hint-only origin failed for ${sample.character}: ${JSON.stringify(rendered)}`);
+   }
+   for (const character of ["\u4e28"]) {
       await evaluate(`ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:${JSON.stringify(character)}}))`);
       await waitFor(
          () => evaluate("[...document.querySelectorAll('.character-composition')].every((block)=>block.hidden)"),
@@ -1783,7 +1825,7 @@ async function main() {
    await waitFor(() => evaluate("document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character==='\u5988'"), "Clickable composition did not reload", 20_000);
    await click(".stroke-tab-panel:not([hidden]) .composition-formula [data-composition-character='\u5973']");
    await waitFor(() => evaluate("ddChar==='\u5973'&&document.querySelector('.dd-entry .cd-hz')?.textContent.trim()==='\u5973'"), "Clicking a component did not open its dictionary entry", 20_000);
-   record("source-faithful character composition", "pictophonetic, ideographic, absent etymology/hint, nested/ternary IDS, missing gloss/data and component navigation passed");
+   record("source-faithful character composition", "pictophonetic, ideographic, nested/ternary/partial IDS, unidentified pieces, French and labelled-English origin hints, compact hint-only blocks, absent hints and component navigation passed");
 
    const highStrokeRender = await evaluate(`(async () => {
       const data = await loadStrokeCharacterData('鬱');

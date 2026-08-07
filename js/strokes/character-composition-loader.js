@@ -57,15 +57,29 @@ async function loadCharacterCompositionManifest() {
 }
 
 function normalizeCompositionRecord(character, raw) {
-   if (!raw || raw.character !== character || !raw.tree || !raw.radical) return null;
-   if (!raw.decomposition || raw.decomposition.includes("？")) return null;
+   if (!raw || raw.character !== character || !raw.radical) return null;
+   const hasIdentifiedComponent = (node) => {
+      if (!node || node.u === true) return false;
+      if (typeof node.c === "string") return node.c !== "？";
+      return Array.isArray(node.c) && node.c.some(hasIdentifiedComponent);
+   };
+   const hasUsableComposition = hasIdentifiedComponent(raw.tree);
+   const etymology = raw.etymology && typeof raw.etymology === "object"
+      ? raw.etymology
+      : null;
+   const hasOriginHint = typeof etymology?.hint === "string" && etymology.hint.trim();
+   if (!hasUsableComposition && !hasOriginHint) return null;
+   if (
+      hasUsableComposition &&
+      (!raw.decomposition || raw.decomposition === "？")
+   ) return null;
    return Object.freeze({
       character,
       decomposition: raw.decomposition,
-      tree: raw.tree,
+      tree: hasUsableComposition ? raw.tree : null,
       radical: raw.radical,
       components: raw.components && typeof raw.components === "object" ? raw.components : {},
-      etymology: raw.etymology && typeof raw.etymology === "object" ? raw.etymology : null,
+      etymology,
       sourceLine: Number.isInteger(raw.sourceLine) ? raw.sourceLine : null,
    });
 }

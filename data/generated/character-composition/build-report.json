@@ -1,6 +1,6 @@
 {
   "format": "mo-studio-character-composition-build-report",
-  "builderVersion": "1.0.0",
+  "builderVersion": "1.2.0",
   "source": {
     "project": "Make Me a Hanzi",
     "file": "data/source/makemeahanzi/dictionary.txt",
@@ -9,13 +9,35 @@
     "license": "GNU Lesser General Public License v3 or later",
     "sourceEntryCount": 9574
   },
+  "hintTranslations": {
+    "file": "data/source/character-hints-fr.json",
+    "sha256": "e8c76381b30607ef20933a7da05a347af63a628feed1b5a78cb226890c18017a",
+    "entryCount": 8,
+    "provenance": "Original Mò Studio project content; manually written, not machine-translated",
+    "upstreamLicenseApplies": false
+  },
   "coverage": {
-    "sourceUsableCompositionCount": 9125,
-    "sourceUnknownCompositionCount": 449,
+    "sourceCharacterCompositionBlockCount": 9543,
+    "sourceUsableCompositionCount": 9490,
+    "sourceUnknownCompositionCount": 84,
+    "sourceOriginHintCount": 8948,
+    "sourceGainingOriginHintBlockCount": 53,
+    "sourceExactUnknownCompositionCount": 66,
+    "sourcePartialDecompositionCount": 383,
+    "sourcePartiallyKnownCompositionCount": 365,
+    "sourceAllComponentsUnidentifiedCount": 18,
     "sourcePictophoneticCount": 6966,
     "dictionaryCharacterCount": 14426,
-    "dictionaryWithUsableCompositionCount": 9013,
-    "dictionaryWithPictophoneticCompositionCount": 6811
+    "dictionaryWithCharacterCompositionBlockCount": 9409,
+    "dictionaryWithUsableCompositionCount": 9361,
+    "dictionaryWithOriginHintCount": 8865,
+    "dictionaryGainingOriginHintBlockCount": 48,
+    "dictionaryWithFrenchOriginHintCount": 8,
+    "dictionaryWithExactUnknownCompositionCount": 55,
+    "dictionaryWithPartialDecompositionCount": 365,
+    "dictionaryWithPartiallyKnownCompositionCount": 348,
+    "dictionaryWithAllComponentsUnidentifiedCount": 17,
+    "dictionaryWithPictophoneticCompositionCount": 6907
   },
   "testCases": [
     {
@@ -54,9 +76,24 @@
       "sourceLine": 161
     },
     {
-      "criterion": "invalid-full-width-question-mark",
-      "character": "一",
-      "sourceLine": 41
+      "criterion": "partial-ids-simple",
+      "character": "有",
+      "sourceLine": 3185
+    },
+    {
+      "criterion": "partial-ids-nested",
+      "character": "先",
+      "sourceLine": 482
+    },
+    {
+      "criterion": "unknown-only-decomposition",
+      "character": "人",
+      "sourceLine": 169
+    },
+    {
+      "criterion": "all-components-unidentified",
+      "character": "面",
+      "sourceLine": 8723
     },
     {
       "criterion": "dictionary-character-absent-from-source",

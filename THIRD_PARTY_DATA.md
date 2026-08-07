@@ -71,6 +71,13 @@ Build and deterministic validation are provided by
 when a character-writing workspace is opened; no composition file is requested
 at application startup.
 
+French translations of character-origin hints are maintained separately in
+`data/source/character-hints-fr.json`. This small, manually written override is
+original Mò Studio project content, is not generated or machine-translated,
+and is not subject to the Make Me a Hanzi upstream license. The composition
+build records its hash and merges only its explicitly present entries beside
+the unchanged English source hints.
+
 ## Hanzi Writer character data
 
 - Package: `hanzi-writer-data`

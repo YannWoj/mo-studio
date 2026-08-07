@@ -475,6 +475,11 @@
 .character-composition.is-loading {
    visibility: hidden;
 }
+.character-composition.is-hint-only {
+   min-height: 0;
+   gap: 0;
+   padding-block: 5px;
+}
 .composition-primary,
 .composition-secondary {
    display: flex;
@@ -489,6 +494,33 @@
    margin: 0;
    color: var(--seal);
    font-size: 9px;
+}
+.composition-origin {
+   display: flex;
+   min-width: 0;
+   align-items: baseline;
+   gap: 6px;
+   color: var(--ink-soft);
+   line-height: 1.3;
+}
+.composition-origin > .eyebrow,
+.composition-origin > .search-fallback {
+   flex: 0 0 auto;
+   margin: 0;
+   font-size: 8px;
+}
+.composition-origin > .eyebrow {
+   color: var(--seal);
+}
+.composition-origin-text {
+   display: -webkit-box;
+   min-width: 0;
+   overflow: hidden;
+   overflow-wrap: anywhere;
+   white-space: normal;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   line-clamp: 2;
 }
 .composition-formula,
 .composition-group,
@@ -543,6 +575,15 @@
    color: var(--ink-faint);
    font-size: 10px;
    font-weight: 500;
+}
+.composition-unknown {
+   display: inline-grid;
+   width: 18px;
+   height: 22px;
+   place-items: center;
+   color: var(--ink-faint);
+   font: 600 12px var(--sans);
+   opacity: 0.72;
 }
 .composition-plus,
 .composition-dot {
