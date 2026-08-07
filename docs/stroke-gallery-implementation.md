@@ -96,16 +96,17 @@ un message explicite. Une animation ne démarre qu’après activation de Rejoue
 
 ## Réglages et stockage
 
-Les trois options sont conservées dans
+Les deux options sont conservées dans
 `mo-studio-v1.settings.strokeGallery` :
 
 ```json
 {
   "showFuture": true,
-  "showGrid": true,
-  "showGhost": false
+  "showGrid": true
 }
 ```
+
+L’ancienne clé `showGhost` est ignorée à la lecture des sauvegardes existantes.
 
 Elles n’ajoutent aucun champ aux cartes personnelles. Le cache des traits est
 reconstructible et séparé du dictionnaire, des cartes et du SRS.

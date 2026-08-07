@@ -207,6 +207,7 @@ function setupSwipe(element, onLeft, onRight, options) {
       startTime = event.timeStamp || performance.now();
       horizontalGesture = false;
       verticalGesture = false;
+      try { element.setPointerCapture(pointerId); } catch (error) {}
    });
    element.addEventListener("pointermove", (event) => {
       if (pointerId == null || event.pointerId !== pointerId) return;
@@ -282,12 +283,12 @@ async function renderSequence() {
       esc(character) + '" aria-label="Écouter ' + esc(character) + '">听</button><div class="hanzi ink-in" data-say="' + esc(character) + '">' +
       esc(character) + "</div>" +
       (pinyin ? '<div class="pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
-      verifiedHskBadges(entry) +
-      '<div class="sep"></div><div class="fr">' +
+      '<div class="fr">' +
       (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
       (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" +
        '<div class="eyebrow">Ordre des traits</div>' + strokeCharacterStageHtml("seq", character, index, current.chars.length) +
-       '<div class="sh-btns"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></div>' +
+       '<div class="seq-meta">' + verifiedHskBadges(entry) + "</div>" +
+       '<div class="sh-btns"><button class="btn wide" id="dd-write-word" type="button">写 Écrire ce mot</button></div>' +
        (card
           ? cardActionsHtml(card)
           : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></div>') +

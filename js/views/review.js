@@ -101,7 +101,7 @@ function renderReviewStrokeSteps(data) {
    if (!target || !data || typeof strokePanelSvg !== "function") return;
    target.innerHTML = Array.from({ length: data.strokeCount }, (_, index) => {
       const labelId = "review-stroke-step-label-" + index;
-      return '<div class="review-stroke-step"><span class="review-stroke-step-number">' + (index + 1) + '</span><span id="' + labelId + '" class="sr-only">Trait ' + (index + 1) + " sur " + data.strokeCount + '</span>' + strokePanelSvg(data, index, { showFuture: false, showGrid: true, showGhost: false }, labelId) + "</div>";
+      return '<div class="review-stroke-step"><span class="review-stroke-step-number">' + (index + 1) + '</span><span id="' + labelId + '" class="sr-only">Trait ' + (index + 1) + " sur " + data.strokeCount + '</span>' + strokePanelSvg(data, index, { showFuture: false, showGrid: true }, labelId) + "</div>";
    }).join("");
 }
 

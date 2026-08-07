@@ -308,12 +308,6 @@ function openCardDetail(id, options) {
       esc(card.hz) + '" aria-label="Écouter">听</button>' +
       '<button class="dd-top-close" id="card-close-top" data-sheet-close aria-label="Fermer la fiche">×</button></div></div>' +
       cardDetailWordNavigationHtml(card, context) +
-      (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") +
-      '<div class="acts"><button class="act' + (card.fav ? " on" : "") +
-      '" id="card-favorite">Favori</button><button class="act' +
-      (card.difficult ? " on" : "") +
-      '" id="card-difficult">Difficile</button><button class="act' +
-      (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div>' +
       (characters.length
          ? '<section class="dd-character-interaction card-detail-strokes" id="card-stroke-interaction"><div class="eyebrow">Ordre des traits</div>' +
            strokeCharacterStageHtml(
@@ -324,6 +318,12 @@ function openCardDetail(id, options) {
               context.cardIds.length > 1,
            ) + "</section>"
          : "") +
+      '<div class="acts"><button class="act' + (card.fav ? " on" : "") +
+      '" id="card-favorite">Favori</button><button class="act' +
+      (card.difficult ? " on" : "") +
+      '" id="card-difficult">Difficile</button><button class="act' +
+      (card.acquired ? " on jade" : "") + '" id="card-mastered">Maîtrisé</button></div>' +
+      (card.note ? '<div class="note">' + esc(card.note) + "</div>" : "") +
       '<div class="eyebrow">Présent dans</div>' + cardCategoryCheckboxes(card) +
       '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div></article>',
    );
@@ -409,14 +409,9 @@ function packImportPreviewSummaryHtml(preview, names) {
       '<span class="import-summary-chip">' + words + "</span>",
       '<span class="import-summary-chip">' + categories + "</span>",
       preview.existing ? '<span class="import-summary-chip">' + preview.existing + " déjà présent" + (preview.existing > 1 ? "s" : "") + "</span>" : "",
-      preview.duplicates ? '<span class="import-summary-chip warning">' + preview.duplicates + " doublon" + (preview.duplicates > 1 ? "s" : "") + "</span>" : "",
-      preview.missingDictionary ? '<span class="import-summary-chip warning">' + preview.missingDictionary + " inconnu" + (preview.missingDictionary > 1 ? "s" : "") + " du dictionnaire</span>" : "",
-      preview.incomplete ? '<span class="import-summary-chip warning">' + preview.incomplete + " incomplet" + (preview.incomplete > 1 ? "s" : "") + "</span>" : "",
    ].filter(Boolean).join("");
    const notices = [
-      preview.duplicates ? "Le fichier répète " + preview.duplicates + " mot" + (preview.duplicates > 1 ? "s" : "") + " — une seule copie de chacun sera gardée." : "",
-      preview.missingDictionary ? preview.missingDictionary + " mot" + (preview.missingDictionary > 1 ? "s ne sont" : " n’est") + " pas reconnu" + (preview.missingDictionary > 1 ? "s" : "") + " par le dictionnaire — " + (preview.missingDictionary > 1 ? "ils peuvent" : "il peut") + " être importé" + (preview.missingDictionary > 1 ? "s" : "") + " comme carte" + (preview.missingDictionary > 1 ? "s" : "") + " personnelle" + (preview.missingDictionary > 1 ? "s" : "") + "." : "",
-      preview.incomplete ? preview.incomplete + " mot" + (preview.incomplete > 1 ? "s n’ont" : " n’a") + " pas toutes " + (preview.incomplete > 1 ? "leurs" : "ses") + " informations — tu pourras " + (preview.incomplete > 1 ? "les" : "le") + " compléter à la main." : "",
+      preview.duplicates ? "Le fichier contient " + preview.duplicates + " doublon" + (preview.duplicates > 1 ? "s" : "") + " : " + (preview.duplicates > 1 ? "ils seront fusionnés" : "il sera fusionné") + " automatiquement." : "",
    ].filter(Boolean);
    return (
       '<section class="import-preview-summary" aria-label="Résumé de l’import"><p class="import-summary-sentence"><strong>' +
@@ -429,6 +424,15 @@ function packImportPreviewSummaryHtml(preview, names) {
 
 function openPackImportPreview(preview) {
    const names = preview.packs.map((pack) => pack.name).join(", ") || "Sans nom";
+   const previewWords = preview.packs.flatMap((pack) =>
+      pack.categories.flatMap((category) => category.words),
+   );
+   const uniquePreviewWords = previewWords.filter((word) => !word.duplicateOf);
+   const unknownWords = uniquePreviewWords.filter((word) => !word.dictionaryId || word.incomplete);
+   const unknownCount = unknownWords.length;
+   const unknownExamples = Array.from(
+      new Set(unknownWords.map((word) => word.chinese).filter(Boolean)),
+   ).slice(0, 2);
    const newModeLabel = preview.packs.length === 1
       ? "Créer un nouveau pack « " + names + " »"
       : "Créer " + preview.packs.length + " nouveaux packs";
@@ -441,33 +445,55 @@ function openPackImportPreview(preview) {
       '<label class="import-mode-choice"><input type="radio" name="import-mode" value="merge"><span><strong>Ajouter à un pack que j’ai déjà</strong><small>Les mots seront rangés dans un pack existant.</small></span></label></div>' +
       '<label class="import-target-field" id="import-target-field" for="import-target" hidden><span>Dans quel pack ?</span><select class="search" id="import-target"><option value="">Choisir un pack existant</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '">' + esc(pack.name) + "</option>").join("") + "</select></label>" +
       '<label class="import-replace-option" id="import-replace-field" hidden><input type="checkbox" id="import-replace-structure"><span><strong>Réorganiser les sous-catégories selon le fichier</strong><small>Aucune carte ne sera supprimée et toute progression sera conservée.</small></span></label>' +
-      '<details class="import-advanced" id="import-advanced"><summary>Options avancées</summary><div class="import-advanced-options">' +
-      '<label class="import-advanced-option"><input type="checkbox" id="import-skip" checked><span><strong>Ignorer les doublons du fichier</strong><small>Si le fichier contient deux fois le même mot, un seul est gardé.</small></span></label>' +
-      '<label class="import-advanced-option"><input type="checkbox" id="import-missing" checked><span><strong>Importer aussi les mots inconnus du dictionnaire</strong><small>Ils deviennent des cartes personnelles que tu peux compléter à la main.</small></span></label>' +
-      "</div></details></fieldset>";
+      (preview.missingDictionary + preview.incomplete > 0
+         ? '<fieldset class="import-unknown-words" id="import-unknown-words"><legend>Mots inconnus</legend><p><strong>' +
+           unknownCount + " mot" + (unknownCount > 1 ? "s" : "") +
+           " du fichier " + (unknownCount > 1 ? "ne sont" : "n’est") +
+           " pas dans le dictionnaire de l’appli" +
+           (unknownExamples.length ? " (exemple" + (unknownExamples.length > 1 ? "s" : "") + " : " + unknownExamples.map(esc).join(", ") + ")" : "") +
+           '. Que faire ?</strong></p><div class="import-unknown-choices">' +
+           '<label class="import-unknown-choice"><input type="radio" name="import-missing" value="yes" checked><span><strong>Les importer quand même</strong><small>Ils auront juste leurs caractères ; tu pourras ajouter pinyin et traduction toi-même plus tard.</small></span></label>' +
+           '<label class="import-unknown-choice"><input type="radio" name="import-missing" value="no"><span><strong>Les laisser de côté</strong><small id="import-recognized-count"></small></span></label>' +
+           "</div></fieldset>"
+         : "") +
+      "</fieldset>";
    openSheet('<article class="pack-import-preview"><h3 class="sh-t">Aperçu avant import</h3><p class="sh-p">Source ' + preview.sourceType.toUpperCase() + "</p>" + packImportPreviewSummaryHtml(preview, names) + errors + options + '<div class="sh-btns">' + (preview.errors.length ? "" : '<button class="btn primary" id="import-confirm"></button>') + '<button class="btn ghost" id="import-cancel">Annuler</button></div><p class="sh-note">Aucune donnée n’a été modifiée pendant cet aperçu.</p></article>');
    $("import-cancel").onclick = closeSheet;
+   const importMissing = () => {
+      const choice = document.querySelector('input[name="import-missing"]:checked');
+      return !choice || choice.value === "yes";
+   };
+   const selectedWordCount = () =>
+      uniquePreviewWords.filter((word) => importMissing() || !word.incomplete).length;
+   const recognizedWordCount = uniquePreviewWords.filter((word) => !word.incomplete).length;
    const updateImportMode = () => {
       const mode = document.querySelector('input[name="import-mode"]:checked').value;
       const merge = mode === "merge";
+      const wordCount = selectedWordCount();
+      const wordLabel = wordCount + " mot" + (wordCount > 1 ? "s" : "");
       $("import-target-field").hidden = !merge;
       $("import-replace-field").hidden = !merge;
+      if ($("import-recognized-count"))
+         $("import-recognized-count").textContent = recognizedWordCount === 1
+            ? "Seul le mot reconnu sera importé."
+            : "Seuls les " + recognizedWordCount + " mots reconnus seront importés.";
       const target = db.packs.find((pack) => pack.id === $("import-target").value);
       $("import-confirm").textContent = merge
          ? target
-            ? "Ajouter " + preview.wordCount + " mot" + (preview.wordCount > 1 ? "s" : "") + " à « " + target.name + " »"
-            : "Choisir le pack à compléter (" + preview.wordCount + " mot" + (preview.wordCount > 1 ? "s" : "") + ")"
+            ? "Ajouter " + wordLabel + " à « " + target.name + " »"
+            : "Choisir le pack à compléter (" + wordLabel + ")"
          : preview.packs.length === 1
-            ? "Créer le pack « " + names + " » (" + preview.wordCount + " mot" + (preview.wordCount > 1 ? "s" : "") + ")"
-            : "Créer " + preview.packs.length + " packs (" + preview.wordCount + " mots)";
+            ? "Créer le pack « " + names + " » (" + wordLabel + ")"
+            : "Créer " + preview.packs.length + " packs (" + wordLabel + ")";
    };
    document.querySelectorAll('input[name="import-mode"]').forEach((input) => input.onchange = updateImportMode);
+   document.querySelectorAll('input[name="import-missing"]').forEach((input) => input.onchange = updateImportMode);
    if ($("import-target")) $("import-target").onchange = updateImportMode;
    if ($("import-confirm")) updateImportMode();
    if ($("import-confirm")) $("import-confirm").onclick = () => {
       const mode = document.querySelector('input[name="import-mode"]:checked').value;
       if (mode === "merge" && !$("import-target").value) { toast("Choisis le pack à fusionner."); return; }
-      const result = applyPackImport(preview, { mode, targetPackId: $("import-target").value, skipDuplicates: $("import-skip").checked, replaceStructure: $("import-replace-structure").checked, importMissing: $("import-missing").checked });
+      const result = applyPackImport(preview, { mode, targetPackId: $("import-target").value, skipDuplicates: true, replaceStructure: $("import-replace-structure").checked, importMissing: importMissing() });
       closeSheet(); lib.level = "packs"; renderLib(); toast(result.added + " nouvelle(s) carte(s), " + result.reused + " carte(s) réutilisée(s).");
    };
 }

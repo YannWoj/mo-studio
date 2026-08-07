@@ -162,7 +162,7 @@
 }
 
 .writing-icon-button,
-.writing-color-current {
+.writing-color-control {
    display: grid;
    flex: 0 0 40px;
    width: 40px;
@@ -183,7 +183,7 @@
 }
 
 .writing-icon-button:active,
-.writing-color-current:active {
+.writing-color-control:active {
    transform: scale(0.94);
 }
 
@@ -212,46 +212,93 @@
    color: var(--card-2);
 }
 
+.writing-settings-button[aria-expanded="true"] {
+   border-color: var(--ink);
+   background: color-mix(in srgb, var(--ink) 8%, var(--card-2));
+}
+
+.writing-color-control {
+   position: relative;
+   cursor: pointer;
+   border: 0;
+   border-radius: 50%;
+   background: transparent;
+}
+
 .writing-color-current {
+   width: 100%;
+   height: 100%;
    overflow: hidden;
    border: 3px solid var(--card-2);
    border-radius: 50%;
    background: var(--writing-color);
    box-shadow: 0 0 0 1px var(--line);
+   pointer-events: none;
 }
 
-.writing-color-current:hover,
-.writing-color-current:focus-visible {
+.writing-color-control:hover .writing-color-current,
+.writing-color-control:focus-within .writing-color-current {
    box-shadow: 0 0 0 2px var(--ink);
 }
 
 .writing-color-input {
    position: absolute;
-   width: 1px;
-   height: 1px;
-   overflow: hidden;
+   inset: 0;
+   width: 100%;
+   height: 100%;
+   margin: 0;
+   padding: 0;
+   border: 0;
    opacity: 0;
+   cursor: pointer;
+}
+
+.writing-slider-panel {
+   display: grid;
+   grid-template-rows: 0fr;
+   opacity: 0;
+   transform: translateY(-3px);
    pointer-events: none;
-   clip-path: inset(50%);
+   transition:
+      grid-template-rows 0.18s ease,
+      opacity 0.15s ease,
+      transform 0.18s ease;
+}
+
+.writing-slider-panel.is-open {
+   grid-template-rows: 1fr;
+   opacity: 1;
+   transform: translateY(0);
+   pointer-events: auto;
 }
 
 .writing-slider-tools {
-   display: flex;
-   flex-wrap: wrap;
+   display: grid;
+   min-height: 0;
+   overflow: hidden;
+   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
    align-items: center;
-   gap: 6px 12px;
-   margin-top: 6px;
+   gap: 8px 12px;
+   padding: 0 2px;
+   transition: padding 0.18s ease;
+}
+
+.writing-slider-panel.is-open .writing-slider-tools {
+   padding-top: 8px;
 }
 
 .writing-slider {
    display: grid;
-   flex: 0 1 150px;
-   min-width: 130px;
+   min-width: 0;
    grid-template-columns: minmax(0, 1fr) auto;
    gap: 0 6px;
    color: var(--ink-soft);
    font-size: 11.5px;
    line-height: 1.2;
+}
+
+.writing-slider:only-child {
+   grid-column: 1 / -1;
 }
 
 .writing-slider output {
@@ -261,7 +308,6 @@
 
 .writing-slider input {
    width: 100%;
-   max-width: 150px;
    grid-column: 1 / -1;
    margin: 2px 0 0;
 }
@@ -586,16 +632,12 @@ body.writing-fullscreen-open {
    }
 
    .writing-icon-tools {
-      gap: 4px;
+      gap: 2px;
    }
 
    .writing-slider-tools {
-      justify-content: space-between;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 5px 8px;
-   }
-
-   .writing-slider {
-      flex-basis: 145px;
    }
 
    .writing-grid-options {
@@ -622,6 +664,13 @@ body.writing-fullscreen-open {
       min-height: 410px;
    }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .writing-slider-panel,
+   .writing-slider-tools {
+      transition: none;
+   }
 }
 
 @media (min-width: 900px) {

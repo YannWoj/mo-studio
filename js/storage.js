@@ -17,7 +17,6 @@
             strokeGallery: {
                showFuture: true,
                showGrid: true,
-               showGhost: false,
             },
             writingBoard: {
                color: "#17140f",
@@ -108,10 +107,21 @@
                      { pinyin: true, fr: true, trace: true },
                      (d.settings && d.settings.writeModes) || {},
                   );
-                  s.strokeGallery = Object.assign(
-                     { showFuture: true, showGrid: true, showGhost: false },
-                     (d.settings && d.settings.strokeGallery) || {},
-                  );
+                  const storedStrokeGallery =
+                     d.settings && d.settings.strokeGallery &&
+                     typeof d.settings.strokeGallery === "object"
+                        ? d.settings.strokeGallery
+                        : {};
+                  s.strokeGallery = {
+                     showFuture:
+                        typeof storedStrokeGallery.showFuture === "boolean"
+                           ? storedStrokeGallery.showFuture
+                           : true,
+                     showGrid:
+                        typeof storedStrokeGallery.showGrid === "boolean"
+                           ? storedStrokeGallery.showGrid
+                           : true,
+                  };
                   s.writingBoard = Object.assign(
                      {
                         color: "#17140f",

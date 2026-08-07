@@ -5,6 +5,7 @@ const SEARCH_PREFIX_KEY_LIMIT = 160;
 let dictionarySearchEpoch = 0;
 let dictionaryPersonalRevision = 0;
 const dictionarySearchCache = new Map();
+const dictionaryFrenchSiblingCache = new Map();
 const dictionaryPrefixCache = new WeakMap();
 const DICTIONARY_SEARCH_CACHE_LIMIT = 24;
 
@@ -22,6 +23,7 @@ function invalidateDictIndex() {
 
 function clearDictionarySearchCache() {
    dictionarySearchCache.clear();
+   dictionaryFrenchSiblingCache.clear();
 }
 
 function cancelDictionarySearches() {
@@ -157,6 +159,45 @@ function dictionaryEntryPronunciationKeys(entry) {
          .map((variant) => normalizePinyinNumbered(variant.numbered || variant.marked || ""))
          .filter(Boolean),
    );
+}
+
+async function dictionaryEntryWithFrenchSibling(entry) {
+   if (!entry || (entry.definitionsFr || []).length || !entry.simplified) return entry;
+   const pronunciation = Array.from(dictionaryEntryPronunciationKeys(entry)).sort().join("/");
+   const cacheKey = entry.simplified + "§" + pronunciation;
+   if (!dictionaryFrenchSiblingCache.has(cacheKey)) {
+      dictionaryFrenchSiblingCache.set(cacheKey, (async () => {
+         const index = await loadDictionaryIndex("exactHanzi", false);
+         const references = index[entry.simplified] || [];
+         if (!references.length) return null;
+         const exactEntries = (await loadDictionaryEntriesByReferences(references)).filter(
+            (candidate) =>
+               candidate.simplified === entry.simplified &&
+               candidate.id !== entry.id &&
+               (candidate.definitionsFr || []).length,
+         );
+         if (!exactEntries.length) return null;
+         const samePronunciation = pronunciation
+            ? exactEntries.filter((candidate) => dictionaryEntriesSharePronunciation(entry, candidate))
+            : [];
+         const sibling = samePronunciation[0] || exactEntries[0];
+         return {
+            entryId: sibling.id,
+            definitionsFr: sibling.definitionsFr.slice(),
+         };
+      })().catch((error) => {
+         dictionaryFrenchSiblingCache.delete(cacheKey);
+         throw error;
+      }));
+   }
+   const french = await dictionaryFrenchSiblingCache.get(cacheKey);
+   return french
+      ? {
+           ...entry,
+           definitionsFr: french.definitionsFr.slice(),
+           __frenchSiblingEntryId: french.entryId,
+        }
+      : entry;
 }
 
 function annotateDictionaryScriptVariants(entries, query) {

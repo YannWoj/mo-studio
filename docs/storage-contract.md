@@ -71,7 +71,8 @@ rebuildable and contains no cards, progress, packs, units, favorites, or
 settings. It does not use IndexedDB.
 
 Gallery presentation settings live under `mo-studio-v1.settings.strokeGallery`
-with the Boolean fields `showFuture`, `showGrid`, and `showGhost`. Animation
+with the Boolean fields `showFuture` and `showGrid`. The retired `showGhost`
+field is ignored when older storage is loaded. Animation
 speed remains `mo-studio-v1.settings.strokeSpeed`. These are UI settings only
 and do not alter the personal-card schema.
 

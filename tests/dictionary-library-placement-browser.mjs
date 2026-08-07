@@ -15,6 +15,8 @@ const profile = await mkdtemp(path.join(os.tmpdir(), "mo-dictionary-placement-")
 const visualProofs = {
    placement: path.join(os.tmpdir(), "mo-studio-placement-430.png"),
    paging: path.join(os.tmpdir(), "mo-studio-paging-360.png"),
+   riceFirstScreen: path.join(os.tmpdir(), "mo-studio-rice-compact-390.png"),
+   helloFirstScreen: path.join(os.tmpdir(), "mo-studio-hello-compact-390.png"),
    dictionaryStroke360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-360.png"),
    dictionaryStroke1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-1440.png"),
    dictionaryStrokeSteps360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-360.png"),
@@ -92,6 +94,13 @@ async function captureStrokeNavigation(stageSelector, screenshotPath) {
    })()`);
    const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true, captureBeyondViewport:false, clip });
    await writeFile(screenshotPath, Buffer.from(screenshot.data, "base64"));
+}
+async function dictionaryFirstScreenMetrics() {
+   return evaluate(`(() => {
+      const rect=(selector)=>{const node=document.querySelector(selector),box=node?.getBoundingClientRect();return node?{top:box.top,bottom:box.bottom,left:box.left,right:box.right,width:box.width,height:box.height}:null};
+      const items={hanzi:rect('.dd-entry .cd-hz'),pinyin:rect('.dd-entry .cd-py'),french:rect('#dd-french-definitions'),grid:rect('#stroke-panel-animation .mizi')};
+      return {viewport:{width:innerWidth,height:innerHeight},scrollTop:document.querySelector('.sheet-card')?.scrollTop,items,allVisible:Object.values(items).every((item)=>item&&item.top>=0&&item.bottom<=innerHeight)};
+   })()`);
 }
 async function pointerGesture(selector, { deltaX = 0, deltaY = 0, pointerType = "touch", pointerId = 41 } = {}) {
    return evaluate(`(async()=>{
@@ -205,6 +214,75 @@ async function main() {
    await click("#dd-add-cancel");
    pass("ajout explicite sans sous-catégorie et dernière sélection mémorisée sans ajout automatique");
 
+   const riceSearch = await search("饭");
+   const listedRice = riceSearch.results.find((item) => item.hz === "饭" && item.fr.includes("riz cuit"));
+   assert(listedRice, `饭 search result lost its French definition: ${JSON.stringify(riceSearch.results.slice(0,4))}`);
+   assert(riceSearch.results[0].id === listedRice.id, `饭 French result is no longer first: ${JSON.stringify(riceSearch.results.slice(0,4))}`);
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
+   await evaluate("openSearchDictionaryDetail(srch.search.results[0].entry, false)");
+   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('riz cuit') && !!document.querySelector('#dd-target svg')"), "饭 result click lost its French definition or stroke grid");
+   assert((await evaluate("document.querySelector('.dd-entry').dataset.entryId")) === listedRice.id, "饭 result click loaded a different entry");
+   await evaluate("(async()=>{const toast=document.querySelector('#toast');toast.classList.remove('show');await new Promise((resolve)=>setTimeout(resolve,320));toast.style.visibility='hidden'})()");
+   await evaluate("(async()=>{if(typeof ddWriter?.showCharacter==='function')await ddWriter.showCharacter({duration:0})})()");
+   const riceFirstScreen = await dictionaryFirstScreenMetrics();
+   assert(riceFirstScreen.allVisible && riceFirstScreen.scrollTop === 0 && riceFirstScreen.items.grid.width >= 280, `饭 first screen is not complete at 390x844: ${JSON.stringify(riceFirstScreen)}`);
+   const riceScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
+   await writeFile(visualProofs.riceFirstScreen, Buffer.from(riceScreenshot.data, "base64"));
+   await evaluate("document.querySelector('#toast').style.visibility=''");
+   await click("#dd-close");
+   const riceTrace = await evaluate(`(async()=>{
+      const character=await loadDictionaryEntryById('char-饭');
+      const resolved=await dictionaryEntryWithFrenchSibling(character);
+      return {
+         current:{id:character.id,pinyin:(character.pinyin||[]).map((item)=>item.numbered),fr:character.definitionsFr},
+         resolved:{sibling:resolved.__frenchSiblingEntryId,fr:resolved.definitionsFr}
+      };
+   })()`);
+   assert(riceTrace.current.id === "char-饭" && !riceTrace.current.fr.length, `饭 character fixture changed: ${JSON.stringify({listedRice,riceTrace})}`);
+   assert(riceTrace.resolved.sibling === "word-36f6538d2d4c5de27f843b75" && riceTrace.resolved.fr.includes("riz cuit"), `饭 French sibling was not resolved: ${JSON.stringify(riceTrace)}`);
+   await evaluate(`(async()=>openDictDetail(await loadDictionaryEntryById('char-饭')))()`);
+   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('riz cuit')"), "饭 detail did not reuse its French sibling");
+   assert(!(await evaluate("document.querySelector('#dd-french-definitions').textContent.includes('Traduction française indisponible')")), "饭 detail kept the unavailable notice");
+   await click("#dd-close");
+
+   await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('吃饭')))()`);
+   await waitFor(() => evaluate("!!document.querySelector('#dd-picker [data-character=\"饭\"]')"), "吃饭 character picker missing");
+   await click('#dd-picker [data-character="饭"]');
+   await waitFor(() => evaluate("document.querySelector('.dd-character-study-translation')?.textContent.includes('riz cuit')"), "吃饭 → 饭 study card did not reuse French");
+   assert(!(await evaluate("document.querySelector('.dd-character-study-translation').textContent.includes('Traduction française indisponible')")), "吃饭 → 饭 study card kept the fallback");
+   await click("#dd-close");
+
+   await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('你好')))()`);
+   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.length > 0 && !!document.querySelector('#dd-target svg') && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy')==='false'"), "你好 compact detail did not finish loading");
+   await evaluate("(async()=>{const toast=document.querySelector('#toast');toast.classList.remove('show');await new Promise((resolve)=>setTimeout(resolve,320));toast.style.visibility='hidden'})()");
+   await evaluate("(async()=>{if(typeof ddWriter?.showCharacter==='function')await ddWriter.showCharacter({duration:0})})()");
+   const helloFirstScreen = await dictionaryFirstScreenMetrics();
+   assert(helloFirstScreen.allVisible && helloFirstScreen.scrollTop === 0 && helloFirstScreen.items.grid.width >= 200, `你好 first screen is not complete at 390x844: ${JSON.stringify(helloFirstScreen)}`);
+   const helloScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
+   await writeFile(visualProofs.helloFirstScreen, Buffer.from(helloScreenshot.data, "base64"));
+   await evaluate("document.querySelector('#toast').style.visibility=''");
+   assert(await evaluate("[...document.querySelector('#dd-character-interaction').children].indexOf(document.querySelector('#dd-character-study-card')) > [...document.querySelector('#dd-character-interaction').children].indexOf(document.querySelector('#dd-character-stage'))"), "compact character row is still above stroke order");
+   await click("#dd-close");
+
+   await evaluate("openSequence(Array.from('吃饭'),{fromHistory:true,index:1})");
+   await waitFor(() => evaluate("document.querySelector('#seq-flash .fr')?.textContent.includes('riz cuit')"), "饭 sequence reader did not reuse French");
+   assert(!(await evaluate("document.querySelector('#seq-flash .fr').textContent.includes('Traduction française indisponible')")), "饭 sequence reader kept the fallback");
+   const sequenceFirstScreen = await evaluate(`(() => {const selectors=['#seq-flash > .hanzi','#seq-flash > .pinyin','#seq-flash > .fr','#stroke-panel-animation .mizi'];const rects=selectors.map((selector)=>document.querySelector(selector)?.getBoundingClientRect());return {visible:rects.every((rect)=>rect&&rect.top>=0&&rect.bottom<=innerHeight),metaAfterStage:[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('.seq-meta'))>[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('#seq-stage')),rects:rects.map((rect)=>rect&&({top:rect.top,bottom:rect.bottom,width:rect.width}))};})()`);
+   assert(sequenceFirstScreen.visible && sequenceFirstScreen.metaAfterStage, `sequence first screen/order failed: ${JSON.stringify(sequenceFirstScreen)}`);
+   await evaluate("closeSequence({fromHistory:true})");
+
+   const genuineFallback = await evaluate(`(async()=>{
+      const entry=await loadDictionaryEntryById('char-並');
+      const resolved=await dictionaryEntryWithFrenchSibling(entry);
+      openDictDetail(entry);
+      return {fr:resolved.definitionsFr,en:entry.definitionsEn};
+   })()`);
+   assert(!genuineFallback.fr.length && genuineFallback.en.length, `並 should remain an English fallback: ${JSON.stringify(genuineFallback)}`);
+   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('Traduction française indisponible')"), "genuine French fallback disappeared");
+   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Sens anglais de référence"), "genuine English reference disappeared");
+   await click("#dd-close");
+   pass(`饭 : résultat ${listedRice.id}, fiche char-饭 enrichie par ${riceTrace.resolved.sibling}, carte de caractère et séquence corrigées ; vrai repli anglais conservé`);
+
    const face = await search("面");
    assert(face.results[0].id === "word-453e719c9edd4078aac555e3", `wrong 面 primary: ${JSON.stringify(face.results.slice(0,4))}`);
    assert(face.results[0].hsk.includes(2) && face.results[0].hsk.includes(5), "distinct HSK senses missing");
@@ -226,7 +304,7 @@ async function main() {
          englishOpen:document.querySelector('.dd-definitions.english')?.open,
          hsk:document.querySelectorAll('.dd-hsk-source-item').length,
          add:!!document.querySelector('#dd-addcard'),
-         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-meta','.dd-character-interaction','.dd-learning-actions','.dd-card-actions','.dd-hsk-source','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
+         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-character-interaction','.dd-learning-actions','.dd-card-actions','.dd-meta','.dd-hsk-source','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
          emptyEnglishHidden:dictionaryEnglishDefinitionsHtml({definitionsEn:['', ' ; ', '...', '1.']})==='',
          vulgarFilter:[
             dictionaryRelatedWordIsVulgar({simplified:'肏你妈',definitionsEn:['fuck your mother (vulgar)']}),
@@ -261,7 +339,7 @@ async function main() {
    assert(traditional.results.some((item)=>item.hz==='麵'||item.traditional==='麵') && traditional.results[0].traditional === "麵", "exact traditional query did not keep 麵 at the first level");
    await click("#dresults .dict-result-primary");
    await waitFor(() => evaluate("document.querySelector('.dd-entry .cd-hz')?.textContent.trim()==='麵'"), "exact 麵 detail did not preserve the chosen form");
-   const variantDetailFrench = await evaluate("[...document.querySelectorAll('.dd-definitions:not(.english) li')].map((item)=>item.textContent.trim()).join(' ; ')");
+   const variantDetailFrench = await evaluate(`(() => {const section=document.querySelector('#dd-french-definitions'),items=[...section.querySelectorAll('li')].map((item)=>item.textContent.trim());return items.length?items.join(' ; '):section.textContent.trim().replace(/\\s*·\\s*/gu,' ; ');})()`);
    await click("#dd-addcard");
    const variantPlacement = await evaluate("({hanzi:document.querySelector('.dd-add-word > b')?.textContent.trim(),identity:document.querySelector('.dd-add-word small')?.textContent||'',definition:document.querySelector('#dd-add-fr')?.value||''})");
    assert(variantPlacement.hanzi==='麵' && variantPlacement.definition===variantDetailFrench && (variantPlacement.identity.includes('Traditionnel') || variantPlacement.identity.includes('Variante')), `add modal mixed the modern entry with the selected variant: ${JSON.stringify(variantPlacement)}`);
@@ -308,6 +386,7 @@ async function main() {
    await waitFor(() => evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi')?.getBoundingClientRect(),p=document.querySelector('#dd-character-prev')?.getBoundingClientRect(),n=document.querySelector('#dd-character-next')?.getBoundingClientRect();return !!m&&!!p&&!!n&&Math.abs(p.top+p.height/2-(m.top+m.height/2))<1&&Math.abs(n.top+n.height/2-(m.top+m.height/2))<1&&Math.abs(m.left-p.right-8)<1&&Math.abs(n.left-m.right-8)<1;})()`), "chevrons did not settle around the animation grid after resize");
    const stage = await evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi').getBoundingClientRect(),p=document.querySelector('#dd-character-prev').getBoundingClientRect(),n=document.querySelector('#dd-character-next').getBoundingClientRect();return {pair:document.querySelectorAll('#dd-character-prev,#dd-character-next').length,direct:document.querySelector('#dd-character-prev').parentElement.id==='dd-character-stage'&&document.querySelector('#dd-character-next').parentElement.id==='dd-character-stage',sizes:[p.width,p.height,n.width,n.height],vertical:[Math.abs(p.top+p.height/2-(m.top+m.height/2)),Math.abs(n.top+n.height/2-(m.top+m.height/2))],edgeGaps:[m.left-p.right,n.left-m.right],overflow:document.querySelector('.sheet-card').scrollWidth!==document.querySelector('.sheet-card').clientWidth};})()`);
    assert(stage.pair===2 && stage.direct && stage.sizes.every((size)=>size>=44) && stage.vertical.every((gap)=>gap<10) && stage.edgeGaps.every((gap)=>Math.abs(gap-8)<1) && !stage.overflow, `chevrons are not wrapped around the grid: ${JSON.stringify(stage)}`);
+   assert(await evaluate("document.querySelector('.stroke-animation-actions').children.length===2&&!!document.querySelector('#dd-anim')&&!!document.querySelector('#dd-write')"), "shared Rejouer/Écrire actions are incomplete");
    await evaluate("document.querySelector('#dd-character-stage').scrollIntoView({block:'center'})");
    const pagingScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true});
    await writeFile(visualProofs.paging, Buffer.from(pagingScreenshot.data, "base64"));
@@ -330,6 +409,7 @@ async function main() {
    assert(await evaluate("ddChar==='你'"), "40px pen swipe did not return");
    await click('[data-stroke-tab="steps"]');
    await waitFor(() => evaluate("document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected')==='true' && !!document.querySelector('#dd-gallery')"), "steps mode did not activate");
+   assert(await evaluate("!!document.querySelector('#dd-show-future')&&!!document.querySelector('#dd-show-grid')&&!document.querySelector('#dd-show-ghost')"), "stroke step controls still expose the retired ghost option");
    await evaluate("if(!document.querySelector('#dd-gallery .stroke-panel')){const panel=document.createElement('button');panel.className='stroke-panel';panel.type='button';panel.textContent='Étape de test';document.querySelector('#dd-gallery').append(panel)}");
    await pointerGesture("#dd-gallery .stroke-panel", {deltaX:-38,deltaY:1,pointerType:"touch",pointerId:60});
    assert(await evaluate("ddChar==='好' && document.querySelector('[data-stroke-tab=steps]').getAttribute('aria-selected')==='true'"), "steps swipe failed or lost its tab");
@@ -385,7 +465,7 @@ async function main() {
             visualProofs[`sequenceStroke${tab === "animation" ? "" : tab[0].toUpperCase() + tab.slice(1)}${width}`],
          );
    await evaluate("window.__sequenceNode=document.querySelector('#seq-flash');window.__sequenceWriter=ddWriter;scrollTo(0,96);window.__sequenceScrollY=scrollY");
-   await click("#dd-write");
+   await click("#dd-write-word");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "mianbao writing practice did not open");
    const sequencePractice = await evaluate(`(() => {
       const dialog=document.querySelector('.writing-practice-dialog');
@@ -400,7 +480,7 @@ async function main() {
    await waitFor(() => evaluate("ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "single-character detail did not load");
    const singleCharacterLayout = await evaluate(`(() => {const stage=document.querySelector('#dd-character-stage'),mizi=stage.querySelector('.mizi'),s=stage.getBoundingClientRect(),m=mizi.getBoundingClientRect();return {buttons:stage.querySelectorAll(':scope > .character-nav-button').length,inside:m.left>=s.left&&m.right<=s.right,overflow:document.documentElement.scrollWidth>innerWidth};})()`);
    assert(singleCharacterLayout.buttons === 0 && singleCharacterLayout.inside && !singleCharacterLayout.overflow, `single-character layout failed: ${JSON.stringify(singleCharacterLayout)}`);
-   await click("#dd-write");
+   await click("#dd-write-word");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "single-character writing practice did not open");
    assert(await evaluate("document.querySelectorAll('[data-writing-practice-character]').length===0&&document.querySelector('#review-writing-model').textContent.trim()==='面'&&sheetOpen()&&document.querySelector('#sheet').inert"), "single-character writing practice showed a character picker or lost its detail");
    await click(".writing-practice-close");

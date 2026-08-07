@@ -196,7 +196,8 @@ function strokeBoxHtml() {
       '<label class="f-lab" for="dd-speed">Vitesse de l’animation · <span class="speed-lab" id="dd-speed-lab">' +
       speed.toFixed(2) + '×</span></label>' +
       '<input type="range" id="dd-speed" min="0.25" max="2" step="0.05" value="' + speed + '" aria-label="Vitesse de l’animation">' +
-      '<div class="sh-btns"><button class="btn primary" id="dd-anim" type="button">Rejouer</button></div>' +
+      '<div class="sh-btns stroke-animation-actions"><button class="btn primary" id="dd-anim" type="button">Rejouer</button>' +
+      '<button class="btn" id="dd-write" type="button">写 Écrire</button></div>' +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-steps" aria-labelledby="stroke-tab-steps"' +
       (active === "steps" ? "" : " hidden") + '>' +
@@ -204,7 +205,6 @@ function strokeBoxHtml() {
       '<div class="stroke-gallery-settings">' +
       '<label><input type="checkbox" id="dd-show-future"' + (gallery.showFuture ? " checked" : "") + '> Afficher les traits futurs</label>' +
       '<label><input type="checkbox" id="dd-show-grid"' + (gallery.showGrid ? " checked" : "") + '> Afficher la grille</label>' +
-      '<label><input type="checkbox" id="dd-show-ghost"' + (gallery.showGhost ? " checked" : "") + '> Afficher le caractère fantôme</label>' +
       "</div></div>" +
       '<div class="stroke-gallery" id="dd-gallery" aria-label="Étapes cumulatives des traits"></div>' +
       '<div class="stroke-gallery-position" id="dd-gallery-position" aria-live="polite"></div>' +
@@ -403,6 +403,10 @@ function wireStrokeWorkspace() {
       ddWriter.animateCharacter();
       setStrokeWorkspaceMessage("dd-note", "Lecture des traits dans l’ordre réel.");
    };
+   if ($("dd-write")) $("dd-write").onclick = () => {
+      if (ddChar && typeof openWritingPracticeSheet === "function")
+         openWritingPracticeSheet(ddChar);
+   };
    if ($("dd-quiz")) $("dd-quiz").onclick = () => {
       if (!ddWriter) return toast("Quiz indisponible pour ce caractère.");
       if (typeof ddWriter.cancelQuiz === "function") ddWriter.cancelQuiz();
@@ -431,7 +435,6 @@ function wireStrokeWorkspace() {
    [
       ["dd-show-future", "showFuture"],
       ["dd-show-grid", "showGrid"],
-      ["dd-show-ghost", "showGhost"],
    ].forEach(([id, key]) => {
       if (!$(id)) return;
       $(id).onchange = (event) => {

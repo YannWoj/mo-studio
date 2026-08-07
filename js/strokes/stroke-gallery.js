@@ -5,21 +5,13 @@ let strokeGalleryObserver = null;
 let strokeFocusState = null;
 
 function strokeGallerySettings() {
-   if (!db.settings.strokeGallery || typeof db.settings.strokeGallery !== "object") {
-      db.settings.strokeGallery = {
-         showFuture: true,
-         showGrid: true,
-         showGhost: false,
-      };
-   } else {
-      if (typeof db.settings.strokeGallery.showFuture !== "boolean")
-         db.settings.strokeGallery.showFuture = true;
-      if (typeof db.settings.strokeGallery.showGrid !== "boolean")
-         db.settings.strokeGallery.showGrid = true;
-      if (typeof db.settings.strokeGallery.showGhost !== "boolean")
-         db.settings.strokeGallery.showGhost = false;
-   }
-   return db.settings.strokeGallery;
+   if (!db.settings.strokeGallery || typeof db.settings.strokeGallery !== "object")
+      db.settings.strokeGallery = {};
+   const settings = db.settings.strokeGallery;
+   delete settings.showGhost;
+   if (typeof settings.showFuture !== "boolean") settings.showFuture = true;
+   if (typeof settings.showGrid !== "boolean") settings.showGrid = true;
+   return settings;
 }
 
 function strokeGridSvg() {
@@ -34,11 +26,6 @@ function strokeGridSvg() {
 
 function strokePathsSvg(data, activeIndex, settings) {
    const parts = [];
-   if (settings.showGhost) {
-      data.strokes.forEach((path) => {
-         parts.push('<path class="stroke-path stroke-ghost" d="' + esc(path) + '"></path>');
-      });
-   }
    data.strokes.forEach((path, index) => {
       if (index < activeIndex) {
          parts.push('<path class="stroke-path stroke-complete" data-path-index="' + index + '" d="' + esc(path) + '"></path>');

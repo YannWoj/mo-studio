@@ -11,11 +11,13 @@ const url = `http://127.0.0.1:${port}/`;
 const edge = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const profile = await mkdtemp(path.join(os.tmpdir(), "mo-packs-test-"));
 const cardDetailScreenshots = {
-   mobile: path.join(os.tmpdir(), "mo-library-card-detail-360.png"),
+   mobile: path.join(os.tmpdir(), "mo-library-card-detail-390.png"),
+   actions: path.join(os.tmpdir(), "mo-library-stroke-actions-390.png"),
    desktop: path.join(os.tmpdir(), "mo-library-card-detail-1024.png"),
 };
 const importPreviewScreenshots = {
    mobile: path.join(os.tmpdir(), "mo-pack-import-preview-390.png"),
+   unknownMobile: path.join(os.tmpdir(), "mo-pack-import-preview-unknown-390.png"),
    desktop: path.join(os.tmpdir(), "mo-pack-import-preview-1024.png"),
 };
 let server, browser, cdp;
@@ -105,25 +107,37 @@ async function main() {
    pass("import JSON, aperçu sans mutation, doublon partagé et favoris/difficiles");
 
    const detailCategories = await evaluate(`(() => {const pack=db.packs.find((item)=>item.name==='Import JSON'),categories=categoriesForPack(pack.id);return {single:categories.find((item)=>item.name==='Chapitre 1').id,multiple:categories.find((item)=>item.name==='Chapitre 2').id};})()`);
+   await evaluate(`(() => {db.cards.filter((item)=>item.hz==='你好'||item.hz==='朋友').forEach((card)=>card.note='Note personnelle');save();})()`);
    await evaluate(`lib.level='category';lib.packId=db.packs.find((item)=>item.name==='Import JSON').id;lib.categoryId=${JSON.stringify(detailCategories.multiple)};lib.q='';lib.flt='all'`);
    await evaluate("setView('lib');renderLib()");
    assert((await evaluate("document.querySelectorAll('[data-word-open]').length")) === 2, "multi-word category did not render two cards");
    await click("[data-word-open]");
    await waitFor(() => evaluate("!!ddCharacterData && !!document.querySelector('#card-stage.is-navigation-positioned')"), "personal card stroke workspace did not load");
    const firstDetailId = await evaluate("document.querySelector('.card-detail-sheet').dataset.cardId");
-   for (const width of [360, 1024]) {
+   for (const width of [390, 1024]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
       await waitFor(() => evaluate(`(() => {const stage=document.querySelector('#card-stage'),visual=stage?.querySelector('.stroke-tab-panel:not([hidden]) .mizi'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');if(!stage||!visual||!previous||!next)return false;const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect();return Math.abs(v.left-p.right-8)<1&&Math.abs(n.left-v.right-8)<1&&Math.abs(p.top+p.height/2-v.top-v.height/2)<1;})()`), `card stroke navigation did not settle at ${width}px`);
-      const layout = await evaluate(`(() => {const sheet=document.querySelector('.sheet-card'),listen=document.querySelector('.card-detail-sheet .seal'),close=document.querySelector('#card-close-top'),previous=document.querySelector('#card-prev'),next=document.querySelector('#card-next'),a=listen.getBoundingClientRect(),b=close.getBoundingClientRect();return {overlap:!(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top),sizes:[a.width,a.height,b.width,b.height],obsoleteWordButtons:!!document.querySelector('#card-word-prev,#card-word-next'),characterButtons:!!previous&&!!next,characterState:[previous.disabled,next.disabled],wordPosition:document.querySelector('#card-word-position').textContent.trim(),actions:['card-favorite','card-difficult','card-mastered','card-review-one','card-edit','card-delete','card-close'].every((id)=>!!document.getElementById(id)),membershipHandlers:[...document.querySelectorAll('[data-card-category]')].every((input)=>typeof input.onchange==='function'),overflow:sheet.scrollWidth>sheet.clientWidth||document.documentElement.scrollWidth>innerWidth};})()`);
-      assert(!layout.overlap && layout.sizes.every((size)=>size>=44) && !layout.obsoleteWordButtons && layout.characterButtons && layout.characterState[0] && !layout.characterState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
+      const layout = await evaluate(`(() => {const sheet=document.querySelector('.sheet-card'),detail=document.querySelector('.card-detail-sheet'),head=detail.querySelector('.cd-head'),strokes=detail.querySelector('.card-detail-strokes'),chips=detail.querySelector('.acts'),note=detail.querySelector('.note'),membership=[...detail.querySelectorAll('.eyebrow')].find((item)=>item.textContent.trim()==='Présent dans'),buttons=detail.querySelector(':scope > .sh-btns'),square=strokes.querySelector('.mizi'),listen=detail.querySelector('.seal'),close=document.querySelector('#card-close-top'),previous=document.querySelector('#card-prev'),next=document.querySelector('#card-next'),a=listen.getBoundingClientRect(),b=close.getBoundingClientRect(),s=sheet.getBoundingClientRect(),h=head.getBoundingClientRect(),q=square.getBoundingClientRect(),follows=(first,second)=>!!(first.compareDocumentPosition(second)&Node.DOCUMENT_POSITION_FOLLOWING);return {overlap:!(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top),sizes:[a.width,a.height,b.width,b.height],obsoleteWordButtons:!!document.querySelector('#card-word-prev,#card-word-next'),characterButtons:!!previous&&!!next,characterState:[previous.disabled,next.disabled],wordPosition:document.querySelector('#card-word-position').textContent.trim(),actions:['card-favorite','card-difficult','card-mastered','card-review-one','card-edit','card-delete','card-close','dd-write'].every((id)=>!!document.getElementById(id)),membershipHandlers:[...document.querySelectorAll('[data-card-category]')].every((input)=>typeof input.onchange==='function'),order:follows(head,strokes)&&follows(strokes,chips)&&follows(chips,note)&&follows(note,membership)&&follows(membership,buttons),firstScreen:h.top>=s.top-1&&q.top>=s.top-1&&q.bottom<=Math.min(s.bottom,innerHeight)+1,square:{top:q.top,bottom:q.bottom,size:q.width},viewport:{top:s.top,bottom:Math.min(s.bottom,innerHeight)},scrollTop:sheet.scrollTop,overflow:sheet.scrollWidth>sheet.clientWidth||document.documentElement.scrollWidth>innerWidth};})()`);
+      assert(!layout.overlap && layout.sizes.every((size)=>size>=44) && !layout.obsoleteWordButtons && layout.characterButtons && layout.characterState[0] && !layout.characterState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && layout.order && (width!==390||layout.firstScreen) && layout.scrollTop===0 && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
       await evaluate("document.querySelector('.sheet-card').scrollTop=0");
       const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
-      await writeFile(width === 360 ? cardDetailScreenshots.mobile : cardDetailScreenshots.desktop, Buffer.from(screenshot.data, "base64"));
+      await writeFile(width === 390 ? cardDetailScreenshots.mobile : cardDetailScreenshots.desktop, Buffer.from(screenshot.data, "base64"));
+      if (width === 390) {
+         const actionRect = await evaluate(`(() => {const rect=document.querySelector('.stroke-animation-actions').getBoundingClientRect();return {x:Math.max(0,rect.left-8),y:Math.max(0,rect.top-8),width:Math.min(innerWidth,rect.width+16),height:rect.height+16};})()`);
+         const actionScreenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true, clip:{...actionRect,scale:1} });
+         await writeFile(cardDetailScreenshots.actions, Buffer.from(actionScreenshot.data, "base64"));
+      }
    }
+   const activeWritingCharacter = await evaluate("ddChar");
+   await click("#dd-write");
+   await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "shared writing practice did not open from a personal card");
+   assert(await evaluate(`document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter===${JSON.stringify(activeWritingCharacter)}&&document.querySelector('#sheet').inert`), "personal-card writing practice did not use the active character or isolate the sheet");
+   await click(".writing-practice-close");
+   await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')&&sheetOpen()&&!document.querySelector('#sheet').inert"), "personal card was not restored after writing practice");
    const favoriteBefore = await evaluate("db.cards.find((card)=>card.id===document.querySelector('.card-detail-sheet').dataset.cardId).fav");
    await click("#card-favorite");
    await waitFor(() => evaluate(`document.querySelector('.card-detail-sheet')?.dataset.cardId===${JSON.stringify(firstDetailId)}&&!!document.querySelector('#card-stage.is-navigation-positioned')`), "favorite rerender lost the card detail");
-   assert((await evaluate("db.cards.find((card)=>card.id===document.querySelector('.card-detail-sheet').dataset.cardId).fav")) !== favoriteBefore && /1 \/ 2$/.test(await evaluate("document.querySelector('#card-word-position').textContent.trim()")), "favorite action lost state or list context");
+   assert((await evaluate("db.cards.find((card)=>card.id===document.querySelector('.card-detail-sheet').dataset.cardId).fav")) !== favoriteBefore && /1 \/ 2$/.test(await evaluate("document.querySelector('#card-word-position').textContent.trim()")) && await evaluate(`(() => {const detail=document.querySelector('.card-detail-sheet'),strokes=detail.querySelector('.card-detail-strokes'),chips=detail.querySelector('.acts');return ddChar===${JSON.stringify(activeWritingCharacter)}&&!!(strokes.compareDocumentPosition(chips)&Node.DOCUMENT_POSITION_FOLLOWING)&&document.querySelector('.sheet-card').scrollTop===0;})()`), "favorite action lost state, order, or list context");
    await click("#card-favorite");
    await waitFor(() => evaluate("!!document.querySelector('#card-stage.is-navigation-positioned')"), "favorite restore did not reload strokes");
    await click("#card-next");
@@ -198,7 +212,7 @@ async function main() {
    assert(await evaluate("!document.querySelector('.card-detail-word-nav')"), "filtered single result rendered word navigation");
    await click("#card-close-top");
    await evaluate("lib.q='';lib.flt='all'");
-   pass(`fiche Mes mots complète, navigation contextualisée, traits et responsive · captures ${cardDetailScreenshots.mobile} · ${cardDetailScreenshots.desktop}`);
+   pass(`fiche Mes mots complète, navigation contextualisée, traits et responsive · captures ${cardDetailScreenshots.mobile} · ${cardDetailScreenshots.actions} · ${cardDetailScreenshots.desktop}`);
 
    const invalidSource = '{\n "pack": [}';
    const invalid = await evaluate(`(() => { try { parsePackJson(${JSON.stringify(invalidSource)}); return ''; } catch(e) { return e.message; } })()`);
@@ -223,13 +237,13 @@ async function main() {
       modes:document.querySelectorAll('[name=import-mode]').length,
       targetHidden:document.querySelector('#import-target-field').hidden,
       replaceHidden:document.querySelector('#import-replace-field').hidden,
-      advancedOpen:document.querySelector('#import-advanced').open,
-      defaults:[document.querySelector('#import-skip').checked,document.querySelector('#import-missing').checked],
+      advancedAbsent:!document.querySelector('#import-advanced,#import-skip'),
+      unknownAbsent:!document.querySelector('#import-unknown-words')&&document.querySelectorAll('[name=import-missing]').length===0,
       confirm:document.querySelector('#import-confirm').textContent,
       note:document.querySelector('.sh-note').textContent,
       overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
    }))()`);
-   assert(cleanPreviewUi.name.includes('1 mot dans « Collé »')&&cleanPreviewUi.name.includes('progression est conservée')&&!cleanPreviewUi.legacyStats&&cleanPreviewUi.problems===0&&cleanPreviewUi.chips>=3&&cleanPreviewUi.modes===2&&cleanPreviewUi.targetHidden&&cleanPreviewUi.replaceHidden&&!cleanPreviewUi.advancedOpen&&cleanPreviewUi.defaults.every(Boolean)&&cleanPreviewUi.confirm==='Créer le pack « Collé » (1 mot)'&&cleanPreviewUi.note.includes('Aucune donnée')&&!cleanPreviewUi.overflow, `clean import preview failed: ${JSON.stringify(cleanPreviewUi)}`);
+   assert(cleanPreviewUi.name.includes('1 mot dans « Collé »')&&cleanPreviewUi.name.includes('progression est conservée')&&!cleanPreviewUi.legacyStats&&cleanPreviewUi.problems===0&&cleanPreviewUi.chips>=3&&cleanPreviewUi.modes===2&&cleanPreviewUi.targetHidden&&cleanPreviewUi.replaceHidden&&cleanPreviewUi.advancedAbsent&&cleanPreviewUi.unknownAbsent&&cleanPreviewUi.confirm==='Créer le pack « Collé » (1 mot)'&&cleanPreviewUi.note.includes('Aucune donnée')&&!cleanPreviewUi.overflow, `clean import preview failed: ${JSON.stringify(cleanPreviewUi)}`);
    await click('[name="import-mode"][value="merge"]');
    assert(await evaluate("!document.querySelector('#import-target-field').hidden&&!document.querySelector('#import-replace-field').hidden&&document.querySelector('#import-confirm').textContent.includes('Choisir le pack')"), "merge controls did not appear progressively");
    await click('[name="import-mode"][value="new"]');
@@ -241,42 +255,75 @@ async function main() {
    await waitFor(() => evaluate("!sheetOpen()&&db.packs.some((pack)=>pack.name==='Collé')"), "clean preview creation did not apply");
    assert(await evaluate("categoriesForPack(db.packs.find((pack)=>pack.name==='Collé').id).some((category)=>category.name==='Direct')&&document.querySelector('#toast').textContent.includes('nouvelle(s) carte(s)')"), "clean UI import changed its result toast or structure");
 
+   const duplicateOnlyJson = JSON.stringify({ version:1, pack:{ name:"Doublons", categories:[{ name:"Répétitions", words:[
+      { chinese:"你好", pinyin:"nǐ hǎo", translation:"bonjour" },
+      { chinese:"你好", pinyin:"nǐ hǎo", translation:"bonjour" }
+   ] }] } });
+   await evaluate(`(async()=>{const preview=await buildPackImportPreview(parsePackJson(${JSON.stringify(duplicateOnlyJson)}),'json');openPackImportPreview(preview)})()`);
+   await waitFor(() => evaluate("!!document.querySelector('#import-confirm')"), "duplicate-only preview missing");
+   const duplicatePreviewUi = await evaluate(`(() => ({
+      notices:[...document.querySelectorAll('.import-preview-notices p')].map((item)=>item.textContent),
+      unknownAbsent:!document.querySelector('#import-unknown-words'),
+      advancedAbsent:!document.querySelector('#import-advanced,#import-skip'),
+      confirm:document.querySelector('#import-confirm').textContent,
+   }))()`);
+   assert(duplicatePreviewUi.notices.length===1&&duplicatePreviewUi.notices[0]==='Le fichier contient 1 doublon : il sera fusionné automatiquement.'&&duplicatePreviewUi.unknownAbsent&&duplicatePreviewUi.advancedAbsent&&duplicatePreviewUi.confirm==='Créer le pack « Doublons » (1 mot)', `duplicate-only preview failed: ${JSON.stringify(duplicatePreviewUi)}`);
+   await click("#import-cancel");
+
    const problematicJson = JSON.stringify({ version:1, pack:{ name:"Ajouts guidés", categories:[{ name:"Cas limites", words:[
-      { chinese:"龘龘龘龘", pinyin:"dá dá dá dá", translation:"mot de test" },
-      { chinese:"龘龘龘龘", pinyin:"dá dá dá dá", translation:"mot de test" },
+      { chinese:"谢谢", pinyin:"xièxie", translation:"merci" },
+      { chinese:"谢谢", pinyin:"xièxie", translation:"merci" },
       { chinese:"䨻䨻" }
    ] }] } });
    const mergeTargetId = await evaluate("db.packs.find((pack)=>pack.name==='Livres').id");
    await evaluate(`(async()=>{const preview=await buildPackImportPreview(parsePackJson(${JSON.stringify(problematicJson)}),'json');openPackImportPreview(preview)})()`);
-   await waitFor(() => evaluate("!!document.querySelector('#import-confirm')&&document.querySelectorAll('.import-preview-notices p').length>=2"), "problematic preview missing its explanations");
+   await waitFor(() => evaluate("!!document.querySelector('#import-confirm')&&!!document.querySelector('#import-unknown-words')"), "problematic preview missing its unknown-word choice");
+   const problemMobileUi = await evaluate(`(() => {
+      const choices=[...document.querySelectorAll('.import-unknown-choice')];
+      return {
+         confirm:document.querySelector('#import-confirm').textContent,
+         stacked:choices.length===2&&choices[1].getBoundingClientRect().top>choices[0].getBoundingClientRect().bottom,
+         touchTargets:choices.every((choice)=>choice.getBoundingClientRect().height>=44),
+         overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
+      };
+   })()`);
+   assert(problemMobileUi.confirm==='Créer le pack « Ajouts guidés » (2 mots)'&&problemMobileUi.stacked&&problemMobileUi.touchTargets&&!problemMobileUi.overflow, `problematic mobile preview failed: ${JSON.stringify(problemMobileUi)}`);
+   await evaluate("document.querySelector('#toast').classList.remove('show');document.querySelector('.sheet-card').scrollTop=0");
+   const problemMobileImage = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
+   await writeFile(importPreviewScreenshots.unknownMobile, Buffer.from(problemMobileImage.data,"base64"));
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:1024, height:900, deviceScaleFactor:1, mobile:false });
    await click('[name="import-mode"][value="merge"]');
    await evaluate(`(() => {const select=document.querySelector('#import-target');select.value=${JSON.stringify(mergeTargetId)};select.dispatchEvent(new Event('change',{bubbles:true}))})()`);
    const problemPreviewUi = await evaluate(`(() => ({
-      warnings:document.querySelectorAll('.import-summary-chip.warning').length,
       explanations:[...document.querySelectorAll('.import-preview-notices p')].map((item)=>item.textContent),
       targetVisible:!document.querySelector('#import-target-field').hidden,
       replaceVisible:!document.querySelector('#import-replace-field').hidden,
       replaceLabel:document.querySelector('#import-replace-field').textContent,
       confirm:document.querySelector('#import-confirm').textContent,
-      advancedOpen:document.querySelector('#import-advanced').open,
-      options:[document.querySelector('#import-skip').checked,document.querySelector('#import-missing').checked],
+      advancedAbsent:!document.querySelector('#import-advanced,#import-skip'),
+      unknownText:document.querySelector('#import-unknown-words').textContent,
+      unknownExamples:[...document.querySelectorAll('#import-unknown-words strong')].map((item)=>item.textContent),
+      radioCount:document.querySelectorAll('[name=import-missing]').length,
+      defaultMissing:document.querySelector('[name=import-missing][value=yes]').checked,
+      recognizedText:document.querySelector('#import-recognized-count').textContent,
       overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
    }))()`);
-   assert(problemPreviewUi.warnings>=2&&problemPreviewUi.explanations.some((line)=>line.includes('répète'))&&problemPreviewUi.explanations.some((line)=>line.includes('dictionnaire'))&&problemPreviewUi.targetVisible&&problemPreviewUi.replaceVisible&&problemPreviewUi.replaceLabel.includes('Aucune carte ne sera supprimée')&&problemPreviewUi.confirm==='Ajouter 3 mots à « Livres »'&&!problemPreviewUi.advancedOpen&&problemPreviewUi.options.every(Boolean)&&!problemPreviewUi.overflow, `problematic merge preview failed: ${JSON.stringify(problemPreviewUi)}`);
-   await click("#import-advanced summary");
-   assert(await evaluate("document.querySelector('#import-advanced').open&&document.querySelector('#import-skip').closest('label').textContent.includes('un seul est gardé')&&document.querySelector('#import-missing').closest('label').textContent.includes('cartes personnelles')"), "advanced import explanations are inaccessible");
+   assert(problemPreviewUi.explanations.length===1&&problemPreviewUi.explanations[0].includes('fusionné automatiquement')&&problemPreviewUi.targetVisible&&problemPreviewUi.replaceVisible&&problemPreviewUi.replaceLabel.includes('Aucune carte ne sera supprimée')&&problemPreviewUi.confirm==='Ajouter 2 mots à « Livres »'&&problemPreviewUi.advancedAbsent&&problemPreviewUi.radioCount===2&&problemPreviewUi.defaultMissing&&problemPreviewUi.recognizedText==='Seul le mot reconnu sera importé.'&&problemPreviewUi.unknownText.includes('1 mot du fichier n’est pas dans le dictionnaire')&&problemPreviewUi.unknownExamples.some((line)=>line.includes('䨻䨻'))&&!problemPreviewUi.overflow, `problematic merge preview failed: ${JSON.stringify(problemPreviewUi)}`);
+   await click('[name="import-missing"][value="no"]');
+   assert(await evaluate("document.querySelector('#import-confirm').textContent==='Ajouter 1 mot à « Livres »'&&document.querySelector('#import-recognized-count').textContent==='Seul le mot reconnu sera importé.'"), "excluding unknown words did not update the merge count");
+   await click('[name="import-missing"][value="yes"]');
+   assert(await evaluate("document.querySelector('#import-confirm').textContent==='Ajouter 2 mots à « Livres »'"), "restoring unknown words did not restore the merge count");
    await evaluate("document.querySelector('#toast').classList.remove('show');document.querySelector('.sheet-card').scrollTop=0");
    const problemPreviewImage = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
    await writeFile(importPreviewScreenshots.desktop, Buffer.from(problemPreviewImage.data,"base64"));
    await click("#import-confirm");
    await waitFor(() => evaluate("!sheetOpen()&&categoriesForPack(db.packs.find((pack)=>pack.name==='Livres').id).some((category)=>category.name==='Cas limites')"), "problematic merge preview did not apply");
-   assert(await evaluate("db.cards.filter((card)=>card.hz==='龘龘龘龘').length===1&&db.cards.some((card)=>card.hz==='䨻䨻'&&card.incomplete)"), "merge UI changed duplicate or personal-card import behavior");
+   assert(await evaluate(`(() => {const pack=db.packs.find((item)=>item.name==='Livres'),category=categoriesForPack(pack.id).find((item)=>item.name==='Cas limites'),words=cardsForCategory(category.id);return words.filter((card)=>card.hz==='谢谢').length===1&&words.some((card)=>card.hz==='䨻䨻'&&card.incomplete);})()`), "merge UI changed duplicate or personal-card import behavior");
 
    await evaluate("openPackImportPreview({packs:[],sourceType:'json',categoryCount:0,wordCount:0,duplicates:0,existing:0,missingDictionary:0,incomplete:0,errors:['Le champ pack est obligatoire.']})");
    assert(await evaluate("document.querySelector('.import-error').firstElementChild.textContent==='Ce fichier ne peut pas être importé tel quel :'&&!document.querySelector('#import-confirm')"), "structural error introduction is unclear");
    await click("#import-cancel");
-   pass(`fichiers JSON/CSV, création et fusion guidées, aperçus propre/problématique · captures ${importPreviewScreenshots.mobile} · ${importPreviewScreenshots.desktop}`);
+   pass(`fichiers JSON/CSV, création et fusion guidées, aperçus propre/problématique · captures ${importPreviewScreenshots.mobile} · ${importPreviewScreenshots.unknownMobile} · ${importPreviewScreenshots.desktop}`);
 
    const srs = await evaluate(`(async () => {
       const card=db.cards.find(c=>c.hz==='你好'); const id=card.id; card.lvl=5; card.due=1900000000000; card.reviewHistory=[{at:1800000000000,grade:'good'}]; save();

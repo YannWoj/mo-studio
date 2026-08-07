@@ -7,9 +7,11 @@ import { fileURLToPath } from "node:url";
 const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(testDirectory, "..");
 const serverUrl = "http://127.0.0.1:8000/";
-const edgePath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
-const browserPort = 9333;
-const browserProfile = await mkdtemp(path.join(os.tmpdir(), "mo-studio-edge-"));
+const browserPath =
+   process.env.MO_BROWSER_PATH ||
+   "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
+const browserPort = Number(process.env.MO_BROWSER_PORT || 9333);
+const browserProfile = await mkdtemp(path.join(os.tmpdir(), "mo-studio-browser-"));
 const screenshotDirectory = await mkdtemp(
    path.join(os.tmpdir(), "mo-studio-screens-"),
 );
@@ -391,7 +393,7 @@ async function main() {
    record("local Python server", "python -m http.server 8000 responded");
 
    browser = spawn(
-      edgePath,
+      browserPath,
       [
          "--headless=new",
          "--no-sandbox",
@@ -412,7 +414,7 @@ async function main() {
          signal: AbortSignal.timeout(1_000),
       });
       return response.ok ? response.json() : null;
-   }, "Edge DevTools endpoint did not become ready");
+   }, "Chromium DevTools endpoint did not become ready");
    const pageList = await (
       await fetch(`http://127.0.0.1:${browserPort}/json/list`)
    ).json();
@@ -1050,6 +1052,13 @@ async function main() {
    await click("#btn-seq");
    assert(await evaluate("seq && seq.chars.length === 3 && seq.index === 0"), "Sequence did not start");
    await waitFor(() => evaluate("!!document.querySelector('#seq-next')"), "Sequence entry did not load", 20_000);
+   await waitFor(() => evaluate("!!ddChar&&!!document.querySelector('#dd-write')"), "Sequence stroke actions did not load", 20_000);
+   const sequenceWritingCharacter = await evaluate("ddChar");
+   await click("#dd-write");
+   await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "Sequence stroke writing practice did not open");
+   assert(await evaluate(`document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter===${JSON.stringify(sequenceWritingCharacter)}`), "Sequence writing practice did not use its active character");
+   await click(".writing-practice-close");
+   await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')&&!!seq"), "Sequence was not restored after writing practice");
    await click("#seq-next");
    assert(await evaluate("seq.index === 1"), "Sequence next navigation failed");
    await waitFor(() => evaluate("!!document.querySelector('#seq-flash')"), "Second sequence entry did not load", 20_000);
@@ -1223,7 +1232,7 @@ async function main() {
    const completeDetail = await evaluate(`({
       text: document.querySelector('#sheet').textContent,
       chips: document.querySelectorAll('#dd-picker .hzchip').length,
-      numbered: document.querySelector('.dd-numbered')?.textContent,
+      hasNumbered: !!document.querySelector('.dd-numbered'),
       hasAudio: !!document.querySelector('#sheet [data-say]'),
       hasStroke: !!document.querySelector('#dd-target'),
       hasAdd: !!document.querySelector('#dd-addcard, #dd-manage'),
@@ -1264,25 +1273,25 @@ async function main() {
       })(),
    })`);
    assert(
-      completeDetail.text.includes("Sens français") && completeDetail.text.includes("Sources du dictionnaire"),
+      completeDetail.text.includes("bonjour") && completeDetail.text.includes("Sources du dictionnaire"),
       "Complete detail definitions or attribution missing",
    );
-   assert(completeDetail.chips === 2 && completeDetail.numbered.includes("ni3 hao3"), "Word character chips or numbered pinyin missing");
+   assert(completeDetail.chips === 2 && !completeDetail.hasNumbered, "Word character chips missing or numbered pinyin still displayed");
    assert(completeDetail.hasAudio && completeDetail.hasStroke && completeDetail.hasAdd, "Detail audio, stroke, or add-card action missing");
    assert(completeDetail.backgroundInert, "Dictionary dialog background isolation failed");
    assert(Math.round(completeDetail.topCloseSize) >= 44, "Dictionary detail top close control is too small");
    assert(
-      completeDetail.ordered.definitions < completeDetail.ordered.meta &&
-         completeDetail.ordered.meta < completeDetail.ordered.interaction &&
+      completeDetail.ordered.definitions < completeDetail.ordered.interaction &&
          completeDetail.ordered.interaction < completeDetail.ordered.write &&
          completeDetail.ordered.write < completeDetail.ordered.card &&
-         completeDetail.ordered.card < completeDetail.ordered.hsk &&
+         completeDetail.ordered.card < completeDetail.ordered.meta &&
+         completeDetail.ordered.meta < completeDetail.ordered.hsk &&
          completeDetail.ordered.hsk < completeDetail.ordered.english &&
          completeDetail.ordered.english < completeDetail.ordered.sources &&
          completeDetail.ordered.sources < completeDetail.ordered.related &&
-         completeDetail.ordered.picker < completeDetail.ordered.characterCard &&
-         completeDetail.ordered.characterCard < completeDetail.ordered.navigation &&
-         completeDetail.ordered.navigation <= completeDetail.ordered.workspace,
+         completeDetail.ordered.picker < completeDetail.ordered.navigation &&
+         completeDetail.ordered.navigation <= completeDetail.ordered.workspace &&
+         completeDetail.ordered.workspace < completeDetail.ordered.characterCard,
       `Dictionary detail priority is wrong: ${JSON.stringify(completeDetail.ordered)}`,
    );
    await click('[data-stroke-tab="animation"]');
@@ -1402,14 +1411,14 @@ async function main() {
          french,
          meta,
          square,
-         squareTopVisible: !!square && square.top < innerHeight,
-         essentialsVisible: [head, pinyin, french, meta].every((box) => box && box.top >= 0 && box.bottom <= innerHeight),
+         metaAfterStrokes: !!meta && !!square && meta.top > square.bottom,
+         essentialsVisible: [head, pinyin, french, square].every((box) => box && box.top >= 0 && box.bottom <= innerHeight),
          overflow: document.documentElement.scrollWidth > innerWidth,
       };
    })()`);
    assert(
       dictionaryPriorityLayout.scrollTop === 0 && dictionaryPriorityLayout.essentialsVisible &&
-         dictionaryPriorityLayout.squareTopVisible && !dictionaryPriorityLayout.overflow,
+         dictionaryPriorityLayout.metaAfterStrokes && !dictionaryPriorityLayout.overflow,
       `Dictionary priority is not visible at 390x844: ${JSON.stringify(dictionaryPriorityLayout)}`,
    );
    const dictionaryPriorityImage = await cdp.send("Page.captureScreenshot", {
@@ -1434,6 +1443,19 @@ async function main() {
       () => evaluate("window.__strokeWriterAudit.animations.length === 2"),
       "Manual Rejouer did not animate",
    );
+   assert(
+      await evaluate(`document.querySelector('.stroke-animation-actions').children.length===2 &&
+         !!document.querySelector('#dd-write') && ddChar==='你'`),
+      "Shared Rejouer/Écrire row is incomplete in dictionary detail",
+   );
+   await click("#dd-write");
+   await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "Dictionary stroke writing practice did not open");
+   assert(
+      await evaluate("document.querySelector('.writing-practice-dialog').dataset.reviewWritingCharacter==='你'&&document.querySelector('#sheet').inert"),
+      "Dictionary stroke writing practice did not use the active character",
+   );
+   await click(".writing-practice-close");
+   await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')&&sheetOpen()&&!document.querySelector('#sheet').inert"), "Dictionary detail was not restored after stroke writing practice");
    await click('[data-stroke-tab="steps"]');
    await waitFor(
       () => evaluate("document.querySelectorAll('#dd-gallery .stroke-panel[data-rendered=true]').length === 7"),
@@ -1444,6 +1466,8 @@ async function main() {
       source: ddCharacterData.sourcePackage + '@' + ddCharacterData.sourceVersion,
       count: ddCharacterData.strokeCount,
       medians: ddCharacterData.medians.length,
+      ghostControl: !!document.querySelector('#dd-show-ghost'),
+      ghostPaths: document.querySelectorAll('#dd-gallery .stroke-ghost').length,
       grid: (() => {
          const panel = document.querySelector('#dd-gallery .stroke-panel');
          const border = panel.querySelector('.stroke-grid-border');
@@ -1466,6 +1490,7 @@ async function main() {
       })),
    }))()`);
    assert(niGallery.source === "hanzi-writer-data@2.0.1", "Unpinned 你 stroke source");
+   assert(!niGallery.ghostControl && niGallery.ghostPaths === 0, "Retired ghost rendering is still exposed");
    assert(niGallery.count === 7 && niGallery.medians === 7 && niGallery.panels.length === 7, "Incorrect real 你 stroke count");
    assert(
       niGallery.grid.border.width <= 1.1 && niGallery.grid.border.opacity <= 0.4 &&
@@ -1495,19 +1520,35 @@ async function main() {
    const gallerySettingsSafety = await evaluate(`(() => {
       const cardsBefore = JSON.stringify(db.cards);
       const future = document.querySelector('#dd-show-future');
-      const hasHandler = typeof future.onchange;
+      const grid = document.querySelector('#dd-show-grid');
+      const hasHandlers = [typeof future.onchange, typeof grid.onchange];
       future.checked = false;
       future.dispatchEvent(new Event('change', { bubbles: true }));
       const hiddenFutureCount = document.querySelectorAll('#dd-gallery .stroke-future').length;
+      grid.checked = false;
+      grid.dispatchEvent(new Event('change', { bubbles: true }));
+      const hiddenGridCount = document.querySelectorAll('#dd-gallery .stroke-grid-lines').length;
       const stored = JSON.parse(localStorage.getItem(DB_KEY)).settings.strokeGallery;
+      const raw = localStorage.getItem(DB_KEY);
+      const legacy = JSON.parse(raw);
+      legacy.settings.strokeGallery.showGhost = true;
+      localStorage.setItem(DB_KEY, JSON.stringify(legacy));
+      const legacyLoaded = load().settings.strokeGallery;
+      localStorage.setItem(DB_KEY, raw);
       future.checked = true;
       future.dispatchEvent(new Event('change', { bubbles: true }));
-      return { cardsUnchanged: cardsBefore === JSON.stringify(db.cards), hiddenFutureCount, stored, hasHandler };
+      grid.checked = true;
+      grid.dispatchEvent(new Event('change', { bubbles: true }));
+      return { cardsUnchanged: cardsBefore === JSON.stringify(db.cards), hiddenFutureCount, hiddenGridCount, stored, hasHandlers, legacyLoaded };
    })()`);
    assert(gallerySettingsSafety.cardsUnchanged, "Gallery settings changed personal cards");
    assert(
-      gallerySettingsSafety.hiddenFutureCount === 0 && gallerySettingsSafety.stored.showFuture === false,
-      `Future-stroke setting did not persist safely: ${JSON.stringify(gallerySettingsSafety)}`,
+      gallerySettingsSafety.hiddenFutureCount === 0 && gallerySettingsSafety.hiddenGridCount === 0 &&
+         gallerySettingsSafety.stored.showFuture === false && gallerySettingsSafety.stored.showGrid === false &&
+         gallerySettingsSafety.hasHandlers.every((type) => type === 'function') &&
+         !Object.hasOwn(gallerySettingsSafety.stored, 'showGhost') &&
+         !Object.hasOwn(gallerySettingsSafety.legacyLoaded, 'showGhost'),
+      `Stroke-gallery settings did not persist or migrate safely: ${JSON.stringify(gallerySettingsSafety)}`,
    );
    await cdp.send("Emulation.setDeviceMetricsOverride", {
       width: 360,
@@ -2937,7 +2978,7 @@ async function main() {
    await evaluate(
       "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '你好').querySelector('.dict-result-primary').click()",
    );
-   await waitFor(() => evaluate("!!document.querySelector('#dd-write')"), "Dictionary writing action missing");
+   await waitFor(() => evaluate("!!document.querySelector('#dd-write-word')"), "Dictionary word-writing action missing");
    await cdp.send("Emulation.setDeviceMetricsOverride", {
       width: 390,
       height: 844,
@@ -2945,7 +2986,7 @@ async function main() {
       mobile: true,
    });
    await evaluate("document.querySelector('#sheet .sheet-card').scrollTop = 72; window.__writingDetailNode = document.querySelector('.dd')");
-   await click("#dd-write");
+   await click("#dd-write-word");
    await waitFor(
       () => evaluate("!!document.querySelector('.writing-practice-backdrop') && document.querySelector('#review-writing-canvas')?.width > 1"),
       "Dictionary did not open the writing practice dialog",
@@ -3027,7 +3068,7 @@ async function main() {
       deviceScaleFactor: 1,
       mobile: false,
    });
-   await click("#dd-write");
+   await click("#dd-write-word");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width > 1"), "Desktop writing practice did not open");
    const desktopPracticeLayout = await evaluate(`(() => {
       const dialog = document.querySelector('.writing-practice-dialog').getBoundingClientRect();
@@ -3083,16 +3124,16 @@ async function main() {
          optionCount: document.querySelectorAll('.writing-grid-option').length,
          previewCount: document.querySelectorAll('.writing-grid-preview').length,
          iconToolbar: (() => {
-            const buttons = [...document.querySelectorAll('.writing-icon-tools button')];
-            const tops = buttons.map((button) => button.getBoundingClientRect().top);
+            const controls = [...document.querySelectorAll('.writing-icon-tools > button, .writing-icon-tools > .writing-color-control')];
+            const tops = controls.map((control) => control.getBoundingClientRect().top);
             return {
-               count: buttons.length,
+               count: controls.length,
                oneLine: Math.max(...tops) - Math.min(...tops) <= 1,
-               touchable: buttons.every((button) => {
-                  const rect = button.getBoundingClientRect();
+               touchable: controls.every((control) => {
+                  const rect = control.getBoundingClientRect();
                   return rect.width >= 40 && rect.height >= 40;
                }),
-               labelled: buttons.every((button) => !!button.getAttribute('aria-label')),
+               labelled: controls.every((control) => !!control.getAttribute('aria-label')),
                svgAccessible: [...document.querySelectorAll('.writing-icon-button svg')].every((svg) =>
                   svg.getAttribute('viewBox') === '0 0 24 24' && svg.getAttribute('aria-hidden') === 'true'
                ),
@@ -3100,12 +3141,32 @@ async function main() {
          })(),
          colorControl: (() => {
             const button = document.querySelector('#writing-color-button');
+            const picker = document.querySelector('#writing-color');
+            const swatch = document.querySelector('.writing-color-current');
             const rect = button.getBoundingClientRect();
+            const pickerRect = picker.getBoundingClientRect();
+            const swatchRect = swatch.getBoundingClientRect();
             return {
                currentCount: document.querySelectorAll('.writing-color-current').length,
                legacyCount: document.querySelectorAll('[data-writing-color], .writing-color-custom').length,
                touchable: rect.width >= 40 && rect.height >= 40,
-               pickerHidden: getComputedStyle(document.querySelector('#writing-color')).opacity === '0',
+               pickerTransparent: getComputedStyle(picker).opacity === '0',
+               pickerPosition: getComputedStyle(picker).position,
+               anchored: Math.abs(rect.left - pickerRect.left) <= .5 && Math.abs(rect.top - pickerRect.top) <= .5 &&
+                  Math.abs(rect.width - pickerRect.width) <= .5 && Math.abs(rect.height - pickerRect.height) <= .5 &&
+                  Math.abs(rect.left - swatchRect.left) <= .5 && Math.abs(rect.top - swatchRect.top) <= .5 &&
+                  Math.abs(rect.width - swatchRect.width) <= .5 && Math.abs(rect.height - swatchRect.height) <= .5,
+               receivesClick: document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2) === picker,
+            };
+         })(),
+         settingsPanel: (() => {
+            const button = document.querySelector('#writing-settings');
+            const panel = document.querySelector('#writing-slider-panel');
+            return {
+               expanded: button.getAttribute('aria-expanded'),
+               hidden: panel.getAttribute('aria-hidden'),
+               inert: panel.hasAttribute('inert'),
+               height: panel.getBoundingClientRect().height,
             };
          })(),
          modelToggle: (() => {
@@ -3132,17 +3193,39 @@ async function main() {
    assert(
       writingStructure.surfaceBeforeSelector && writingStructure.selectorBeforeNote && writingStructure.visualOrder &&
          writingStructure.optionCount === 4 && writingStructure.previewCount === 4 &&
-         writingStructure.iconToolbar.count === 7 && writingStructure.iconToolbar.oneLine &&
+         writingStructure.iconToolbar.count === 8 && writingStructure.iconToolbar.oneLine &&
          writingStructure.iconToolbar.touchable && writingStructure.iconToolbar.labelled &&
          writingStructure.iconToolbar.svgAccessible && writingStructure.colorControl.currentCount === 1 &&
          writingStructure.colorControl.legacyCount === 0 && writingStructure.colorControl.touchable &&
-         writingStructure.colorControl.pickerHidden && writingStructure.slidersShareRow &&
+         writingStructure.colorControl.pickerTransparent && writingStructure.colorControl.pickerPosition === 'absolute' &&
+         writingStructure.colorControl.anchored && writingStructure.colorControl.receivesClick &&
+         writingStructure.settingsPanel.expanded === 'false' && writingStructure.settingsPanel.hidden === 'true' &&
+         writingStructure.settingsPanel.inert && writingStructure.settingsPanel.height <= 1 && writingStructure.slidersShareRow &&
          writingStructure.modelToggle.pressed === 'true' && writingStructure.modelToggle.size >= 44 &&
          writingStructure.modelToggle.insideSurface && writingStructure.opacityAvailable &&
          writingStructure.selectionBlocked && writingStructure.inputSelection.every((value) => value === 'text') &&
          /-webkit-touch-callout:\s*none/.test(writingPageSelectionCss) &&
          /-webkit-touch-callout:\s*default/.test(writingInputSelectionCss),
       `Writing canvas/grid structure is wrong: ${JSON.stringify(writingStructure)}`,
+   );
+   await click("#writing-settings");
+   assert(
+      await evaluate(`document.querySelector('#writing-settings').getAttribute('aria-expanded') === 'true' &&
+         document.querySelector('#writing-slider-panel').getAttribute('aria-hidden') === 'false' &&
+         !document.querySelector('#writing-slider-panel').hasAttribute('inert')`),
+      "Writing settings panel did not open with accessible state",
+   );
+   await click("#writing-settings");
+   assert(
+      await evaluate(`document.querySelector('#writing-settings').getAttribute('aria-expanded') === 'false' &&
+         document.querySelector('#writing-slider-panel').hasAttribute('inert')`),
+      "Writing settings panel did not close on a second click",
+   );
+   await click("#writing-settings");
+   await mouseClick("#writing-surface", { x: 20, y: 20 });
+   assert(
+      (await evaluate("document.querySelector('#writing-settings').getAttribute('aria-expanded')")) === "false",
+      "Writing settings panel did not close on an outside pointer click",
    );
    await click("#writing-model-visible");
    const hiddenWritingModel = await evaluate(`({
@@ -3299,13 +3382,15 @@ async function main() {
             }),
             surfaceTop: surface.getBoundingClientRect().top,
             canvasVisibleWithoutScroll: surface.getBoundingClientRect().top < innerHeight,
-            iconToolsOneLine: new Set([...document.querySelectorAll('.writing-icon-tools button')]
-               .map((button) => Math.round(button.getBoundingClientRect().top))).size === 1,
-            iconToolsTouchable: [...document.querySelectorAll('.writing-icon-tools button')].every((button) => {
-               const buttonRect = button.getBoundingClientRect();
-               return buttonRect.width >= 40 && buttonRect.height >= 40;
+            iconToolsOneLine: new Set([...document.querySelectorAll('.writing-icon-tools > button, .writing-icon-tools > .writing-color-control')]
+               .map((control) => Math.round(control.getBoundingClientRect().top))).size === 1,
+            iconToolsTouchable: [...document.querySelectorAll('.writing-icon-tools > button, .writing-icon-tools > .writing-color-control')].every((control) => {
+               const controlRect = control.getBoundingClientRect();
+               return controlRect.width >= 40 && controlRect.height >= 40;
             }),
             sliderCount: document.querySelectorAll('.writing-slider').length,
+            settingsClosed: document.querySelector('#writing-settings').getAttribute('aria-expanded') === 'false' &&
+               document.querySelector('#writing-slider-panel').getBoundingClientRect().height <= 1,
             navSelection: getComputedStyle(document.querySelector('.nav')).userSelect,
             brandSelection: getComputedStyle(document.querySelector('.top .brand')).userSelect,
             scrollY,
@@ -3316,7 +3401,7 @@ async function main() {
             writingLayout.surfaceBeforeSelector && writingLayout.selectorBeforeNote && writingLayout.selectorInside &&
             writingLayout.gridOptionsTouchable && writingLayout.gridColumnCount === (width < 900 ? 2 : 4) &&
             writingLayout.canvasVisibleWithoutScroll && writingLayout.iconToolsOneLine &&
-            writingLayout.iconToolsTouchable && writingLayout.sliderCount === 1 &&
+            writingLayout.iconToolsTouchable && writingLayout.sliderCount === 1 && writingLayout.settingsClosed &&
             writingLayout.navSelection === 'none' && writingLayout.brandSelection === 'none' && writingLayout.scrollY === 0 &&
             writingLayout.nav.join("|") ===
                "学 Parcours|写 Écrire|查 Rechercher|库 Mes mots|复 Réviser",
@@ -3332,7 +3417,92 @@ async function main() {
          path.join(screenshotDirectory, `writing-free-${width}.png`),
          Buffer.from(writingFreeImage.data, "base64"),
       );
+      if (width === 1024) {
+         await evaluate(`document.querySelector('#writing-color').addEventListener('click',
+            () => document.querySelector('#writing-color-button').dataset.pickerClicked = 'true', { once: true })`);
+         await mouseClick("#writing-color");
+         const desktopColorAnchor = await evaluate(`(() => {
+            const control = document.querySelector('#writing-color-button').getBoundingClientRect();
+            const picker = document.querySelector('#writing-color').getBoundingClientRect();
+            return {
+               clicked: document.querySelector('#writing-color-button').dataset.pickerClicked,
+               leftDelta: Math.abs(control.left - picker.left),
+               topDelta: Math.abs(control.top - picker.top),
+               widthDelta: Math.abs(control.width - picker.width),
+               heightDelta: Math.abs(control.height - picker.height),
+            };
+         })()`);
+         assert(
+            desktopColorAnchor.clicked === 'true' && desktopColorAnchor.leftDelta <= .5 &&
+               desktopColorAnchor.topDelta <= .5 && desktopColorAnchor.widthDelta <= .5 &&
+               desktopColorAnchor.heightDelta <= .5,
+            `Writing desktop color picker is not anchored to its swatch: ${JSON.stringify(desktopColorAnchor)}`,
+         );
+         const colorAnchorImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+            clip: { x: 0, y: 0, width, height, scale: 1 },
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "writing-color-anchor-1024.png"),
+            Buffer.from(colorAnchorImage.data, "base64"),
+         );
+      }
       if (width === 390) {
+         await writeFile(
+            path.join(screenshotDirectory, "writing-sliders-closed-390.png"),
+            Buffer.from(writingFreeImage.data, "base64"),
+         );
+         await click("#writing-settings");
+         await evaluate("new Promise((resolve) => setTimeout(resolve, 220))");
+         const openPanel = await evaluate(`(() => {
+            const button = document.querySelector('#writing-settings');
+            const panel = document.querySelector('#writing-slider-panel');
+            return {
+               expanded: button.getAttribute('aria-expanded'),
+               hidden: panel.getAttribute('aria-hidden'),
+               inert: panel.hasAttribute('inert'),
+               height: panel.getBoundingClientRect().height,
+               sliderCount: panel.querySelectorAll('.writing-slider').length,
+               opacityExists: !!panel.querySelector('#writing-opacity'),
+            };
+         })()`);
+         assert(
+            openPanel.expanded === 'true' && openPanel.hidden === 'false' && !openPanel.inert &&
+               openPanel.height > 20 && openPanel.sliderCount === 1 && !openPanel.opacityExists,
+            `Writing free settings panel is wrong at 390px: ${JSON.stringify(openPanel)}`,
+         );
+         const writingOpenImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+            clip: { x: 0, y: 0, width, height, scale: 1 },
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "writing-sliders-open-390.png"),
+            Buffer.from(writingOpenImage.data, "base64"),
+         );
+         await click("#writing-settings");
+         await evaluate("new Promise((resolve) => setTimeout(resolve, 220))");
+         assert(
+            await evaluate(`document.querySelector('#writing-settings').getAttribute('aria-expanded') === 'false' &&
+               document.querySelector('#writing-slider-panel').getBoundingClientRect().height <= 1`),
+            "Writing settings panel did not close after the mobile second click",
+         );
+         await evaluate(`new Promise((resolve) => {
+            renderWriting();
+            scrollTo(0, 0);
+            requestAnimationFrame(() => requestAnimationFrame(resolve));
+         })`);
+         assert((await evaluate("scrollY")) === 0, "Writing closed-panel capture did not return to the top");
+         const writingClosedImage = await cdp.send("Page.captureScreenshot", {
+            format: "png",
+            fromSurface: true,
+            clip: { x: 0, y: 0, width, height, scale: 1 },
+         });
+         await writeFile(
+            path.join(screenshotDirectory, "writing-sliders-closed-after-open-390.png"),
+            Buffer.from(writingClosedImage.data, "base64"),
+         );
          await evaluate("document.querySelector('#toast').classList.remove('show')");
          const actionsBeforeMobileTouch = await evaluate("writingState.free.actions.length");
          const mobileTouch = await pointerGesture("#writing-canvas", {
@@ -3357,6 +3527,8 @@ async function main() {
          renderWriting();
          scrollTo(0, 0);
       })()`);
+      await click("#writing-settings");
+      await evaluate("new Promise((resolve) => setTimeout(resolve, 220))");
       const writingPracticeLayout = await evaluate(`(() => {
          const surface = document.querySelector('#writing-surface').getBoundingClientRect();
          const eye = document.querySelector('#writing-model-visible').getBoundingClientRect();
@@ -3369,6 +3541,10 @@ async function main() {
             eyePressed: document.querySelector('#writing-model-visible').getAttribute('aria-pressed'),
             gridBelow: grid.top >= surface.bottom - 1,
             opacityExists: !!document.querySelector('#writing-opacity'),
+            settingsOpen: document.querySelector('#writing-settings').getAttribute('aria-expanded') === 'true' &&
+               document.querySelector('#writing-slider-panel').getAttribute('aria-hidden') === 'false' &&
+               !document.querySelector('#writing-slider-panel').hasAttribute('inert') &&
+               document.querySelector('#writing-slider-panel').getBoundingClientRect().height > 20,
             characterNavExists: !!document.querySelector('#writing-character-nav'),
             canvasVisibleWithoutScroll: surface.top < innerHeight,
             slidersShareRow: document.querySelector('.writing-width').getBoundingClientRect().top ===
@@ -3379,12 +3555,13 @@ async function main() {
       assert(
          !writingPracticeLayout.overflow && writingPracticeLayout.eyeSize >= 44 && writingPracticeLayout.eyeInside &&
             writingPracticeLayout.eyePressed === 'true' && writingPracticeLayout.gridBelow &&
-            writingPracticeLayout.opacityExists && writingPracticeLayout.characterNavExists &&
+            writingPracticeLayout.opacityExists && writingPracticeLayout.settingsOpen && writingPracticeLayout.characterNavExists &&
             writingPracticeLayout.canvasVisibleWithoutScroll && writingPracticeLayout.slidersShareRow &&
             writingPracticeLayout.scrollY === 0 &&
             (width === 390 ? writingPracticeLayout.surfaceTop < 500 : true),
          `Writing practice layout failed at ${width}px: ${JSON.stringify(writingPracticeLayout)}`,
       );
+      await click("#writing-settings");
       if (width !== 390) {
          await evaluate("new Promise((resolve) => requestAnimationFrame(() => { document.querySelector('#toast').classList.remove('show'); scrollTo(0, 0); requestAnimationFrame(resolve); }))");
          const writingPracticeImage = await cdp.send("Page.captureScreenshot", {
@@ -3404,11 +3581,13 @@ async function main() {
       );
       if (width === 390) {
          await click("#writing-model-visible");
+         await click("#writing-settings");
          await setValue("#writing-opacity", "27");
          assert(
             await evaluate("document.querySelector('#writing-opacity-value').textContent === '27%' && document.querySelector('#writing-model').style.opacity === '0.27'"),
             "Writing compact opacity control did not update the model",
          );
+         await click("#writing-settings");
       }
 
       await evaluate(`(() => {
@@ -3461,16 +3640,17 @@ async function main() {
          eyeDisabled: document.querySelector('#writing-model-visible').disabled,
          gridCount: document.querySelectorAll('.writing-grid-option').length,
          fullscreenAvailable: !!document.querySelector('#writing-fullscreen'),
+         opacityAbsent: !document.querySelector('#writing-opacity'),
       })`);
       assert(
          !writingEmptyPractice.overflow && writingEmptyPractice.canvas && writingEmptyPractice.eyeDisabled &&
-            writingEmptyPractice.gridCount === 4 && writingEmptyPractice.fullscreenAvailable,
+            writingEmptyPractice.gridCount === 4 && writingEmptyPractice.fullscreenAvailable && writingEmptyPractice.opacityAbsent,
          `Writing empty practice mode failed at ${width}px: ${JSON.stringify(writingEmptyPractice)}`,
       );
    }
    record(
       "writing board",
-      "nested 你好 practice/restoration, multi-character switching, undo, full-page navigation, compact SVG toolbar and sliders, native color picker, drawing tools, fullscreen, and 390/1024px layouts passed",
+      `nested 你好 practice/restoration, multi-character switching, undo, full-page navigation, collapsible sliders, anchored native color picker, drawing tools, fullscreen, and 390/1024px layouts passed; screenshots ${screenshotDirectory}`,
    );
 
    await cdp.send("Emulation.clearDeviceMetricsOverride");

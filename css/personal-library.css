@@ -281,6 +281,7 @@
 
 .card-detail-sheet .cd-head {
    align-items: flex-start;
+   margin-bottom: 4px;
 }
 
 .card-detail-word-nav {
@@ -288,7 +289,7 @@
    align-items: center;
    justify-content: center;
    gap: 12px;
-   margin: 14px 0;
+   margin: 7px 0;
 }
 
 .card-detail-word-nav > .character-nav-button {
@@ -304,7 +305,36 @@
 }
 
 .card-detail-strokes {
-   margin-block: 18px;
+   margin-block: 8px 14px;
+}
+
+@media (max-width: 620px) {
+   .sheet-card:has(.card-detail-sheet) {
+      padding: 12px 14px calc(18px + env(safe-area-inset-bottom));
+   }
+
+   .card-detail-sheet .cd-hz {
+      font-size: 42px;
+      line-height: 1;
+   }
+
+   .card-detail-sheet .cd-py {
+      margin-top: 0;
+      font-size: 17px;
+   }
+
+   .card-detail-sheet .cd-fr {
+      margin-top: 2px;
+      font-size: 18px;
+   }
+
+   .card-detail-word-nav {
+      margin: 4px 0;
+   }
+
+   .card-detail-strokes {
+      margin-block: 5px 12px;
+   }
 }
 
 .category-check-groups {
@@ -424,11 +454,6 @@
    font-weight: 600;
 }
 
-.import-summary-chip.warning {
-   border-color: color-mix(in srgb, var(--lacquer) 38%, var(--line));
-   color: var(--lacquer);
-}
-
 .import-preview-notices {
    display: grid;
    gap: 5px;
@@ -451,7 +476,7 @@
 
 .import-mode-choice,
 .import-replace-option,
-.import-advanced-option {
+.import-unknown-choice {
    display: flex;
    min-width: 0;
    align-items: flex-start;
@@ -475,7 +500,7 @@
 
 .import-mode-choice input,
 .import-replace-option input,
-.import-advanced-option input {
+.import-unknown-choice input {
    width: 20px;
    height: 20px;
    flex: 0 0 20px;
@@ -489,16 +514,16 @@
 .import-replace-option span,
 .import-replace-option strong,
 .import-replace-option small,
-.import-advanced-option span,
-.import-advanced-option strong,
-.import-advanced-option small {
+.import-unknown-choice span,
+.import-unknown-choice strong,
+.import-unknown-choice small {
    display: block;
    min-width: 0;
 }
 
 .import-mode-choice strong,
 .import-replace-option strong,
-.import-advanced-option strong {
+.import-unknown-choice strong {
    color: var(--ink);
    font-size: 13px;
    line-height: 1.3;
@@ -506,7 +531,7 @@
 
 .import-mode-choice small,
 .import-replace-option small,
-.import-advanced-option small {
+.import-unknown-choice small {
    margin-top: 3px;
    color: var(--ink-faint);
    font-size: 11px;
@@ -531,25 +556,43 @@
    margin-top: 3px;
 }
 
-.import-advanced {
-   margin-top: 3px;
-   border-top: 1px solid var(--line-soft);
+.import-unknown-words {
+   margin: 10px 0 0;
+   padding: 12px;
+   border: 1px solid color-mix(in srgb, var(--gold) 55%, var(--line));
+   border-radius: 12px;
+   background: color-mix(in srgb, var(--gold) 7%, var(--card-2));
 }
 
-.import-advanced summary {
-   display: flex;
-   min-height: 44px;
-   align-items: center;
-   color: var(--ink-soft);
-   cursor: pointer;
-   font-size: 13px;
+.import-unknown-words legend {
+   padding: 0 5px;
+   color: var(--ink);
+   font-size: 12px;
    font-weight: 600;
+   letter-spacing: .05em;
+   text-transform: uppercase;
 }
 
-.import-advanced-options {
+.import-unknown-words > p {
+   margin: 0 0 9px;
+   color: var(--ink-soft);
+   font-size: 13px;
+   line-height: 1.4;
+}
+
+.import-unknown-choices {
    display: grid;
-   gap: 6px;
-   padding-bottom: 2px;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 7px;
+}
+
+.import-unknown-choice {
+   cursor: pointer;
+}
+
+.import-unknown-choice:has(input:checked) {
+   border-color: var(--lacquer);
+   background: color-mix(in srgb, var(--lacquer) 7%, var(--card));
 }
 
 .import-error > strong,
@@ -751,6 +794,7 @@
    .bulk-bar { top: 62px; flex-wrap: wrap; }
    .bulk-bar strong { flex-basis: 100%; }
    .import-mode-choices { grid-template-columns: 1fr; }
+   .import-unknown-choices { grid-template-columns: 1fr; }
    .review-live { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 

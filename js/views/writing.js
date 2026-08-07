@@ -3,6 +3,7 @@
 /* ================= tableau d'écriture (写) ================= */
 const WRITING_GRIDS = ["blank", "square", "tian", "mi"];
 let writingCanvasController = null;
+let writingSettingsOutsideController = null;
 let writingState = {
    mode: "free",
    word: "",
@@ -146,6 +147,8 @@ function writingToolIcon(name) {
          '<path d="M4.5 7h15M9 3.5h6L16 7H8l1-3.5ZM7 7l.8 13h8.4L17 7M10 10.5v6M14 10.5v6"></path>',
       fullscreen:
          '<path d="M8.5 4H4v4.5M15.5 4H20v4.5M20 15.5V20h-4.5M8.5 20H4v-4.5"></path>',
+      settings:
+         '<path d="M4 7h7M15 7h5M11 4v6M4 17h5M13 17h7M9 14v6M4 12h11M19 12h1M15 9v6"></path>',
       "fullscreen-exit":
          '<path d="M4 8.5h4.5V4M20 8.5h-4.5V4M15.5 20v-4.5H20M8.5 20v-4.5H4"></path>',
    };
@@ -176,12 +179,14 @@ function writingToolbarHtml(prefs) {
       writingToolIcon("clear") + '</button>' +
       '<button class="writing-icon-button" id="writing-fullscreen" type="button" aria-label="Plein écran" title="Plein écran">' +
       writingToolIcon("fullscreen") + '</button>' +
-      '<button class="writing-color-current" id="writing-color-button" type="button" aria-label="Choisir la couleur du trait" title="Couleur du trait" style="--writing-color:' +
+      '<button class="writing-icon-button writing-settings-button" id="writing-settings" type="button" aria-label="Réglages du trait" title="Réglages du trait" aria-expanded="false" aria-controls="writing-slider-panel">' +
+      writingToolIcon("settings") + '</button>' +
+      '<label class="writing-color-control" id="writing-color-button" aria-label="Choisir la couleur du trait" title="Couleur du trait" style="--writing-color:' +
       esc(prefs.color) +
-      '"></button><input class="writing-color-input" id="writing-color" type="color" value="' +
+      '"><span class="writing-color-current" aria-hidden="true"></span><input class="writing-color-input" id="writing-color" type="color" value="' +
       esc(prefs.color) +
-      '" aria-label="Couleur du trait"></div>' +
-      '<div class="writing-slider-tools">' +
+      '" aria-label="Couleur du trait"></label></div>' +
+      '<div class="writing-slider-panel" id="writing-slider-panel" aria-hidden="true" inert><div class="writing-slider-tools">' +
       '<label class="writing-slider writing-width" for="writing-width"><span>Trait</span><output id="writing-width-value">' +
       prefs.width +
       ' px</output><input id="writing-width" type="range" min="1" max="24" step="1" value="' +
@@ -193,7 +198,7 @@ function writingToolbarHtml(prefs) {
            '%</output><input id="writing-opacity" type="range" min="4" max="45" step="1" value="' +
            Math.round(prefs.opacity * 100) + '"></label>'
          : "") +
-      '</div></section>'
+      '</div></div></section>'
    );
 }
 
@@ -293,7 +298,29 @@ function wireWritingView() {
    if ($("writing-next")) $("writing-next").onclick = () => moveWritingCharacter(1);
    wireWritingSwipe();
 
-   $("writing-color-button").onclick = () => $("writing-color").click();
+   $("writing-settings").onclick = () =>
+      setWritingSettingsOpen(
+         $("writing-settings").getAttribute("aria-expanded") !== "true",
+      );
+   writingSettingsOutsideController = new AbortController();
+   document.addEventListener(
+      "pointerdown",
+      (event) => {
+         if (
+            !event.target.closest("#writing-slider-panel") &&
+            !event.target.closest("#writing-settings")
+         )
+            setWritingSettingsOpen(false);
+      },
+      { signal: writingSettingsOutsideController.signal },
+   );
+   document.addEventListener(
+      "keydown",
+      (event) => {
+         if (event.key === "Escape") setWritingSettingsOpen(false);
+      },
+      { signal: writingSettingsOutsideController.signal },
+   );
    $("writing-color").oninput = (event) => {
       writingPreferences().color = event.target.value;
       writingState.tool = "pen";
@@ -350,6 +377,16 @@ function wireWritingView() {
    wireWritingCanvas();
    updateWritingToolState();
    updateWritingHistoryButtons();
+}
+
+function setWritingSettingsOpen(open) {
+   const button = $("writing-settings");
+   const panel = $("writing-slider-panel");
+   if (!button || !panel) return;
+   button.setAttribute("aria-expanded", String(open));
+   panel.setAttribute("aria-hidden", String(!open));
+   panel.toggleAttribute("inert", !open);
+   panel.classList.toggle("is-open", open);
 }
 
 function updateWritingToolState() {
@@ -652,6 +689,8 @@ function writingFullscreenChanged() {
 function destroyWritingBoard() {
    if (writingCanvasController) writingCanvasController.destroy();
    writingCanvasController = null;
+   if (writingSettingsOutsideController) writingSettingsOutsideController.abort();
+   writingSettingsOutsideController = null;
    document.removeEventListener("fullscreenchange", writingFullscreenChanged);
    document.body.classList.remove("writing-fullscreen-open");
 }

@@ -450,6 +450,11 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
          return;
       }
    }
+   try {
+      entry = await dictionaryEntryWithFrenchSibling(entry);
+   } catch (error) {
+      /* La fiche conserve son repli anglais si la résolution sœur échoue hors ligne. */
+   }
    openDictDetail(attachHskMetadata(entry), { fromSearch: true });
 }
 

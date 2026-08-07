@@ -63,18 +63,19 @@ function dictionaryDetailDisplayHanzi(entry) {
 
 async function dictionaryCharacterStudyEntry(character) {
    const personal = db.cards.find((card) => card.hz === character);
-   if (personal) return attachHskMetadata(personalCardAsDictionaryEntry(personal));
-   const found = await findDictionaryEntryByHanzi(character);
-   return attachHskMetadata(found || normalizeDetailEntry({ hz: character }));
+   const found = personal
+      ? personalCardAsDictionaryEntry(personal)
+      : (await findDictionaryEntryByHanzi(character)) || normalizeDetailEntry({ hz: character });
+   return attachHskMetadata(await dictionaryEntryWithFrenchSibling(found));
 }
 
 function dictionaryCharacterStudyCardShell(character) {
    return (
       '<section class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
-      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
       '<div class="dd-character-study-main"><div class="dd-character-study-hanzi">' +
-      esc(character) + '</div><div class="muted">Chargement du caractère…</div></div></section>'
+      esc(character) + '</div><div class="muted dd-character-study-translation">Chargement…</div></div>' +
+      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
+      '" aria-label="Écouter ' + esc(character) + '">听</button></section>'
    );
 }
 
@@ -83,19 +84,19 @@ function dictionaryCharacterStudyCardHtml(entry, character) {
    const pinyin = dictionaryEntryPinyinText(entry);
    const definition = dictionaryResultDefinition(entry);
    return (
-      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
       '<div class="dd-character-study-main"><div class="dd-character-study-hanzi" data-say="' +
       esc(character) + '">' + esc(character) + "</div>" +
       (pinyin ? '<div class="dd-character-study-pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       '<div class="dd-character-study-translation">' +
       (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
-      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" + verifiedHskBadges(entry) + "</div>" +
+      (definition.englishText ? '<span>Sens anglais · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div></div>" +
+      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
+      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
       '<div class="dd-character-study-action">' +
       (card
-         ? '<span class="cd-cat jade">Dans Mes mots</span><button class="btn ghost" id="dd-character-manage" type="button">Ouvrir le mot</button>'
-         : '<button class="btn ghost" id="dd-character-addcard" type="button" data-entry-id="' +
-           esc(entry.id) + '">+ Ajouter à Mes mots</button>') +
+         ? '<button class="btn ghost" id="dd-character-manage" type="button">Ouvrir</button>'
+         : '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
+           esc(character) + ' à Mes mots" data-entry-id="' + esc(entry.id) + '">+ Mes mots</button>') +
       "</div>"
    );
 }
@@ -140,10 +141,11 @@ function dictionaryCharacterInteractionHtml(characters) {
               ', position ' + (index + 1) + " sur " + characters.length + '" aria-pressed="' +
               String(index === 0) + '" aria-current="' + String(index === 0) + '">' +
               esc(character) + "</button>",
-           ).join("") + "</div>" + dictionaryCharacterStudyCardShell(characters[0])
+           ).join("") + "</div>"
          : "") +
       '<div class="eyebrow">Ordre des traits</div>' +
       strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length) +
+      (characters.length > 1 ? dictionaryCharacterStudyCardShell(characters[0]) : "") +
       "</section>"
    );
 }
@@ -209,10 +211,14 @@ function dictionarySplitSenses(values) {
 
 function dictionaryFrenchDefinitionsHtml(entry) {
    const french = dictionarySplitSenses(entry.definitionsFr);
+   const compact = french.length > 0 && french.length <= 4 && french.every((definition) => definition.length <= 40);
    return french.length
-      ? '<section class="dd-definitions"><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
-        french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></section>"
-      : '<section class="dd-definitions dd-french-unavailable"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+      ? compact
+        ? '<section class="dd-definitions dd-french-compact" id="dd-french-definitions" aria-label="Sens français"><p>' +
+          french.map(esc).join(' <span aria-hidden="true">·</span> ') + "</p></section>"
+        : '<section class="dd-definitions" id="dd-french-definitions"><div class="eyebrow">Sens français</div><ol class="dd-sense-list">' +
+          french.map((definition) => "<li>" + esc(definition) + "</li>").join("") + "</ol></section>"
+      : '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
 }
 
 function dictionaryEnglishDefinitionsHtml(entry) {
@@ -591,7 +597,11 @@ function openDictionaryAddToWords(entry, options, suppliedState) {
 }
 
 function openDictDetail(rawEntry, options) {
-   const entry = attachHskMetadata(normalizeDetailEntry(rawEntry));
+   const normalizedEntry = normalizeDetailEntry(rawEntry);
+   const entry = attachHskMetadata({
+      ...normalizedEntry,
+      definitionsFr: (normalizedEntry.definitionsFr || []).slice(),
+   });
    const settings = options || {};
    const currentDetail = document.querySelector("#sheet.open .dd-entry");
    if (!currentDetail || currentDetail.dataset.entryId !== String(entry.id))
@@ -600,7 +610,6 @@ function openDictDetail(rawEntry, options) {
    const displayHanzi = dictionaryDetailDisplayHanzi(entry);
    const characters = Array.from(displayHanzi).filter((character) => HAN_PATTERN.test(character));
    const marked = uniqueDetailValues(detailPinyin(entry, "marked"));
-   const numbered = uniqueDetailValues(detailPinyin(entry, "numbered"));
    const traditional = entry.traditional && entry.traditional !== entry.simplified ? entry.traditional : "";
    const token = ++dictionaryDetailToken;
 
@@ -613,9 +622,15 @@ function openDictDetail(rawEntry, options) {
          '</div><div class="dd-top-actions"><button class="seal" data-say="' + esc(displayHanzi) + '" aria-label="Écouter">听</button>' +
          '<button class="dd-top-close" id="dd-close-top" data-sheet-close aria-label="Fermer la fiche">×</button></div></div>' +
          (marked.length ? '<div class="cd-py">' + marked.map(colorPinyin).join(" · ") + "</div>" : "") +
-         (numbered.length ? '<div class="dd-numbered">' + numbered.map(esc).join(" · ") + "</div>" : "") +
-         dictionaryVariantExplanationHtml(entry) +
          dictionaryFrenchDefinitionsHtml(entry) +
+         dictionaryCharacterInteractionHtml(characters) +
+         '<section class="dd-learning-actions"><button class="btn wide" id="dd-write-word" type="button">写 Écrire ce mot</button></section>' +
+         (card
+            ? cardActionsHtml(card)
+            : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
+         (card && card.exHz ? exampleHtml(card) : "") +
+         (card && card.note ? noteHtml(card) : "") +
+         dictionaryVariantExplanationHtml(entry) +
          '<div class="dd-meta">' +
          dictionaryEntryDetailedTypeLabels(entry).map((label) => '<span class="cd-cat">' + esc(label) + "</span>").join("") +
          verifiedHskBadges(entry) +
@@ -624,13 +639,6 @@ function openDictDetail(rawEntry, options) {
             : "") +
          (card ? '<span class="cd-cat jade">Dans Mes mots</span>' : "") +
          "</div>" +
-         dictionaryCharacterInteractionHtml(characters) +
-         '<section class="dd-learning-actions"><button class="btn wide" id="dd-write" type="button">写 Écrire ce mot</button></section>' +
-         (card
-            ? cardActionsHtml(card)
-            : '<section class="dd-card-actions" aria-label="Mot personnel"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></section>') +
-         (card && card.exHz ? exampleHtml(card) : "") +
-         (card && card.note ? noteHtml(card) : "") +
          dictionaryHskSourceHtml(entry) +
          dictionaryEnglishDefinitionsHtml(entry) +
          dictionarySourcesHtml(entry) +
@@ -640,6 +648,21 @@ function openDictDetail(rawEntry, options) {
          "</button></div></article>",
    );
    wireDictDetail(entry, characters, card, token, settings);
+   if (!(entry.definitionsFr || []).length) {
+      dictionaryEntryWithFrenchSibling(entry).then((resolved) => {
+         if (
+            token !== dictionaryDetailToken ||
+            !(resolved.definitionsFr || []).length ||
+            !$('dd-french-definitions') ||
+            document.querySelector('#sheet.open .dd-entry')?.dataset.entryId !== String(entry.id)
+         ) return;
+         entry.definitionsFr = resolved.definitionsFr.slice();
+         entry.__frenchSiblingEntryId = resolved.__frenchSiblingEntryId;
+         $('dd-french-definitions').outerHTML = dictionaryFrenchDefinitionsHtml(entry);
+      }).catch(() => {
+         /* Le repli anglais déjà affiché reste valable si l'index frère est indisponible. */
+      });
+   }
 }
 
 function dictionaryRelatedWordIsVulgar(word) {
@@ -817,8 +840,8 @@ function wireDictDetail(entry, characters, card, token, options) {
    }
    if ($("dd-addcard"))
       $("dd-addcard").onclick = () => openDictionaryAddToWords(entry, options);
-   if ($("dd-write"))
-      $("dd-write").onclick = () =>
+   if ($("dd-write-word"))
+      $("dd-write-word").onclick = () =>
          openWritingPracticeSheet(
             options && options.writingWord ? options.writingWord : entry.simplified,
          );
