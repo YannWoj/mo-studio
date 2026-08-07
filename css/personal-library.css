@@ -475,7 +475,7 @@
 }
 
 .import-mode-choice,
-.import-replace-option,
+.import-structure-choice,
 .import-unknown-choice {
    display: flex;
    min-width: 0;
@@ -499,7 +499,7 @@
 }
 
 .import-mode-choice input,
-.import-replace-option input,
+.import-structure-choice input,
 .import-unknown-choice input {
    width: 20px;
    height: 20px;
@@ -511,9 +511,9 @@
 .import-mode-choice span,
 .import-mode-choice strong,
 .import-mode-choice small,
-.import-replace-option span,
-.import-replace-option strong,
-.import-replace-option small,
+.import-structure-choice span,
+.import-structure-choice strong,
+.import-structure-choice small,
 .import-unknown-choice span,
 .import-unknown-choice strong,
 .import-unknown-choice small {
@@ -522,7 +522,7 @@
 }
 
 .import-mode-choice strong,
-.import-replace-option strong,
+.import-structure-choice strong,
 .import-unknown-choice strong {
    color: var(--ink);
    font-size: 13px;
@@ -530,7 +530,7 @@
 }
 
 .import-mode-choice small,
-.import-replace-option small,
+.import-structure-choice small,
 .import-unknown-choice small {
    margin-top: 3px;
    color: var(--ink-faint);
@@ -548,12 +548,55 @@
 }
 
 .import-target-field[hidden],
-.import-replace-option[hidden] {
+.import-structure[hidden] {
    display: none;
 }
 
-.import-replace-option {
-   margin-top: 3px;
+.import-structure {
+   display: grid;
+   gap: 7px;
+   margin-top: 8px;
+}
+
+.import-structure-question {
+   margin: 0;
+   color: var(--ink);
+   font-size: 13px;
+   font-weight: 650;
+   line-height: 1.35;
+}
+
+.import-structure-choices {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 7px;
+}
+
+.import-structure-choice {
+   min-height: 100%;
+   cursor: pointer;
+}
+
+.import-structure-choice:has(input:checked) {
+   border-color: var(--lacquer);
+   background: color-mix(in srgb, var(--lacquer) 7%, var(--card));
+   box-shadow: inset 0 -2px var(--lacquer);
+}
+
+.import-structure-choice-danger {
+   border-color: color-mix(in srgb, var(--lacquer) 55%, var(--line));
+}
+
+.import-structure-choice-danger strong {
+   color: var(--lacquer);
+}
+
+.import-structure-choice-danger:has(input:checked) {
+   background: color-mix(in srgb, var(--lacquer) 11%, var(--card));
+}
+
+.import-structure-choice-danger input {
+   accent-color: var(--lacquer);
 }
 
 .import-unknown-words {
@@ -794,6 +837,7 @@
    .bulk-bar { top: 62px; flex-wrap: wrap; }
    .bulk-bar strong { flex-basis: 100%; }
    .import-mode-choices { grid-template-columns: 1fr; }
+   .import-structure-choices { grid-template-columns: 1fr; }
    .import-unknown-choices { grid-template-columns: 1fr; }
    .review-live { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

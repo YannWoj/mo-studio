@@ -62,17 +62,25 @@ function measureStrokeCharacterNavigation(prefix) {
    const visualRect = visual.getBoundingClientRect();
    const previousRect = previous.getBoundingClientRect();
    const nextRect = next.getBoundingClientRect();
+   const compactGalleryNavigation = visual.matches(".stroke-gallery") &&
+      window.matchMedia("(max-width: 599px)").matches;
    stage.style.setProperty(
       "--nav-center-y",
-      visualRect.top - stageRect.top + visualRect.height / 2 + "px",
+      visualRect.top - stageRect.top + (compactGalleryNavigation
+         ? Math.max(previousRect.height, nextRect.height) / 2 + 4
+         : visualRect.height / 2) + "px",
    );
    stage.style.setProperty(
       "--nav-left",
-      visualRect.left - stageRect.left - previousRect.width - navigationGap + "px",
+      (compactGalleryNavigation
+         ? visualRect.left - stageRect.left + 4
+         : visualRect.left - stageRect.left - previousRect.width - navigationGap) + "px",
    );
    stage.style.setProperty(
       "--nav-right",
-      stageRect.right - visualRect.right - nextRect.width - navigationGap + "px",
+      (compactGalleryNavigation
+         ? stageRect.right - visualRect.right + 4
+         : stageRect.right - visualRect.right - nextRect.width - navigationGap) + "px",
    );
    stage.classList.add("is-navigation-positioned");
    return true;
@@ -203,11 +211,10 @@ function strokeBoxHtml() {
       (active === "steps" ? "" : " hidden") + '>' +
       '<div class="stroke-gallery-toolbar"><span id="dd-gallery-status" role="status" aria-live="polite">Chargement des traits réels…</span>' +
       '<div class="stroke-gallery-settings">' +
-      '<label><input type="checkbox" id="dd-show-future"' + (gallery.showFuture ? " checked" : "") + '> Afficher les traits futurs</label>' +
-      '<label><input type="checkbox" id="dd-show-grid"' + (gallery.showGrid ? " checked" : "") + '> Afficher la grille</label>' +
+      '<label><input type="checkbox" id="dd-show-future"' + (gallery.showFuture ? " checked" : "") + '> Traits futurs</label>' +
+      '<label><input type="checkbox" id="dd-show-grid"' + (gallery.showGrid ? " checked" : "") + '> Grille</label>' +
       "</div></div>" +
       '<div class="stroke-gallery" id="dd-gallery" aria-label="Étapes cumulatives des traits"></div>' +
-      '<div class="stroke-gallery-position" id="dd-gallery-position" aria-live="polite"></div>' +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-practice" aria-labelledby="stroke-tab-practice"' +
       (active === "practice" ? "" : " hidden") + '>' +

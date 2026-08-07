@@ -245,7 +245,7 @@ async function main() {
    }))()`);
    assert(cleanPreviewUi.name.includes('1 mot dans « Collé »')&&cleanPreviewUi.name.includes('progression est conservée')&&!cleanPreviewUi.legacyStats&&cleanPreviewUi.problems===0&&cleanPreviewUi.chips>=3&&cleanPreviewUi.modes===2&&cleanPreviewUi.targetHidden&&cleanPreviewUi.replaceHidden&&cleanPreviewUi.advancedAbsent&&cleanPreviewUi.unknownAbsent&&cleanPreviewUi.confirm==='Créer le pack « Collé » (1 mot)'&&cleanPreviewUi.note.includes('Aucune donnée')&&!cleanPreviewUi.overflow, `clean import preview failed: ${JSON.stringify(cleanPreviewUi)}`);
    await click('[name="import-mode"][value="merge"]');
-   assert(await evaluate("!document.querySelector('#import-target-field').hidden&&!document.querySelector('#import-replace-field').hidden&&document.querySelector('#import-confirm').textContent.includes('Choisir le pack')"), "merge controls did not appear progressively");
+   assert(await evaluate("!document.querySelector('#import-target-field').hidden&&document.querySelector('#import-replace-field').hidden&&document.querySelector('#import-confirm').textContent.includes('Choisir le pack')"), "merge target did not appear progressively or structure choice appeared without a target");
    await click('[name="import-mode"][value="new"]');
    assert(await evaluate("document.querySelector('#import-target-field').hidden&&document.querySelector('#import-replace-field').hidden&&document.querySelector('#import-confirm').textContent==='Créer le pack « Collé » (1 mot)'"), "new mode did not hide merge-only controls");
    await evaluate("document.querySelector('#toast').classList.remove('show');document.querySelector('.sheet-card').scrollTop=0");
@@ -298,7 +298,11 @@ async function main() {
       explanations:[...document.querySelectorAll('.import-preview-notices p')].map((item)=>item.textContent),
       targetVisible:!document.querySelector('#import-target-field').hidden,
       replaceVisible:!document.querySelector('#import-replace-field').hidden,
-      replaceLabel:document.querySelector('#import-replace-field').textContent,
+      structureQuestion:document.querySelector('#import-structure-question').textContent,
+      keepHelp:document.querySelector('#import-structure-keep-help').textContent,
+      replaceHelp:document.querySelector('#import-structure-replace-help').textContent,
+      structureOptions:document.querySelectorAll('[name=import-structure]').length,
+      defaultStructure:document.querySelector('[name=import-structure][value=keep]').checked,
       confirm:document.querySelector('#import-confirm').textContent,
       advancedAbsent:!document.querySelector('#import-advanced,#import-skip'),
       unknownText:document.querySelector('#import-unknown-words').textContent,
@@ -308,7 +312,7 @@ async function main() {
       recognizedText:document.querySelector('#import-recognized-count').textContent,
       overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
    }))()`);
-   assert(problemPreviewUi.explanations.length===1&&problemPreviewUi.explanations[0].includes('fusionné automatiquement')&&problemPreviewUi.targetVisible&&problemPreviewUi.replaceVisible&&problemPreviewUi.replaceLabel.includes('Aucune carte ne sera supprimée')&&problemPreviewUi.confirm==='Ajouter 2 mots à « Livres »'&&problemPreviewUi.advancedAbsent&&problemPreviewUi.radioCount===2&&problemPreviewUi.defaultMissing&&problemPreviewUi.recognizedText==='Seul le mot reconnu sera importé.'&&problemPreviewUi.unknownText.includes('1 mot du fichier n’est pas dans le dictionnaire')&&problemPreviewUi.unknownExamples.some((line)=>line.includes('䨻䨻'))&&!problemPreviewUi.overflow, `problematic merge preview failed: ${JSON.stringify(problemPreviewUi)}`);
+   assert(problemPreviewUi.explanations.length===1&&problemPreviewUi.explanations[0].includes('fusionné automatiquement')&&problemPreviewUi.targetVisible&&problemPreviewUi.replaceVisible&&problemPreviewUi.structureQuestion==='Comment ranger ces mots dans « Livres » ?'&&problemPreviewUi.keepHelp.includes('« Chapitre 1 »')&&problemPreviewUi.keepHelp.includes('« Chapitre 30 »')&&problemPreviewUi.keepHelp.includes('« Cas limites »')&&problemPreviewUi.replaceHelp.includes('sont supprimées et remplacées')&&problemPreviewUi.replaceHelp.includes('ne seront plus rangés dans ce pack')&&problemPreviewUi.structureOptions===2&&problemPreviewUi.defaultStructure&&problemPreviewUi.confirm==='Ajouter 2 mots à « Livres »'&&problemPreviewUi.advancedAbsent&&problemPreviewUi.radioCount===2&&problemPreviewUi.defaultMissing&&problemPreviewUi.recognizedText==='Seul le mot reconnu sera importé.'&&problemPreviewUi.unknownText.includes('1 mot du fichier n’est pas dans le dictionnaire')&&problemPreviewUi.unknownExamples.some((line)=>line.includes('䨻䨻'))&&!problemPreviewUi.overflow, `problematic merge preview failed: ${JSON.stringify(problemPreviewUi)}`);
    await click('[name="import-missing"][value="no"]');
    assert(await evaluate("document.querySelector('#import-confirm').textContent==='Ajouter 1 mot à « Livres »'&&document.querySelector('#import-recognized-count').textContent==='Seul le mot reconnu sera importé.'"), "excluding unknown words did not update the merge count");
    await click('[name="import-missing"][value="yes"]');
@@ -319,6 +323,49 @@ async function main() {
    await click("#import-confirm");
    await waitFor(() => evaluate("!sheetOpen()&&categoriesForPack(db.packs.find((pack)=>pack.name==='Livres').id).some((category)=>category.name==='Cas limites')"), "problematic merge preview did not apply");
    assert(await evaluate(`(() => {const pack=db.packs.find((item)=>item.name==='Livres'),category=categoriesForPack(pack.id).find((item)=>item.name==='Cas limites'),words=cardsForCategory(category.id);return words.filter((card)=>card.hz==='谢谢').length===1&&words.some((card)=>card.hz==='䨻䨻'&&card.incomplete);})()`), "merge UI changed duplicate or personal-card import behavior");
+
+   const organizationTargets = await evaluate(`(() => {
+      const organized=createPersonalPack('Assimil test','Organisation à remplacer');
+      const lesson1=createPersonalCategory(organized.id,'Leçon 1');
+      createPersonalCategory(organized.id,'Leçon 2');
+      const survivor=normalizeCard({id:'replace-survivor',hz:'旧词',py:'jiù cí',fr:'ancien mot',lvl:4,due:1900000000000,reviewHistory:[{at:1800000000000,grade:'good'}]},true);
+      db.cards.push(survivor);addCardMembership(survivor.id,lesson1.id);
+      const empty=createPersonalPack('Pack vide','Sans sous-catégorie');save();
+      return {organized:organized.id,empty:empty.id,survivor:survivor.id};
+   })()`);
+   const organizationJson = JSON.stringify({version:1,pack:{name:'Organisation fichier',categories:[
+      {name:'Leçon 2',words:[{chinese:'你好',pinyin:'nǐ hǎo',translation:'bonjour'}]},
+      {name:'Leçon 3',words:[{chinese:'朋友',pinyin:'péngyou',translation:'ami'}]},
+   ]}});
+   await evaluate(`(async()=>{const preview=await buildPackImportPreview(parsePackJson(${JSON.stringify(organizationJson)}),'json');openPackImportPreview(preview)})()`);
+   await click('[name="import-mode"][value="merge"]');
+   await evaluate(`(() => {const select=document.querySelector('#import-target');select.value=${JSON.stringify(organizationTargets.organized)};select.dispatchEvent(new Event('change',{bubbles:true}))})()`);
+   for (const width of [390,1024]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", {width,height:900,deviceScaleFactor:1,mobile:width===390});
+      const structureLayout = await evaluate(`(() => {const group=document.querySelector('#import-replace-field'),choices=[...document.querySelectorAll('.import-structure-choice')];return {
+         visible:!group.hidden,
+         question:document.querySelector('#import-structure-question').textContent,
+         keep:document.querySelector('#import-structure-keep-help').textContent,
+         replace:document.querySelector('#import-structure-replace-help').textContent,
+         stacked:choices[1].getBoundingClientRect().top>choices[0].getBoundingClientRect().bottom,
+         touchTargets:choices.every((choice)=>choice.querySelector('input').getBoundingClientRect().width>=20&&choice.getBoundingClientRect().height>=44),
+         overflow:document.querySelector('.sheet-card').scrollWidth>document.querySelector('.sheet-card').clientWidth||document.documentElement.scrollWidth>innerWidth,
+      };})()`);
+      assert(structureLayout.visible&&structureLayout.question==='Comment ranger ces mots dans « Assimil test » ?'&&structureLayout.keep.includes('« Leçon 1 »')&&structureLayout.keep.includes('« Leçon 2 »')&&structureLayout.keep.includes('« Leçon 3 »')&&structureLayout.replace.includes('« Leçon 1 »')&&structureLayout.replace.includes('« Leçon 2 »')&&structureLayout.replace.includes('« Leçon 3 »')&&(width!==390||structureLayout.stacked)&&structureLayout.touchTargets&&!structureLayout.overflow, `structure choice layout/text failed at ${width}px: ${JSON.stringify(structureLayout)}`);
+   }
+   await evaluate(`(() => {const select=document.querySelector('#import-target');select.value=${JSON.stringify(organizationTargets.empty)};select.dispatchEvent(new Event('change',{bubbles:true}))})()`);
+   assert(await evaluate("document.querySelector('#import-replace-field').hidden&&document.querySelector('[name=import-structure][value=keep]').checked&&document.querySelector('#import-confirm').textContent==='Ajouter 2 mots à « Pack vide »'"), "empty target displayed a meaningless structure choice");
+   await evaluate(`(() => {const select=document.querySelector('#import-target');select.value=${JSON.stringify(organizationTargets.organized)};select.dispatchEvent(new Event('change',{bubbles:true}))})()`);
+   assert(await evaluate("!document.querySelector('#import-replace-field').hidden&&document.querySelector('[name=import-structure][value=keep]').checked"), "changing back to an organized target did not restore the safe default");
+   await click('[name="import-structure"][value="replace"]');
+   const destructiveChoice = await evaluate(`(() => {const button=document.querySelector('#import-confirm'),choice=document.querySelector('.import-structure-choice-danger');return {label:button.textContent,danger:button.classList.contains('danger')&&!button.classList.contains('primary'),choiceColor:getComputedStyle(choice.querySelector('strong')).color,normalColor:getComputedStyle(document.querySelector('.import-structure-choice strong')).color};})()`);
+   assert(destructiveChoice.label==='Remplacer l’organisation et ajouter 2 mots'&&destructiveChoice.danger&&destructiveChoice.choiceColor!==destructiveChoice.normalColor, `destructive selection was not reflected visually: ${JSON.stringify(destructiveChoice)}`);
+   await click('#import-confirm');
+   await waitFor(() => evaluate("!sheetOpen()"), "structure replacement did not close the preview");
+   const replacementResult = await evaluate(`(() => {const pack=db.packs.find((item)=>item.id===${JSON.stringify(organizationTargets.organized)}),categoryNames=categoriesForPack(pack.id).map((item)=>item.name),survivor=db.cards.find((item)=>item.id===${JSON.stringify(organizationTargets.survivor)});return {categoryNames,survivor:!!survivor,level:survivor?.lvl,due:survivor?.due,history:survivor?.reviewHistory.length,stillInPack:categoriesForCard(survivor.id).some((category)=>category.packId===pack.id)};})()`);
+   assert(replacementResult.categoryNames.length===2&&replacementResult.categoryNames.includes('Leçon 2')&&replacementResult.categoryNames.includes('Leçon 3')&&replacementResult.survivor&&replacementResult.level===4&&replacementResult.due===1900000000000&&replacementResult.history===1&&!replacementResult.stillInPack, `structure replacement did not match its explanation: ${JSON.stringify(replacementResult)}`);
+   await evaluate(`(() => {const packIds=new Set([${JSON.stringify(organizationTargets.organized)},${JSON.stringify(organizationTargets.empty)}]),categoryIds=new Set(db.categories.filter((category)=>packIds.has(category.packId)).map((category)=>category.id));db.memberships=db.memberships.filter((membership)=>!categoryIds.has(membership.categoryId));db.categories=db.categories.filter((category)=>!packIds.has(category.packId));db.packs=db.packs.filter((pack)=>!packIds.has(pack.id));db.cards=db.cards.filter((card)=>card.id!==${JSON.stringify(organizationTargets.survivor)});save();})()`);
+   pass("choix explicite de rangement, noms réels, cible vide, remplacement destructif et progression conservée");
 
    await evaluate("openPackImportPreview({packs:[],sourceType:'json',categoryCount:0,wordCount:0,duplicates:0,existing:0,missingDictionary:0,incomplete:0,errors:['Le champ pack est obligatoire.']})");
    assert(await evaluate("document.querySelector('.import-error').firstElementChild.textContent==='Ce fichier ne peut pas être importé tel quel :'&&!document.querySelector('#import-confirm')"), "structural error introduction is unclear");

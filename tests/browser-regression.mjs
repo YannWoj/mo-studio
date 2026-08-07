@@ -1551,63 +1551,39 @@ async function main() {
       `Stroke-gallery settings did not persist or migrate safely: ${JSON.stringify(gallerySettingsSafety)}`,
    );
    await cdp.send("Emulation.setDeviceMetricsOverride", {
-      width: 360,
-      height: 780,
+      width: 390,
+      height: 844,
       deviceScaleFactor: 1,
       mobile: true,
    });
-   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 1 });
-   const galleryRect = await evaluate(`(() => {
-      const gallery = document.querySelector('#dd-gallery');
-      gallery.scrollIntoView({ block: 'center' });
-      gallery.scrollLeft = 0;
-      const rect = gallery.getBoundingClientRect();
-      return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+   await evaluate("ddStrokeTab='steps';openDictDetail(normalizeDetailEntry({hz:'面累人',py:'miàn léi rén',fr:'galerie mobile'}))");
+   await waitFor(
+      () => evaluate("ddCharacterData?.character === '面' && ddCharacterData.strokeCount === 9 && document.querySelectorAll('#dd-gallery .stroke-panel').length === 9 && document.querySelector('#dd-character-stage')?.classList.contains('is-navigation-positioned')"),
+      "Nine 面 panels were not rendered",
+      20_000,
+   );
+   const mobileGalleryGrid = await evaluate(`(() => {
+      const gallery=document.querySelector('#dd-gallery'),style=getComputedStyle(gallery),panels=[...gallery.querySelectorAll('.stroke-panel')],first=panels[0].getBoundingClientRect(),second=panels[1].getBoundingClientRect(),third=panels[2].getBoundingClientRect(),toolbar=document.querySelector('.stroke-gallery-toolbar'),status=document.querySelector('#dd-gallery-status').getBoundingClientRect(),settings=document.querySelector('.stroke-gallery-settings'),labels=[...settings.querySelectorAll('label')],labelRects=labels.map((label)=>label.getBoundingClientRect()),previous=document.querySelector('#dd-character-prev').getBoundingClientRect(),next=document.querySelector('#dd-character-next').getBoundingClientRect(),rect=gallery.getBoundingClientRect();
+      toolbar.scrollIntoView({block:'start'});
+      return {display:style.display,columns:style.gridTemplateColumns.split(' ').length,overflowX:style.overflowX,touchAction:style.touchAction,panelWidth:first.width,twoOnRow:Math.abs(first.top-second.top)<1&&third.top>first.bottom,labels:labels.map((label)=>label.textContent.trim()),settingsDisplay:getComputedStyle(settings).display,settingsWrap:getComputedStyle(settings).flexWrap,settingsOneLine:Math.abs(labelRects[0].top-labelRects[1].top)<1,statusSameRow:Math.abs((status.top+status.height/2)-(labelRects[0].top+labelRects[0].height/2))<8,indicator:!!document.querySelector('#dd-gallery-position'),scrollListener:gallery.onscroll!==null,horizontalScroll:gallery.scrollWidth>gallery.clientWidth+1,navAbovePanels:previous.bottom<=first.top&&next.bottom<=first.top,navInsideGallery:previous.left>=rect.left&&next.right<=rect.right,overflow:document.documentElement.scrollWidth>innerWidth};
    })()`);
-   const touchY = Math.max(80, Math.min(700, (galleryRect.top + galleryRect.bottom) / 2));
-   const touchStartX = Math.min(335, galleryRect.right - 20);
-   await cdp.send("Input.dispatchTouchEvent", {
-      type: "touchStart",
-      touchPoints: [{ x: touchStartX, y: touchY, id: 1 }],
-   });
-   for (const x of [280, 230, 180, 130, 80]) {
-      await cdp.send("Input.dispatchTouchEvent", {
-         type: "touchMove",
-         touchPoints: [{ x, y: touchY, id: 1 }],
-      });
-   }
-   await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-   await new Promise((resolve) => setTimeout(resolve, 500));
-   assert((await evaluate("document.querySelector('#dd-gallery').scrollLeft")) > 20, "Mobile gallery swipe did not scroll");
-   const mobileGalleryScreenshot = path.join(screenshotDirectory, "stroke-gallery-ni-360.png");
+   assert(mobileGalleryGrid.display==='grid'&&mobileGalleryGrid.columns===2&&mobileGalleryGrid.overflowX==='visible'&&mobileGalleryGrid.touchAction==='pan-y'&&mobileGalleryGrid.panelWidth>=140&&mobileGalleryGrid.panelWidth<=190&&mobileGalleryGrid.twoOnRow&&mobileGalleryGrid.labels.join('|')==='Traits futurs|Grille'&&mobileGalleryGrid.settingsDisplay==='flex'&&mobileGalleryGrid.settingsWrap==='nowrap'&&mobileGalleryGrid.settingsOneLine&&mobileGalleryGrid.statusSameRow&&!mobileGalleryGrid.indicator&&!mobileGalleryGrid.scrollListener&&!mobileGalleryGrid.horizontalScroll&&mobileGalleryGrid.navAbovePanels&&mobileGalleryGrid.navInsideGallery&&!mobileGalleryGrid.overflow, `Mobile stroke gallery is not a compact two-column grid: ${JSON.stringify(mobileGalleryGrid)}`);
+   await evaluate("document.querySelector('.stroke-gallery-toolbar').scrollIntoView({block:'center'})");
+   const mobileGalleryScreenshot = path.join(screenshotDirectory, "stroke-gallery-mian-overview-390.png");
    const mobileGalleryImage = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
    await writeFile(mobileGalleryScreenshot, Buffer.from(mobileGalleryImage.data, "base64"));
-   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
-   for (const width of [430, 1024]) {
-      await cdp.send("Emulation.setDeviceMetricsOverride", {
-         width,
-         height: 900,
-         deviceScaleFactor: 1,
-         mobile: width <= 430,
-      });
-      await evaluate("document.querySelector('#dd-gallery').scrollIntoView({ block: 'center' })");
-      const image = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
-      await writeFile(
-         path.join(screenshotDirectory, `stroke-gallery-ni-${width}.png`),
-         Buffer.from(image.data, "base64"),
-      );
-   }
    for (const sample of [
-      { character: "红", name: "hong" },
-      { character: "蓝", name: "lan" },
+      { character: "面", name: "mian", strokes: 9 },
+      { character: "累", name: "lei", strokes: 11 },
+      { character: "人", name: "ren", strokes: 2 },
    ]) {
-      await evaluate(`loadDDChar(${JSON.stringify(sample.character)}, ['红', '蓝'])`);
+      await evaluate(`loadDDChar(${JSON.stringify(sample.character)}, ['面', '累', '人'])`);
       await waitFor(
-         () => evaluate(`ddCharacterData?.character === ${JSON.stringify(sample.character)} && document.querySelectorAll('#dd-gallery .stroke-current').length > 0`),
+         () => evaluate(`ddCharacterData?.character === ${JSON.stringify(sample.character)} && ddCharacterData?.strokeCount === ${sample.strokes} && document.querySelectorAll('#dd-gallery .stroke-current').length > 0`),
          `${sample.character} gallery did not render`,
          20_000,
       );
-      for (const width of [360, 430, 1024]) {
+      for (const width of [390, 1024]) {
          await cdp.send("Emulation.setDeviceMetricsOverride", {
             width,
             height: 900,
@@ -1616,22 +1592,23 @@ async function main() {
          });
          await evaluate(`(() => {
             const gallery = document.querySelector('#dd-gallery');
-            gallery.scrollLeft = 0;
-            gallery.scrollIntoView({ block: 'center' });
-            gallery.dispatchEvent(new Event('scroll'));
+            gallery.scrollIntoView({ block: 'start' });
          })()`);
          const sampleStyles = await evaluate(`(() => {
-            const panel = document.querySelector('#dd-gallery .stroke-panel');
+            const gallery=document.querySelector('#dd-gallery'),panel=gallery.querySelector('.stroke-panel'),style=getComputedStyle(gallery);
             return {
                current: getComputedStyle(panel.querySelector('.stroke-current')).fill,
                centerOpacity: Number(getComputedStyle(panel.querySelector('.stroke-grid-center')).opacity),
                diagonalOpacity: Number(getComputedStyle(panel.querySelector('.stroke-grid-diagonal')).opacity),
+               columns: style.gridTemplateColumns.split(' ').length,
+               horizontalScroll: gallery.scrollWidth>gallery.clientWidth+1,
                overflow: document.documentElement.scrollWidth > innerWidth,
             };
          })()`);
          assert(
             sampleStyles.current === "rgb(166, 37, 32)" &&
-               sampleStyles.diagonalOpacity < sampleStyles.centerOpacity && !sampleStyles.overflow,
+               sampleStyles.diagonalOpacity < sampleStyles.centerOpacity &&
+               (width!==390||sampleStyles.columns===2) && !sampleStyles.horizontalScroll && !sampleStyles.overflow,
             `${sample.character} gallery styles failed at ${width}px: ${JSON.stringify(sampleStyles)}`,
          );
          const image = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
@@ -1642,8 +1619,8 @@ async function main() {
       }
    }
    record("cumulative 你 gallery", "7 real panels; cumulative black/red/grey paths, labels, final character, focus and keyboard navigation passed");
-   record("subtle stroke-gallery grid", `你, 红 and 蓝 passed at 360px, 430px and 1024px; screenshots captured in ${screenshotDirectory}`);
-   record("stroke-gallery mobile swipe", "360px touch swipe advanced the gallery");
+   record("subtle stroke-gallery grid", `面, 累 and 人 passed in a two-column grid at 390px and the existing auto-fit grid at 1024px; screenshots captured in ${screenshotDirectory}`);
+   record("stroke-gallery mobile overview", "390px toolbar stayed on one line; 2-column vertical grid, no carousel indicator/listener, and top chevrons passed");
 
    const loaderCoverage = await evaluate(`(async () => {
       const supported = {};
@@ -2802,6 +2779,7 @@ async function main() {
             const card = document.querySelector('.sheet-card').getBoundingClientRect();
             const close = document.querySelector('#dd-close-top').getBoundingClientRect();
             const firstPanel = document.querySelector('.stroke-panel')?.getBoundingClientRect();
+            const galleryStyle = document.querySelector('.stroke-gallery') && getComputedStyle(document.querySelector('.stroke-gallery'));
             return {
                bodyScrollWidth: document.documentElement.scrollWidth,
                cardInside: card.left >= -1 && card.right <= innerWidth + 1 && card.top >= -1 && card.bottom <= innerHeight + 1,
@@ -2809,6 +2787,7 @@ async function main() {
                closeInside: close.left >= 0 && close.right <= innerWidth && close.top >= 0 && close.bottom <= innerHeight,
                closeSize: Math.min(close.width, close.height),
                panelWidth: firstPanel?.width || null,
+               galleryColumns: galleryStyle?.gridTemplateColumns.split(' ').length || 0,
             };
          })()`);
          assert(detailMetrics.bodyScrollWidth <= width, `Detail caused body overflow at ${width}px`);
@@ -2818,7 +2797,7 @@ async function main() {
          );
          assert(detailMetrics.closeSize >= 44, `Detail close control is too small at ${width}px`);
          if (width <= 430)
-            assert(detailMetrics.panelWidth >= 240, `Stroke swipe panel is unreadably small at ${width}px: ${detailMetrics.panelWidth}px`);
+            assert(detailMetrics.galleryColumns===2&&detailMetrics.panelWidth>=width*0.4, `Stroke grid panels are too small or not in two columns at ${width}px: ${JSON.stringify(detailMetrics)}`);
          if (width === 320 || width === 1440) {
             const detailScreenshot = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
             await writeFile(

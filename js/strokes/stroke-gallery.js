@@ -121,22 +121,6 @@ function openStrokeFocus(data, index, settings, opener) {
    root.querySelector(".stroke-focus-close").focus();
 }
 
-function updateStrokeGalleryPosition(gallery, indicator) {
-   if (!gallery || !indicator) return;
-   const center = gallery.scrollLeft + gallery.clientWidth / 2;
-   let closest = 0;
-   let distance = Infinity;
-   gallery.querySelectorAll(".stroke-panel").forEach((panel, index) => {
-      const panelCenter = panel.offsetLeft + panel.offsetWidth / 2;
-      const nextDistance = Math.abs(panelCenter - center);
-      if (nextDistance < distance) {
-         distance = nextDistance;
-         closest = index;
-      }
-   });
-   indicator.textContent = `${closest + 1} / ${gallery.children.length}`;
-}
-
 function renderStrokeGallery(data) {
    const gallery = $("dd-gallery");
    const status = $("dd-gallery-status");
@@ -146,6 +130,7 @@ function renderStrokeGallery(data) {
    const settings = strokeGallerySettings();
    gallery.classList.remove("is-loading");
    gallery.setAttribute("aria-busy", "false");
+   gallery.onscroll = null;
    status.textContent = `${data.character} · ${data.strokeCount} traits réels`;
    gallery.innerHTML = Array.from({ length: data.strokeCount }, (_, index) => {
       const number = index + 1;
@@ -174,13 +159,10 @@ function renderStrokeGallery(data) {
             materializeStrokePanel(entry.target, data, settings);
             strokeGalleryObserver.unobserve(entry.target);
          }),
-         { root: gallery, rootMargin: "240px" },
+         { root: null, rootMargin: "240px" },
       );
       panels.slice(8).forEach((panel) => strokeGalleryObserver.observe(panel));
    }
-   const indicator = $("dd-gallery-position");
-   gallery.onscroll = () => updateStrokeGalleryPosition(gallery, indicator);
-   updateStrokeGalleryPosition(gallery, indicator);
 }
 
 function renderStrokeGalleryError(character, error) {

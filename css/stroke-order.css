@@ -447,14 +447,6 @@
    font-weight: 600;
    text-align: center;
 }
-.stroke-gallery-position {
-   display: none;
-   padding-top: 9px;
-   color: var(--ink-soft);
-   font-size: 13px;
-   font-weight: 600;
-   text-align: center;
-}
 .stroke-gallery-error {
    grid-column: 1 / -1;
    padding: 18px;
@@ -523,31 +515,37 @@
       font-size: 12px;
    }
    .stroke-gallery-toolbar {
-      display: block;
+      align-items: center;
+      gap: 6px;
+      margin: 2px 0 8px;
+      font-size: 11px;
+      white-space: nowrap;
+   }
+   .stroke-gallery-toolbar > span {
+      min-width: 0;
    }
    .stroke-gallery-settings {
-      display: grid;
-      justify-content: stretch;
-      margin-top: 8px;
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin: 0;
+   }
+   .stroke-gallery-settings label {
+      gap: 4px;
    }
    .stroke-gallery {
-      display: flex;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
       margin-inline: 0;
-      padding: 4px 22% 8px 4px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      overscroll-behavior-inline: contain;
-      scrollbar-width: thin;
-      touch-action: pan-x pan-y;
+      padding: 4px 0 8px;
+      overflow: visible;
+      touch-action: pan-y;
    }
-   .stroke-panel {
-      flex: 0 0 min(82vw, 360px);
-      scroll-snap-align: start;
-   }
-   .stroke-gallery-position {
-      display: block;
+   .stroke-character-stage:has(> .character-nav-button):has(#stroke-panel-steps:not([hidden])) .stroke-gallery {
+      width: 100%;
+      padding-top: 56px;
    }
    .stroke-focus-backdrop {
       padding: 8px;

@@ -17,18 +17,18 @@ const visualProofs = {
    paging: path.join(os.tmpdir(), "mo-studio-paging-360.png"),
    riceFirstScreen: path.join(os.tmpdir(), "mo-studio-rice-compact-390.png"),
    helloFirstScreen: path.join(os.tmpdir(), "mo-studio-hello-compact-390.png"),
-   dictionaryStroke360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-360.png"),
-   dictionaryStroke1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-1440.png"),
-   dictionaryStrokeSteps360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-360.png"),
-   dictionaryStrokeSteps1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-1440.png"),
-   dictionaryStrokePractice360: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-practice-360.png"),
-   dictionaryStrokePractice1440: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-practice-1440.png"),
-   sequenceStroke360: path.join(os.tmpdir(), "mo-studio-sequence-strokes-360.png"),
-   sequenceStroke1440: path.join(os.tmpdir(), "mo-studio-sequence-strokes-1440.png"),
-   sequenceStrokeSteps360: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-360.png"),
-   sequenceStrokeSteps1440: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-1440.png"),
-   sequenceStrokePractice360: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-360.png"),
-   sequenceStrokePractice1440: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-1440.png"),
+   dictionaryStroke390: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-390.png"),
+   dictionaryStroke1024: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-1024.png"),
+   dictionaryStrokeSteps390: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-390.png"),
+   dictionaryStrokeSteps1024: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-steps-1024.png"),
+   dictionaryStrokePractice390: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-practice-390.png"),
+   dictionaryStrokePractice1024: path.join(os.tmpdir(), "mo-studio-dictionary-strokes-practice-1024.png"),
+   sequenceStroke390: path.join(os.tmpdir(), "mo-studio-sequence-strokes-390.png"),
+   sequenceStroke1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-1024.png"),
+   sequenceStrokeSteps390: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-390.png"),
+   sequenceStrokeSteps1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-1024.png"),
+   sequenceStrokePractice390: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-390.png"),
+   sequenceStrokePractice1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-1024.png"),
 };
 let server, browser, cdp;
 
@@ -86,7 +86,8 @@ async function captureStrokeNavigation(stageSelector, screenshotPath) {
    const clip = await evaluate(`(async () => {
       const stage=document.querySelector(${JSON.stringify(stageSelector)}),panel=stage?.querySelector('.stroke-tab-panel:not([hidden])'),visual=panel?.querySelector('.mizi') || panel?.querySelector('.stroke-gallery'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');
       if(!stage||!visual||!previous||!next)throw new Error('incomplete stroke navigation capture');
-      visual.scrollIntoView({block:'center',inline:'center'});
+      const compactGallery=visual.matches('.stroke-gallery')&&matchMedia('(max-width: 599px)').matches;
+      visual.scrollIntoView({block:compactGallery?'start':'center',inline:'center'});
       await new Promise((resolve)=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
       const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect(),padding=12;
       const left=Math.max(0,Math.min(p.left,v.left)-padding),top=Math.max(0,Math.min(p.top,v.top)-padding),right=Math.min(innerWidth,Math.max(n.right,v.right)+padding),bottom=Math.min(innerHeight,Math.max(p.bottom,n.bottom,v.bottom)+padding);
@@ -436,15 +437,20 @@ async function main() {
          const panel=document.querySelector('.stroke-tab-panel:not([hidden])'),visual=panel?.querySelector('.mizi') || panel?.querySelector('.stroke-gallery');
          if(!stage||!previous||!next||!visual)return null;
          const s=stage.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect(),v=visual.getBoundingClientRect(),style=getComputedStyle(stage),previousStyle=getComputedStyle(previous),nextStyle=getComputedStyle(next);
-         return {stagePosition:style.position,positions:[previousStyle.position,nextStyle.position],visibility:[previousStyle.visibility,nextStyle.visibility],variables:['--nav-center-y','--nav-left','--nav-right'].map((property)=>style.getPropertyValue(property).trim()),vertical:[Math.abs(p.top+p.height/2-(v.top+v.height/2)),Math.abs(n.top+n.height/2-(v.top+v.height/2))],edgeGaps:[Math.abs(p.right-v.left),Math.abs(n.left-v.right)],ordered:p.left<v.left&&n.right>v.right,buttonsInViewport:p.left>=0&&n.right<=innerWidth,inside:s.left>=0&&s.right<=innerWidth,overflow:document.documentElement.scrollWidth>innerWidth};
+         const firstPanel=visual.matches('.stroke-gallery')?visual.querySelector('.stroke-panel')?.getBoundingClientRect():null;
+         return {stagePosition:style.position,positions:[previousStyle.position,nextStyle.position],visibility:[previousStyle.visibility,nextStyle.visibility],variables:['--nav-center-y','--nav-left','--nav-right'].map((property)=>style.getPropertyValue(property).trim()),vertical:[Math.abs(p.top+p.height/2-(v.top+v.height/2)),Math.abs(n.top+n.height/2-(v.top+v.height/2))],edgeGaps:[Math.abs(p.right-v.left),Math.abs(n.left-v.right)],ordered:p.left<v.left&&n.right>v.right,buttonsInViewport:p.left>=0&&n.right<=innerWidth,inside:s.left>=0&&s.right<=innerWidth,topNavigation:!!firstPanel&&p.bottom<=firstPanel.top&&n.bottom<=firstPanel.top&&p.left>=v.left&&n.right<=v.right,panelsClear:!firstPanel||p.bottom<=firstPanel.top&&n.bottom<=firstPanel.top,overflow:document.documentElement.scrollWidth>innerWidth};
       })()`);
-      assert(layout && layout.stagePosition === "relative" && layout.positions.every((position) => position === "absolute") && layout.visibility.every((value) => value === "visible") && layout.variables.every(Boolean) && layout.vertical.every((gap) => gap < 1) && layout.edgeGaps.every((gap) => Math.abs(gap - 8) < 1) && layout.ordered && layout.buttonsInViewport && layout.inside && !layout.overflow, `${stageSelector} ${tab} layout failed at ${width}px: ${JSON.stringify(layout)}`);
+      const compactGallery = tab === "steps" && width <= 599;
+      const navigationPlacement = compactGallery
+         ? layout.topNavigation
+         : layout.vertical.every((gap) => gap < 1) && layout.edgeGaps.every((gap) => Math.abs(gap - 8) < 1) && layout.ordered;
+      assert(layout && layout.stagePosition === "relative" && layout.positions.every((position) => position === "absolute") && layout.visibility.every((value) => value === "visible") && layout.variables.every(Boolean) && navigationPlacement && (!compactGallery || layout.panelsClear) && layout.buttonsInViewport && layout.inside && !layout.overflow, `${stageSelector} ${tab} layout failed at ${width}px: ${JSON.stringify(layout)}`);
       if (screenshotPath) await captureStrokeNavigation(stageSelector, screenshotPath);
    }
 
    await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'\u4f60\u597d',py:'ni hao',fr:'bonjour'}))");
    await waitFor(() => evaluate("ddChar==='\u4f60' && !!document.querySelector('#dd-target svg')"), "dictionary layout detail did not load");
-   for (const width of [360, 1440])
+   for (const width of [390, 1024])
       for (const tab of ["animation", "steps", "practice"])
          await assertStrokeNavigationLayout(
             "#dd-character-stage",
@@ -456,7 +462,7 @@ async function main() {
 
    await evaluate("ddStrokeTab='animation';openSequence(Array.from('\u9762\u5305'))");
    await waitFor(() => evaluate("seq?.chars.join('')==='\u9762\u5305' && ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "mianbao sequence did not load");
-   for (const width of [360, 1440])
+   for (const width of [390, 1024])
       for (const tab of ["animation", "steps", "practice"])
          await assertStrokeNavigationLayout(
             "#seq-stage",
@@ -486,7 +492,7 @@ async function main() {
    await click(".writing-practice-close");
    assert(await evaluate("sheetOpen()&&!document.querySelector('#sheet').inert&&ddChar==='面'"), "single-character detail was not restored");
    await click('#dd-close');
-   pass("stroke navigation in all tabs at 360/1440 px, dictionary, mianbao sequence, and single character");
+   pass("stroke navigation in all tabs at 390/1024 px, dictionary, mianbao sequence, and single character");
 
    assert(!cdp.errors.length, "runtime errors: " + cdp.errors.join(" | "));
    console.log(`RESULT ${version.Browser} — placement et dictionnaire validés · captures ${Object.values(visualProofs).join(" · ")}`);

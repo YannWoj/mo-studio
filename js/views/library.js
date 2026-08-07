@@ -444,7 +444,10 @@ function openPackImportPreview(preview) {
       '<label class="import-mode-choice"><input type="radio" name="import-mode" value="new" checked><span><strong>' + esc(newModeLabel) + '</strong><small>Un pack séparé sera ajouté à ta bibliothèque.</small></span></label>' +
       '<label class="import-mode-choice"><input type="radio" name="import-mode" value="merge"><span><strong>Ajouter à un pack que j’ai déjà</strong><small>Les mots seront rangés dans un pack existant.</small></span></label></div>' +
       '<label class="import-target-field" id="import-target-field" for="import-target" hidden><span>Dans quel pack ?</span><select class="search" id="import-target"><option value="">Choisir un pack existant</option>' + db.packs.map((pack) => '<option value="' + esc(pack.id) + '">' + esc(pack.name) + "</option>").join("") + "</select></label>" +
-      '<label class="import-replace-option" id="import-replace-field" hidden><input type="checkbox" id="import-replace-structure"><span><strong>Réorganiser les sous-catégories selon le fichier</strong><small>Aucune carte ne sera supprimée et toute progression sera conservée.</small></span></label>' +
+      '<section class="import-structure" id="import-replace-field" aria-labelledby="import-structure-question" hidden><p class="import-structure-question" id="import-structure-question"></p><div class="import-structure-choices">' +
+      '<label class="import-structure-choice"><input type="radio" name="import-structure" value="keep" checked><span><strong>Ajouter aux sous-catégories existantes</strong><small id="import-structure-keep-help"></small></span></label>' +
+      '<label class="import-structure-choice import-structure-choice-danger"><input type="radio" name="import-structure" value="replace"><span><strong>Remplacer l’organisation par celle du fichier</strong><small id="import-structure-replace-help"></small></span></label>' +
+      "</div></section>" +
       (preview.missingDictionary + preview.incomplete > 0
          ? '<fieldset class="import-unknown-words" id="import-unknown-words"><legend>Mots inconnus</legend><p><strong>' +
            unknownCount + " mot" + (unknownCount > 1 ? "s" : "") +
@@ -466,21 +469,42 @@ function openPackImportPreview(preview) {
    const selectedWordCount = () =>
       uniquePreviewWords.filter((word) => importMissing() || !word.incomplete).length;
    const recognizedWordCount = uniquePreviewWords.filter((word) => !word.incomplete).length;
+   const structuredIncomingPacks = preview.packs.filter((pack) => !pack.unclassified);
+   const incomingCategoryNames = Array.from(new Set(structuredIncomingPacks.flatMap((pack) =>
+      pack.categories.map((category) => category.name),
+   )));
+   const lastIncomingPack = structuredIncomingPacks[structuredIncomingPacks.length - 1];
+   const replacementCategoryNames = lastIncomingPack ? lastIncomingPack.categories.map((category) => category.name) : [];
+   const quotedNames = (categoryNames) => categoryNames.length
+      ? categoryNames.map((name) => "« " + name + " »").join(", ")
+      : "aucune";
    const updateImportMode = () => {
       const mode = document.querySelector('input[name="import-mode"]:checked').value;
       const merge = mode === "merge";
       const wordCount = selectedWordCount();
       const wordLabel = wordCount + " mot" + (wordCount > 1 ? "s" : "");
       $("import-target-field").hidden = !merge;
-      $("import-replace-field").hidden = !merge;
       if ($("import-recognized-count"))
          $("import-recognized-count").textContent = recognizedWordCount === 1
             ? "Seul le mot reconnu sera importé."
             : "Seuls les " + recognizedWordCount + " mots reconnus seront importés.";
       const target = db.packs.find((pack) => pack.id === $("import-target").value);
+      const currentCategoryNames = target ? categoriesForPack(target.id).map((category) => category.name) : [];
+      const showStructureChoice = merge && currentCategoryNames.length > 0 && structuredIncomingPacks.length > 0;
+      $("import-replace-field").hidden = !showStructureChoice;
+      if (showStructureChoice) {
+         $("import-structure-question").textContent = "Comment ranger ces mots dans « " + target.name + " » ?";
+         $("import-structure-keep-help").textContent = "Tes sous-catégories actuelles sont gardées : " + quotedNames(currentCategoryNames) + ". Celles du fichier — " + quotedNames(incomingCategoryNames) + " — sont ajoutées si elles n’existent pas encore.";
+         $("import-structure-replace-help").textContent = "Les sous-catégories actuelles de « " + target.name + " » — " + quotedNames(currentCategoryNames) + " — sont supprimées et remplacées par celles du fichier" + (structuredIncomingPacks.length > 1 ? ", selon le dernier pack « " + lastIncomingPack.name + " »" : "") + " : " + quotedNames(replacementCategoryNames) + ". Aucune carte n’est supprimée et ta progression reste intacte, mais les mots qui étaient rangés dans une sous-catégorie absente du fichier ne seront plus rangés dans ce pack.";
+      }
+      const replaceStructure = showStructureChoice && document.querySelector('input[name="import-structure"]:checked').value === "replace";
+      $("import-confirm").classList.toggle("primary", !replaceStructure);
+      $("import-confirm").classList.toggle("danger", replaceStructure);
       $("import-confirm").textContent = merge
          ? target
-            ? "Ajouter " + wordLabel + " à « " + target.name + " »"
+            ? replaceStructure
+               ? "Remplacer l’organisation et ajouter " + wordLabel
+               : "Ajouter " + wordLabel + " à « " + target.name + " »"
             : "Choisir le pack à compléter (" + wordLabel + ")"
          : preview.packs.length === 1
             ? "Créer le pack « " + names + " » (" + wordLabel + ")"
@@ -488,12 +512,17 @@ function openPackImportPreview(preview) {
    };
    document.querySelectorAll('input[name="import-mode"]').forEach((input) => input.onchange = updateImportMode);
    document.querySelectorAll('input[name="import-missing"]').forEach((input) => input.onchange = updateImportMode);
-   if ($("import-target")) $("import-target").onchange = updateImportMode;
+   document.querySelectorAll('input[name="import-structure"]').forEach((input) => input.onchange = updateImportMode);
+   if ($("import-target")) $("import-target").onchange = () => {
+      document.querySelector('input[name="import-structure"][value="keep"]').checked = true;
+      updateImportMode();
+   };
    if ($("import-confirm")) updateImportMode();
    if ($("import-confirm")) $("import-confirm").onclick = () => {
       const mode = document.querySelector('input[name="import-mode"]:checked').value;
       if (mode === "merge" && !$("import-target").value) { toast("Choisis le pack à fusionner."); return; }
-      const result = applyPackImport(preview, { mode, targetPackId: $("import-target").value, skipDuplicates: true, replaceStructure: $("import-replace-structure").checked, importMissing: importMissing() });
+      const replaceStructure = mode === "merge" && !$("import-replace-field").hidden && document.querySelector('input[name="import-structure"]:checked').value === "replace";
+      const result = applyPackImport(preview, { mode, targetPackId: $("import-target").value, skipDuplicates: true, replaceStructure, importMissing: importMissing() });
       closeSheet(); lib.level = "packs"; renderLib(); toast(result.added + " nouvelle(s) carte(s), " + result.reused + " carte(s) réutilisée(s).");
    };
 }
