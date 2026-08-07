@@ -29,6 +29,8 @@ const visualProofs = {
    sequenceStrokeSteps1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-1024.png"),
    sequenceStrokePractice390: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-390.png"),
    sequenceStrokePractice1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-1024.png"),
+   decomposition390: path.join(os.tmpdir(), "mo-studio-character-decomposition-390.png"),
+   decomposition1024: path.join(os.tmpdir(), "mo-studio-character-decomposition-1024.png"),
 };
 let server, browser, cdp;
 
@@ -271,6 +273,30 @@ async function main() {
    const sequenceFirstScreen = await evaluate(`(() => {const selectors=['#seq-flash > .hanzi','#seq-flash > .pinyin','#seq-flash > .fr','#stroke-panel-animation .mizi'];const rects=selectors.map((selector)=>document.querySelector(selector)?.getBoundingClientRect());return {visible:rects.every((rect)=>rect&&rect.top>=0&&rect.bottom<=innerHeight),metaAfterStage:[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('.seq-meta'))>[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('#seq-stage')),rects:rects.map((rect)=>rect&&({top:rect.top,bottom:rect.bottom,width:rect.width}))};})()`);
    assert(sequenceFirstScreen.visible && sequenceFirstScreen.metaAfterStage, `sequence first screen/order failed: ${JSON.stringify(sequenceFirstScreen)}`);
    await evaluate("closeSequence({fromHistory:true})");
+
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
+   await evaluate("(async()=>{ddStrokeTab='animation';openDictDetail(await findDictionaryEntryByHanzi('自行车'))})()");
+   await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===3 && [...document.querySelectorAll('#dd-picker .dd-character-chip')].every((button)=>button.querySelector('[data-character-pinyin]').dataset.characterPinyinValue)"), "自行车 decomposition did not complete");
+   const decomposition = await evaluate(`(() => {
+      const chips=[...document.querySelectorAll('#dd-picker .dd-character-chip')];
+      return {text:chips.map((chip)=>chip.textContent.trim()),pinyin:chips.map((chip)=>chip.querySelector('[data-character-pinyin]').dataset.characterPinyinValue),titles:chips.map((chip)=>chip.title),overflow:document.querySelector('#dd-picker').scrollWidth>document.querySelector('#dd-picker').clientWidth};
+   })()`);
+   assert(decomposition.text.length===3 && decomposition.text.every((text)=>text.length===1) && decomposition.pinyin.every(Boolean) && decomposition.titles.every(Boolean), `自行车 decomposition is incomplete: ${JSON.stringify(decomposition)}`);
+   const decompositionScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
+   await writeFile(visualProofs.decomposition390, Buffer.from(decompositionScreenshot.data, "base64"));
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:1024, height:900, deviceScaleFactor:1, mobile:false });
+   await evaluate("scrollTo(0,0)");
+   const decompositionDesktopScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
+   await writeFile(visualProofs.decomposition1024, Buffer.from(decompositionDesktopScreenshot.data, "base64"));
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
+   await click('#dd-close');
+   await evaluate("(async()=>{openDictDetail(await findDictionaryEntryByHanzi('企业管理'))})()");
+   await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===4"), "four-character decomposition did not render");
+   await click('#dd-close');
+   await evaluate("openDictDetail(normalizeDetailEntry({hz:'你㐀',py:'ni',fr:'test'}))");
+   await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===2 && document.querySelector('#dd-picker [data-character=\"㐀\"] [data-character-definition]').hidden"), "missing character completion was not kept compact");
+   await click('#dd-close');
+   pass(`décomposition par caractère, 2/3/4 caractères et entrée absente · captures ${visualProofs.decomposition390} · ${visualProofs.decomposition1024}`);
 
    const genuineFallback = await evaluate(`(async()=>{
       const entry=await loadDictionaryEntryById('char-並');

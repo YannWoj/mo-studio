@@ -61,38 +61,108 @@ function dictionaryDetailDisplayHanzi(entry) {
    return entry.simplified;
 }
 
-async function dictionaryCharacterStudyEntry(character) {
+async function dictionaryCharacterStudyEntry(character, completion) {
    const personal = db.cards.find((card) => card.hz === character);
    const found = personal
       ? personalCardAsDictionaryEntry(personal)
-      : (await findDictionaryEntryByHanzi(character)) || normalizeDetailEntry({ hz: character });
+      : (completion && completion.entry
+         ? completion.entry
+         : (await findDictionaryEntryByHanzi(character)) || normalizeDetailEntry({ hz: character }));
    return attachHskMetadata(await dictionaryEntryWithFrenchSibling(found));
+}
+
+function updateDictionaryCharacterPicker(characters, completions) {
+   const picker = $("dd-picker");
+   if (!picker) return;
+   picker.querySelectorAll(".dd-character-chip").forEach((button) => {
+      const character = button.dataset.character || "";
+      const completion = completions && typeof completions.get === "function" ? completions.get(character) : null;
+      const pinyinNode = button.querySelector("[data-character-pinyin]");
+      const definitionNode = button.querySelector("[data-character-definition]");
+      const pinyin = completion && completion.pinyin ? completion.pinyin : "";
+      const translation = completion && completion.translation ? completion.translation : "";
+      if (pinyinNode) {
+         pinyinNode.dataset.characterPinyinValue = pinyin;
+         pinyinNode.innerHTML = "";
+         pinyinNode.hidden = !pinyin;
+      }
+      if (definitionNode) {
+         definitionNode.dataset.characterDefinitionValue = translation;
+         definitionNode.textContent = "";
+         definitionNode.hidden = !translation;
+         if (translation) button.title = translation;
+         else button.removeAttribute("title");
+      }
+      const parts = [character, pinyin, translation].filter(Boolean);
+      button.setAttribute(
+         "aria-label",
+         "Afficher " + parts.join(" · ") + ", position " + (Number(button.dataset.i) + 1) + " sur " + characters.length,
+      );
+   });
+}
+
+function dictionaryCharacterPinyinHints(entry, characters) {
+   const hints = new Map();
+   const pronunciation = (entry.pinyin || [])
+      .map((variant) => variant.marked || variant.numbered || "")
+      .find((value) => value);
+   if (!pronunciation) return hints;
+   const parts = pronunciation.replace(/\s*\/\s*/g, " ").trim().split(/\s+/).filter(Boolean);
+   if (parts.length !== characters.length) return hints;
+   characters.forEach((character, index) => {
+      if (!hints.has(character)) hints.set(character, parts[index]);
+   });
+   return hints;
+}
+
+async function loadDictionaryCharacterCompletions(characters, token, state, pinyinHints) {
+   if (!state || !characters.length) return;
+   try {
+      const completions = typeof dictionaryCompletions === "function"
+         ? await dictionaryCompletions(characters, pinyinHints, { includeEntry: true })
+         : new Map();
+      if (
+         token !== dictionaryDetailToken ||
+         document.querySelector('#sheet.open .dd-entry')?.dataset.entryId !== String(state.entryId)
+      ) return;
+      state.map = completions;
+      state.ready = true;
+      updateDictionaryCharacterPicker(characters, completions);
+      if (characters.length > 1)
+         renderDictionaryCharacterStudyCard(characters[state.selectedIndex || 0], token, state);
+   } catch (error) {
+      if (token !== dictionaryDetailToken) return;
+      state.map = new Map();
+      state.ready = true;
+      updateDictionaryCharacterPicker(characters, state.map);
+      if (characters.length > 1)
+         renderDictionaryCharacterStudyCard(characters[state.selectedIndex || 0], token, state);
+   }
 }
 
 function dictionaryCharacterStudyCardShell(character) {
    return (
       '<section class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
-      '<div class="dd-character-study-main"><div class="dd-character-study-hanzi">' +
-      esc(character) + '</div><div class="muted dd-character-study-translation">Chargement…</div></div>' +
+      '<div class="dd-character-study-main dd-character-study-main-hidden" aria-hidden="true"><div class="dd-character-study-hanzi">' +
+      esc(character) + '</div><div class="dd-character-study-pinyin"></div><div class="dd-character-study-translation"></div></div>' +
       '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button></section>'
+      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      '<div class="dd-character-study-actions"><span class="muted">Chargement…</span></div></section>'
    );
 }
 
 function dictionaryCharacterStudyCardHtml(entry, character) {
    const card = findPersonalCardForEntry(entry);
    const pinyin = dictionaryEntryPinyinText(entry);
-   const definition = dictionaryResultDefinition(entry);
+   const translation = dictionarySplitSenses(entry.definitionsFr || []).join(" ; ");
    return (
-      '<div class="dd-character-study-main"><div class="dd-character-study-hanzi" data-say="' +
-      esc(character) + '">' + esc(character) + "</div>" +
-      (pinyin ? '<div class="dd-character-study-pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
-      '<div class="dd-character-study-translation">' +
-      (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
-      (definition.englishText ? '<span>Sens anglais · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div></div>" +
+      '<div class="dd-character-study-main dd-character-study-main-hidden" aria-hidden="true"><div class="dd-character-study-hanzi" data-say="' +
+      esc(character) + '">' + esc(character) + '</div><div class="dd-character-study-pinyin">' +
+      (pinyin ? colorPinyin(pinyin) : "") + '</div><div class="dd-character-study-translation">' + esc(translation) + '</div></div>' +
       '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
       '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-      '<div class="dd-character-study-action">' +
+      '<div class="dd-character-study-actions">' +
+      (translation ? '<span class="dd-character-study-translation dd-character-study-translation-hidden" aria-hidden="true">' + esc(translation) + '</span>' : "") +
       (card
          ? '<button class="btn ghost" id="dd-character-manage" type="button">Ouvrir</button>'
          : '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
@@ -101,13 +171,17 @@ function dictionaryCharacterStudyCardHtml(entry, character) {
    );
 }
 
-async function renderDictionaryCharacterStudyCard(character, detailToken) {
+async function renderDictionaryCharacterStudyCard(character, detailToken, completionState) {
    const target = $("dd-character-study-card");
    if (!target) return;
    const cardToken = ++dictionaryCharacterCardToken;
+   if (completionState && !completionState.ready) return;
    target.setAttribute("aria-busy", "true");
    try {
-      const entry = await dictionaryCharacterStudyEntry(character);
+      const completion = completionState && completionState.map
+         ? completionState.map.get(character)
+         : null;
+      const entry = await dictionaryCharacterStudyEntry(character, completion);
       if (
          cardToken !== dictionaryCharacterCardToken || detailToken !== dictionaryDetailToken ||
          ddChar !== character || !$("dd-character-study-card")
@@ -124,23 +198,28 @@ async function renderDictionaryCharacterStudyCard(character, detailToken) {
       if (cardToken !== dictionaryCharacterCardToken || detailToken !== dictionaryDetailToken) return;
       target.setAttribute("aria-busy", "false");
       target.innerHTML =
-         '<div class="dd-character-study-main"><div class="dd-character-study-hanzi">' +
-         esc(character) + '</div><div class="muted">Données du caractère indisponibles.</div></div>';
+         '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
+         '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+         '<div class="dd-character-study-actions"><span class="muted">Données du caractère indisponibles.</span></div>';
    }
 }
 
 function dictionaryCharacterInteractionHtml(characters) {
    if (!characters.length) return "";
+   const pickerClass = characters.length >= 4 ? "dd-character-picker dd-character-picker-many" : "dd-character-picker dd-character-picker-" + characters.length;
    return (
       '<section class="dd-character-interaction character-swipe-zone" id="dd-character-interaction" aria-label="Caractère étudié">' +
       (characters.length > 1
-         ? '<div class="eyebrow">Caractères du mot</div><div class="picker" id="dd-picker">' +
+         ? '<div class="eyebrow">Caractères du mot</div><div class="picker ' + pickerClass + '" id="dd-picker">' +
            characters.map((character, index) =>
-              '<button class="chip hzchip" type="button" data-i="' + index +
+              '<button class="chip hzchip dd-character-chip" type="button" data-i="' + index +
               '" data-character="' + esc(character) + '" aria-label="Afficher ' + esc(character) +
               ', position ' + (index + 1) + " sur " + characters.length + '" aria-pressed="' +
               String(index === 0) + '" aria-current="' + String(index === 0) + '">' +
-              esc(character) + "</button>",
+              '<span class="dd-character-chip-hanzi">' + esc(character) + '</span>' +
+              '<span class="dd-character-chip-pinyin" data-character-pinyin aria-hidden="true"></span>' +
+              '<span class="dd-character-chip-definition" data-character-definition aria-hidden="true"></span>' +
+              "</button>",
            ).join("") + "</div>"
          : "") +
       '<div class="eyebrow">Ordre des traits</div>' +
@@ -612,6 +691,12 @@ function openDictDetail(rawEntry, options) {
    const marked = uniqueDetailValues(detailPinyin(entry, "marked"));
    const traditional = entry.traditional && entry.traditional !== entry.simplified ? entry.traditional : "";
    const token = ++dictionaryDetailToken;
+   const characterCompletionState = {
+      entryId: entry.id,
+      map: null,
+      ready: false,
+      selectedIndex: 0,
+   };
 
    openSheet(
       '<article class="dd-entry" data-entry-id="' + esc(entry.id) + '">' +
@@ -647,7 +732,17 @@ function openDictDetail(rawEntry, options) {
          (settings.fromSearch ? "← Retour aux résultats" : "Fermer") +
          "</button></div></article>",
    );
-   wireDictDetail(entry, characters, card, token, settings);
+   wireDictDetail(entry, characters, card, token, {
+      ...settings,
+      characterCompletionState,
+   });
+   if (characters.length > 1)
+      loadDictionaryCharacterCompletions(
+         characters,
+         token,
+         characterCompletionState,
+         dictionaryCharacterPinyinHints(entry, characters),
+      );
    if (!(entry.definitionsFr || []).length) {
       dictionaryEntryWithFrenchSibling(entry).then((resolved) => {
          if (
@@ -756,11 +851,13 @@ function updateDictionaryPagingMode() {
 
 function wireDictDetail(entry, characters, card, token, options) {
    if (characters.length) wireStrokeWorkspace();
+   const completionState = options && options.characterCompletionState;
    let selectedCharacterIndex = 0;
    const selectCharacter = (index) => {
       const nextIndex = Math.max(0, Math.min(Number(index) || 0, characters.length - 1));
       const character = characters[nextIndex];
       selectedCharacterIndex = nextIndex;
+      if (completionState) completionState.selectedIndex = nextIndex;
       updateCharacterNavigation(
          "dd-character",
          characters,
@@ -782,7 +879,8 @@ function wireDictDetail(entry, characters, card, token, options) {
                : nextIndex,
       });
       renderDictionaryRelatedWords(character, token);
-      if (characters.length > 1) renderDictionaryCharacterStudyCard(character, token);
+      if (characters.length > 1 && (!completionState || completionState.ready))
+         renderDictionaryCharacterStudyCard(character, token, completionState);
    };
    const moveCharacter = (delta) => {
       const nextIndex = selectedCharacterIndex + delta;

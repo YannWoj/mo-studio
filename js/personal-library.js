@@ -581,7 +581,7 @@ async function dictionaryCompletion(chinese, pinyinHint) {
    }
 }
 
-async function dictionaryCompletions(chineseValues, pinyinHints) {
+async function dictionaryCompletions(chineseValues, pinyinHints, options) {
    try {
       const index = await loadDictionaryIndex("exactHanzi", false);
       const wanted = uniqueStrings(chineseValues);
@@ -592,11 +592,13 @@ async function dictionaryCompletions(chineseValues, pinyinHints) {
          const hint = pinyinHints && typeof pinyinHints.get === "function" ? pinyinHints.get(chinese) : "";
          const entry = chooseDictionaryCompletionEntry(entries, chinese, hint);
          if (!entry) return;
-         output.set(chinese, {
+         const completion = {
             pinyin: dictionaryCompletionPinyin(entry, hint),
             translation: dictionaryCompletionTranslation(entry),
             dictionaryId: entry.id,
-         });
+         };
+         if (options && options.includeEntry) completion.entry = entry;
+         output.set(chinese, completion);
       });
       return output;
    } catch (error) {

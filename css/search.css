@@ -535,7 +535,7 @@
 .dd-character-study-card {
    position: relative;
    display: grid;
-   grid-template-columns: minmax(0, 1fr) 44px auto;
+   grid-template-columns: 44px minmax(0, 1fr);
    gap: 9px;
    align-items: center;
    min-height: 58px;
@@ -559,6 +559,23 @@
    align-items: center;
    gap: 8px;
    min-width: 0;
+}
+.dd-character-study-main-hidden {
+   position: absolute;
+   inset: 0;
+   z-index: 0;
+   opacity: 0;
+   pointer-events: auto;
+}
+.dd-character-study-main-hidden .dd-character-study-hanzi {
+   position: absolute;
+   inset: 0;
+   z-index: 1;
+}
+.dd-character-study-card > .dd-character-audio,
+.dd-character-study-card > .dd-character-study-actions {
+   position: relative;
+   z-index: 1;
 }
 .dd-character-study-hanzi {
    font-family: var(--serif);
@@ -593,7 +610,26 @@
    display: flex;
    align-items: center;
 }
-.dd-character-study-action .btn {
+.dd-character-study-actions {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   min-width: 0;
+   min-height: 44px;
+}
+.dd-character-study-translation-hidden {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   margin: -1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border: 0;
+}
+.dd-character-study-action .btn,
+.dd-character-study-actions .btn {
    min-height: 44px;
    padding-inline: 10px;
    border-color: var(--line);
@@ -604,6 +640,66 @@
    background: var(--seal);
    color: var(--card-2);
    box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 18%, transparent);
+}
+#dd-picker .hzchip[aria-current="true"] .dd-character-chip-pinyin,
+#dd-picker .hzchip[aria-current="true"] .dd-character-chip-definition {
+   color: color-mix(in srgb, var(--card-2) 82%, transparent);
+}
+#dd-picker.dd-character-picker {
+   flex-wrap: nowrap;
+   max-height: none;
+   overflow-x: auto;
+   overflow-y: hidden;
+   align-items: stretch;
+   padding: 2px 2px 5px;
+}
+#dd-picker .dd-character-chip {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: flex-start;
+   flex: 1 1 0;
+   min-width: 0;
+   height: 104px;
+   padding: 8px 9px 7px;
+   gap: 3px;
+   overflow: hidden;
+   text-align: center;
+}
+#dd-picker.dd-character-picker-many .dd-character-chip {
+   flex: 1 1 82px;
+   max-width: 150px;
+}
+.dd-character-chip-hanzi {
+   font-family: var(--serif);
+   font-size: 27px;
+   line-height: 1;
+}
+.dd-character-chip-pinyin {
+   min-height: 17px;
+   color: var(--ink-soft);
+   font-size: 13px;
+   line-height: 1.2;
+   white-space: nowrap;
+}
+.dd-character-chip-pinyin::before {
+   content: attr(data-character-pinyin-value);
+}
+.dd-character-chip-definition {
+   display: -webkit-box;
+   min-width: 0;
+   max-width: 100%;
+   overflow: hidden;
+   color: var(--ink-soft);
+   font-family: var(--sans);
+   font-size: 11px;
+   line-height: 1.25;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   overflow-wrap: anywhere;
+}
+.dd-character-chip-definition::before {
+   content: attr(data-character-definition-value);
 }
 #dd-picker .hzchip:disabled {
    cursor: default;
@@ -653,6 +749,23 @@
       padding: 6px 13px;
       font-size: 19px;
    }
+   #dd-picker .dd-character-chip {
+      height: 100px;
+      padding: 7px 6px 6px;
+   }
+   #dd-picker.dd-character-picker-many .dd-character-chip {
+      flex-basis: 82px;
+      max-width: none;
+   }
+   .dd-character-chip-hanzi {
+      font-size: 25px;
+   }
+   .dd-character-chip-pinyin {
+      font-size: 12px;
+   }
+   .dd-character-chip-definition {
+      font-size: 10px;
+   }
    .dd-character-interaction .stroke-workspace {
       margin-top: 5px;
    }
@@ -663,11 +776,12 @@
       margin-top: 5px;
    }
    .dd-character-study-card {
-      grid-template-columns: minmax(0, 1fr) 44px auto;
+      grid-template-columns: 44px minmax(0, 1fr);
       margin-top: 7px;
       padding: 5px 7px;
    }
-   .dd-character-study-action .btn {
+   .dd-character-study-action .btn,
+   .dd-character-study-actions .btn {
       width: auto;
       padding-inline: 8px;
       font-size: 12px;
