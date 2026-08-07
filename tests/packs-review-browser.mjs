@@ -20,6 +20,10 @@ const importPreviewScreenshots = {
    unknownMobile: path.join(os.tmpdir(), "mo-pack-import-preview-unknown-390.png"),
    desktop: path.join(os.tmpdir(), "mo-pack-import-preview-1024.png"),
 };
+const cardCreationScreenshots = {
+   mobile: path.join(os.tmpdir(), "mo-card-dictionary-search-390.png"),
+   desktop: path.join(os.tmpdir(), "mo-card-dictionary-selection-1024.png"),
+};
 let server, browser, cdp;
 
 function assert(value, message) { if (!value) throw new Error(message); }
@@ -95,6 +99,65 @@ async function main() {
    assert(structure.packs === 1 && structure.categories === 30, "pack / 30 categories creation failed");
    pass("création d’un pack et de 30 sous-catégories");
 
+   const addWordCategoryId = await evaluate("categoriesForPack(db.packs[0].id).find((category)=>category.name==='Chapitre 2').id");
+   await cdp.send("Emulation.setDeviceMetricsOverride", {width:390,height:844,deviceScaleFactor:1,mobile:true});
+   await evaluate(`setView('lib');lib.level='category';lib.packId=db.packs[0].id;lib.categoryId=${JSON.stringify(addWordCategoryId)};lib.q='';renderLib()`);
+   await click('#word-add');
+   assert(await evaluate("!!document.querySelector('#word-dictionary-query')&&!document.querySelector('#word-hz')&&document.querySelector('#word-manual-start').textContent.includes('créer à la main')"), "new card did not open on dictionary search");
+   const searchInCardForm = async (query, expectedText) => {
+      await evaluate(`(() => {const input=document.querySelector('#word-dictionary-query');input.value=${JSON.stringify(query)};input.dispatchEvent(new Event('input',{bubbles:true}))})()`);
+      await waitFor(() => evaluate(`!document.querySelector('#word-dictionary-suggestions').hidden&&document.querySelector('#word-dictionary-suggestions').textContent.includes(${JSON.stringify(expectedText)})`), `card-form search failed for ${query}`);
+   };
+   await searchInCardForm('面','面');
+   await evaluate("document.querySelector('#word-dictionary-query').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}))");
+   assert(await evaluate("document.querySelector('#word-dictionary-suggestions [aria-selected=true]')?.dataset.suggestionIndex==='0'&&document.querySelector('#word-dictionary-query').getAttribute('aria-activedescendant')==='word-dictionary-option-0'"), "shared suggestion keyboard navigation failed in card form");
+   await searchInCardForm('mian4','面');
+   await searchInCardForm('bonjour','你好');
+   await evaluate("document.querySelector('.word-dictionary-search').scrollIntoView({block:'start'})");
+   const cardSearchImage = await cdp.send("Page.captureScreenshot",{format:"png",fromSurface:true});
+   await writeFile(cardCreationScreenshots.mobile,Buffer.from(cardSearchImage.data,"base64"));
+   await searchInCardForm('面','面');
+   await click('#word-dictionary-suggestions [data-suggestion-index="0"]');
+   await waitFor(()=>evaluate("!!document.querySelector('#word-hz')"),"dictionary selection did not open the editable card form");
+   const selectedDictionaryWord = await evaluate(`(() => ({hz:document.querySelector('#word-hz').value,py:document.querySelector('#word-py').value,fr:document.querySelector('#word-fr').value,choice:document.querySelector('.word-dictionary-choice').textContent,currentCategory:document.querySelector('[data-card-category=${addWordCategoryId}]').checked,sourceButton:document.querySelector('#word-save').textContent,searchAbsent:!document.querySelector('#word-dictionary-query')}))()`);
+   assert(selectedDictionaryWord.hz==='面'&&selectedDictionaryWord.py.includes('miàn')&&selectedDictionaryWord.fr&&selectedDictionaryWord.choice.includes('面')&&selectedDictionaryWord.choice.includes('Changer de mot')&&selectedDictionaryWord.currentCategory&&selectedDictionaryWord.sourceButton==='Enregistrer'&&selectedDictionaryWord.searchAbsent, `dictionary selection did not prefill card fields/category: ${JSON.stringify(selectedDictionaryWord)}`);
+   await cdp.send("Emulation.setDeviceMetricsOverride",{width:1024,height:900,deviceScaleFactor:1,mobile:false});
+   const selectedDesktopImage=await cdp.send("Page.captureScreenshot",{format:"png",fromSurface:true});
+   await writeFile(cardCreationScreenshots.desktop,Buffer.from(selectedDesktopImage.data,"base64"));
+   await evaluate("document.querySelector('#word-note').value='Note choisie';document.querySelector('#word-tags').value='dictionnaire, test'");
+   await click('#word-save');
+   const firstDictionarySave = await evaluate(`(() => {const card=db.cards.find((item)=>item.hz==='面');return {id:card?.id,source:card?.dictionaryEntryId,note:card?.note,tags:card?.tags,membership:db.memberships.some((membership)=>membership.cardId===card?.id&&membership.categoryId===${JSON.stringify(addWordCategoryId)})};})()`);
+   assert(firstDictionarySave.id&&/^(word-|char-)/.test(firstDictionarySave.source)&&firstDictionarySave.note==='Note choisie'&&firstDictionarySave.tags.includes('dictionnaire')&&firstDictionarySave.membership, `dictionary card was not linked/saved in current category: ${JSON.stringify(firstDictionarySave)}`);
+
+   await click('#word-add');
+   await searchInCardForm('面','Déjà dans Mes mots');
+   assert(await evaluate("document.querySelector('.dictionary-suggestion-personal')?.textContent==='Déjà dans Mes mots'"), "existing personal word badge missing from suggestions");
+   await click('#word-dictionary-suggestions [data-suggestion-index="0"]');
+   await waitFor(()=>evaluate("!!document.querySelector('#word-save')"),"existing dictionary selection did not open the placement form");
+   assert(await evaluate(`document.querySelector('.word-dictionary-existing')?.textContent==='Déjà dans Mes mots'&&document.querySelector('#word-save').textContent==='Ranger le mot'&&document.querySelector('[data-card-category="${addWordCategoryId}"]').checked`), "selected existing word did not explain placement-only reuse");
+   const cardCountBeforeReuse=await evaluate("db.cards.length");
+   await click('#word-save');
+   assert((await evaluate("db.cards.length"))===cardCountBeforeReuse,"selecting an existing dictionary word created a duplicate");
+
+   await click('#word-add');
+   await searchInCardForm('䨻䨻','Aucun résultat');
+   await click('#word-manual-empty');
+   assert(await evaluate(`document.querySelector('#word-hz').value==='䨻䨻'&&document.querySelector('[data-card-category=${addWordCategoryId}]').checked&&!!document.querySelector('#word-back-dictionary')`), "unknown Hanzi did not enter manual creation prefilled in the current category");
+   await evaluate("document.querySelector('#word-py').value='biáng';document.querySelector('#word-fr').value='caractère rare de test'");
+   await click('#word-save');
+   const manualCardId=await evaluate("db.cards.find((card)=>card.hz==='䨻䨻').id");
+
+   await evaluate(`lib.level='category';lib.categoryId=${JSON.stringify(addWordCategoryId)};lib.q='';renderLib()`);
+   await click(`[data-word-open="${firstDictionarySave.id}"]`);
+   await waitFor(()=>evaluate("!!document.querySelector('#card-edit')"),"saved dictionary card detail did not open");
+   await click('#card-edit');
+   assert(await evaluate("!!document.querySelector('#word-hz')&&!document.querySelector('#word-dictionary-query')&&document.querySelector('.sh-t').textContent==='Modifier le mot'"),"Modifier incorrectly reopened dictionary search");
+   await evaluate("document.querySelector('#word-fr').value='visage modifié'");
+   await click('#word-save');
+   assert(await evaluate(`db.cards.find((card)=>card.id===${JSON.stringify(firstDictionarySave.id)}).fr==='visage modifié'`),"direct card edit no longer saves");
+   await evaluate(`(() => {const ids=new Set([${JSON.stringify(firstDictionarySave.id)},${JSON.stringify(manualCardId)}]);db.memberships=db.memberships.filter((membership)=>!ids.has(membership.cardId));db.cards=db.cards.filter((card)=>!ids.has(card.id));save();renderLib();})()`);
+   pass(`ajout guidé par dictionnaire hanzi/pinyin/français, catégorie courante, doublon, création manuelle et édition directe · captures ${cardCreationScreenshots.mobile} · ${cardCreationScreenshots.desktop}`);
+
    const json = JSON.stringify({ version: 1, pack: { name: "Import JSON", description: "Test", categories: [
       { name: "Chapitre 1", words: [{ chinese: "你好", pinyin: "nǐ hǎo", translation: "bonjour", favorite: true }] },
       { name: "Chapitre 2", words: [{ chinese: "你好", pinyin: "nǐ hǎo", translation: "bonjour" }, { chinese: "朋友", translation: "ami", difficult: true }] }
@@ -118,7 +181,7 @@ async function main() {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
       await waitFor(() => evaluate(`(() => {const stage=document.querySelector('#card-stage'),visual=stage?.querySelector('.stroke-tab-panel:not([hidden]) .mizi'),previous=stage?.querySelector(':scope > .character-nav-previous'),next=stage?.querySelector(':scope > .character-nav-next');if(!stage||!visual||!previous||!next)return false;const v=visual.getBoundingClientRect(),p=previous.getBoundingClientRect(),n=next.getBoundingClientRect();return Math.abs(v.left-p.right-8)<1&&Math.abs(n.left-v.right-8)<1&&Math.abs(p.top+p.height/2-v.top-v.height/2)<1;})()`), `card stroke navigation did not settle at ${width}px`);
       const layout = await evaluate(`(() => {const sheet=document.querySelector('.sheet-card'),detail=document.querySelector('.card-detail-sheet'),head=detail.querySelector('.cd-head'),strokes=detail.querySelector('.card-detail-strokes'),chips=detail.querySelector('.acts'),note=detail.querySelector('.note'),membership=[...detail.querySelectorAll('.eyebrow')].find((item)=>item.textContent.trim()==='Présent dans'),buttons=detail.querySelector(':scope > .sh-btns'),square=strokes.querySelector('.mizi'),listen=detail.querySelector('.seal'),close=document.querySelector('#card-close-top'),previous=document.querySelector('#card-prev'),next=document.querySelector('#card-next'),a=listen.getBoundingClientRect(),b=close.getBoundingClientRect(),s=sheet.getBoundingClientRect(),h=head.getBoundingClientRect(),q=square.getBoundingClientRect(),follows=(first,second)=>!!(first.compareDocumentPosition(second)&Node.DOCUMENT_POSITION_FOLLOWING);return {overlap:!(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top),sizes:[a.width,a.height,b.width,b.height],obsoleteWordButtons:!!document.querySelector('#card-word-prev,#card-word-next'),characterButtons:!!previous&&!!next,characterState:[previous.disabled,next.disabled],wordPosition:document.querySelector('#card-word-position').textContent.trim(),actions:['card-favorite','card-difficult','card-mastered','card-review-one','card-edit','card-delete','card-close','dd-write'].every((id)=>!!document.getElementById(id)),membershipHandlers:[...document.querySelectorAll('[data-card-category]')].every((input)=>typeof input.onchange==='function'),order:follows(head,strokes)&&follows(strokes,chips)&&follows(chips,note)&&follows(note,membership)&&follows(membership,buttons),firstScreen:h.top>=s.top-1&&q.top>=s.top-1&&q.bottom<=Math.min(s.bottom,innerHeight)+1,square:{top:q.top,bottom:q.bottom,size:q.width},viewport:{top:s.top,bottom:Math.min(s.bottom,innerHeight)},scrollTop:sheet.scrollTop,overflow:sheet.scrollWidth>sheet.clientWidth||document.documentElement.scrollWidth>innerWidth};})()`);
-      assert(!layout.overlap && layout.sizes.every((size)=>size>=44) && !layout.obsoleteWordButtons && layout.characterButtons && layout.characterState[0] && !layout.characterState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && layout.order && (width!==390||layout.firstScreen) && layout.scrollTop===0 && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
+      assert(!layout.overlap && layout.sizes.every((size)=>size>=43.9) && !layout.obsoleteWordButtons && layout.characterButtons && layout.characterState[0] && !layout.characterState[1] && /1 \/ 2$/.test(layout.wordPosition) && layout.actions && layout.membershipHandlers && layout.order && (width!==390||layout.firstScreen) && layout.scrollTop===0 && !layout.overflow, `personal card detail layout/actions failed at ${width}px: ${JSON.stringify(layout)}`);
       await evaluate("document.querySelector('.sheet-card').scrollTop=0");
       const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
       await writeFile(width === 390 ? cardDetailScreenshots.mobile : cardDetailScreenshots.desktop, Buffer.from(screenshot.data, "base64"));

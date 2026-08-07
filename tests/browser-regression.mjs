@@ -836,6 +836,8 @@ async function main() {
    assert(await evaluate("db.packs.some((pack) => pack.name === 'Test pack')"), "Pack creation failed");
    record("packs", "imported and newly created packs are present");
    await click("#pack-add-word");
+   assert(await evaluate("!!document.querySelector('#word-dictionary-query')&&!document.querySelector('#word-hz')"), "New-card flow did not start with dictionary search");
+   await click("#word-manual-start");
    await setValue("#word-hz", "测试");
    await setValue("#word-py", "ce4 shi4");
    await setValue("#word-fr", "test temporaire");

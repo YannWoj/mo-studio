@@ -260,27 +260,48 @@ function renderDictionaryResults() {
    if ($("btn-seq")) $("btn-seq").onclick = () => openSequence(response.query.characters);
 }
 
-function renderSearchSuggestions(response) {
-   const target = $("dsearch-suggestions");
-   const input = $("dq");
+function searchSuggestionConfig(options) {
+   const settings = options || {};
+   const resolveElement = (value, fallbackId) =>
+      value && value.nodeType === 1 ? value : $(value || fallbackId);
+   return {
+      target: resolveElement(settings.target, "dsearch-suggestions"),
+      input: resolveElement(settings.input, "dq"),
+      state: settings.state || srch,
+      idPrefix: settings.idPrefix || "dsearch-option",
+      limit: Number.isFinite(settings.limit) ? settings.limit : 6,
+      onSelect: settings.onSelect,
+      isAlreadyPersonal: settings.isAlreadyPersonal,
+      emptyHtml: settings.emptyHtml || "",
+   };
+}
+
+function renderSearchSuggestions(response, options) {
+   const config = searchSuggestionConfig(options);
+   const { target, input, state } = config;
    if (!target) return;
-   const items = response && response.results ? response.results.slice(0, 6) : [];
-   srch.suggestionSearch = response;
-   srch.suggestionIndex = -1;
+   const items = response && response.results ? response.results.slice(0, config.limit) : [];
+   state.suggestionSearch = response;
+   state.suggestionIndex = -1;
    if (!items.length) {
-      target.hidden = true;
-      target.innerHTML = "";
-      if (input) input.setAttribute("aria-expanded", "false");
-      return;
+      target.hidden = !config.emptyHtml;
+      target.innerHTML = config.emptyHtml;
+      if (input) input.setAttribute("aria-expanded", String(!!config.emptyHtml));
+      return items;
    }
    target.innerHTML = items
       .map((item, index) => {
          const definition = dictionaryResultDefinition(item.entry);
+         const alreadyPersonal = config.isAlreadyPersonal
+            ? config.isAlreadyPersonal(item.entry)
+            : !!item.entry.personalCard;
          return (
-            '<button id="dsearch-option-' + index + '" role="option" aria-selected="false" data-suggestion-index="' + index + '"><b>' +
+            '<button id="' + esc(config.idPrefix) + "-" + index + '" role="option" aria-selected="false" data-suggestion-index="' + index + '"><b>' +
             esc(item.entry.simplified) + '</b><span>' + colorPinyin(dictionaryEntryPinyinText(item.entry)) +
             '</span><small>' + (item.entry.entryType === "character" ? "caractère" : "mot") +
-            " · " + (definition.english ? "EN · " : "") + esc(definition.text) + "</small></button>"
+            " · " + (definition.english ? "EN · " : "") + esc(definition.text) +
+            (alreadyPersonal ? '<em class="dictionary-suggestion-personal">Déjà dans Mes mots</em>' : "") +
+            "</small></button>"
          );
       })
       .join("");
@@ -289,30 +310,34 @@ function renderSearchSuggestions(response) {
    target.querySelectorAll("[data-suggestion-index]").forEach((button) => {
       button.onclick = () => {
          const entry = items[Number(button.dataset.suggestionIndex)].entry;
-         launchDictionarySearch(entry.simplified);
+         if (config.onSelect) config.onSelect(entry);
+         else launchDictionarySearch(entry.simplified);
       };
    });
+   return items;
 }
 
-function moveSearchSuggestion(direction) {
-   const target = $("dsearch-suggestions");
-   const options = target ? Array.from(target.querySelectorAll("[data-suggestion-index]")) : [];
-   if (!options.length) return false;
-   srch.suggestionIndex = (srch.suggestionIndex + direction + options.length) % options.length;
-   options.forEach((option, index) => option.setAttribute("aria-selected", String(index === srch.suggestionIndex)));
-   if ($("dq")) $("dq").setAttribute("aria-activedescendant", options[srch.suggestionIndex].id);
-   options[srch.suggestionIndex].scrollIntoView({ block: "nearest" });
+function moveSearchSuggestion(direction, options) {
+   const config = searchSuggestionConfig(options);
+   const { target, input, state } = config;
+   const optionElements = target ? Array.from(target.querySelectorAll("[data-suggestion-index]")) : [];
+   if (!optionElements.length) return false;
+   state.suggestionIndex = (state.suggestionIndex + direction + optionElements.length) % optionElements.length;
+   optionElements.forEach((option, index) => option.setAttribute("aria-selected", String(index === state.suggestionIndex)));
+   if (input) input.setAttribute("aria-activedescendant", optionElements[state.suggestionIndex].id);
+   optionElements[state.suggestionIndex].scrollIntoView({ block: "nearest" });
    return true;
 }
 
-function closeSearchSuggestions() {
-   const target = $("dsearch-suggestions");
+function closeSearchSuggestions(options) {
+   const config = searchSuggestionConfig(options);
+   const { target, input, state } = config;
    if (target) target.hidden = true;
-   if ($("dq")) {
-      $("dq").setAttribute("aria-expanded", "false");
-      $("dq").removeAttribute("aria-activedescendant");
+   if (input) {
+      input.setAttribute("aria-expanded", "false");
+      input.removeAttribute("aria-activedescendant");
    }
-   srch.suggestionIndex = -1;
+   state.suggestionIndex = -1;
 }
 
 function cleanupSearchView() {

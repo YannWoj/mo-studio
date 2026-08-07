@@ -341,19 +341,199 @@ function openCardDetail(id, options) {
    $("card-delete").onclick = () => { if (confirm("Supprimer définitivement « " + card.hz + " » ?")) { removeCardsFromLibrary([card.id]); closeSheet(); lib.selected.delete(card.id); renderLib(); } };
 }
 
-function openCardForm(card, initialCategoryIds) {
+let cardDictionarySearchTimer = null;
+let cardDictionarySearchSequence = 0;
+
+function personalCardForDictionarySelection(entry) {
+   if (typeof findPersonalCardForEntry === "function")
+      return findPersonalCardForEntry(entry);
+   if (entry && entry.personalCard)
+      return db.cards.find((card) => card.id === entry.personalCard.id) || null;
+   const sourceId = entry && (entry.dictionaryEntryId || entry.id);
+   return sourceId
+      ? db.cards.find((card) => card.dictionaryEntryId === sourceId) || null
+      : null;
+}
+
+function dictionaryEntryCardDraft(entry) {
+   const existing = personalCardForDictionarySelection(entry);
+   return {
+      hz: existing ? existing.hz : entry.simplified,
+      py: existing ? existing.py : (entry.pinyin && entry.pinyin[0] ? entry.pinyin[0].marked : ""),
+      fr: existing ? existing.fr : (entry.definitionsFr && entry.definitionsFr[0] ? entry.definitionsFr[0] : ""),
+      note: existing ? existing.note : "",
+      tags: existing ? existing.tags : [],
+      senseId: existing ? existing.senseId : "",
+      traditional: existing ? existing.traditional : entry.traditional || "",
+      dictionaryEntryId: existing && existing.dictionaryEntryId
+         ? existing.dictionaryEntryId
+         : entry.dictionaryEntryId || entry.id || "",
+   };
+}
+
+function dictionarySelectionHtml(entry, existing) {
+   const definition = dictionaryResultDefinition(entry);
+   return (
+      '<section class="word-dictionary-choice" aria-label="Entrée du dictionnaire choisie"><div class="word-dictionary-choice-main"><b>' +
+      esc(entry.simplified) + '</b><span>' + colorPinyin(dictionaryEntryPinyinText(entry)) +
+      '</span><small>' + (definition.english ? "EN · " : "") + esc(definition.text) + "</small></div>" +
+      (existing ? '<span class="word-dictionary-existing">Déjà dans Mes mots</span>' : "") +
+      '<button class="btn ghost sm" id="word-change-dictionary" type="button">Changer de mot</button></section>'
+   );
+}
+
+function cardEditorHtml(existingCard, current, initialCategoryIds, creationState) {
+   const selectedEntry = creationState && creationState.entry;
+   const selectedExisting = selectedEntry && personalCardForDictionarySelection(selectedEntry);
+   return (
+      '<h3 class="sh-t">' + (existingCard ? "Modifier le mot" : "Ajouter un mot") + "</h3>" +
+      (selectedEntry ? dictionarySelectionHtml(selectedEntry, selectedExisting) : "") +
+      (!existingCard && creationState && creationState.mode === "manual"
+         ? '<div class="word-manual-heading"><p><strong>Création manuelle</strong><span>Renseigne uniquement ce que tu connais.</span></p><button class="btn ghost sm" id="word-back-dictionary" type="button">Chercher dans le dictionnaire</button></div>'
+         : "") +
+      '<div class="word-card-fields"><label class="f-lab">Caractères chinois *<input class="search" id="word-hz" value="' + esc(current.hz || "") + '"></label><label class="f-lab">Pinyin<input class="search" id="word-py" value="' + esc(current.py || "") + '"></label><label class="f-lab">Traduction<input class="search" id="word-fr" value="' + esc(current.fr || "") + '"></label><label class="f-lab">Notes<textarea class="search" id="word-note" rows="2">' + esc(current.note || "") + '</textarea></label><label class="f-lab">Tags, séparés par des virgules<input class="search" id="word-tags" value="' + esc((current.tags || []).join(", ")) + '"></label></div><div class="eyebrow">Sous-catégories</div>' +
+      cardCategoryCheckboxes(existingCard, initialCategoryIds) +
+      '<div class="sh-btns"><button class="btn primary" id="word-save">' + (selectedExisting ? "Ranger le mot" : "Enregistrer") + '</button><button class="btn ghost" data-sheet-close>Annuler</button></div>'
+   );
+}
+
+function openCardDictionarySearch(initialCategoryIds, state) {
+   clearTimeout(cardDictionarySearchTimer);
+   const searchState = state || { suggestionSearch: null, suggestionIndex: -1, query: "" };
+   openSheet(
+      '<section class="word-dictionary-search"><h3 class="sh-t">Ajouter un mot</h3><p class="sh-p">Commence par le dictionnaire : pinyin et traduction seront préremplis.</p>' +
+      '<label class="f-lab" for="word-dictionary-query">Chercher un mot dans le dictionnaire</label><div class="dictionary-search-input word-dictionary-input"><input class="search" id="word-dictionary-query" value="' + esc(searchState.query || "") + '" placeholder="汉字, pinyin ou français…" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-controls="word-dictionary-suggestions" aria-expanded="false"><button type="button" class="search-clear" id="word-dictionary-clear" aria-label="Effacer"' + (searchState.query ? "" : " hidden") + '>×</button><div class="dictionary-suggestions" id="word-dictionary-suggestions" role="listbox" hidden></div></div>' +
+      '<div class="search-live-state" id="word-dictionary-state" role="status" aria-live="polite">Saisis un caractère chinois ou au moins deux lettres.</div>' +
+      '<button class="btn ghost wide word-manual-start" id="word-manual-start" type="button">Ce mot n’est pas dans le dictionnaire — le créer à la main</button>' +
+      '<div class="sh-btns"><button class="btn ghost" data-sheet-close>Annuler</button></div></section>',
+   );
+   const input = $("word-dictionary-query");
+   const suggestionOptions = {
+      target: "word-dictionary-suggestions",
+      input,
+      state: searchState,
+      idPrefix: "word-dictionary-option",
+      onSelect: async (entry) => {
+         if ($("word-dictionary-state")) $("word-dictionary-state").textContent = "Préparation du mot…";
+         let completedEntry = entry;
+         try {
+            if (typeof dictionaryEntryWithFrenchSibling === "function")
+               completedEntry = await dictionaryEntryWithFrenchSibling(entry);
+         } catch (error) {
+            console.error("Complétion française de la suggestion impossible", error);
+         }
+         if (!$("word-dictionary-query")) return;
+         openCardForm(null, initialCategoryIds, {
+            mode: "selected",
+            entry: completedEntry,
+            draft: dictionaryEntryCardDraft(completedEntry),
+            query: input.value,
+         });
+      },
+      isAlreadyPersonal: (entry) => !!personalCardForDictionarySelection(entry),
+   };
+   const openManual = () => {
+      const typed = input.value.trim();
+      const isHanzi = typed && Array.from(typed).every((character) => HAN_PATTERN.test(character));
+      openCardForm(null, initialCategoryIds, {
+         mode: "manual",
+         draft: { hz: isHanzi ? typed : "", py: "", fr: "", note: "", tags: [] },
+         query: input.value,
+      });
+   };
+   const updateSuggestions = async () => {
+      if (!input.isConnected) return;
+      const expected = input.value.trim();
+      searchState.query = input.value;
+      const classified = classifySearchQuery(expected);
+      const minimum = classified.type && classified.type.startsWith("hanzi") ? 1 : 2;
+      if (!classified.valid || Array.from(expected).length < minimum) {
+         closeSearchSuggestions(suggestionOptions);
+         $("word-dictionary-state").textContent = "Saisis un caractère chinois ou au moins deux lettres.";
+         return;
+      }
+      const sequence = ++cardDictionarySearchSequence;
+      $("word-dictionary-state").textContent = "Recherche dans le dictionnaire…";
+      try {
+         const response = await searchDictionary(expected, { limit: 6, candidateLimit: 18 });
+         if (sequence !== cardDictionarySearchSequence || !$("word-dictionary-query") || input.value.trim() !== expected) return;
+         const items = renderSearchSuggestions(response, {
+            ...suggestionOptions,
+            emptyHtml: '<div class="word-dictionary-empty"><p>Aucun résultat pour <strong>« ' + esc(expected) + ' »</strong>.</p><button class="btn ghost" id="word-manual-empty" type="button">Créer ce mot à la main</button></div>',
+         });
+         $("word-dictionary-state").textContent = items.length
+            ? items.length + " suggestion" + (items.length > 1 ? "s" : "")
+            : "Ce mot semble absent du dictionnaire.";
+         if ($("word-manual-empty")) $("word-manual-empty").onclick = openManual;
+      } catch (error) {
+         if (error instanceof StaleDictionarySearchError) return;
+         if ($("word-dictionary-state")) $("word-dictionary-state").textContent = "Dictionnaire indisponible. La création manuelle reste possible.";
+      }
+   };
+   input.oninput = () => {
+      searchState.query = input.value;
+      searchState.suggestionSearch = null;
+      searchState.suggestionIndex = -1;
+      closeSearchSuggestions(suggestionOptions);
+      $("word-dictionary-clear").hidden = !input.value;
+      clearTimeout(cardDictionarySearchTimer);
+      cardDictionarySearchTimer = setTimeout(updateSuggestions, SEARCH_DEBOUNCE_MS);
+   };
+   input.onkeydown = (event) => {
+      if (event.key === "ArrowDown" && moveSearchSuggestion(1, suggestionOptions)) event.preventDefault();
+      else if (event.key === "ArrowUp" && moveSearchSuggestion(-1, suggestionOptions)) event.preventDefault();
+      else if (event.key === "Enter" && searchState.suggestionSearch) {
+         const index = searchState.suggestionIndex < 0 ? 0 : searchState.suggestionIndex;
+         const item = searchState.suggestionSearch.results[index];
+         if (item) { event.preventDefault(); suggestionOptions.onSelect(item.entry); }
+      } else if (event.key === "Escape" && !$("word-dictionary-suggestions").hidden) {
+         event.preventDefault();
+         event.stopPropagation();
+         closeSearchSuggestions(suggestionOptions);
+      }
+   };
+   $("word-dictionary-clear").onclick = () => {
+      input.value = "";
+      searchState.query = "";
+      $("word-dictionary-clear").hidden = true;
+      closeSearchSuggestions(suggestionOptions);
+      $("word-dictionary-state").textContent = "Saisis un caractère chinois ou au moins deux lettres.";
+      input.focus();
+   };
+   $("word-manual-start").onclick = openManual;
+   if (searchState.query) updateSuggestions();
+   else requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (input.isConnected) input.focus({ preventScroll: true });
+   }));
+}
+
+function openCardForm(card, initialCategoryIds, creationState) {
+   clearTimeout(cardDictionarySearchTimer);
    const existingCard = card && db.cards.find((item) => item.id === card.id);
-   const current = card || {};
-   openSheet('<h3 class="sh-t">' + (existingCard ? "Modifier le mot" : "Ajouter un mot") + '</h3><label class="f-lab">Caractères chinois *<input class="search" id="word-hz" value="' + esc(current.hz || "") + '"></label><label class="f-lab">Pinyin<input class="search" id="word-py" value="' + esc(current.py || "") + '"></label><label class="f-lab">Traduction<input class="search" id="word-fr" value="' + esc(current.fr || "") + '"></label><label class="f-lab">Notes<textarea class="search" id="word-note" rows="2">' + esc(current.note || "") + '</textarea></label><label class="f-lab">Tags, séparés par des virgules<input class="search" id="word-tags" value="' + esc((current.tags || []).join(", ")) + '"></label><div class="eyebrow">Sous-catégories</div>' + cardCategoryCheckboxes(existingCard, initialCategoryIds) + '<div class="sh-btns"><button class="btn primary" id="word-save">Enregistrer</button><button class="btn ghost" data-sheet-close>Annuler</button></div>');
+   if (!existingCard && !card && !creationState)
+      return openCardDictionarySearch((initialCategoryIds || []).slice());
+   const current = creationState && creationState.draft ? creationState.draft : card || {};
+   openSheet(cardEditorHtml(existingCard, current, initialCategoryIds, creationState));
+   const returnToSearch = () => openCardDictionarySearch((initialCategoryIds || []).slice(), {
+      suggestionSearch: null,
+      suggestionIndex: -1,
+      query: creationState && creationState.query ? creationState.query : "",
+   });
+   if ($("word-change-dictionary")) $("word-change-dictionary").onclick = returnToSearch;
+   if ($("word-back-dictionary")) $("word-back-dictionary").onclick = returnToSearch;
    $("word-save").onclick = async () => {
       const chinese = $("word-hz").value.trim();
       if (!chinese) { toast("Les caractères chinois sont obligatoires."); return; }
       let pinyin = $("word-py").value.trim(); let translation = $("word-fr").value.trim();
-      if (!pinyin || !translation) { const match = await dictionaryCompletion(chinese); if (match) { pinyin ||= match.pinyin; translation ||= match.translation; } }
-      const candidate = { hz: chinese, py: pinyin, fr: translation, senseId: current.senseId || "" };
-      const duplicate = db.cards.find((item) => item.id !== (existingCard && existingCard.id) && personalCardKey(item) === personalCardKey(candidate));
+      let dictionaryEntryId = current.dictionaryEntryId || "";
+      if (!pinyin || !translation) { const match = await dictionaryCompletion(chinese); if (match) { pinyin ||= match.pinyin; translation ||= match.translation; dictionaryEntryId ||= match.dictionaryId; } }
+      const candidate = { hz: chinese, py: pinyin, fr: translation, senseId: current.senseId || "", dictionaryEntryId, traditional: current.traditional || "" };
+      const selectedExisting = creationState && creationState.entry
+         ? personalCardForDictionarySelection(creationState.entry)
+         : null;
+      const duplicate = selectedExisting || db.cards.find((item) => item.id !== (existingCard && existingCard.id) && personalCardKey(item) === personalCardKey(candidate));
       const saved = existingCard || duplicate || normalizeCard(candidate, false);
-      saved.hz = chinese; saved.py = pinyin; saved.fr = translation; saved.note = $("word-note").value.trim(); saved.tags = $("word-tags").value.split(",").map((tag) => tag.trim()).filter(Boolean); saved.incomplete = !pinyin || !translation; saved.updated = Date.now();
+      saved.hz = chinese; saved.py = pinyin; saved.fr = translation; saved.note = $("word-note").value.trim(); saved.tags = $("word-tags").value.split(",").map((tag) => tag.trim()).filter(Boolean); saved.incomplete = !pinyin || !translation; saved.dictionaryEntryId = dictionaryEntryId || saved.dictionaryEntryId || ""; saved.traditional = current.traditional || saved.traditional || ""; saved.updated = Date.now();
       if (!existingCard && !duplicate) db.cards.push(saved);
       const checked = new Set(Array.from(document.querySelectorAll("[data-card-category]:checked")).map((input) => input.dataset.cardCategory));
       if (existingCard) db.memberships = db.memberships.filter((membership) => membership.cardId !== saved.id || checked.has(membership.categoryId));
