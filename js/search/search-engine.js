@@ -180,7 +180,8 @@ async function dictionaryEntryWithFrenchSibling(entry) {
          const samePronunciation = pronunciation
             ? exactEntries.filter((candidate) => dictionaryEntriesSharePronunciation(entry, candidate))
             : [];
-         const sibling = samePronunciation[0] || exactEntries[0];
+         const sibling = samePronunciation[0] || (!pronunciation ? exactEntries[0] : null);
+         if (!sibling) return null;
          return {
             entryId: sibling.id,
             definitionsFr: sibling.definitionsFr.slice(),

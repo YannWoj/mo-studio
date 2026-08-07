@@ -458,6 +458,16 @@ async function main() {
    assert(startup.title.includes("Mò Studio"), "Unexpected page title");
    assert(startup.nav === 5 && startup.view === "learn", "Home navigation failed");
    assert(startup.emptyReview, "Empty review state missing");
+   const reviewHubSelection = await evaluate(`({
+      page: getComputedStyle(document.querySelector('.review-page')).userSelect,
+      heading: getComputedStyle(document.querySelector('.review-simple-heading')).userSelect,
+      button: getComputedStyle(document.querySelector('#btn-continue')).userSelect,
+      nav: getComputedStyle(document.querySelector('.nav')).userSelect,
+   })`);
+   assert(
+      Object.values(reviewHubSelection).every((value) => value === "none"),
+      `Review hub still exposes selectable interface text: ${JSON.stringify(reviewHubSelection)}`,
+   );
    assert(
       startup.navLabels.join("|") ===
          "学 Parcours|写 Écrire|查 Rechercher|库 Mes mots|复 Réviser",
@@ -886,9 +896,33 @@ async function main() {
    const grammar = await evaluate(`({ lessons: document.querySelectorAll('.gcard').length, quizOptions: document.querySelectorAll('.qz-opts .chip').length })`);
    assert(grammar.lessons > 0 && grammar.quizOptions > 0, "Grammar lessons or quizzes missing");
    assert(await evaluate("!!document.querySelector('#grammar-back')"), "Grammar return to Parcours missing");
+   const grammarToneAudio = await evaluate(`(() => {
+      window.__spoken = [];
+      const panel = [...document.querySelectorAll('.gcard')]
+         .find((item) => item.querySelector('summary')?.textContent.includes('Les 4 tons'));
+      if (!panel) return null;
+      panel.open = true;
+      const buttons = [...panel.querySelectorAll('.gx')];
+      buttons.forEach((button) => button.click());
+      return {
+         say: buttons.map((button) => button.getAttribute('data-say')),
+         spoken: window.__spoken.map((item) => item.text),
+         interfaceSelection: getComputedStyle(panel.querySelector('summary')).userSelect,
+         proseSelection: getComputedStyle(panel.querySelector('.g-body')).userSelect,
+         exampleSelection: getComputedStyle(buttons[0].querySelector('.gx-hz')).userSelect,
+      };
+   })()`);
+   assert(
+      grammarToneAudio && grammarToneAudio.say.join("|") === "妈|麻|马|骂|妈妈骂马。" &&
+         grammarToneAudio.spoken.join("|") === grammarToneAudio.say.join("|") &&
+         grammarToneAudio.say.every((value) => /^[\p{Script=Han}，。！？、；：‘’“”（）《》〈〉…—]+$/u.test(value)) &&
+         grammarToneAudio.interfaceSelection === "none" && grammarToneAudio.proseSelection === "text" &&
+         grammarToneAudio.exampleSelection === "text",
+      `Grammar tone audio or selection policy is wrong: ${JSON.stringify(grammarToneAudio)}`,
+   );
    await click(".qz-opts .chip");
    assert(await evaluate("document.querySelector('.qz-opts').dataset.done === '1'"), "Grammar quiz did not evaluate an answer");
-   record("grammar", `${grammar.lessons} lesson panels and interactive quiz options rendered`);
+   record("grammar", `${grammar.lessons} lesson panels rendered; tone buttons spoke 妈, 麻, 马, 骂 and 妈妈骂马。 without Latin pinyin`);
 
    const learningStateBeforeHskDictionary = await evaluate(
       "JSON.stringify({ cards: db.cards, packs: db.packs, units: db.units })",
@@ -2173,6 +2207,71 @@ async function main() {
       `你好 data/click/keyboard/chips/swipe passed at 360px; repeated, seven-character and 1 / 1 states passed; screenshot ${screenshotDirectory}`,
    );
 
+   const contextualReadingCases = [
+      { word: "你好", index: 1, character: "好", pinyin: "hǎo", meaning: "bien", excludes: "inclination", screenshot: "dictionary-context-nihao-360.png" },
+      { word: "什么", index: 1, character: "么", pinyin: "me", meaning: "suffixe" },
+      { word: "银行", index: 1, character: "行", pinyin: "háng", meaning: "classe", screenshot: "dictionary-context-yinhang-360.png" },
+      { word: "行走", index: 0, character: "行", pinyin: "xíng", meaning: "marcher" },
+      { word: "长大", index: 0, character: "长", pinyin: "zhǎng", meaning: "grandir" },
+      { word: "长短", index: 0, character: "长", pinyin: "cháng", meaning: "long" },
+      { word: "音乐", index: 1, character: "乐", pinyin: "yuè", meaning: "musique", screenshot: "dictionary-context-yinyue-360.png" },
+      { word: "快乐", index: 1, character: "乐", pinyin: "lè", meaning: "joyeux" },
+      { word: "觉得", index: 0, character: "觉", pinyin: "jué", meaning: "éprouver" },
+      { word: "睡觉", index: 1, character: "觉", pinyin: "jiào", meaning: "dormir" },
+   ];
+   const contextualReadingResults = [];
+   for (const sample of contextualReadingCases) {
+      await evaluate(`launchDictionarySearch(${JSON.stringify(sample.word)})`);
+      await waitFor(
+         () => evaluate(`document.querySelector('#dresults .dict-result-hanzi b')?.textContent.trim() === ${JSON.stringify(sample.word)}`),
+         `${sample.word} contextual search failed`,
+         20_000,
+      );
+      await click("#dresults .dict-result-primary");
+      await waitFor(
+         () => evaluate(`document.querySelector('#dd-character-details')?.getAttribute('aria-busy') === 'false' && document.querySelectorAll('#dd-picker .dd-character-chip').length === ${Array.from(sample.word).length}`),
+         `${sample.word} character completions did not load`,
+         20_000,
+      );
+      const observed = await evaluate(`(() => {
+         const chip = document.querySelectorAll('#dd-picker .dd-character-chip')[${sample.index}];
+         const row = document.querySelectorAll('.dd-character-detail-row')[${sample.index}];
+         return {
+            word: document.querySelector('.cd-hz')?.textContent.trim(),
+            character: chip?.dataset.character,
+            chipPinyin: chip?.querySelector('[data-character-pinyin]')?.dataset.characterPinyinValue,
+            chipDefinition: chip?.querySelector('[data-character-definition]')?.dataset.characterDefinitionValue,
+            rowPinyin: row?.querySelector('.dd-character-detail-pinyin')?.textContent.trim(),
+            rowDefinition: row?.querySelector('.dd-character-detail-translation')?.textContent.trim(),
+         };
+      })()`);
+      const definitions = `${observed.chipDefinition || ""} ${observed.rowDefinition || ""}`.toLowerCase();
+      assert(
+         observed.word === sample.word && observed.character === sample.character &&
+            observed.chipPinyin === sample.pinyin && observed.rowPinyin === sample.pinyin &&
+            definitions.includes(sample.meaning.toLowerCase()) &&
+            (!sample.excludes || !definitions.includes(sample.excludes.toLowerCase())),
+         `${sample.word} contextual reading is wrong: ${JSON.stringify(observed)}`,
+      );
+      contextualReadingResults.push({
+         word: sample.word,
+         character: sample.character,
+         pinyin: observed.chipPinyin,
+         definition: observed.chipDefinition,
+      });
+      if (sample.screenshot) {
+         await evaluate("document.querySelector('.sheet-card').scrollTop = 0");
+         const image = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
+         await writeFile(path.join(screenshotDirectory, sample.screenshot), Buffer.from(image.data, "base64"));
+      }
+      await click("#dd-close");
+      await waitFor(() => evaluate("!sheetOpen()"), `${sample.word} detail did not close`, 20_000);
+   }
+   record(
+      "contextual polyphonic readings",
+      `${contextualReadingResults.map((item) => `${item.word}: ${item.character} ${item.pinyin} — ${item.definition}`).join(" | ")}; screenshots ${screenshotDirectory}`,
+   );
+
    const repeatedStrokeLifecycle = await evaluate(`(async () => {
       const entry = normalizeDetailEntry({ hz: '人', py: 'rén', fr: 'personne' });
       const originalAdd = document.addEventListener;
@@ -3171,9 +3270,9 @@ async function main() {
          inputSelection: selection('#writing-word'),
       };
    })()`);
-   const writingCss = await readFile(path.join(projectRoot, "css", "writing.css"), "utf8");
-   const writingPageSelectionCss = writingCss.match(/\.writing-page,\s*\.writing-page \*\s*\{([^}]+)\}/)?.[1] || "";
-   const writingInputSelectionCss = writingCss.match(/\.writing-page #writing-word\s*\{([^}]+)\}/)?.[1] || "";
+   const mainCss = await readFile(path.join(projectRoot, "css", "main.css"), "utf8");
+   const globalSelectionCss = mainCss.match(/body,\s*body \*\s*\{([^}]+)\}/)?.[1] || "";
+   const contentSelectionCss = mainCss.match(/body input,[\s\S]*?body \.qz-q \*\s*\{([^}]+)\}/)?.[1] || "";
    assert(
       writingStructure.surfaceBeforeSelector && writingStructure.selectorBeforeNote && writingStructure.visualOrder &&
          writingStructure.optionCount === 4 && writingStructure.previewCount === 4 &&
@@ -3188,8 +3287,8 @@ async function main() {
          writingStructure.modelToggle.pressed === 'true' && writingStructure.modelToggle.size >= 44 &&
          writingStructure.modelToggle.insideSurface && writingStructure.opacityAvailable &&
          writingStructure.selectionBlocked && writingStructure.inputSelection.every((value) => value === 'text') &&
-         /-webkit-touch-callout:\s*none/.test(writingPageSelectionCss) &&
-         /-webkit-touch-callout:\s*default/.test(writingInputSelectionCss),
+         /-webkit-touch-callout:\s*none/.test(globalSelectionCss) &&
+         /-webkit-touch-callout:\s*default/.test(contentSelectionCss),
       `Writing canvas/grid structure is wrong: ${JSON.stringify(writingStructure)}`,
    );
    await click("#writing-settings");

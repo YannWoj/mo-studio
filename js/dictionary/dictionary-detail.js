@@ -64,10 +64,10 @@ function dictionaryDetailDisplayHanzi(entry) {
 
 async function dictionaryCharacterStudyEntry(character, completion) {
    const personal = db.cards.find((card) => card.hz === character);
-   const found = personal
-      ? personalCardAsDictionaryEntry(personal)
-      : (completion && completion.entry
-         ? completion.entry
+   const found = completion && completion.entry
+      ? completion.entry
+      : (personal
+         ? personalCardAsDictionaryEntry(personal)
          : (await findDictionaryEntryByHanzi(character)) || normalizeDetailEntry({ hz: character }));
    return attachHskMetadata(await dictionaryEntryWithFrenchSibling(found));
 }
@@ -147,14 +147,23 @@ function dictionaryCharacterDetailsShellHtml(characters) {
 
 function dictionaryCharacterPinyinHints(entry, characters) {
    const hints = new Map();
+   const ambiguous = new Set();
    const pronunciation = (entry.pinyin || [])
       .map((variant) => variant.marked || variant.numbered || "")
       .find((value) => value);
    if (!pronunciation) return hints;
-   const parts = pronunciation.replace(/\s*\/\s*/g, " ").trim().split(/\s+/).filter(Boolean);
+   const parts = normalizePinyinSeparators(pronunciation).split(" ").filter(Boolean);
    if (parts.length !== characters.length) return hints;
    characters.forEach((character, index) => {
-      if (!hints.has(character)) hints.set(character, parts[index]);
+      if (ambiguous.has(character)) return;
+      if (!hints.has(character)) {
+         hints.set(character, parts[index]);
+         return;
+      }
+      if (normalizePinyinIdentity(hints.get(character)) !== normalizePinyinIdentity(parts[index])) {
+         hints.delete(character);
+         ambiguous.add(character);
+      }
    });
    return hints;
 }

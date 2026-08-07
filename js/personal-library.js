@@ -12,10 +12,62 @@ function uniqueStrings(values) {
    return Array.from(new Set((values || []).map(String).filter(Boolean)));
 }
 
+function splitPinyinIdentitySyllables(value) {
+   const syllables = [];
+   const memo = new Map();
+   const visit = (offset) => {
+      if (offset === value.length) return [];
+      if (memo.has(offset)) return memo.get(offset);
+      for (let end = value.length; end > offset; end--) {
+         const syllable = value.slice(offset, end);
+         if (!PINYIN_SYLLABLES.has(syllable)) continue;
+         const tail = visit(end);
+         if (tail) {
+            const result = [syllable, ...tail];
+            memo.set(offset, result);
+            return result;
+         }
+      }
+      memo.set(offset, null);
+      return null;
+   };
+   return visit(0) || syllables;
+}
+
+function normalizePinyinIdentityGroup(value) {
+   const numberedParts = String(value).match(/[a-züê]+[1-5]?/giu) || [];
+   if (/[1-5]/u.test(value) && numberedParts.join("") === value)
+      return numberedParts.map((part) => normalizePinyinNumbered(part).replace(/5$/u, "")).join("");
+
+   const characters = Array.from(normalizeUnicode(value).toLowerCase());
+   const tones = new Map();
+   const plain = characters.map((character, index) => {
+      const marked = PINYIN_MARK_TO_NUMBER[character];
+      if (marked) {
+         tones.set(index, marked.tone);
+         return marked.plain;
+      }
+      return character;
+   }).join("");
+   const syllables = splitPinyinIdentitySyllables(plain);
+   if (!syllables.length) return normalizePinyinNumbered(value).replace(/5$/u, "");
+   let offset = 0;
+   return syllables.map((syllable) => {
+      const end = offset + syllable.length;
+      const tone = Array.from(tones.entries()).find(([index]) => index >= offset && index < end)?.[1];
+      offset = end;
+      return syllable + (tone || "");
+   }).join("");
+}
+
 function normalizePinyinIdentity(value) {
-   let normalized = String(value || "").replace(/u:/gi, "ü");
-   if (/[0-9]/.test(normalized)) normalized = numToAccent(normalized);
-   return flatten(normalized);
+   return normalizePinyinSeparators(String(value || ""))
+      .split(" ")
+      .filter(Boolean)
+      .map(normalizePinyinIdentityGroup)
+      .join("")
+      .replace(/ü/gu, "v")
+      .replace(/5/gu, "");
 }
 
 function normalizeMeaningIdentity(value) {
@@ -56,10 +108,16 @@ function dictionaryCompletionPinyinMatches(entry, pinyinHint) {
    const hint = normalizePinyinIdentity(pinyinHint);
    if (!hint) return false;
    return (entry.pinyin || []).some((variant) =>
-      [variant.marked, variant.numbered, variant.plain]
-         .filter(Boolean)
-         .some((value) => normalizePinyinIdentity(value) === hint),
+      normalizePinyinIdentity(variant.numbered || variant.marked || variant.plain) === hint,
    );
+}
+
+function dictionaryCompletionPronunciationCount(entry) {
+   return new Set(
+      (entry && entry.pinyin || [])
+         .map((variant) => normalizePinyinIdentity(variant.numbered || variant.marked || variant.plain))
+         .filter(Boolean),
+   ).size;
 }
 
 function personalMeaningSenses(value) {
@@ -100,12 +158,15 @@ function chooseDictionaryCompletionEntry(entries, chinese, pinyinHint) {
          index,
          senseCount: dictionaryCompletionSenseCount(entry),
          pinyinMatch: dictionaryCompletionPinyinMatches(entry, pinyinHint),
+         pronunciationCount: dictionaryCompletionPronunciationCount(entry),
       }))
-      .sort((left, right) =>
-         right.senseCount - left.senseCount ||
-         Number(right.pinyinMatch) - Number(left.pinyinMatch) ||
-         left.index - right.index,
-      )[0].entry;
+      .sort((left, right) => {
+         if (left.pinyinMatch !== right.pinyinMatch)
+            return Number(right.pinyinMatch) - Number(left.pinyinMatch);
+         if (left.pinyinMatch && left.pronunciationCount !== right.pronunciationCount)
+            return left.pronunciationCount - right.pronunciationCount;
+         return right.senseCount - left.senseCount || left.index - right.index;
+      })[0].entry;
 }
 
 function dictionaryCompletionPinyin(entry, pinyinHint) {

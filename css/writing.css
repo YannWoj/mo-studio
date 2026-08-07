@@ -3,19 +3,6 @@
    padding-top: 10px;
 }
 
-.writing-page,
-.writing-page * {
-   user-select: none;
-   -webkit-user-select: none;
-   -webkit-touch-callout: none;
-}
-
-.writing-page #writing-word {
-   user-select: text;
-   -webkit-user-select: text;
-   -webkit-touch-callout: default;
-}
-
 .writing-header {
    display: flex;
    align-items: center;

@@ -28,6 +28,66 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
          }
+         body,
+         body * {
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+         }
+         body input,
+         body textarea,
+         body [contenteditable]:not([contenteditable="false"]),
+         body [contenteditable]:not([contenteditable="false"]) *,
+         body .cd-hz,
+         body .cd-py,
+         body .cd-py *,
+         body .cd-fr,
+         body .cd-fr *,
+         body .dd-traditional,
+         body .dd-definitions,
+         body .dd-definitions p,
+         body .dd-definitions ol,
+         body .dd-definitions li,
+         body .dd-definitions li *,
+         body .dd-character-detail-hanzi,
+         body .dd-character-detail-pinyin,
+         body .dd-character-detail-pinyin *,
+         body .dd-character-detail-translation,
+         body .dd-related,
+         body .dict-result-hanzi b,
+         body .dict-result-main .row-py,
+         body .dict-result-main .row-py *,
+         body .dict-result-main .row-fr,
+         body .dict-result-main .row-fr *,
+         body .row-hz,
+         body .row-py,
+         body .row-py *,
+         body .row-fr,
+         body .row-fr *,
+         body .hanzi,
+         body .hanzi *,
+         body .pinyin,
+         body .pinyin *,
+         body .fr,
+         body .fr *,
+         body .ex,
+         body .ex *,
+         body .note,
+         body .note *,
+         body .fmt,
+         body .g-body,
+         body .gx-hz,
+         body .gx-hz *,
+         body .gx-py,
+         body .gx-py *,
+         body .gx-fr,
+         body .gx-fr *,
+         body .qz-q,
+         body .qz-q * {
+            user-select: text;
+            -webkit-user-select: text;
+            -webkit-touch-callout: default;
+         }
          body {
             margin: 0;
             background: var(--paper);
@@ -95,12 +155,6 @@
             justify-content: space-between;
             padding: 14px 18px 10px;
             background: linear-gradient(var(--paper) 75%, transparent);
-         }
-         .nav,
-         .top .brand {
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
          }
          .brand {
             display: flex;

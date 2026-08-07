@@ -1,10 +1,10 @@
 "use strict";
 
 /* ================= grammaire (法) ================= */
-         function GX(hz, py, fr) {
+         function GX(hz, py, fr, say) {
             return (
                '<button class="gx" data-say="' +
-               hz +
+               (say || hz) +
                '"><span class="gx-hz">' +
                hz +
                '</span><span class="gx-py">' +
@@ -340,10 +340,10 @@
                t: "Les 4 tons : la mélodie des mots",
                body:
                   "Le ton fait partie du mot : la même syllabe « ma » change de sens selon la mélodie. 1ᵉʳ haut et plat, 2ᵉ montant, 3ᵉ descend puis remonte, 4ᵉ tombe sèchement." +
-                  GX("妈 mā", "ton 1 — haut et plat", "maman") +
-                  GX("麻 má", "ton 2 — montant", "chanvre") +
-                  GX("马 mǎ", "ton 3 — creusé", "cheval") +
-                  GX("骂 mà", "ton 4 — descendant", "gronder") +
+                  GX("妈 mā", "ton 1 — haut et plat", "maman", "妈") +
+                  GX("麻 má", "ton 2 — montant", "chanvre", "麻") +
+                  GX("马 mǎ", "ton 3 — creusé", "cheval", "马") +
+                  GX("骂 mà", "ton 4 — descendant", "gronder", "骂") +
                   GX("妈妈骂马。", "mā ma mà mǎ.", "Maman gronde le cheval."),
                quiz: [
                   {
