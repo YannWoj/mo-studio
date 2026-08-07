@@ -92,6 +92,7 @@ function reviewStrokeBlockHtml(c, st) {
       '<button type="button" class="review-stroke-practice" id="review-stroke-practice">S’entraîner</button></div>' +
       '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="btn sm ghost" id="review-stroke-replay">Rejouer</button></div></div>' +
       '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
+      characterCompositionShellHtml("review-character-composition") +
       "</div></details>"
    );
 }
@@ -136,12 +137,29 @@ function createReviewStrokeAnimation(data, autoplay) {
    }
 }
 
-async function loadReviewStrokeCharacter(character, autoplay) {
+async function loadReviewStrokeCharacter(character, autoplay, characters) {
    const token = ++reviewStrokeLoadToken;
    destroyReviewStrokeWriter();
    reviewStrokeData = null;
    const status = $("review-stroke-status");
    if (status) status.textContent = "Chargement…";
+   setCharacterCompositionLoading(character, ".review-character-composition");
+   if (typeof loadCharacterCompositions === "function") {
+      loadCharacterCompositions(characters || [character]).then((compositions) => {
+         if (
+            token !== reviewStrokeLoadToken ||
+            !$("review-strokes")?.open ||
+            !session.active
+         ) return;
+         renderCharacterComposition(
+            compositions.get(character) || null,
+            ".review-character-composition",
+         );
+      }).catch(() => {
+         if (token === reviewStrokeLoadToken)
+            renderCharacterComposition(null, ".review-character-composition");
+      });
+   } else renderCharacterComposition(null, ".review-character-composition");
    try {
       if (typeof loadStrokeCharacterData !== "function") throw new Error("stroke data unavailable");
       const data = await loadStrokeCharacterData(character);
@@ -190,7 +208,7 @@ function wireReviewStrokeBlock(c, st) {
       if (previous) previous.disabled = index === 0;
       if (next) next.disabled = index === characters.length - 1;
       if (count) count.textContent = (index + 1) + " / " + characters.length;
-      loadReviewStrokeCharacter(characters[index], true);
+      loadReviewStrokeCharacter(characters[index], true, characters);
       if (characters[index + 1] && typeof preloadStrokeCharacterData === "function")
          preloadStrokeCharacterData(characters[index + 1]);
    };

@@ -193,6 +193,7 @@ async function main() {
    assert((await evaluate("document.querySelectorAll('[data-word-open]').length")) === 2, "multi-word category did not render two cards");
    await click("[data-word-open]");
    await waitFor(() => evaluate("!!ddCharacterData && !!document.querySelector('#card-stage.is-navigation-positioned')"), "personal card stroke workspace did not load");
+   await waitFor(() => evaluate("document.querySelector('.card-detail-strokes .stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character===ddChar"), "personal card composition did not load in the shared stroke workspace");
    const firstDetailId = await evaluate("document.querySelector('.card-detail-sheet').dataset.cardId");
    for (const width of [390, 1024]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });

@@ -16,3 +16,14 @@ The application loads the manifest, the query-specific index, and compact
 two-hex-prefix chunks and are loaded only for detail views. The explicit
 dictionary rebuild action may cache every generated file for offline reopening.
 These artifacts never contain personal cards or learning progress.
+
+`character-composition/` contains the separately replaceable, lazy-loaded
+character-composition index and chunks generated from the pinned Make Me a
+Hanzi `dictionary.txt` source. These generated transformations remain under
+the LGPL v3 or later, and the folder includes the corresponding `LGPL` and
+`COPYING` files.
+
+```powershell
+npm run build:character-composition
+npm run validate:character-composition
+```

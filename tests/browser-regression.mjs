@@ -1499,6 +1499,27 @@ async function main() {
       "Seven 你 panels were not rendered",
       20_000,
    );
+   await waitFor(
+      () => evaluate("document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character === '\u4f60' && !document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition').classList.contains('is-loading')"),
+      "The character composition did not load for the active stroke workspace",
+      20_000,
+   );
+   const niComposition = await evaluate(`(() => {
+      const block=document.querySelector('#stroke-panel-steps .character-composition'),formula=block.querySelector('.composition-formula'),radical=block.querySelector('.composition-radical'),animationSquare=document.querySelector('#stroke-panel-animation .mizi'),animationComposition=document.querySelector('#stroke-panel-animation .character-composition');
+      return {
+         characters:[...formula.querySelectorAll('[data-composition-character]')].map((button)=>button.dataset.compositionCharacter),
+         pluses:formula.querySelectorAll('.composition-plus').length,
+         rawIds:/[⿰-⿻]/u.test(block.textContent),
+         roles:block.querySelectorAll('.composition-role').length,
+         radical:radical.textContent.replace(/\s+/g,''),
+         source:block.querySelector('.composition-source').title,
+         squareBeforeComposition:!!(animationSquare.compareDocumentPosition(animationComposition)&Node.DOCUMENT_POSITION_FOLLOWING),
+      };
+   })()`);
+   assert(
+      niComposition.characters.join('')==='亻尔'&&niComposition.pluses===1&&!niComposition.rawIds&&niComposition.roles===0&&niComposition.radical.includes('Clé亻')&&niComposition.source.includes('ligne 273')&&niComposition.squareBeforeComposition,
+      `Source-faithful composition failed: ${JSON.stringify(niComposition)}`,
+   );
    const niGallery = await evaluate(`(() => ({
       source: ddCharacterData.sourcePackage + '@' + ddCharacterData.sourceVersion,
       count: ddCharacterData.strokeCount,
@@ -1545,6 +1566,24 @@ async function main() {
       assert(panel.label === `Trait ${index + 1} sur 7`, `你 panel ${index + 1} accessible label is wrong`);
    });
    assert(niGallery.panels[6].completed === 6 && niGallery.panels[6].future === 0, "Final 你 panel is incomplete");
+   const radicalHighlight = await evaluate(`(() => {
+      const toggle=document.querySelector('#dd-highlight-radical');
+      const initial={disabled:toggle.disabled,checked:toggle.checked,paths:document.querySelectorAll('[data-radical-stroke]').length};
+      toggle.checked=true;
+      toggle.dispatchEvent(new Event('change',{bubbles:true}));
+      const perPanel=[...document.querySelectorAll('#dd-gallery .stroke-panel')].map((panel)=>[...panel.querySelectorAll('[data-radical-stroke=true]')].map((path)=>Number(path.dataset.pathIndex)));
+      const finalFills=[...document.querySelectorAll('#dd-gallery .stroke-panel:last-child [data-radical-stroke=true]')].map((path)=>getComputedStyle(path).fill);
+      toggle.checked=false;
+      toggle.dispatchEvent(new Event('change',{bubbles:true}));
+      return {initial,perPanel,finalFills,stored:JSON.parse(localStorage.getItem(DB_KEY)).settings.strokeGallery.highlightRadical};
+   })()`);
+   assert(
+      !radicalHighlight.initial.disabled&&!radicalHighlight.initial.checked&&radicalHighlight.initial.paths===0&&
+         radicalHighlight.perPanel.every((indexes)=>indexes.join(',')==='0,1')&&
+         radicalHighlight.finalFills.every((fill)=>fill==='rgb(35, 122, 90)')&&
+         radicalHighlight.stored===false,
+      `Radical highlighting did not target exactly strokes 1 and 2: ${JSON.stringify(radicalHighlight)}`,
+   );
    await click('#dd-gallery .stroke-panel[data-stroke-index="2"]');
    assert(await evaluate("document.querySelector('.stroke-focus-title').textContent.includes('Trait 3 sur 7')"), "Focused stroke viewer did not open");
    assert(await evaluate("document.querySelector('#sheet').inert"), "Focused stroke viewer did not isolate the underlying dictionary dialog");
@@ -1602,9 +1641,9 @@ async function main() {
    const mobileGalleryGrid = await evaluate(`(() => {
       const gallery=document.querySelector('#dd-gallery'),style=getComputedStyle(gallery),panels=[...gallery.querySelectorAll('.stroke-panel')],first=panels[0].getBoundingClientRect(),second=panels[1].getBoundingClientRect(),third=panels[2].getBoundingClientRect(),toolbar=document.querySelector('.stroke-gallery-toolbar'),status=document.querySelector('#dd-gallery-status').getBoundingClientRect(),settings=document.querySelector('.stroke-gallery-settings'),labels=[...settings.querySelectorAll('label')],labelRects=labels.map((label)=>label.getBoundingClientRect()),previous=document.querySelector('#dd-character-prev').getBoundingClientRect(),next=document.querySelector('#dd-character-next').getBoundingClientRect(),rect=gallery.getBoundingClientRect();
       toolbar.scrollIntoView({block:'start'});
-      return {display:style.display,columns:style.gridTemplateColumns.split(' ').length,overflowX:style.overflowX,touchAction:style.touchAction,panelWidth:first.width,twoOnRow:Math.abs(first.top-second.top)<1&&third.top>first.bottom,labels:labels.map((label)=>label.textContent.trim()),settingsDisplay:getComputedStyle(settings).display,settingsWrap:getComputedStyle(settings).flexWrap,settingsOneLine:Math.abs(labelRects[0].top-labelRects[1].top)<1,statusSameRow:Math.abs((status.top+status.height/2)-(labelRects[0].top+labelRects[0].height/2))<8,indicator:!!document.querySelector('#dd-gallery-position'),scrollListener:gallery.onscroll!==null,horizontalScroll:gallery.scrollWidth>gallery.clientWidth+1,navAbovePanels:previous.bottom<=first.top&&next.bottom<=first.top,navInsideGallery:previous.left>=rect.left&&next.right<=rect.right,overflow:document.documentElement.scrollWidth>innerWidth};
+      return {display:style.display,columns:style.gridTemplateColumns.split(' ').length,overflowX:style.overflowX,touchAction:style.touchAction,panelWidth:first.width,twoOnRow:Math.abs(first.top-second.top)<1&&third.top>first.bottom,labelCount:labels.length,compactRadical:getComputedStyle(document.querySelector('.stroke-radical-label-compact')).display,settingsDisplay:getComputedStyle(settings).display,settingsWrap:getComputedStyle(settings).flexWrap,settingsOneLine:labelRects.every((rect)=>Math.abs(rect.top-labelRects[0].top)<1),statusSameRow:Math.abs((status.top+status.height/2)-(labelRects[0].top+labelRects[0].height/2))<8,indicator:!!document.querySelector('#dd-gallery-position'),scrollListener:gallery.onscroll!==null,horizontalScroll:gallery.scrollWidth>gallery.clientWidth+1,navAbovePanels:previous.bottom<=first.top&&next.bottom<=first.top,navInsideGallery:previous.left>=rect.left&&next.right<=rect.right,overflow:document.documentElement.scrollWidth>innerWidth};
    })()`);
-   assert(mobileGalleryGrid.display==='grid'&&mobileGalleryGrid.columns===2&&mobileGalleryGrid.overflowX==='visible'&&mobileGalleryGrid.touchAction==='pan-y'&&mobileGalleryGrid.panelWidth>=140&&mobileGalleryGrid.panelWidth<=190&&mobileGalleryGrid.twoOnRow&&mobileGalleryGrid.labels.join('|')==='Traits futurs|Grille'&&mobileGalleryGrid.settingsDisplay==='flex'&&mobileGalleryGrid.settingsWrap==='nowrap'&&mobileGalleryGrid.settingsOneLine&&mobileGalleryGrid.statusSameRow&&!mobileGalleryGrid.indicator&&!mobileGalleryGrid.scrollListener&&!mobileGalleryGrid.horizontalScroll&&mobileGalleryGrid.navAbovePanels&&mobileGalleryGrid.navInsideGallery&&!mobileGalleryGrid.overflow, `Mobile stroke gallery is not a compact two-column grid: ${JSON.stringify(mobileGalleryGrid)}`);
+   assert(mobileGalleryGrid.display==='grid'&&mobileGalleryGrid.columns===2&&mobileGalleryGrid.overflowX==='visible'&&mobileGalleryGrid.touchAction==='pan-y'&&mobileGalleryGrid.panelWidth>=140&&mobileGalleryGrid.panelWidth<=190&&mobileGalleryGrid.twoOnRow&&mobileGalleryGrid.labelCount===3&&mobileGalleryGrid.compactRadical!=='none'&&mobileGalleryGrid.settingsDisplay==='flex'&&mobileGalleryGrid.settingsWrap==='nowrap'&&mobileGalleryGrid.settingsOneLine&&mobileGalleryGrid.statusSameRow&&!mobileGalleryGrid.indicator&&!mobileGalleryGrid.scrollListener&&!mobileGalleryGrid.horizontalScroll&&mobileGalleryGrid.navAbovePanels&&mobileGalleryGrid.navInsideGallery&&!mobileGalleryGrid.overflow, `Mobile stroke gallery is not a compact two-column grid: ${JSON.stringify(mobileGalleryGrid)}`);
    await evaluate("document.querySelector('.stroke-gallery-toolbar').scrollIntoView({block:'center'})");
    const mobileGalleryScreenshot = path.join(screenshotDirectory, "stroke-gallery-mian-overview-390.png");
    const mobileGalleryImage = await cdp.send("Page.captureScreenshot", { format: "png", fromSurface: true });
@@ -1688,6 +1727,64 @@ async function main() {
    assert(loaderCoverage.deduplicated, "Simultaneous character-data requests were duplicated");
    assert(loaderCoverage.missingRejected, "Missing character data received a fabricated fallback");
    record("local character-data loader", "一, 人, 你, 好, 谢, 龍 and high-stroke 鬱 loaded; concurrent request deduplication and missing-data rejection passed");
+   const compositionCases = [
+      { character: "\u5988", leaves: "\u5973\u9a6c", roles: ["\u5973:sens", "\u9a6c:son"], sourceLine: 1602 },
+      { character: "\u4f60", leaves: "\u4ebb\u5c14", roles: [], sourceLine: 273 },
+      { character: "\u5fae", leaves: "\u5f73\u5c71\u5140\u6535", roles: [], sourceLine: 2289, groups: 1 },
+      { character: "\u4ef7", leaves: "\u4ebb\u4ecb", roles: ["\u4ecb:son"], sourceLine: 212 },
+      { character: "\u68ee", leaves: "\u6728\u6728\u6728", roles: [], sourceLine: 3405, groups: 1 },
+      { character: "\u73ed", leaves: "\u738b\u5202\u738b", roles: [], sourceLine: 4571 },
+      { character: "\u4eac", leaves: "\u4ea0\u53e3\u5c0f", roles: [], sourceLine: 161 },
+      { character: "\u5b66", leaves: "\u2e8d\u5196\u5b50", roles: [], sourceLine: 1762, unglossed: "\u2e8d", groups: 1 },
+   ];
+   for (const sample of compositionCases) {
+      await evaluate(`ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:${JSON.stringify(sample.character)}}))`);
+      await waitFor(
+         () => evaluate(`document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character===${JSON.stringify(sample.character)}&&!document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition').classList.contains('is-loading')`),
+         `Composition did not render for ${sample.character}`,
+         20_000,
+      );
+      const rendered = await evaluate(`(() => {
+         const block=document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition'),formula=block.querySelector('.composition-formula');
+         return {
+            leaves:[...formula.querySelectorAll('[data-composition-character]')].map((button)=>button.dataset.compositionCharacter).join(''),
+            roles:[...block.querySelectorAll('.composition-role')].map((role)=>(role.querySelector('[data-composition-character]')?.dataset.compositionCharacter||role.querySelector('.composition-role-text')?.textContent||'')+':'+role.querySelector('em').textContent),
+            groups:formula.querySelectorAll('.composition-group').length,
+            rawIds:/[⿰-⿻]/u.test(block.textContent),
+            source:block.querySelector('.composition-source').title,
+            unglossed:[...formula.querySelectorAll('[data-composition-character]')].filter((button)=>!button.querySelector('small')).map((button)=>button.dataset.compositionCharacter),
+            lines:block.querySelectorAll('.composition-primary,.composition-secondary').length,
+         };
+      })()`);
+      assert(
+         rendered.leaves===sample.leaves&&JSON.stringify(rendered.roles)===JSON.stringify(sample.roles)&&rendered.groups===(sample.groups||0)&&!rendered.rawIds&&rendered.source.includes('ligne '+sample.sourceLine)&&rendered.lines===2&&(!sample.unglossed||rendered.unglossed.includes(sample.unglossed)),
+         `Composition case failed for ${sample.character}: ${JSON.stringify(rendered)}`,
+      );
+   }
+   for (const character of ["\u4e00"]) {
+      await evaluate(`ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:${JSON.stringify(character)}}))`);
+      await waitFor(
+         () => evaluate("[...document.querySelectorAll('.character-composition')].every((block)=>block.hidden)"),
+         `Composition block remained visible for ${character}`,
+         20_000,
+      );
+   }
+   const sourceAbsentComposition = await evaluate(`(async () => {
+      const values=await loadCharacterCompositions(['\u9da5']);
+      setCharacterCompositionLoading('\u9da5');
+      renderCharacterComposition(values.get('\u9da5')||null);
+      return {loaded:values.has('\u9da5'),value:values.get('\u9da5'),hidden:[...document.querySelectorAll('.character-composition')].every((block)=>block.hidden)};
+   })()`);
+   assert(
+      sourceAbsentComposition.loaded&&sourceAbsentComposition.value===null&&sourceAbsentComposition.hidden,
+      `Dictionary character absent from Make Me a Hanzi did not degrade silently: ${JSON.stringify(sourceAbsentComposition)}`,
+   );
+   await evaluate("ddStrokeTab='animation';openDictDetail(normalizeDetailEntry({hz:'\u5988'}))");
+   await waitFor(() => evaluate("document.querySelector('.stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character==='\u5988'"), "Clickable composition did not reload", 20_000);
+   await click(".stroke-tab-panel:not([hidden]) .composition-formula [data-composition-character='\u5973']");
+   await waitFor(() => evaluate("ddChar==='\u5973'&&document.querySelector('.dd-entry .cd-hz')?.textContent.trim()==='\u5973'"), "Clicking a component did not open its dictionary entry", 20_000);
+   record("source-faithful character composition", "pictophonetic, ideographic, absent etymology/hint, nested/ternary IDS, missing gloss/data and component navigation passed");
+
    const highStrokeRender = await evaluate(`(async () => {
       const data = await loadStrokeCharacterData('鬱');
       const startedAt = performance.now();

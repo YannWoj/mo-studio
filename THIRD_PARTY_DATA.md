@@ -43,6 +43,34 @@ counts, character components, or example sentences. Generated records leave
 such fields empty or `null`. `hsk1.json` remains a separate user learning pack
 and is not third-party proof of complete official HSK coverage.
 
+## Make Me a Hanzi character composition data
+
+- Source file: `data/source/makemeahanzi/dictionary.txt`
+- Project: Make Me a Hanzi
+- Upstream repository: <https://github.com/skishore/makemeahanzi>
+- Exact revision: `bddc96d41bef78427ed0e034e9f7e31d71fd1b92`
+- Source SHA-256: `744bb05d5b0742e9ee35c37791f94d56a173349b3367569e7ca11e510364d203`
+- License stated by upstream for `dictionary.txt`: GNU Lesser General Public
+  License version 3 or, at the user's option, any later version
+- Upstream notice: `data/source/makemeahanzi/COPYING`
+- License copy: `data/source/makemeahanzi/LGPL`
+- Generated browser data: `data/generated/character-composition/`
+- Generated upstream notice: `data/generated/character-composition/COPYING`
+- Generated license copy: `data/generated/character-composition/LGPL`
+
+The generated character index, chunks, normalized IDS trees, component
+glosses, etymology fields, provenance lines, manifest, and build report are
+transformations of `dictionary.txt`. They remain subject to the GNU Lesser
+General Public License version 3 or later. They are kept in replaceable files
+separate from the application code and are not concatenated into the portable
+application bundle.
+
+Build and deterministic validation are provided by
+`npm run build:character-composition` and
+`npm run validate:character-composition`. The application loads this data only
+when a character-writing workspace is opened; no composition file is requested
+at application startup.
+
 ## Hanzi Writer character data
 
 - Package: `hanzi-writer-data`
@@ -58,6 +86,10 @@ The package supplies SVG stroke paths, medians when present, and radical-stroke
 indexes. Mò Studio does not infer or fabricate absent paths. The production copy
 contains 9,575 character JSON files and is reproduced by
 `npm run prepare:hanzi-data` from the exact lockfile version.
+
+`hanzi-writer-data@2.0.1` does **not** supply IDS decompositions or character
+etymologies. Those fields come exclusively from the separately licensed Make
+Me a Hanzi `dictionary.txt` source documented above.
 
 ## Hanzi Writer library
 

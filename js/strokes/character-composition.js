@@ -1,0 +1,135 @@
+"use strict";
+
+const CHARACTER_COMPOSITION_REVISION = "bddc96d41bef78427ed0e034e9f7e31d71fd1b92";
+
+function compositionComponentHtml(character, record, extraClass, definitionOverride) {
+   const component = record.components?.[character] || {};
+   const definition = definitionOverride === undefined
+      ? component.definition || ""
+      : definitionOverride || "";
+   const pinyin = Array.isArray(component.pinyin) ? component.pinyin.filter(Boolean).join(", ") : "";
+   const title = [character, pinyin, definition].filter(Boolean).join(" · ");
+   return (
+      '<button type="button" class="composition-component' +
+      (extraClass ? " " + extraClass : "") +
+      '" data-composition-character="' + esc(character) + '"' +
+      (title ? ' title="' + esc(title) + '"' : "") + ">" +
+      '<b lang="zh-Hans">' + esc(character) + "</b>" +
+      (definition ? "<small>" + esc(definition) + "</small>" : "") +
+      "</button>"
+   );
+}
+
+function compositionTreeHtml(node, record, nested) {
+   if (node?.c && typeof node.c === "string")
+      return compositionComponentHtml(node.c, record, "");
+   if (!node || !Array.isArray(node.c) || !node.c.length) return "";
+   const children = node.c.map((child) => compositionTreeHtml(child, record, true));
+   const content = children.join('<span class="composition-plus" aria-hidden="true">+</span>');
+   return nested
+      ? '<span class="composition-group"><span aria-hidden="true">(</span>' + content + '<span aria-hidden="true">)</span></span>'
+      : content;
+}
+
+function compositionRoleHtml(character, role, record, useHint) {
+   if (!character) return "";
+   const roleDefinition = useHint
+      ? record.etymology?.hint || record.components?.[character]?.definition || ""
+      : "";
+   const value = Array.from(character).length === 1 && /^\p{Script=Han}$/u.test(character)
+      ? compositionComponentHtml(
+           character,
+           record,
+           "composition-role-component",
+           roleDefinition,
+        )
+      : '<b class="composition-role-text">' + esc(character) + "</b>";
+   return '<span class="composition-role">' + value + '<span aria-hidden="true">→</span><em>' + role + "</em></span>";
+}
+
+function characterCompositionShellHtml(extraClass) {
+   return (
+      '<section class="character-composition is-loading' +
+      (extraClass ? " " + extraClass : "") +
+      '" aria-label="Composition du caractère" aria-busy="true">' +
+      '<span class="sr-only">Chargement de la composition</span></section>'
+   );
+}
+
+function characterCompositionHtml(record) {
+   if (!record) return "";
+   const pictophonetic = record.etymology?.type === "pictophonetic";
+   const roles = pictophonetic
+      ? [
+           compositionRoleHtml(record.etymology.semantic, "sens", record, true),
+           compositionRoleHtml(record.etymology.phonetic, "son", record, false),
+        ].filter(Boolean)
+      : [];
+   const sourceTitle =
+      "Source : Make Me a Hanzi dictionary.txt · LGPL v3+ · révision " +
+      CHARACTER_COMPOSITION_REVISION +
+      (record.sourceLine ? " · ligne " + record.sourceLine : "");
+   return (
+      '<div class="composition-primary"><span class="eyebrow">Composition</span>' +
+      '<span class="composition-formula">' + compositionTreeHtml(record.tree, record, false) + "</span></div>" +
+      '<div class="composition-secondary">' +
+      (roles.length ? '<span class="composition-roles">' + roles.join('<span class="composition-dot" aria-hidden="true">·</span>') + "</span>" : "") +
+      '<span class="cd-cat composition-radical"><span>Clé</span>' +
+      compositionComponentHtml(record.radical, record, "composition-radical-character") +
+      "</span>" +
+      '<abbr class="composition-source" title="' + esc(sourceTitle) + '">MMH</abbr></div>'
+   );
+}
+
+function setCharacterCompositionLoading(character, selector) {
+   document.querySelectorAll(selector || ".character-composition").forEach((target) => {
+      target.hidden = false;
+      target.classList.add("is-loading");
+      target.setAttribute("aria-busy", "true");
+      target.dataset.character = character;
+      target.innerHTML = '<span class="sr-only">Chargement de la composition de ' + esc(character) + "</span>";
+   });
+}
+
+function renderCharacterComposition(record, selector) {
+   document.querySelectorAll(selector || ".character-composition").forEach((target) => {
+      target.classList.remove("is-loading");
+      target.setAttribute("aria-busy", "false");
+      if (!record) {
+         target.hidden = true;
+         target.innerHTML = "";
+         return;
+      }
+      target.hidden = false;
+      target.dataset.character = record.character;
+      target.innerHTML = characterCompositionHtml(record);
+      target.querySelectorAll("[data-composition-character]").forEach((button) => {
+         button.onclick = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openCompositionCharacter(button.dataset.compositionCharacter);
+         };
+      });
+   });
+}
+
+async function openCompositionCharacter(character) {
+   if (!character || !/^\p{Script=Han}$/u.test(character)) return;
+   let entry = null;
+   try {
+      if (typeof findDictionaryEntryByHanzi === "function")
+         entry = await findDictionaryEntryByHanzi(character);
+   } catch (error) {
+      entry = null;
+   }
+   entry ||= typeof normalizeDetailEntry === "function"
+      ? normalizeDetailEntry({ hz: character })
+      : null;
+   if (!entry) return;
+   if (
+      typeof openSearchDictionaryDetail === "function" &&
+      typeof activeView !== "undefined" &&
+      activeView === "search"
+   ) openSearchDictionaryDetail(entry, true);
+   else if (typeof openDictDetail === "function") openDictDetail(entry);
+}

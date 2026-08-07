@@ -1025,6 +1025,10 @@
          .review-stroke-panel {
             margin-top: 9px;
          }
+         .review-character-composition {
+            width: 100%;
+            margin-top: 8px;
+         }
          .review-stroke-grid {
             display: grid;
             width: 164px;
@@ -1210,6 +1214,9 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             margin-top: 12px;
+         }
+         .review-writing-buttons .btn {
+            min-height: 44px;
          }
          .writing-practice-dialog button:focus-visible,
          .writing-practice-dialog input:focus-visible {
@@ -1535,6 +1542,13 @@
    height: 18px;
    accent-color: var(--seal);
 }
+.stroke-gallery-settings label.is-unavailable {
+   color: var(--ink-faint);
+   opacity: 0.55;
+}
+.stroke-radical-label-compact {
+   display: none;
+}
 .stroke-gallery {
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
@@ -1831,6 +1845,156 @@
 .stroke-future {
    fill: #d8d5cf;
 }
+.stroke-complete.stroke-radical,
+.stroke-current.stroke-radical {
+   fill: #237a5a;
+}
+.stroke-future.stroke-radical {
+   fill: #a8c9b8;
+}
+
+/* ---------- composition vérifiée ---------- */
+.character-composition {
+   display: grid;
+   width: min(100%, 560px);
+   min-height: 58px;
+   gap: 3px;
+   margin: 6px auto 2px;
+   padding: 6px 9px;
+   overflow: hidden;
+   border: 1px solid var(--line-soft);
+   border-radius: 10px;
+   background: color-mix(in srgb, var(--card-2) 76%, transparent);
+   color: var(--ink-soft);
+   font-size: 11.5px;
+}
+.character-composition[hidden] {
+   display: none;
+}
+.character-composition.is-loading {
+   visibility: hidden;
+}
+.composition-primary,
+.composition-secondary {
+   display: flex;
+   min-width: 0;
+   min-height: 21px;
+   align-items: center;
+   gap: 7px;
+   white-space: nowrap;
+}
+.composition-primary > .eyebrow {
+   flex: 0 0 auto;
+   margin: 0;
+   color: var(--seal);
+   font-size: 9px;
+}
+.composition-formula,
+.composition-group,
+.composition-roles,
+.composition-role {
+   display: inline-flex;
+   min-width: 0;
+   align-items: center;
+}
+.composition-formula,
+.composition-roles {
+   gap: 4px;
+   overflow-x: auto;
+   scrollbar-width: none;
+}
+.composition-formula::-webkit-scrollbar,
+.composition-roles::-webkit-scrollbar {
+   display: none;
+}
+.composition-group {
+   gap: 3px;
+}
+.composition-component {
+   display: inline-flex;
+   min-width: 0;
+   min-height: 22px;
+   align-items: baseline;
+   gap: 3px;
+   padding: 1px 3px;
+   border: 0;
+   border-radius: 6px;
+   background: transparent;
+   color: var(--ink);
+   cursor: pointer;
+   white-space: nowrap;
+}
+.composition-component:hover,
+.composition-component:focus-visible {
+   background: color-mix(in srgb, var(--seal) 10%, transparent);
+   color: var(--seal);
+}
+.composition-component:focus-visible {
+   outline: 2px solid color-mix(in srgb, var(--jade) 60%, transparent);
+   outline-offset: 1px;
+}
+.composition-component b,
+.composition-role-text {
+   font: 600 18px var(--serif);
+}
+.composition-component small,
+.composition-role-hint {
+   color: var(--ink-faint);
+   font-size: 10px;
+   font-weight: 500;
+}
+.composition-plus,
+.composition-dot {
+   color: var(--ink-faint);
+}
+.composition-secondary {
+   justify-content: flex-end;
+}
+.composition-roles {
+   flex: 1 1 auto;
+}
+.composition-role {
+   flex: 0 0 auto;
+   gap: 3px;
+}
+.composition-role .composition-component {
+   padding-inline: 1px;
+}
+.composition-role em {
+   color: var(--seal);
+   font-style: normal;
+   font-weight: 700;
+}
+.composition-radical {
+   display: inline-flex;
+   flex: 0 0 auto;
+   align-items: center;
+   gap: 2px;
+   margin: 0;
+   padding: 0 4px 0 7px;
+   border-color: color-mix(in srgb, var(--jade) 35%, var(--line));
+   color: var(--jade);
+}
+.composition-radical .composition-component {
+   min-height: 20px;
+   padding: 0 2px;
+   color: inherit;
+}
+.composition-radical .composition-component b {
+   font-size: 16px;
+}
+.composition-radical .composition-component small {
+   display: none;
+}
+.composition-source {
+   flex: 0 0 auto;
+   border: 0;
+   color: var(--ink-faint);
+   font-size: 8px;
+   letter-spacing: 0.06em;
+   text-decoration: none;
+   cursor: help;
+}
 .stroke-panel-label {
    display: block;
    padding: 9px 10px 10px;
@@ -1925,6 +2089,22 @@
    }
    .stroke-gallery-settings label {
       gap: 4px;
+   }
+   .stroke-radical-label-full {
+      display: none;
+   }
+   .stroke-radical-label-compact {
+      display: inline;
+   }
+   .character-composition {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 5px;
+      padding: 5px 7px;
+   }
+   .composition-primary,
+   .composition-secondary {
+      gap: 5px;
    }
    .stroke-gallery {
       display: grid;
@@ -6406,6 +6586,10 @@ body.writing-fullscreen-open {
 
 
 
+
+
+
+
       <script>
 /**
  * Hanzi Writer v3.7.3 | https://chanind.github.io/hanzi-writer
@@ -10083,6 +10267,7 @@ function reviewStrokeBlockHtml(c, st) {
       '<button type="button" class="review-stroke-practice" id="review-stroke-practice">S’entraîner</button></div>' +
       '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="btn sm ghost" id="review-stroke-replay">Rejouer</button></div></div>' +
       '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
+      characterCompositionShellHtml("review-character-composition") +
       "</div></details>"
    );
 }
@@ -10127,12 +10312,29 @@ function createReviewStrokeAnimation(data, autoplay) {
    }
 }
 
-async function loadReviewStrokeCharacter(character, autoplay) {
+async function loadReviewStrokeCharacter(character, autoplay, characters) {
    const token = ++reviewStrokeLoadToken;
    destroyReviewStrokeWriter();
    reviewStrokeData = null;
    const status = $("review-stroke-status");
    if (status) status.textContent = "Chargement…";
+   setCharacterCompositionLoading(character, ".review-character-composition");
+   if (typeof loadCharacterCompositions === "function") {
+      loadCharacterCompositions(characters || [character]).then((compositions) => {
+         if (
+            token !== reviewStrokeLoadToken ||
+            !$("review-strokes")?.open ||
+            !session.active
+         ) return;
+         renderCharacterComposition(
+            compositions.get(character) || null,
+            ".review-character-composition",
+         );
+      }).catch(() => {
+         if (token === reviewStrokeLoadToken)
+            renderCharacterComposition(null, ".review-character-composition");
+      });
+   } else renderCharacterComposition(null, ".review-character-composition");
    try {
       if (typeof loadStrokeCharacterData !== "function") throw new Error("stroke data unavailable");
       const data = await loadStrokeCharacterData(character);
@@ -10181,7 +10383,7 @@ function wireReviewStrokeBlock(c, st) {
       if (previous) previous.disabled = index === 0;
       if (next) next.disabled = index === characters.length - 1;
       if (count) count.textContent = (index + 1) + " / " + characters.length;
-      loadReviewStrokeCharacter(characters[index], true);
+      loadReviewStrokeCharacter(characters[index], true, characters);
       if (characters[index + 1] && typeof preloadStrokeCharacterData === "function")
          preloadStrokeCharacterData(characters[index + 1]);
    };
@@ -12237,7 +12439,7 @@ function openDictionarySources() {
             '<p class="sh-p">Les données globales restent séparées de Mes mots et de ta progression.</p>' +
             attribution.sources.map(dictionarySourceHtml).join("") +
             '<div class="card pad" style="box-shadow:none;margin-top:10px"><h3 class="v-t" style="font-size:20px">Données de traits</h3>' +
-            '<p class="sh-p">Hanzi Writer Data 2.0.1, dérivé de Make Me a Hanzi et des fontes Arphic indiquées par le projet.</p>' +
+            '<p class="sh-p">Hanzi Writer Data 2.0.1 fournit les tracés, les médianes disponibles et les indices de traits de la clé. Il ne fournit aucune décomposition IDS ni étymologie.</p>' +
             '<p class="sh-note">Licence publique Arphic · copie intégrale dans data/generated/hanzi-writer/2.0.1/ARPHICPL.TXT. Moteur Hanzi Writer 3.7.3 sous licence MIT.</p></div>' +
             '<p class="sh-note">Build ' +
             esc(manifest.buildId.slice(0, 12)) +
@@ -13883,6 +14085,277 @@ async function invalidateStrokeCharacterData(character) {
 
 "use strict";
 
+const CHARACTER_COMPOSITION_CHUNK_MODULO = 64;
+const CHARACTER_COMPOSITION_ROOT = (() => {
+   const portable = /\/dist\/[^/]+\.html$/u.test(new URL(document.baseURI).pathname);
+   return new URL(
+      portable
+         ? "../data/generated/character-composition/"
+         : "data/generated/character-composition/",
+      document.baseURI,
+   ).href;
+})();
+const characterCompositionCache = new Map();
+const characterCompositionChunkCache = new Map();
+const characterCompositionChunkPending = new Map();
+let characterCompositionManifestPending = null;
+let characterCompositionUnavailable = false;
+
+function compositionChunkKey(character) {
+   return ((character.codePointAt(0) || 0) % CHARACTER_COMPOSITION_CHUNK_MODULO)
+      .toString(16)
+      .padStart(2, "0");
+}
+
+function compositionCharacters(values) {
+   return Array.from(
+      new Set(
+         (Array.isArray(values) ? values : [values])
+            .flatMap((value) => Array.from(String(value || "").normalize("NFC")))
+            .filter((character) => /^\p{Script=Han}$/u.test(character)),
+      ),
+   );
+}
+
+async function loadCharacterCompositionManifest() {
+   if (characterCompositionUnavailable) return null;
+   if (characterCompositionManifestPending) return characterCompositionManifestPending;
+   characterCompositionManifestPending = fetch(
+      new URL("manifest.json", CHARACTER_COMPOSITION_ROOT).href,
+      { cache: "default" },
+   )
+      .then(async (response) => {
+         if (!response.ok) throw new Error(`HTTP ${response.status}`);
+         const manifest = await response.json();
+         if (
+            manifest?.format !== "mo-studio-character-composition" ||
+            manifest.schemaVersion !== 1 ||
+            manifest.chunkModulo !== CHARACTER_COMPOSITION_CHUNK_MODULO
+         ) throw new Error("Manifest de composition incompatible");
+         return Object.freeze(manifest);
+      })
+      .catch(() => {
+         characterCompositionUnavailable = true;
+         return null;
+      });
+   return characterCompositionManifestPending;
+}
+
+function normalizeCompositionRecord(character, raw) {
+   if (!raw || raw.character !== character || !raw.tree || !raw.radical) return null;
+   if (!raw.decomposition || raw.decomposition.includes("？")) return null;
+   return Object.freeze({
+      character,
+      decomposition: raw.decomposition,
+      tree: raw.tree,
+      radical: raw.radical,
+      components: raw.components && typeof raw.components === "object" ? raw.components : {},
+      etymology: raw.etymology && typeof raw.etymology === "object" ? raw.etymology : null,
+      sourceLine: Number.isInteger(raw.sourceLine) ? raw.sourceLine : null,
+   });
+}
+
+async function loadCharacterCompositionChunk(key, manifest) {
+   if (characterCompositionChunkCache.has(key)) return characterCompositionChunkCache.get(key);
+   if (characterCompositionChunkPending.has(key)) return characterCompositionChunkPending.get(key);
+   const declared = manifest.chunks.find((chunk) => chunk.key === key);
+   if (!declared) return {};
+   const request = fetch(new URL(declared.path, CHARACTER_COMPOSITION_ROOT).href, {
+      cache: "default",
+   })
+      .then(async (response) => {
+         if (!response.ok) throw new Error(`HTTP ${response.status}`);
+         const chunk = await response.json();
+         if (!chunk || typeof chunk !== "object" || Array.isArray(chunk))
+            throw new Error("Chunk de composition invalide");
+         characterCompositionChunkCache.set(key, chunk);
+         return chunk;
+      })
+      .catch(() => ({}))
+      .finally(() => characterCompositionChunkPending.delete(key));
+   characterCompositionChunkPending.set(key, request);
+   return request;
+}
+
+async function loadCharacterCompositions(values) {
+   const characters = compositionCharacters(values);
+   const result = new Map();
+   const unresolved = characters.filter((character) => {
+      if (!characterCompositionCache.has(character)) return true;
+      result.set(character, characterCompositionCache.get(character));
+      return false;
+   });
+   if (!unresolved.length) return result;
+   const manifest = await loadCharacterCompositionManifest();
+   if (!manifest) {
+      unresolved.forEach((character) => {
+         characterCompositionCache.set(character, null);
+         result.set(character, null);
+      });
+      return result;
+   }
+
+   const charactersByChunk = new Map();
+   unresolved.forEach((character) => {
+      const key = compositionChunkKey(character);
+      if (!charactersByChunk.has(key)) charactersByChunk.set(key, []);
+      charactersByChunk.get(key).push(character);
+   });
+   await Promise.all(
+      Array.from(charactersByChunk, async ([key, chunkCharacters]) => {
+         const chunk = await loadCharacterCompositionChunk(key, manifest);
+         chunkCharacters.forEach((character) => {
+            const record = normalizeCompositionRecord(character, chunk[character]);
+            characterCompositionCache.set(character, record);
+            result.set(character, record);
+         });
+      }),
+   );
+   return result;
+}
+
+function preloadCharacterCompositions(values) {
+   return loadCharacterCompositions(values).catch(() => new Map());
+}
+
+"use strict";
+
+const CHARACTER_COMPOSITION_REVISION = "bddc96d41bef78427ed0e034e9f7e31d71fd1b92";
+
+function compositionComponentHtml(character, record, extraClass, definitionOverride) {
+   const component = record.components?.[character] || {};
+   const definition = definitionOverride === undefined
+      ? component.definition || ""
+      : definitionOverride || "";
+   const pinyin = Array.isArray(component.pinyin) ? component.pinyin.filter(Boolean).join(", ") : "";
+   const title = [character, pinyin, definition].filter(Boolean).join(" · ");
+   return (
+      '<button type="button" class="composition-component' +
+      (extraClass ? " " + extraClass : "") +
+      '" data-composition-character="' + esc(character) + '"' +
+      (title ? ' title="' + esc(title) + '"' : "") + ">" +
+      '<b lang="zh-Hans">' + esc(character) + "</b>" +
+      (definition ? "<small>" + esc(definition) + "</small>" : "") +
+      "</button>"
+   );
+}
+
+function compositionTreeHtml(node, record, nested) {
+   if (node?.c && typeof node.c === "string")
+      return compositionComponentHtml(node.c, record, "");
+   if (!node || !Array.isArray(node.c) || !node.c.length) return "";
+   const children = node.c.map((child) => compositionTreeHtml(child, record, true));
+   const content = children.join('<span class="composition-plus" aria-hidden="true">+</span>');
+   return nested
+      ? '<span class="composition-group"><span aria-hidden="true">(</span>' + content + '<span aria-hidden="true">)</span></span>'
+      : content;
+}
+
+function compositionRoleHtml(character, role, record, useHint) {
+   if (!character) return "";
+   const roleDefinition = useHint
+      ? record.etymology?.hint || record.components?.[character]?.definition || ""
+      : "";
+   const value = Array.from(character).length === 1 && /^\p{Script=Han}$/u.test(character)
+      ? compositionComponentHtml(
+           character,
+           record,
+           "composition-role-component",
+           roleDefinition,
+        )
+      : '<b class="composition-role-text">' + esc(character) + "</b>";
+   return '<span class="composition-role">' + value + '<span aria-hidden="true">→</span><em>' + role + "</em></span>";
+}
+
+function characterCompositionShellHtml(extraClass) {
+   return (
+      '<section class="character-composition is-loading' +
+      (extraClass ? " " + extraClass : "") +
+      '" aria-label="Composition du caractère" aria-busy="true">' +
+      '<span class="sr-only">Chargement de la composition</span></section>'
+   );
+}
+
+function characterCompositionHtml(record) {
+   if (!record) return "";
+   const pictophonetic = record.etymology?.type === "pictophonetic";
+   const roles = pictophonetic
+      ? [
+           compositionRoleHtml(record.etymology.semantic, "sens", record, true),
+           compositionRoleHtml(record.etymology.phonetic, "son", record, false),
+        ].filter(Boolean)
+      : [];
+   const sourceTitle =
+      "Source : Make Me a Hanzi dictionary.txt · LGPL v3+ · révision " +
+      CHARACTER_COMPOSITION_REVISION +
+      (record.sourceLine ? " · ligne " + record.sourceLine : "");
+   return (
+      '<div class="composition-primary"><span class="eyebrow">Composition</span>' +
+      '<span class="composition-formula">' + compositionTreeHtml(record.tree, record, false) + "</span></div>" +
+      '<div class="composition-secondary">' +
+      (roles.length ? '<span class="composition-roles">' + roles.join('<span class="composition-dot" aria-hidden="true">·</span>') + "</span>" : "") +
+      '<span class="cd-cat composition-radical"><span>Clé</span>' +
+      compositionComponentHtml(record.radical, record, "composition-radical-character") +
+      "</span>" +
+      '<abbr class="composition-source" title="' + esc(sourceTitle) + '">MMH</abbr></div>'
+   );
+}
+
+function setCharacterCompositionLoading(character, selector) {
+   document.querySelectorAll(selector || ".character-composition").forEach((target) => {
+      target.hidden = false;
+      target.classList.add("is-loading");
+      target.setAttribute("aria-busy", "true");
+      target.dataset.character = character;
+      target.innerHTML = '<span class="sr-only">Chargement de la composition de ' + esc(character) + "</span>";
+   });
+}
+
+function renderCharacterComposition(record, selector) {
+   document.querySelectorAll(selector || ".character-composition").forEach((target) => {
+      target.classList.remove("is-loading");
+      target.setAttribute("aria-busy", "false");
+      if (!record) {
+         target.hidden = true;
+         target.innerHTML = "";
+         return;
+      }
+      target.hidden = false;
+      target.dataset.character = record.character;
+      target.innerHTML = characterCompositionHtml(record);
+      target.querySelectorAll("[data-composition-character]").forEach((button) => {
+         button.onclick = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openCompositionCharacter(button.dataset.compositionCharacter);
+         };
+      });
+   });
+}
+
+async function openCompositionCharacter(character) {
+   if (!character || !/^\p{Script=Han}$/u.test(character)) return;
+   let entry = null;
+   try {
+      if (typeof findDictionaryEntryByHanzi === "function")
+         entry = await findDictionaryEntryByHanzi(character);
+   } catch (error) {
+      entry = null;
+   }
+   entry ||= typeof normalizeDetailEntry === "function"
+      ? normalizeDetailEntry({ hz: character })
+      : null;
+   if (!entry) return;
+   if (
+      typeof openSearchDictionaryDetail === "function" &&
+      typeof activeView !== "undefined" &&
+      activeView === "search"
+   ) openSearchDictionaryDetail(entry, true);
+   else if (typeof openDictDetail === "function") openDictDetail(entry);
+}
+
+"use strict";
+
 const STROKE_SVG_VIEWBOX = "0 0 1024 1024";
 let strokeGalleryObserver = null;
 let strokeFocusState = null;
@@ -13894,6 +14367,7 @@ function strokeGallerySettings() {
    delete settings.showGhost;
    if (typeof settings.showFuture !== "boolean") settings.showFuture = true;
    if (typeof settings.showGrid !== "boolean") settings.showGrid = true;
+   if (typeof settings.highlightRadical !== "boolean") settings.highlightRadical = false;
    return settings;
 }
 
@@ -13909,13 +14383,17 @@ function strokeGridSvg() {
 
 function strokePathsSvg(data, activeIndex, settings) {
    const parts = [];
+   const radicalIndexes = new Set(data.radicalStrokeIndexes || []);
    data.strokes.forEach((path, index) => {
+      const radical = settings.highlightRadical && radicalIndexes.has(index);
+      const radicalClass = radical ? " stroke-radical" : "";
+      const radicalAttribute = radical ? ' data-radical-stroke="true"' : "";
       if (index < activeIndex) {
-         parts.push('<path class="stroke-path stroke-complete" data-path-index="' + index + '" d="' + esc(path) + '"></path>');
+         parts.push('<path class="stroke-path stroke-complete' + radicalClass + '" data-path-index="' + index + '"' + radicalAttribute + ' d="' + esc(path) + '"></path>');
       } else if (index === activeIndex) {
-         parts.push('<path class="stroke-path stroke-current" data-path-index="' + index + '" d="' + esc(path) + '"></path>');
+         parts.push('<path class="stroke-path stroke-current' + radicalClass + '" data-path-index="' + index + '"' + radicalAttribute + ' d="' + esc(path) + '"></path>');
       } else if (settings.showFuture) {
-         parts.push('<path class="stroke-path stroke-future" data-path-index="' + index + '" d="' + esc(path) + '"></path>');
+         parts.push('<path class="stroke-path stroke-future' + radicalClass + '" data-path-index="' + index + '"' + radicalAttribute + ' d="' + esc(path) + '"></path>');
       }
    });
    return '<g transform="translate(0 900) scale(1 -1)">' + parts.join("") + "</g>";
@@ -14011,6 +14489,19 @@ function renderStrokeGallery(data) {
    if (strokeGalleryObserver) strokeGalleryObserver.disconnect();
    strokeGalleryObserver = null;
    const settings = strokeGallerySettings();
+   const radicalToggle = $("dd-highlight-radical");
+   if (radicalToggle) {
+      const available = Array.isArray(data.radicalStrokeIndexes) && data.radicalStrokeIndexes.length > 0;
+      radicalToggle.disabled = !available;
+      radicalToggle.checked = available && settings.highlightRadical;
+      const label = radicalToggle.closest("label");
+      if (label) {
+         label.classList.toggle("is-unavailable", !available);
+         label.title = available
+            ? "Mettre les traits de la clé en évidence"
+            : "Aucun trait de clé indiqué par Hanzi Writer";
+      }
+   }
    gallery.classList.remove("is-loading");
    gallery.setAttribute("aria-busy", "false");
    gallery.onscroll = null;
@@ -14287,6 +14778,7 @@ function strokeBoxHtml(options) {
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-animation" aria-labelledby="stroke-tab-animation"' +
       (active === "animation" ? "" : " hidden") + '>' +
       '<div class="mizi"><div id="dd-target"></div></div>' +
+      characterCompositionShellHtml() +
       '<div class="w-note" id="dd-note" role="status" aria-live="polite"></div>' +
       '<label class="f-lab" for="dd-speed">Vitesse de l’animation · <span class="speed-lab" id="dd-speed-lab">' +
       speed.toFixed(2) + '×</span></label>' +
@@ -14301,12 +14793,15 @@ function strokeBoxHtml(options) {
       '<div class="stroke-gallery-settings">' +
       '<label><input type="checkbox" id="dd-show-future"' + (gallery.showFuture ? " checked" : "") + '> Traits futurs</label>' +
       '<label><input type="checkbox" id="dd-show-grid"' + (gallery.showGrid ? " checked" : "") + '> Grille</label>' +
+      '<label class="stroke-radical-setting"><input type="checkbox" id="dd-highlight-radical"' + (gallery.highlightRadical ? " checked" : "") + ' disabled aria-label="Mettre la clé en évidence"><span class="stroke-radical-label-full">Mettre la clé en évidence</span><span class="stroke-radical-label-compact" aria-hidden="true">Clé</span></label>' +
       "</div></div>" +
       '<div class="stroke-gallery" id="dd-gallery" aria-label="Étapes cumulatives des traits"></div>' +
+      characterCompositionShellHtml() +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-practice" aria-labelledby="stroke-tab-practice"' +
       (active === "practice" ? "" : " hidden") + '>' +
       '<div class="mizi"><div id="dd-practice-target"></div><canvas id="dd-canvas" hidden></canvas></div>' +
+      characterCompositionShellHtml() +
       '<div class="w-note" id="dd-practice-note" role="status" aria-live="polite">Trace le caractère dans le carré.</div>' +
       '<div class="sh-btns"><button class="btn primary" id="dd-quiz" type="button">Commencer</button>' +
       '<button class="btn ghost" id="dd-clear" type="button">Effacer / recommencer</button></div>' +
@@ -14543,6 +15038,7 @@ function wireStrokeWorkspace() {
    [
       ["dd-show-future", "showFuture"],
       ["dd-show-grid", "showGrid"],
+      ["dd-highlight-radical", "highlightRadical"],
    ].forEach(([id, key]) => {
       if (!$(id)) return;
       $(id).onchange = (event) => {
@@ -14573,6 +15069,20 @@ async function loadDDChar(character, characters, options) {
       ? settings.selectionIndex
       : ddWorkspaceCharacters.indexOf(character);
    ddWorkspaceCharacterIndex = workspaceIndex;
+   setCharacterCompositionLoading(character);
+   if (typeof loadCharacterCompositions === "function") {
+      loadCharacterCompositions(ddWorkspaceCharacters).then((compositions) => {
+         if (
+            token !== ddCharacterLoadToken ||
+            ddChar !== character ||
+            !document.querySelector(".stroke-workspace")
+         ) return;
+         renderCharacterComposition(compositions.get(character) || null);
+      }).catch(() => {
+         if (token === ddCharacterLoadToken && ddChar === character)
+            renderCharacterComposition(null);
+      });
+   } else renderCharacterComposition(null);
    const stripSelectionIndex = Number.isInteger(settings.stripSelectionIndex)
       ? settings.stripSelectionIndex
       : workspaceIndex;

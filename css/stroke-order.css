@@ -143,6 +143,13 @@
    height: 18px;
    accent-color: var(--seal);
 }
+.stroke-gallery-settings label.is-unavailable {
+   color: var(--ink-faint);
+   opacity: 0.55;
+}
+.stroke-radical-label-compact {
+   display: none;
+}
 .stroke-gallery {
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
@@ -439,6 +446,156 @@
 .stroke-future {
    fill: #d8d5cf;
 }
+.stroke-complete.stroke-radical,
+.stroke-current.stroke-radical {
+   fill: #237a5a;
+}
+.stroke-future.stroke-radical {
+   fill: #a8c9b8;
+}
+
+/* ---------- composition vérifiée ---------- */
+.character-composition {
+   display: grid;
+   width: min(100%, 560px);
+   min-height: 58px;
+   gap: 3px;
+   margin: 6px auto 2px;
+   padding: 6px 9px;
+   overflow: hidden;
+   border: 1px solid var(--line-soft);
+   border-radius: 10px;
+   background: color-mix(in srgb, var(--card-2) 76%, transparent);
+   color: var(--ink-soft);
+   font-size: 11.5px;
+}
+.character-composition[hidden] {
+   display: none;
+}
+.character-composition.is-loading {
+   visibility: hidden;
+}
+.composition-primary,
+.composition-secondary {
+   display: flex;
+   min-width: 0;
+   min-height: 21px;
+   align-items: center;
+   gap: 7px;
+   white-space: nowrap;
+}
+.composition-primary > .eyebrow {
+   flex: 0 0 auto;
+   margin: 0;
+   color: var(--seal);
+   font-size: 9px;
+}
+.composition-formula,
+.composition-group,
+.composition-roles,
+.composition-role {
+   display: inline-flex;
+   min-width: 0;
+   align-items: center;
+}
+.composition-formula,
+.composition-roles {
+   gap: 4px;
+   overflow-x: auto;
+   scrollbar-width: none;
+}
+.composition-formula::-webkit-scrollbar,
+.composition-roles::-webkit-scrollbar {
+   display: none;
+}
+.composition-group {
+   gap: 3px;
+}
+.composition-component {
+   display: inline-flex;
+   min-width: 0;
+   min-height: 22px;
+   align-items: baseline;
+   gap: 3px;
+   padding: 1px 3px;
+   border: 0;
+   border-radius: 6px;
+   background: transparent;
+   color: var(--ink);
+   cursor: pointer;
+   white-space: nowrap;
+}
+.composition-component:hover,
+.composition-component:focus-visible {
+   background: color-mix(in srgb, var(--seal) 10%, transparent);
+   color: var(--seal);
+}
+.composition-component:focus-visible {
+   outline: 2px solid color-mix(in srgb, var(--jade) 60%, transparent);
+   outline-offset: 1px;
+}
+.composition-component b,
+.composition-role-text {
+   font: 600 18px var(--serif);
+}
+.composition-component small,
+.composition-role-hint {
+   color: var(--ink-faint);
+   font-size: 10px;
+   font-weight: 500;
+}
+.composition-plus,
+.composition-dot {
+   color: var(--ink-faint);
+}
+.composition-secondary {
+   justify-content: flex-end;
+}
+.composition-roles {
+   flex: 1 1 auto;
+}
+.composition-role {
+   flex: 0 0 auto;
+   gap: 3px;
+}
+.composition-role .composition-component {
+   padding-inline: 1px;
+}
+.composition-role em {
+   color: var(--seal);
+   font-style: normal;
+   font-weight: 700;
+}
+.composition-radical {
+   display: inline-flex;
+   flex: 0 0 auto;
+   align-items: center;
+   gap: 2px;
+   margin: 0;
+   padding: 0 4px 0 7px;
+   border-color: color-mix(in srgb, var(--jade) 35%, var(--line));
+   color: var(--jade);
+}
+.composition-radical .composition-component {
+   min-height: 20px;
+   padding: 0 2px;
+   color: inherit;
+}
+.composition-radical .composition-component b {
+   font-size: 16px;
+}
+.composition-radical .composition-component small {
+   display: none;
+}
+.composition-source {
+   flex: 0 0 auto;
+   border: 0;
+   color: var(--ink-faint);
+   font-size: 8px;
+   letter-spacing: 0.06em;
+   text-decoration: none;
+   cursor: help;
+}
 .stroke-panel-label {
    display: block;
    padding: 9px 10px 10px;
@@ -533,6 +690,22 @@
    }
    .stroke-gallery-settings label {
       gap: 4px;
+   }
+   .stroke-radical-label-full {
+      display: none;
+   }
+   .stroke-radical-label-compact {
+      display: inline;
+   }
+   .character-composition {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 5px;
+      padding: 5px 7px;
+   }
+   .composition-primary,
+   .composition-secondary {
+      gap: 5px;
    }
    .stroke-gallery {
       display: grid;

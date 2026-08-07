@@ -40,7 +40,7 @@ function openDictionarySources() {
             '<p class="sh-p">Les données globales restent séparées de Mes mots et de ta progression.</p>' +
             attribution.sources.map(dictionarySourceHtml).join("") +
             '<div class="card pad" style="box-shadow:none;margin-top:10px"><h3 class="v-t" style="font-size:20px">Données de traits</h3>' +
-            '<p class="sh-p">Hanzi Writer Data 2.0.1, dérivé de Make Me a Hanzi et des fontes Arphic indiquées par le projet.</p>' +
+            '<p class="sh-p">Hanzi Writer Data 2.0.1 fournit les tracés, les médianes disponibles et les indices de traits de la clé. Il ne fournit aucune décomposition IDS ni étymologie.</p>' +
             '<p class="sh-note">Licence publique Arphic · copie intégrale dans data/generated/hanzi-writer/2.0.1/ARPHICPL.TXT. Moteur Hanzi Writer 3.7.3 sous licence MIT.</p></div>' +
             '<p class="sh-note">Build ' +
             esc(manifest.buildId.slice(0, 12)) +

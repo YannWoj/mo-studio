@@ -269,6 +269,7 @@ async function main() {
 
    await evaluate("openSequence(Array.from('吃饭'),{fromHistory:true,index:1})");
    await waitFor(() => evaluate("document.querySelector('#seq-flash .fr')?.textContent.includes('riz cuit')"), "饭 sequence reader did not reuse French");
+   await waitFor(() => evaluate("document.querySelector('#seq-stage .stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character===ddChar"), "sequence reader composition did not load in the shared stroke workspace");
    assert(!(await evaluate("document.querySelector('#seq-flash .fr').textContent.includes('Traduction française indisponible')")), "饭 sequence reader kept the fallback");
    const sequenceFirstScreen = await evaluate(`(() => {const selectors=['#seq-flash > .hanzi','#seq-flash > .pinyin','#seq-flash > .fr','#stroke-panel-animation .mizi'];const rects=selectors.map((selector)=>document.querySelector(selector)?.getBoundingClientRect());return {visible:rects.every((rect)=>rect&&rect.top>=0&&rect.bottom<=innerHeight),metaAfterStage:[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('.seq-meta'))>[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('#seq-stage')),rects:rects.map((rect)=>rect&&({top:rect.top,bottom:rect.bottom,width:rect.width}))};})()`);
    assert(sequenceFirstScreen.visible && sequenceFirstScreen.metaAfterStage, `sequence first screen/order failed: ${JSON.stringify(sequenceFirstScreen)}`);

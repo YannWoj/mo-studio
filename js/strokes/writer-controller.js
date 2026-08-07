@@ -202,6 +202,7 @@ function strokeBoxHtml(options) {
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-animation" aria-labelledby="stroke-tab-animation"' +
       (active === "animation" ? "" : " hidden") + '>' +
       '<div class="mizi"><div id="dd-target"></div></div>' +
+      characterCompositionShellHtml() +
       '<div class="w-note" id="dd-note" role="status" aria-live="polite"></div>' +
       '<label class="f-lab" for="dd-speed">Vitesse de l’animation · <span class="speed-lab" id="dd-speed-lab">' +
       speed.toFixed(2) + '×</span></label>' +
@@ -216,12 +217,15 @@ function strokeBoxHtml(options) {
       '<div class="stroke-gallery-settings">' +
       '<label><input type="checkbox" id="dd-show-future"' + (gallery.showFuture ? " checked" : "") + '> Traits futurs</label>' +
       '<label><input type="checkbox" id="dd-show-grid"' + (gallery.showGrid ? " checked" : "") + '> Grille</label>' +
+      '<label class="stroke-radical-setting"><input type="checkbox" id="dd-highlight-radical"' + (gallery.highlightRadical ? " checked" : "") + ' disabled aria-label="Mettre la clé en évidence"><span class="stroke-radical-label-full">Mettre la clé en évidence</span><span class="stroke-radical-label-compact" aria-hidden="true">Clé</span></label>' +
       "</div></div>" +
       '<div class="stroke-gallery" id="dd-gallery" aria-label="Étapes cumulatives des traits"></div>' +
+      characterCompositionShellHtml() +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-practice" aria-labelledby="stroke-tab-practice"' +
       (active === "practice" ? "" : " hidden") + '>' +
       '<div class="mizi"><div id="dd-practice-target"></div><canvas id="dd-canvas" hidden></canvas></div>' +
+      characterCompositionShellHtml() +
       '<div class="w-note" id="dd-practice-note" role="status" aria-live="polite">Trace le caractère dans le carré.</div>' +
       '<div class="sh-btns"><button class="btn primary" id="dd-quiz" type="button">Commencer</button>' +
       '<button class="btn ghost" id="dd-clear" type="button">Effacer / recommencer</button></div>' +
@@ -458,6 +462,7 @@ function wireStrokeWorkspace() {
    [
       ["dd-show-future", "showFuture"],
       ["dd-show-grid", "showGrid"],
+      ["dd-highlight-radical", "highlightRadical"],
    ].forEach(([id, key]) => {
       if (!$(id)) return;
       $(id).onchange = (event) => {
@@ -488,6 +493,20 @@ async function loadDDChar(character, characters, options) {
       ? settings.selectionIndex
       : ddWorkspaceCharacters.indexOf(character);
    ddWorkspaceCharacterIndex = workspaceIndex;
+   setCharacterCompositionLoading(character);
+   if (typeof loadCharacterCompositions === "function") {
+      loadCharacterCompositions(ddWorkspaceCharacters).then((compositions) => {
+         if (
+            token !== ddCharacterLoadToken ||
+            ddChar !== character ||
+            !document.querySelector(".stroke-workspace")
+         ) return;
+         renderCharacterComposition(compositions.get(character) || null);
+      }).catch(() => {
+         if (token === ddCharacterLoadToken && ddChar === character)
+            renderCharacterComposition(null);
+      });
+   } else renderCharacterComposition(null);
    const stripSelectionIndex = Number.isInteger(settings.stripSelectionIndex)
       ? settings.stripSelectionIndex
       : workspaceIndex;

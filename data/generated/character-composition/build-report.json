@@ -1,0 +1,72 @@
+{
+  "format": "mo-studio-character-composition-build-report",
+  "builderVersion": "1.0.0",
+  "source": {
+    "project": "Make Me a Hanzi",
+    "file": "data/source/makemeahanzi/dictionary.txt",
+    "revision": "bddc96d41bef78427ed0e034e9f7e31d71fd1b92",
+    "sha256": "744bb05d5b0742e9ee35c37791f94d56a173349b3367569e7ca11e510364d203",
+    "license": "GNU Lesser General Public License v3 or later",
+    "sourceEntryCount": 9574
+  },
+  "coverage": {
+    "sourceUsableCompositionCount": 9125,
+    "sourceUnknownCompositionCount": 449,
+    "sourcePictophoneticCount": 6966,
+    "dictionaryCharacterCount": 14426,
+    "dictionaryWithUsableCompositionCount": 9013,
+    "dictionaryWithPictophoneticCompositionCount": 6811
+  },
+  "testCases": [
+    {
+      "criterion": "pictophonetic-complete",
+      "character": "妈",
+      "sourceLine": 1602
+    },
+    {
+      "criterion": "ideographic",
+      "character": "你",
+      "sourceLine": 273
+    },
+    {
+      "criterion": "without-etymology",
+      "character": "微",
+      "sourceLine": 2289
+    },
+    {
+      "criterion": "pictophonetic-without-hint",
+      "character": "价",
+      "sourceLine": 212
+    },
+    {
+      "criterion": "nested-ids",
+      "character": "森",
+      "sourceLine": 3405
+    },
+    {
+      "criterion": "ternary-left-middle-right",
+      "character": "班",
+      "sourceLine": 4571
+    },
+    {
+      "criterion": "ternary-top-middle-bottom",
+      "character": "京",
+      "sourceLine": 161
+    },
+    {
+      "criterion": "invalid-full-width-question-mark",
+      "character": "一",
+      "sourceLine": 41
+    },
+    {
+      "criterion": "dictionary-character-absent-from-source",
+      "character": "鶥",
+      "sourceLine": null
+    },
+    {
+      "criterion": "component-without-gloss",
+      "character": "学",
+      "sourceLine": 1762
+    }
+  ]
+}

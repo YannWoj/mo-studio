@@ -441,6 +441,10 @@
          .review-stroke-panel {
             margin-top: 9px;
          }
+         .review-character-composition {
+            width: 100%;
+            margin-top: 8px;
+         }
          .review-stroke-grid {
             display: grid;
             width: 164px;
@@ -626,6 +630,9 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             margin-top: 12px;
+         }
+         .review-writing-buttons .btn {
+            min-height: 44px;
          }
          .writing-practice-dialog button:focus-visible,
          .writing-practice-dialog input:focus-visible {

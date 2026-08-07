@@ -11,6 +11,7 @@ function strokeGallerySettings() {
    delete settings.showGhost;
    if (typeof settings.showFuture !== "boolean") settings.showFuture = true;
    if (typeof settings.showGrid !== "boolean") settings.showGrid = true;
+   if (typeof settings.highlightRadical !== "boolean") settings.highlightRadical = false;
    return settings;
 }
 
@@ -26,13 +27,17 @@ function strokeGridSvg() {
 
 function strokePathsSvg(data, activeIndex, settings) {
    const parts = [];
+   const radicalIndexes = new Set(data.radicalStrokeIndexes || []);
    data.strokes.forEach((path, index) => {
+      const radical = settings.highlightRadical && radicalIndexes.has(index);
+      const radicalClass = radical ? " stroke-radical" : "";
+      const radicalAttribute = radical ? ' data-radical-stroke="true"' : "";
       if (index < activeIndex) {
-         parts.push('<path class="stroke-path stroke-complete" data-path-index="' + index + '" d="' + esc(path) + '"></path>');
+         parts.push('<path class="stroke-path stroke-complete' + radicalClass + '" data-path-index="' + index + '"' + radicalAttribute + ' d="' + esc(path) + '"></path>');
       } else if (index === activeIndex) {
-         parts.push('<path class="stroke-path stroke-current" data-path-index="' + index + '" d="' + esc(path) + '"></path>');
+         parts.push('<path class="stroke-path stroke-current' + radicalClass + '" data-path-index="' + index + '"' + radicalAttribute + ' d="' + esc(path) + '"></path>');
       } else if (settings.showFuture) {
-         parts.push('<path class="stroke-path stroke-future" data-path-index="' + index + '" d="' + esc(path) + '"></path>');
+         parts.push('<path class="stroke-path stroke-future' + radicalClass + '" data-path-index="' + index + '"' + radicalAttribute + ' d="' + esc(path) + '"></path>');
       }
    });
    return '<g transform="translate(0 900) scale(1 -1)">' + parts.join("") + "</g>";
@@ -128,6 +133,19 @@ function renderStrokeGallery(data) {
    if (strokeGalleryObserver) strokeGalleryObserver.disconnect();
    strokeGalleryObserver = null;
    const settings = strokeGallerySettings();
+   const radicalToggle = $("dd-highlight-radical");
+   if (radicalToggle) {
+      const available = Array.isArray(data.radicalStrokeIndexes) && data.radicalStrokeIndexes.length > 0;
+      radicalToggle.disabled = !available;
+      radicalToggle.checked = available && settings.highlightRadical;
+      const label = radicalToggle.closest("label");
+      if (label) {
+         label.classList.toggle("is-unavailable", !available);
+         label.title = available
+            ? "Mettre les traits de la clé en évidence"
+            : "Aucun trait de clé indiqué par Hanzi Writer";
+      }
+   }
    gallery.classList.remove("is-loading");
    gallery.setAttribute("aria-busy", "false");
    gallery.onscroll = null;
