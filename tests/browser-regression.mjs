@@ -3008,6 +3008,27 @@ async function main() {
          Buffer.from(searchScreenshot.data, "base64"),
       );
 
+      const radicalToggleMetrics = await evaluate(`({
+         exists: !!document.querySelector('#search-mode-toggle'),
+         ariaPressed: document.querySelector('#search-mode-toggle')?.getAttribute('aria-pressed'),
+      })`);
+      assert(radicalToggleMetrics.exists && radicalToggleMetrics.ariaPressed === "false", `Radical-mode toggle missing or already pressed at ${width}px`);
+
+      if (width === 390) {
+         const beforeRadicalToggle = await evaluate("JSON.stringify({cards:db.cards,query:srch.q,resultIds:(srch.search?.results||[]).map((item)=>item.entry.id)})");
+         await click("#search-mode-toggle");
+         await waitFor(() => evaluate("!document.querySelector('#dradical-panel').hidden && document.querySelectorAll('.radical-chip').length > 0"), "Radical table did not open", 20_000);
+         await assertNoDuplicateIds(`Radical table at ${width}px`);
+         await click('[data-radical="女"]');
+         await waitFor(() => evaluate("radicalBrowser.radical==='女' && document.querySelectorAll('#dradical-panel .dict-result').length > 0"), "Radical member list did not open", 20_000);
+         await assertNoDuplicateIds(`Radical member list at ${width}px`);
+         await click("#search-mode-toggle");
+         await waitFor(() => evaluate("document.querySelector('#dradical-panel').hidden"), "Radical mode did not exit", 20_000);
+         const afterRadicalToggle = await evaluate("JSON.stringify({cards:db.cards,query:srch.q,resultIds:(srch.search?.results||[]).map((item)=>item.entry.id)})");
+         assert(beforeRadicalToggle === afterRadicalToggle, "Entering/exiting radical mode mutated the underlying search state");
+         record("radical mode toggle", "no duplicate ids in table/member views; underlying query, results, and personal cards unchanged after a round trip");
+      }
+
       if ([320, 390, 768, 1440].includes(width)) {
          await click("#dresults .dict-result-primary");
          await waitFor(() => evaluate("!!document.querySelector('.dd-entry')"), `Detail did not open at ${width}px`, 20_000);

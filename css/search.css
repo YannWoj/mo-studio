@@ -94,6 +94,20 @@
 .search-hero .v-t {
    margin-bottom: 4px;
 }
+.search-mode-bar {
+   display: flex;
+   justify-content: flex-end;
+   margin-top: 10px;
+}
+.search-mode-toggle {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+}
+.search-mode-toggle b {
+   font-family: var(--serif);
+   font-size: 15px;
+}
 .dictionary-search-form {
    display: grid;
    grid-template-columns: minmax(0, 1fr) auto;
@@ -353,6 +367,70 @@
 .search-more {
    padding: 18px;
    text-align: center;
+}
+.radical-toolbar {
+   margin: 4px 0 10px;
+}
+.radical-filter-input {
+   width: 100%;
+   min-height: 48px;
+   padding: 0 14px;
+   border: 1px solid var(--line);
+   border-radius: 12px;
+   background: var(--card);
+   color: var(--ink);
+   font-size: 15px;
+}
+.radical-filter-input:focus-visible {
+   outline: 2px solid color-mix(in srgb, var(--seal) 58%, transparent);
+   outline-offset: 2px;
+}
+.radical-group {
+   margin: 16px 0;
+}
+.radical-group-heading {
+   margin-bottom: 8px;
+}
+.radical-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+   gap: 8px;
+}
+.radical-chip {
+   display: flex;
+   min-height: 44px;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 2px;
+   padding: 10px 8px;
+   border: 1px solid var(--line-soft);
+   border-radius: 12px;
+   background: var(--card-2);
+   text-align: center;
+}
+.radical-chip:active {
+   background: var(--card);
+}
+.radical-chip b {
+   font-family: var(--serif);
+   font-size: 24px;
+   line-height: 1;
+}
+.radical-chip span {
+   overflow: hidden;
+   max-width: 100%;
+   color: var(--ink-soft);
+   font-size: 12px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.radical-chip small {
+   color: var(--ink-faint);
+   font-size: 11px;
+}
+.radical-back {
+   margin-bottom: 6px;
 }
 .dd-entry .cd-head {
    align-items: flex-start;

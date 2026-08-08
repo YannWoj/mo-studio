@@ -512,6 +512,13 @@ function restoreSearchHistory(state) {
       });
       return;
    }
+   if (state.mode === "radical") {
+      srch.mode = srch.q ? "results" : "landing";
+      renderSearch();
+      if (state.radical) selectRadical(state.radical, { fromHistory: true });
+      else openRadicalMode({ fromHistory: true });
+      return;
+   }
    renderSearch();
    if (srch.mode === "landing") return;
    if (srch.search && srch.search.query.display === normalizeVisibleWhitespace(srch.q)) {
@@ -527,10 +534,15 @@ function restoreSearchHistory(state) {
 
 function renderSearch() {
    document.body.classList.remove("in-seq");
+   radicalBrowser.active = false;
+   radicalBrowser.radical = null;
    const root = $("view");
    root.innerHTML =
       '<section class="card pad search-page"><header class="search-hero"><h2 class="v-t">查 · Rechercher</h2>' +
-      '<p class="muted">Trouve un caractère, un mot, un pinyin ou une traduction.</p></header>' +
+      '<p class="muted">Trouve un caractère, un mot, un pinyin ou une traduction.</p>' +
+      '<div class="search-mode-bar"><button type="button" class="chip search-mode-toggle" id="search-mode-toggle" aria-pressed="false">' +
+      '<b lang="zh-Hans">部</b> Clés</button></div></header>' +
+      '<div id="dsearch-normal">' +
       '<form class="dictionary-search-form" id="dsearch-form"><div class="dictionary-search-input">' +
       '<input class="search" id="dq" placeholder="汉字, pinyin ou français…" value="' + esc(srch.q) +
       '" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-controls="dsearch-suggestions" aria-expanded="false">' +
@@ -538,7 +550,13 @@ function renderSearch() {
       '<div class="dictionary-suggestions" id="dsearch-suggestions" role="listbox" hidden></div></div>' +
       '<button class="btn primary search-submit" type="submit">Rechercher</button></form>' +
       '<div class="search-live-state" id="dsearch-state" role="status" aria-live="polite"></div>' +
-      '<div id="dresults"></div></section>';
+      '<div id="dresults"></div></div>' +
+      '<div id="dradical-panel" hidden></div></section>';
+
+   $("search-mode-toggle").onclick = () => {
+      if (radicalBrowser.active) exitRadicalMode();
+      else openRadicalMode();
+   };
 
    const input = $("dq");
    $("dsearch-form").onsubmit = (event) => {

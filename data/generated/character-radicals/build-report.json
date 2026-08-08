@@ -1,0 +1,51 @@
+{
+  "format": "mo-studio-character-radicals-build-report",
+  "builderVersion": "1.0.0",
+  "derivedFrom": {
+    "characterCompositionBuildId": "d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a",
+    "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
+    "hanziWriterVersion": "2.0.1"
+  },
+  "coverage": {
+    "radicalsInSource": 289,
+    "radicalsWithDictionaryMembers": 288,
+    "charactersCovered": 9409,
+    "dictionaryCharactersTotal": 14426,
+    "dictionaryCharactersWithoutRadical": 5017,
+    "radicalsExcludedZeroMembers": 1,
+    "excludedRadicals": [
+      "尣"
+    ],
+    "radicalsWithoutStrokeCount": 0,
+    "missingStrokeRadicals": [],
+    "radicalsWithGloss": 211,
+    "radicalsWithoutGloss": 77,
+    "oneOrTwoMemberRadicals": 52
+  },
+  "testCases": [
+    {
+      "criterion": "large-group",
+      "radical": "氵",
+      "memberCountAtLeast": 400
+    },
+    {
+      "criterion": "self-radical",
+      "radical": "木",
+      "memberOfOwnGroup": true
+    },
+    {
+      "criterion": "single-member",
+      "radical": "乛",
+      "memberCount": 1
+    },
+    {
+      "criterion": "excluded-zero-member",
+      "radical": "尣"
+    },
+    {
+      "criterion": "gloss-present",
+      "radical": "木",
+      "sens": "bois"
+    }
+  ]
+}

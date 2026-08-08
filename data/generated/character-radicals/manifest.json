@@ -1,0 +1,2614 @@
+{
+  "format": "mo-studio-character-radicals",
+  "schemaVersion": 1,
+  "builderVersion": "1.0.0",
+  "buildId": "b77072378af768cdc74a89e616babc68df7a72646645d124f3a4bb4c790242e8",
+  "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/",
+  "derivedFrom": {
+    "characterCompositionBuildId": "d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a",
+    "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
+    "hanziWriterVersion": "2.0.1"
+  },
+  "chunkPathTemplate": "chunks/{radical}.json",
+  "counts": {
+    "radicalsInSource": 289,
+    "radicalsWithDictionaryMembers": 288,
+    "charactersCovered": 9409,
+    "dictionaryCharactersTotal": 14426,
+    "dictionaryCharactersWithoutRadical": 5017
+  },
+  "radicals": [
+    {
+      "radical": "一",
+      "strokeCount": 1,
+      "sens": "1 (nombre)",
+      "memberCount": 34,
+      "path": "chunks/一.json",
+      "bytes": 1121,
+      "sha256": "e44772d80dd3f9b119eea7887937660d607ecfd12cf734d9fe92f33f2fb42e70"
+    },
+    {
+      "radical": "丨",
+      "strokeCount": 1,
+      "sens": "ligne (radical)",
+      "memberCount": 10,
+      "path": "chunks/丨.json",
+      "bytes": 354,
+      "sha256": "11b2853d374cf19db1af4cbbdd420953350ee977e9d14a44b808a0d895d870e2"
+    },
+    {
+      "radical": "丶",
+      "strokeCount": 1,
+      "sens": "point (radical)",
+      "memberCount": 6,
+      "path": "chunks/丶.json",
+      "bytes": 225,
+      "sha256": "155525ba89ede58a6e39365b6bb4cc02fdfe8e3f9868b6ce0f294beaf44c589e"
+    },
+    {
+      "radical": "丿",
+      "strokeCount": 1,
+      "sens": "oblique (radical)",
+      "memberCount": 17,
+      "path": "chunks/丿.json",
+      "bytes": 578,
+      "sha256": "ed988a79d0dcb6e02d40e6a863c68f67fcf5b8870d67fb7934ca17b1782c65ae"
+    },
+    {
+      "radical": "乙",
+      "strokeCount": 1,
+      "sens": "le 2e des dix Troncs célestes",
+      "memberCount": 6,
+      "path": "chunks/乙.json",
+      "bytes": 226,
+      "sha256": "83b7d6f4f740c7040546a54e8bca8a4d666cabada49537e30dd210b3b4dd4408"
+    },
+    {
+      "radical": "乚",
+      "strokeCount": 1,
+      "sens": null,
+      "memberCount": 8,
+      "path": "chunks/乚.json",
+      "bytes": 291,
+      "sha256": "9102eb086134e07e16550154254191d2be8ba98104d3b204ffc8930d174f4441"
+    },
+    {
+      "radical": "乛",
+      "strokeCount": 1,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/乛.json",
+      "bytes": 65,
+      "sha256": "927ac8143cdc0d5ec6ffc0fd82e1802a862be31dee2f0ead53682fcbb0f79ada"
+    },
+    {
+      "radical": "亅",
+      "strokeCount": 1,
+      "sens": "crochet (radical)",
+      "memberCount": 4,
+      "path": "chunks/亅.json",
+      "bytes": 161,
+      "sha256": "9d80dce963c1cdffd66a8bf88b94ffbb0cb0618118c27f39b76dbbb434c7a6f2"
+    },
+    {
+      "radical": "⺀",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/⺀.json",
+      "bytes": 65,
+      "sha256": "dfc6fd0b67d2db5d6fd49aa397a8739a888c1eb8337ab131814566be357150a6"
+    },
+    {
+      "radical": "⺊",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 4,
+      "path": "chunks/⺊.json",
+      "bytes": 161,
+      "sha256": "a1c4139a3a02ff5000b7fa476e3d9eec26ecce4c03b7032a81b3f232d2d7ef86"
+    },
+    {
+      "radical": "㔾",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 5,
+      "path": "chunks/㔾.json",
+      "bytes": 193,
+      "sha256": "9e5362e4504e5bf68e54994eb3cb2eca8d180582e65d2dd46b443a9e29eee34d"
+    },
+    {
+      "radical": "丷",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 8,
+      "path": "chunks/丷.json",
+      "bytes": 292,
+      "sha256": "d3f2179094ba887a5b8eb785b2b9188017a9cf526deb4b362c98b55c91ec7394"
+    },
+    {
+      "radical": "二",
+      "strokeCount": 2,
+      "sens": "2",
+      "memberCount": 14,
+      "path": "chunks/二.json",
+      "bytes": 481,
+      "sha256": "626c9d16538855ff74d58ab220e8dbe83dfcde886dc99bf245d780646ba53a6e"
+    },
+    {
+      "radical": "亠",
+      "strokeCount": 2,
+      "sens": "couvercle (radical)",
+      "memberCount": 17,
+      "path": "chunks/亠.json",
+      "bytes": 581,
+      "sha256": "94efbcfb626ac10aeb318c37f12932a55652efaf5c8c2913c3b374a0c99f1ad0"
+    },
+    {
+      "radical": "人",
+      "strokeCount": 2,
+      "sens": "une personne",
+      "memberCount": 30,
+      "path": "chunks/人.json",
+      "bytes": 997,
+      "sha256": "ac275fbdb18ff6233e7db6d287d83e6deface5d959181b11b2a5a83977f63135"
+    },
+    {
+      "radical": "亻",
+      "strokeCount": 2,
+      "sens": "homme (radical)",
+      "memberCount": 276,
+      "path": "chunks/亻.json",
+      "bytes": 8986,
+      "sha256": "c482456aadbc01f456005f15027862daf4d611f325992904dd3f419ce6e37b2c"
+    },
+    {
+      "radical": "儿",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 23,
+      "path": "chunks/儿.json",
+      "bytes": 773,
+      "sha256": "628d82f6fc86108a16a06dce4e0687d4aec90b75e90490798517b4b97438e2f9"
+    },
+    {
+      "radical": "入",
+      "strokeCount": 2,
+      "sens": "entrer",
+      "memberCount": 5,
+      "path": "chunks/入.json",
+      "bytes": 193,
+      "sha256": "d0920f6ca9b386f35e272e55ad94b0252ec3edd08be9efb4b1645018df8ed811"
+    },
+    {
+      "radical": "八",
+      "strokeCount": 2,
+      "sens": "huit",
+      "memberCount": 11,
+      "path": "chunks/八.json",
+      "bytes": 386,
+      "sha256": "b8e1e7595cbc7d289bbe96aeb21ce8f7b7ada1e826cb3fd6a8bfe9d45e806863"
+    },
+    {
+      "radical": "冂",
+      "strokeCount": 2,
+      "sens": "boîte (radical)",
+      "memberCount": 12,
+      "path": "chunks/冂.json",
+      "bytes": 419,
+      "sha256": "417788b0caa6d565774187105f5a89cfac2314fedecdd64117b01c93e6b918aa"
+    },
+    {
+      "radical": "冖",
+      "strokeCount": 2,
+      "sens": "sur (radical)",
+      "memberCount": 13,
+      "path": "chunks/冖.json",
+      "bytes": 456,
+      "sha256": "641d35595afc5e784a8a76e36901a3f24e6d5fff8f535392394e133dc295de7f"
+    },
+    {
+      "radical": "冫",
+      "strokeCount": 2,
+      "sens": "glace (radical)",
+      "memberCount": 26,
+      "path": "chunks/冫.json",
+      "bytes": 878,
+      "sha256": "56fdb067fa901b47356e70a8e651c378ee8e6690a66dd16e03028057d4001dc9"
+    },
+    {
+      "radical": "几",
+      "strokeCount": 2,
+      "sens": "petite table",
+      "memberCount": 9,
+      "path": "chunks/几.json",
+      "bytes": 324,
+      "sha256": "f1ec8777d6703f497b80f7ebaa0ab614918643c9ac9e985f75e8639f7c0dc8e9"
+    },
+    {
+      "radical": "凵",
+      "strokeCount": 2,
+      "sens": "(ancien) levée de terre",
+      "memberCount": 8,
+      "path": "chunks/凵.json",
+      "bytes": 290,
+      "sha256": "e3f821bf87fab634576f28c417211ccd7606002ab6015b8ec2db1f9cda6ed463"
+    },
+    {
+      "radical": "刀",
+      "strokeCount": 2,
+      "sens": "couteau",
+      "memberCount": 8,
+      "path": "chunks/刀.json",
+      "bytes": 291,
+      "sha256": "e4d29a168abd83683b7ffb55f89c37cdab94fedaaf3e289af3e69eba75eca15d"
+    },
+    {
+      "radical": "刂",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 71,
+      "path": "chunks/刂.json",
+      "bytes": 2333,
+      "sha256": "305915069455881a510547c92e0222836cbfa3d0cdd930279d3212a3614de24e"
+    },
+    {
+      "radical": "力",
+      "strokeCount": 2,
+      "sens": "force",
+      "memberCount": 44,
+      "path": "chunks/力.json",
+      "bytes": 1458,
+      "sha256": "14034b9223c0ccf5b76ff39de160d4ef5450f6160df86517d051ae89766590cf"
+    },
+    {
+      "radical": "勹",
+      "strokeCount": 2,
+      "sens": "envelopper (radical)",
+      "memberCount": 14,
+      "path": "chunks/勹.json",
+      "bytes": 483,
+      "sha256": "12900631a5f8736dbe1e385b6dc431e10582659c13fa8ada8344ff76b6abeb7d"
+    },
+    {
+      "radical": "匕",
+      "strokeCount": 2,
+      "sens": "cuillère",
+      "memberCount": 4,
+      "path": "chunks/匕.json",
+      "bytes": 162,
+      "sha256": "e14ca743240b7fff0741abd878eecc92178aaad2db62ab9af92978e552de5f3d"
+    },
+    {
+      "radical": "匚",
+      "strokeCount": 2,
+      "sens": "coffre",
+      "memberCount": 13,
+      "path": "chunks/匚.json",
+      "bytes": 454,
+      "sha256": "c07755c89c8dbb47788eb13c89660f3e7c431d8fdd1a023dd3394a6cf0127a6c"
+    },
+    {
+      "radical": "匸",
+      "strokeCount": 2,
+      "sens": "enceinte cachée (radical)",
+      "memberCount": 7,
+      "path": "chunks/匸.json",
+      "bytes": 260,
+      "sha256": "8028fd6c5fd685a91c0cfcdff2bcb9d183ba233f76fba54790854e0d3c83bf30"
+    },
+    {
+      "radical": "十",
+      "strokeCount": 2,
+      "sens": "dix",
+      "memberCount": 23,
+      "path": "chunks/十.json",
+      "bytes": 772,
+      "sha256": "468b70e7e3c6596b907df5ad94e49bb91f5bd72cd43f05475815065a6eeed13f"
+    },
+    {
+      "radical": "卜",
+      "strokeCount": 2,
+      "sens": "divination",
+      "memberCount": 4,
+      "path": "chunks/卜.json",
+      "bytes": 161,
+      "sha256": "de666c9f39d6611f7b7a57f42bcec866f5cabf2d58e927ab85b8e726ab006a87"
+    },
+    {
+      "radical": "卩",
+      "strokeCount": 2,
+      "sens": "sceau (radical)",
+      "memberCount": 11,
+      "path": "chunks/卩.json",
+      "bytes": 386,
+      "sha256": "ef239e43a55780e0c64c5ac7438ba6598fe352a5702522ff1b5c2a0c91e7ca2e"
+    },
+    {
+      "radical": "厂",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 27,
+      "path": "chunks/厂.json",
+      "bytes": 911,
+      "sha256": "7480d0c7759566c56cba6b583c05443ea0cd6e64ad487672589ca4111ec65492"
+    },
+    {
+      "radical": "厶",
+      "strokeCount": 2,
+      "sens": "privé (radical)",
+      "memberCount": 9,
+      "path": "chunks/厶.json",
+      "bytes": 323,
+      "sha256": "70bbef53c5cb7a88fcb8a6c58df7f091f4cd9d4d0595b0968adba2bd5d3f02fd"
+    },
+    {
+      "radical": "又",
+      "strokeCount": 2,
+      "sens": "encore",
+      "memberCount": 21,
+      "path": "chunks/又.json",
+      "bytes": 708,
+      "sha256": "a34ca6be8e89f2f615db1261a17365e6245ff7d98b3759b4e44f8f5e5d39a503"
+    },
+    {
+      "radical": "廴",
+      "strokeCount": 2,
+      "sens": "grande enjambée (radical)",
+      "memberCount": 4,
+      "path": "chunks/廴.json",
+      "bytes": 161,
+      "sha256": "1b8c7e17c2d9524f73c994a3188548a085512cc4f574438e4a9ae655d04d0eff"
+    },
+    {
+      "radical": "讠",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 143,
+      "path": "chunks/讠.json",
+      "bytes": 4671,
+      "sha256": "971b0bc38d24febae5ff89f9d543845fc756f62287471327c82c5b08389d8255"
+    },
+    {
+      "radical": "阝",
+      "strokeCount": 2,
+      "sens": null,
+      "memberCount": 158,
+      "path": "chunks/阝.json",
+      "bytes": 5156,
+      "sha256": "8e0cc154cc3c1c8522e8a48116978698b2d9628f98a21177ccc652ce7e4c4f55"
+    },
+    {
+      "radical": "⺌",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 4,
+      "path": "chunks/⺌.json",
+      "bytes": 162,
+      "sha256": "9c6bb7c903b461306e5bd1e73ce6b5377e247ad49f517638b9b893a7246701f7"
+    },
+    {
+      "radical": "丬",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/丬.json",
+      "bytes": 97,
+      "sha256": "f706c0522219c86b37e8bd36b42e0f8f0ea2a464913a8215cc91e133ea593d72"
+    },
+    {
+      "radical": "兀",
+      "strokeCount": 3,
+      "sens": "haut plateau",
+      "memberCount": 1,
+      "path": "chunks/兀.json",
+      "bytes": 65,
+      "sha256": "1845cfee2438bedaeff2eb5930065c52e77330c236bb6f50b105a542dfae9ef4"
+    },
+    {
+      "radical": "口",
+      "strokeCount": 3,
+      "sens": "bouche",
+      "memberCount": 424,
+      "path": "chunks/口.json",
+      "bytes": 13848,
+      "sha256": "94a1c0781f92bd08a98e3fa58222a39867088dd5d3d8269a1c4721791bd9f4e8"
+    },
+    {
+      "radical": "囗",
+      "strokeCount": 3,
+      "sens": "enceinte (n.f)",
+      "memberCount": 39,
+      "path": "chunks/囗.json",
+      "bytes": 1297,
+      "sha256": "fd2fa7669450115cbaeab4854366cc40e8c71c7f5e5b60549d72d4358f0f9a31"
+    },
+    {
+      "radical": "土",
+      "strokeCount": 3,
+      "sens": "terre",
+      "memberCount": 178,
+      "path": "chunks/土.json",
+      "bytes": 5832,
+      "sha256": "59aeb2f40ddf4338577b3146b464a32b20bee30814e806a31e43f2abe7e42c8e"
+    },
+    {
+      "radical": "士",
+      "strokeCount": 3,
+      "sens": "lettré",
+      "memberCount": 10,
+      "path": "chunks/士.json",
+      "bytes": 357,
+      "sha256": "89b54f5c95c025b01c5c066001e8ea9fadff8da48e5ad3db34eb27ba309a5f0e"
+    },
+    {
+      "radical": "夂",
+      "strokeCount": 3,
+      "sens": "aller (radical)",
+      "memberCount": 8,
+      "path": "chunks/夂.json",
+      "bytes": 290,
+      "sha256": "1df8a7365d0d63170a7e966329aa355cd4f718e2dfdc406e378d92eb039a0934"
+    },
+    {
+      "radical": "夊",
+      "strokeCount": 3,
+      "sens": "aller lentement (radical)",
+      "memberCount": 4,
+      "path": "chunks/夊.json",
+      "bytes": 163,
+      "sha256": "0011047684eeed1167d7f1762e3a6970e4030a0d9784b3abe396d15f655a54b3"
+    },
+    {
+      "radical": "夕",
+      "strokeCount": 3,
+      "sens": "coucher du soleil",
+      "memberCount": 11,
+      "path": "chunks/夕.json",
+      "bytes": 390,
+      "sha256": "4a8d3c3c3078ef78e2837c998864a08d40ac49e8923582199485d3b726196e9a"
+    },
+    {
+      "radical": "大",
+      "strokeCount": 3,
+      "sens": "grand",
+      "memberCount": 45,
+      "path": "chunks/大.json",
+      "bytes": 1484,
+      "sha256": "39ad04373b62b7841f0aadaa1d8c6563060c9063c2740293b747ef6bbb78dc68"
+    },
+    {
+      "radical": "女",
+      "strokeCount": 3,
+      "sens": "femme",
+      "memberCount": 153,
+      "path": "chunks/女.json",
+      "bytes": 5015,
+      "sha256": "4eb6249a51fc5cfb67a2d9021b80ae4fc4f64c025329d54f6746dcc47cd79bb6"
+    },
+    {
+      "radical": "子",
+      "strokeCount": 3,
+      "sens": "(suffixe substantif)",
+      "memberCount": 30,
+      "path": "chunks/子.json",
+      "bytes": 1003,
+      "sha256": "b780aaea115fcaf383e44267bcdab2a63d6334d15a929cd233f51ef85a75c70e"
+    },
+    {
+      "radical": "宀",
+      "strokeCount": 3,
+      "sens": "toit (radical)",
+      "memberCount": 67,
+      "path": "chunks/宀.json",
+      "bytes": 2214,
+      "sha256": "8cf197bee9bf40b65222fb1f802e439a41444d18e34ff98ef965bf7aae292ee9"
+    },
+    {
+      "radical": "寸",
+      "strokeCount": 3,
+      "sens": "unité de longueur qui équivaut à 3,33 cm",
+      "memberCount": 17,
+      "path": "chunks/寸.json",
+      "bytes": 587,
+      "sha256": "4a28b886373a056059fadfac13eba1a3f360c3328a7a2ab8de470fdcbec54279"
+    },
+    {
+      "radical": "小",
+      "strokeCount": 3,
+      "sens": "petit",
+      "memberCount": 9,
+      "path": "chunks/小.json",
+      "bytes": 321,
+      "sha256": "a2900e250c0bf785e9e266cbc10623685e9a95312aaa90b8737b216fcb3e2252"
+    },
+    {
+      "radical": "尢",
+      "strokeCount": 3,
+      "sens": "boiteux",
+      "memberCount": 7,
+      "path": "chunks/尢.json",
+      "bytes": 260,
+      "sha256": "680bed82b1d179568f7e11a5aa35a6f604502ff8d087876483be17035c7278b7"
+    },
+    {
+      "radical": "尸",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 38,
+      "path": "chunks/尸.json",
+      "bytes": 1265,
+      "sha256": "96a22295157638001a81e5e16953da878c2e6fdd73fb0c45b907ea677eac1382"
+    },
+    {
+      "radical": "屮",
+      "strokeCount": 3,
+      "sens": "germe",
+      "memberCount": 2,
+      "path": "chunks/屮.json",
+      "bytes": 97,
+      "sha256": "468af1c958cc95c58b5afd3af4a48044f4a003a55efbe0201cb81507db03895d"
+    },
+    {
+      "radical": "山",
+      "strokeCount": 3,
+      "sens": "montagne",
+      "memberCount": 111,
+      "path": "chunks/山.json",
+      "bytes": 3652,
+      "sha256": "55dc5e3c360d52a9308b484c8afd59c19cbb91c94c39de75672b80c845618436"
+    },
+    {
+      "radical": "巛",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 5,
+      "path": "chunks/巛.json",
+      "bytes": 195,
+      "sha256": "85309e7e15693841223697f9ca6869319bf7840bee8ff2f3e36967acb39ed186"
+    },
+    {
+      "radical": "川",
+      "strokeCount": 3,
+      "sens": "fleuve",
+      "memberCount": 2,
+      "path": "chunks/川.json",
+      "bytes": 97,
+      "sha256": "c1b1ab55e5993021d3631e703c576707574be38f7639dc32ecec3f4eb8689987"
+    },
+    {
+      "radical": "工",
+      "strokeCount": 3,
+      "sens": "travail",
+      "memberCount": 7,
+      "path": "chunks/工.json",
+      "bytes": 258,
+      "sha256": "db2f690284ac4dd1bc8c55db97ba0fcf4271208fce9aa781a77ddc3bff35673b"
+    },
+    {
+      "radical": "己",
+      "strokeCount": 3,
+      "sens": "soi-même",
+      "memberCount": 3,
+      "path": "chunks/己.json",
+      "bytes": 129,
+      "sha256": "a9527b303af3cd21c4a78beca707e77437d29b9002e0b09c89d83e3eb409619e"
+    },
+    {
+      "radical": "巳",
+      "strokeCount": 3,
+      "sens": "sixième rameau terrestre",
+      "memberCount": 5,
+      "path": "chunks/巳.json",
+      "bytes": 194,
+      "sha256": "2b9248722e9a84d8f174b46201fa6284f3eff23a752f942ddc2a06c3f6c10b2e"
+    },
+    {
+      "radical": "巾",
+      "strokeCount": 3,
+      "sens": "mouchoir",
+      "memberCount": 52,
+      "path": "chunks/巾.json",
+      "bytes": 1723,
+      "sha256": "48fde4371b9f359ca959df111b3c3d3a039ad90b9d227135cb5089578f85889e"
+    },
+    {
+      "radical": "干",
+      "strokeCount": 3,
+      "sens": "bouclier",
+      "memberCount": 5,
+      "path": "chunks/干.json",
+      "bytes": 194,
+      "sha256": "790a27246b8bc66c7b817f93040638c45c3c29bf5080ae54f9b05588cdf0d939"
+    },
+    {
+      "radical": "幺",
+      "strokeCount": 3,
+      "sens": "chiffre un (utilisé pour épeler un numéro)",
+      "memberCount": 5,
+      "path": "chunks/幺.json",
+      "bytes": 194,
+      "sha256": "4ff491071f42d8720e87178771b25473e5a2bfbe4676a52d90100fbaf2bfd2d0"
+    },
+    {
+      "radical": "广",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 59,
+      "path": "chunks/广.json",
+      "bytes": 1955,
+      "sha256": "a574c95006a758ccb1acf75f00b005ed911eb9fd5936ef0f86df7c6ebe66386b"
+    },
+    {
+      "radical": "廾",
+      "strokeCount": 3,
+      "sens": "tenir des deux mains",
+      "memberCount": 10,
+      "path": "chunks/廾.json",
+      "bytes": 354,
+      "sha256": "450bc8976567910cb454acf92ed7c8650ae2b50bc3ad78884283e1a327830432"
+    },
+    {
+      "radical": "弋",
+      "strokeCount": 3,
+      "sens": "flèche",
+      "memberCount": 6,
+      "path": "chunks/弋.json",
+      "bytes": 227,
+      "sha256": "2a64ef51e13755a4067b285dc692938914a806a43f825373bf039bdf32b4bb07"
+    },
+    {
+      "radical": "弓",
+      "strokeCount": 3,
+      "sens": "arc",
+      "memberCount": 29,
+      "path": "chunks/弓.json",
+      "bytes": 974,
+      "sha256": "c296abb6c5d3ae17d8b7910989af58362962cf0d7569fabefe3f5b334ae0ae5a"
+    },
+    {
+      "radical": "彐",
+      "strokeCount": 3,
+      "sens": "museau (radical)",
+      "memberCount": 9,
+      "path": "chunks/彐.json",
+      "bytes": 324,
+      "sha256": "a35615a821e95abbef7af49ca54b07a210e8afa64239432ce9bdc020a24e3334"
+    },
+    {
+      "radical": "彑",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 6,
+      "path": "chunks/彑.json",
+      "bytes": 228,
+      "sha256": "b6249b4de0e00464d92b6cf0e2e2abbc65438f90efa0ff5835d0afd471005de9"
+    },
+    {
+      "radical": "彡",
+      "strokeCount": 3,
+      "sens": "hérisser (radical)",
+      "memberCount": 13,
+      "path": "chunks/彡.json",
+      "bytes": 456,
+      "sha256": "50f5f65854050ace398f62716616dc41f73a56d3bdbaa56c0f7d3c422a08f602"
+    },
+    {
+      "radical": "彳",
+      "strokeCount": 3,
+      "sens": "petits pas",
+      "memberCount": 41,
+      "path": "chunks/彳.json",
+      "bytes": 1368,
+      "sha256": "7b382d82d9fdb0c60453361ea0f3f23fe2d892e3e0c7e6cdf898963bc45dc805"
+    },
+    {
+      "radical": "忄",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 167,
+      "path": "chunks/忄.json",
+      "bytes": 5484,
+      "sha256": "70ae70cd358eef33cc074ee84e7e74be5cd029f39194400b6b5ef7b3d3b36093"
+    },
+    {
+      "radical": "扌",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 341,
+      "path": "chunks/扌.json",
+      "bytes": 11169,
+      "sha256": "0776ce4a08b998962a4b00459fc1810668b0ee12d313ba5ed4fe09ba50321e8c"
+    },
+    {
+      "radical": "氵",
+      "strokeCount": 3,
+      "sens": "eau (radical)",
+      "memberCount": 463,
+      "path": "chunks/氵.json",
+      "bytes": 15164,
+      "sha256": "8fcb30b637a19e6443cc2b996c3dae09a1fe3998a60d41071a6d995db53771f7"
+    },
+    {
+      "radical": "犭",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 87,
+      "path": "chunks/犭.json",
+      "bytes": 2873,
+      "sha256": "9b2a6b97df7acecea91a6c73d9f595bb4a7c5468e71f26d60ffc30bdab66cf2d"
+    },
+    {
+      "radical": "纟",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 141,
+      "path": "chunks/纟.json",
+      "bytes": 4625,
+      "sha256": "b872ce8c5342c785e126e9e59002dc80c914493e77799506ebb5f041d6c260de"
+    },
+    {
+      "radical": "艹",
+      "strokeCount": 3,
+      "sens": "(radical herbe)",
+      "memberCount": 418,
+      "path": "chunks/艹.json",
+      "bytes": 13683,
+      "sha256": "acac8df558c17cb485997383a116f2d7cd7cb52b0f1fd9423ec89c6a2a1a8a1c"
+    },
+    {
+      "radical": "辶",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 130,
+      "path": "chunks/辶.json",
+      "bytes": 4273,
+      "sha256": "b8a21a01b3b10cd1bdc3d1a0e4fad826967e85758f18f12e6d61f194715bbdee"
+    },
+    {
+      "radical": "门",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 47,
+      "path": "chunks/门.json",
+      "bytes": 1559,
+      "sha256": "6582a798ca8aa3f1e6156c9d8602b64cf36e88e111e035edfd53f7afe54ab8c8"
+    },
+    {
+      "radical": "飞",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/飞.json",
+      "bytes": 65,
+      "sha256": "2bc0302ded7b61cc472278bba6bd795ddd210425129b51d32e433f3dd43abc3e"
+    },
+    {
+      "radical": "饣",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 43,
+      "path": "chunks/饣.json",
+      "bytes": 1429,
+      "sha256": "5e1f83d7d371240719a626ba89f740ff39222e8c217bc4f085b283144f33ef4f"
+    },
+    {
+      "radical": "马",
+      "strokeCount": 3,
+      "sens": null,
+      "memberCount": 54,
+      "path": "chunks/马.json",
+      "bytes": 1788,
+      "sha256": "d7c68f3d06d1564684710f9212c1fb80cd65358dbd0aa2114ccfedb6ada1a36f"
+    },
+    {
+      "radical": "⺗",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 3,
+      "path": "chunks/⺗.json",
+      "bytes": 131,
+      "sha256": "d6cc8b74c2c2d30c2d2a40c5d443ed545cce1790cb02e52ba1b09f3bb4dccb20"
+    },
+    {
+      "radical": "⺳",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/⺳.json",
+      "bytes": 97,
+      "sha256": "83d87aeec607daba1555f7802f9da41d78d3bdee0428c151e74320946d4914f4"
+    },
+    {
+      "radical": "⺼",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 175,
+      "path": "chunks/⺼.json",
+      "bytes": 5748,
+      "sha256": "0d6a5f3c0444bfef81f558d32153dba44d3f8f1c9ae0a21a2d13bb1f5dd20eb0"
+    },
+    {
+      "radical": "心",
+      "strokeCount": 4,
+      "sens": "coeur",
+      "memberCount": 95,
+      "path": "chunks/心.json",
+      "bytes": 3143,
+      "sha256": "08f42d0685224150c4d30493377d31c44d45d0dbe1250a88913fc2ef77b6f4e9"
+    },
+    {
+      "radical": "戈",
+      "strokeCount": 4,
+      "sens": "hallebarde",
+      "memberCount": 33,
+      "path": "chunks/戈.json",
+      "bytes": 1106,
+      "sha256": "7986d16e805f4eeddb72d38d4f919b1af16c43a85d7eaa700116697096751dbb"
+    },
+    {
+      "radical": "户",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 15,
+      "path": "chunks/户.json",
+      "bytes": 517,
+      "sha256": "f970d1921bb92c645a7251ab59269d0d82d897fa28db8ce82a5f1fb76ce7193d"
+    },
+    {
+      "radical": "手",
+      "strokeCount": 4,
+      "sens": "main",
+      "memberCount": 23,
+      "path": "chunks/手.json",
+      "bytes": 789,
+      "sha256": "e17e9c78633c9cede67cb019d80b68a993bed2417e55bc2fa9faeb5597766fe6"
+    },
+    {
+      "radical": "支",
+      "strokeCount": 4,
+      "sens": "appuyer",
+      "memberCount": 1,
+      "path": "chunks/支.json",
+      "bytes": 65,
+      "sha256": "7261a10958a12cbd0c07f69225109462e1ed9597ae7f9b530f239891194aa74c"
+    },
+    {
+      "radical": "攴",
+      "strokeCount": 4,
+      "sens": "toquer",
+      "memberCount": 2,
+      "path": "chunks/攴.json",
+      "bytes": 98,
+      "sha256": "d59496ce47711cd8edd81eec24e7fdec9a64a30407b180324faac08ba9557b83"
+    },
+    {
+      "radical": "攵",
+      "strokeCount": 4,
+      "sens": "ne pas",
+      "memberCount": 35,
+      "path": "chunks/攵.json",
+      "bytes": 1179,
+      "sha256": "4ad5a2cfebebdef080e01bac7e72a1db7e128e9e66e441f885401705c46401dc"
+    },
+    {
+      "radical": "文",
+      "strokeCount": 4,
+      "sens": "caractère",
+      "memberCount": 7,
+      "path": "chunks/文.json",
+      "bytes": 263,
+      "sha256": "859d689344b51d2aedd34f34a614336d63e99271bcad0d5795a881914d48e838"
+    },
+    {
+      "radical": "斗",
+      "strokeCount": 4,
+      "sens": "boisseau = 10 sheng",
+      "memberCount": 6,
+      "path": "chunks/斗.json",
+      "bytes": 230,
+      "sha256": "6194bc1fc3590d5808680498aa0ecef6a7d3866e1a30ff5d0b7334c1fd4b8dc8"
+    },
+    {
+      "radical": "斤",
+      "strokeCount": 4,
+      "sens": "unité de poids chinoise égale à 500g",
+      "memberCount": 11,
+      "path": "chunks/斤.json",
+      "bytes": 392,
+      "sha256": "dc66fec3e6d235b89e0ca31f1ef21ea8cd850c814f551c6d213420aec6cdb702"
+    },
+    {
+      "radical": "方",
+      "strokeCount": 4,
+      "sens": "direction",
+      "memberCount": 16,
+      "path": "chunks/方.json",
+      "bytes": 557,
+      "sha256": "d763ee6807f6faeb2ff5a10135d708ac8de421d292159034a4f026bfad02884e"
+    },
+    {
+      "radical": "无",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/无.json",
+      "bytes": 65,
+      "sha256": "ec7802422cacf72b8db3abb0b581e3ec1d59ca7111e9b8f1cc7b85524e164696"
+    },
+    {
+      "radical": "旡",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/旡.json",
+      "bytes": 65,
+      "sha256": "637afa14c25457c1e512e9caa7b808675f9e5dc3daa3416803ba087cb046c352"
+    },
+    {
+      "radical": "日",
+      "strokeCount": 4,
+      "sens": "soleil",
+      "memberCount": 113,
+      "path": "chunks/日.json",
+      "bytes": 3717,
+      "sha256": "5b31315e298f22d0b0c11f27ad157d52873e8221b360d8c4e9d15fe47d3c123c"
+    },
+    {
+      "radical": "曰",
+      "strokeCount": 4,
+      "sens": "dire",
+      "memberCount": 14,
+      "path": "chunks/曰.json",
+      "bytes": 488,
+      "sha256": "60f37a6ba3dcf262558a8db2a0b86935cd60b279d59dc5b8e3c76b3bf0517f99"
+    },
+    {
+      "radical": "月",
+      "strokeCount": 4,
+      "sens": "Lune",
+      "memberCount": 14,
+      "path": "chunks/月.json",
+      "bytes": 489,
+      "sha256": "c076e2c1f797770712c77c29259b57a96981f5ae238c5e226f4a8b91f77ddb55"
+    },
+    {
+      "radical": "木",
+      "strokeCount": 4,
+      "sens": "bois",
+      "memberCount": 382,
+      "path": "chunks/木.json",
+      "bytes": 12524,
+      "sha256": "4e540333ada0d16319ae79261225539660655a46844d46dabb4fac2518ac750a"
+    },
+    {
+      "radical": "欠",
+      "strokeCount": 4,
+      "sens": "devoir",
+      "memberCount": 27,
+      "path": "chunks/欠.json",
+      "bytes": 918,
+      "sha256": "e5f60e2a7d07cde34df86d3de638f8762d325be10f3ab48dea36abde86e95c92"
+    },
+    {
+      "radical": "止",
+      "strokeCount": 4,
+      "sens": "seul",
+      "memberCount": 12,
+      "path": "chunks/止.json",
+      "bytes": 421,
+      "sha256": "783270db0805d31c35c481c5a23ecbd057e3cd1a17f48ac087a0dea3fbd8ce24"
+    },
+    {
+      "radical": "歹",
+      "strokeCount": 4,
+      "sens": "mauvais",
+      "memberCount": 29,
+      "path": "chunks/歹.json",
+      "bytes": 980,
+      "sha256": "c3134eb5282df66f6478d3ac83afbce56d81a077eea7e1d64fa38ee3422745b9"
+    },
+    {
+      "radical": "殳",
+      "strokeCount": 4,
+      "sens": "lance",
+      "memberCount": 15,
+      "path": "chunks/殳.json",
+      "bytes": 525,
+      "sha256": "719bcf460269f6066aa750c67425873dc9a93ef36aa68993938424b5d242691e"
+    },
+    {
+      "radical": "毋",
+      "strokeCount": 4,
+      "sens": "(négatif, prohibitif)",
+      "memberCount": 1,
+      "path": "chunks/毋.json",
+      "bytes": 65,
+      "sha256": "2dfb351e94ae0f79c6c910ed01b6ff0eaf6504eccbd3d97fb6b8348fadce24e1"
+    },
+    {
+      "radical": "比",
+      "strokeCount": 4,
+      "sens": "par rapport à",
+      "memberCount": 6,
+      "path": "chunks/比.json",
+      "bytes": 227,
+      "sha256": "c2b2615cc5ed26072b51e5bef2abfc92506cca637e362d579de3825329d89f3b"
+    },
+    {
+      "radical": "毛",
+      "strokeCount": 4,
+      "sens": "poil",
+      "memberCount": 15,
+      "path": "chunks/毛.json",
+      "bytes": 526,
+      "sha256": "b6ce7007414c94285f178520c432942ef1159bf571280d7c5b59e8e60a318d17"
+    },
+    {
+      "radical": "氏",
+      "strokeCount": 4,
+      "sens": "(nom de famille)",
+      "memberCount": 2,
+      "path": "chunks/氏.json",
+      "bytes": 97,
+      "sha256": "5f84e8e5c5a72f39710c4e9ab7ea8382a14d5cb80883634e0f94b98761ad8f77"
+    },
+    {
+      "radical": "气",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 24,
+      "path": "chunks/气.json",
+      "bytes": 814,
+      "sha256": "68a79232b55052d329c10488f617da08bd2ad08679ea19fcdfa938607b19e87f"
+    },
+    {
+      "radical": "水",
+      "strokeCount": 4,
+      "sens": "eau",
+      "memberCount": 13,
+      "path": "chunks/水.json",
+      "bytes": 454,
+      "sha256": "5b3ddd58c8d36473049af76e862c5cb75ae9ee158bcd0acdbdc076d8e4d8edaf"
+    },
+    {
+      "radical": "火",
+      "strokeCount": 4,
+      "sens": "feu",
+      "memberCount": 127,
+      "path": "chunks/火.json",
+      "bytes": 4182,
+      "sha256": "bd50ce102efee782951c39340a6be1b41589845d54baa323615beefdb687bbad"
+    },
+    {
+      "radical": "灬",
+      "strokeCount": 4,
+      "sens": "(radical n°86, version simplifiée du caractère du feu lorsqu'il est placé en bas d'un caractère)",
+      "memberCount": 27,
+      "path": "chunks/灬.json",
+      "bytes": 923,
+      "sha256": "8deedfd19391cc53fb1f98bf287b49165ef648da93e4dc89fb6d00915da7b94d"
+    },
+    {
+      "radical": "爪",
+      "strokeCount": 4,
+      "sens": "griffes",
+      "memberCount": 2,
+      "path": "chunks/爪.json",
+      "bytes": 97,
+      "sha256": "29568f6b01775fca7ac3bbd1d31b12e76fa4e7404626765055b36fd77eeff6ef"
+    },
+    {
+      "radical": "爫",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 7,
+      "path": "chunks/爫.json",
+      "bytes": 259,
+      "sha256": "65067942c4d4220b7e500b42ab91fe93fb4b8fd40ee9617ec9229bd292db9a20"
+    },
+    {
+      "radical": "父",
+      "strokeCount": 4,
+      "sens": "père",
+      "memberCount": 5,
+      "path": "chunks/父.json",
+      "bytes": 195,
+      "sha256": "3884a60395a0abb2389aa0a3274c7bfd85f9b31c4dd8ddcba5c4b3e7818fa12d"
+    },
+    {
+      "radical": "爻",
+      "strokeCount": 4,
+      "sens": "entrelacer",
+      "memberCount": 3,
+      "path": "chunks/爻.json",
+      "bytes": 131,
+      "sha256": "d9e6f35e38757c34803ab2b3fe4133aa108477032bf9efbbef127c63b4559abc"
+    },
+    {
+      "radical": "爿",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/爿.json",
+      "bytes": 98,
+      "sha256": "d7664cb3bddd76c8271d193793bdab9fcee5c41f1609c999b6b5320167e62198"
+    },
+    {
+      "radical": "片",
+      "strokeCount": 4,
+      "sens": "tranche",
+      "memberCount": 7,
+      "path": "chunks/片.json",
+      "bytes": 262,
+      "sha256": "7b81c9e5558ead270aa5e7c10a5568c2ec00096cfc9233a8bfcfed24f25f54b1"
+    },
+    {
+      "radical": "牙",
+      "strokeCount": 4,
+      "sens": "dent",
+      "memberCount": 1,
+      "path": "chunks/牙.json",
+      "bytes": 66,
+      "sha256": "c1901930da7bc4a67820c1815a93ec4423955809b20e5b09ed5168c5ecff2bea"
+    },
+    {
+      "radical": "牛",
+      "strokeCount": 4,
+      "sens": "boeuf",
+      "memberCount": 34,
+      "path": "chunks/牛.json",
+      "bytes": 1141,
+      "sha256": "c6889ed019d9046845e336b643042c5012246e6e3060680c1a9cde17f2ef2d9b"
+    },
+    {
+      "radical": "犬",
+      "strokeCount": 4,
+      "sens": "chien",
+      "memberCount": 12,
+      "path": "chunks/犬.json",
+      "bytes": 424,
+      "sha256": "54336085c8dc227a8be4fb8ad54975a1a5a91cb3b9d12b7db510e862df7185a6"
+    },
+    {
+      "radical": "王",
+      "strokeCount": 4,
+      "sens": "régner sur",
+      "memberCount": 103,
+      "path": "chunks/王.json",
+      "bytes": 3403,
+      "sha256": "5957f4df2bb77cb7c8e67d695a2e7c3be3911120cd0271274562b36f24e30703"
+    },
+    {
+      "radical": "瓦",
+      "strokeCount": 4,
+      "sens": "tuile",
+      "memberCount": 14,
+      "path": "chunks/瓦.json",
+      "bytes": 491,
+      "sha256": "8b56edd34f60fcca5312bac8fad68fb1a1db875e222dc1c13a2f80ea6c61064b"
+    },
+    {
+      "radical": "礻",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 42,
+      "path": "chunks/礻.json",
+      "bytes": 1399,
+      "sha256": "f3b907bbe114e154ba4c6b073132546abf9a9c80b10f5a1d646fe2067e5fc07a"
+    },
+    {
+      "radical": "罓",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/罓.json",
+      "bytes": 65,
+      "sha256": "74791b88bf6dd879f9b0fe977c606649613532b842e52f95e4ec59787d1ea5ca"
+    },
+    {
+      "radical": "耂",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/耂.json",
+      "bytes": 97,
+      "sha256": "f401bfab07661a3d414bce69a7ec896eeac914b7f26cba7691eb168a3ca390e9"
+    },
+    {
+      "radical": "肀",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 3,
+      "path": "chunks/肀.json",
+      "bytes": 130,
+      "sha256": "e394abbb5814609f0124c16d7b1e283d35e30f10f09d2a6ddabb7db41e650b81"
+    },
+    {
+      "radical": "见",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 14,
+      "path": "chunks/见.json",
+      "bytes": 488,
+      "sha256": "b2bf251c62625474f96a62eb6d857322a33aae504a147593911f9c0ff8b5218a"
+    },
+    {
+      "radical": "贝",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 63,
+      "path": "chunks/贝.json",
+      "bytes": 2085,
+      "sha256": "d077200eb98d5a7a95bba5254cfea41b8ea4d3eff8e35cd8e75b3cd1be326f0e"
+    },
+    {
+      "radical": "车",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 50,
+      "path": "chunks/车.json",
+      "bytes": 1660,
+      "sha256": "690317a80e09053e35ab44bfaaee45e20049a705e8c35b8592a3dc167e8ad91e"
+    },
+    {
+      "radical": "长",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/长.json",
+      "bytes": 65,
+      "sha256": "97b5d29ef269445326929167f602290329cf11721127809030e6c5735f36d222"
+    },
+    {
+      "radical": "韦",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 6,
+      "path": "chunks/韦.json",
+      "bytes": 229,
+      "sha256": "6fdbfcc8d4d1c3ccaff918622247b1f1c51a9058d36b61725b4eaf8805673e2e"
+    },
+    {
+      "radical": "风",
+      "strokeCount": 4,
+      "sens": null,
+      "memberCount": 10,
+      "path": "chunks/风.json",
+      "bytes": 359,
+      "sha256": "ae23c571bc8877992d0eb38d5a1d91b34ead7ce6e766a9711742dc4671ed2c70"
+    },
+    {
+      "radical": "歺",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/歺.json",
+      "bytes": 65,
+      "sha256": "348ed3c70c737ebf3c1ed9f1cc0c303a592363fd97dd21b43c9f774436b1e322"
+    },
+    {
+      "radical": "母",
+      "strokeCount": 5,
+      "sens": "mère",
+      "memberCount": 4,
+      "path": "chunks/母.json",
+      "bytes": 162,
+      "sha256": "e9a7b2c7b9f89619589cf9e91b434d9daa33c029104af84023944d9d9207e594"
+    },
+    {
+      "radical": "民",
+      "strokeCount": 5,
+      "sens": "peuple",
+      "memberCount": 2,
+      "path": "chunks/民.json",
+      "bytes": 97,
+      "sha256": "bdd425daad96b377817a34f6a431efb9b9439e90f18819e2702ed1a60e9a30ca"
+    },
+    {
+      "radical": "氺",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 4,
+      "path": "chunks/氺.json",
+      "bytes": 163,
+      "sha256": "235f28478a5becf6b8b249c8cc5416845da3a9fba182a3bbb4fce253d5ae851c"
+    },
+    {
+      "radical": "玄",
+      "strokeCount": 5,
+      "sens": "mystérieux",
+      "memberCount": 2,
+      "path": "chunks/玄.json",
+      "bytes": 98,
+      "sha256": "5174921cc539ff63cc4596cb9e4212623f8b74782bd06aa76aaf4afe7774cfd9"
+    },
+    {
+      "radical": "玉",
+      "strokeCount": 5,
+      "sens": "jade",
+      "memberCount": 6,
+      "path": "chunks/玉.json",
+      "bytes": 230,
+      "sha256": "211294c7470166f04b5c72aedf295199d7c3587e8a230a8e6cbf703b394c55c6"
+    },
+    {
+      "radical": "瓜",
+      "strokeCount": 5,
+      "sens": "melon",
+      "memberCount": 6,
+      "path": "chunks/瓜.json",
+      "bytes": 230,
+      "sha256": "6dd3cb894bc905468857c4f946e2f448d47e5736144671c9fe4d855ce5a573af"
+    },
+    {
+      "radical": "甘",
+      "strokeCount": 5,
+      "sens": "volontiers",
+      "memberCount": 3,
+      "path": "chunks/甘.json",
+      "bytes": 130,
+      "sha256": "1a0743ae1c81c86d1be2fdb93e6f2e282d2748a762675107a011404da2c2f2e7"
+    },
+    {
+      "radical": "生",
+      "strokeCount": 5,
+      "sens": "vie",
+      "memberCount": 5,
+      "path": "chunks/生.json",
+      "bytes": 197,
+      "sha256": "1124a5147a022f574018108a59a4ef117bb841747d8b8e53aca22f8850046752"
+    },
+    {
+      "radical": "用",
+      "strokeCount": 5,
+      "sens": "utiliser",
+      "memberCount": 7,
+      "path": "chunks/用.json",
+      "bytes": 258,
+      "sha256": "1af2a0db31b8473264bf6c824ee9aa92a4e30d43f816a9f9d21649ff0a8d1d00"
+    },
+    {
+      "radical": "田",
+      "strokeCount": 5,
+      "sens": "champ",
+      "memberCount": 45,
+      "path": "chunks/田.json",
+      "bytes": 1500,
+      "sha256": "c0457a440db01d901bae46117fbe04c5c67548c781714e810ed4f7b1a8b24f73"
+    },
+    {
+      "radical": "疋",
+      "strokeCount": 5,
+      "sens": "(classificateur des étoffes)",
+      "memberCount": 4,
+      "path": "chunks/疋.json",
+      "bytes": 164,
+      "sha256": "b41629045943df4d39a5f63f4a42b6935aadd69e9546eda7c46d0f0abbf189c1"
+    },
+    {
+      "radical": "疒",
+      "strokeCount": 5,
+      "sens": "maladie (radical)",
+      "memberCount": 125,
+      "path": "chunks/疒.json",
+      "bytes": 4140,
+      "sha256": "317f9d59de220ccda197424831dee26cdc943fa624a556b6faf020e4db3c7481"
+    },
+    {
+      "radical": "癶",
+      "strokeCount": 5,
+      "sens": "marcher les pieds en canard",
+      "memberCount": 4,
+      "path": "chunks/癶.json",
+      "bytes": 163,
+      "sha256": "5713ca5e41f0cd13bab0d09a2ca47bdee4062b3bfc96e420c12b6abee20f5aae"
+    },
+    {
+      "radical": "白",
+      "strokeCount": 5,
+      "sens": "blanc",
+      "memberCount": 19,
+      "path": "chunks/白.json",
+      "bytes": 652,
+      "sha256": "ef846bc2f99fb965b7225b2ae80cc36cbe595bbe576f319b3cd04a5e20bcf227"
+    },
+    {
+      "radical": "皮",
+      "strokeCount": 5,
+      "sens": "peau",
+      "memberCount": 7,
+      "path": "chunks/皮.json",
+      "bytes": 263,
+      "sha256": "8e1e39ab5f59b162dfb14ba6fa66cfa7a999d5945ab88d25b2a09288e5c2d6b1"
+    },
+    {
+      "radical": "皿",
+      "strokeCount": 5,
+      "sens": "plat",
+      "memberCount": 27,
+      "path": "chunks/皿.json",
+      "bytes": 918,
+      "sha256": "6cb69058363d4ba1d743bb4754a97bdcc9754a4be42eebc39f45448088c7fd90"
+    },
+    {
+      "radical": "目",
+      "strokeCount": 5,
+      "sens": "oeil",
+      "memberCount": 98,
+      "path": "chunks/目.json",
+      "bytes": 3250,
+      "sha256": "5a002e95f7aa914d2e1ced74a0312e2db7964b7482f851a26baf9fed3ae59f84"
+    },
+    {
+      "radical": "矛",
+      "strokeCount": 5,
+      "sens": "pique",
+      "memberCount": 3,
+      "path": "chunks/矛.json",
+      "bytes": 130,
+      "sha256": "d8bfcc24f0501d3a164443745d5558d1a2f8ca8aea8c82881c1fef319a6d975a"
+    },
+    {
+      "radical": "矢",
+      "strokeCount": 5,
+      "sens": "flèche",
+      "memberCount": 11,
+      "path": "chunks/矢.json",
+      "bytes": 390,
+      "sha256": "fd082de03b496ed9f8033a4790e2efe4afebfecb04e9fbb4a7d0e0d3c82fd563"
+    },
+    {
+      "radical": "石",
+      "strokeCount": 5,
+      "sens": "pierre",
+      "memberCount": 113,
+      "path": "chunks/石.json",
+      "bytes": 3740,
+      "sha256": "2d44a50dfa16e8f440a775cee6c46cc093cff48c6dd40dbd7562537ec9baf143"
+    },
+    {
+      "radical": "示",
+      "strokeCount": 5,
+      "sens": "montrer",
+      "memberCount": 8,
+      "path": "chunks/示.json",
+      "bytes": 296,
+      "sha256": "b7442ab411568763fb32e5fd678208eb3e47bc6c095cb20c58ef66bd620a8403"
+    },
+    {
+      "radical": "禸",
+      "strokeCount": 5,
+      "sens": "piétiner",
+      "memberCount": 5,
+      "path": "chunks/禸.json",
+      "bytes": 195,
+      "sha256": "50ffa14a5767a6cab2ad42c474dbb56bf1120b1d72fb1254e2c5771e7eedadbe"
+    },
+    {
+      "radical": "禾",
+      "strokeCount": 5,
+      "sens": "jeune pousse de céréale",
+      "memberCount": 65,
+      "path": "chunks/禾.json",
+      "bytes": 2165,
+      "sha256": "dc3e8aaba51e2f6aa078f3a0fcb01ac677f7ae48ecb7773014a461b653579354"
+    },
+    {
+      "radical": "穴",
+      "strokeCount": 5,
+      "sens": "grotte",
+      "memberCount": 46,
+      "path": "chunks/穴.json",
+      "bytes": 1539,
+      "sha256": "a6827d063d01bf848da61cc8fa8494ed3b798576ec6286c1413983b82f85ca89"
+    },
+    {
+      "radical": "立",
+      "strokeCount": 5,
+      "sens": "s'efforcer de",
+      "memberCount": 13,
+      "path": "chunks/立.json",
+      "bytes": 459,
+      "sha256": "36b80530e5834921cb0ff63fe57d21d6a3729d3323c275b25407f0125f6bedb2"
+    },
+    {
+      "radical": "罒",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 24,
+      "path": "chunks/罒.json",
+      "bytes": 821,
+      "sha256": "69bd407f0e9ea00e7f31bd7393669596673e8fa0d8c1d7ecbda023d2649764d6"
+    },
+    {
+      "radical": "衤",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 71,
+      "path": "chunks/衤.json",
+      "bytes": 2366,
+      "sha256": "6b450c3e6dfb3f8406c8437346af1fbdda3b52f2bbae0e9ed63ee2285536de5f"
+    },
+    {
+      "radical": "钅",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 219,
+      "path": "chunks/钅.json",
+      "bytes": 7221,
+      "sha256": "1f349fac3f4382a9b6281d2a197931f81dd2fe56d4673f0c8ed7fd5b37ac81ee"
+    },
+    {
+      "radical": "鸟",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 72,
+      "path": "chunks/鸟.json",
+      "bytes": 2400,
+      "sha256": "652a98b06078a58f8dca40f6cf622c99dc18c2e8697402052423fffb2d268662"
+    },
+    {
+      "radical": "龙",
+      "strokeCount": 5,
+      "sens": null,
+      "memberCount": 6,
+      "path": "chunks/龙.json",
+      "bytes": 229,
+      "sha256": "114fb3863a8aa22c19e01b28326c39e96423d27c5eb3b861e0b75a538159125a"
+    },
+    {
+      "radical": "⺮",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 148,
+      "path": "chunks/⺮.json",
+      "bytes": 4912,
+      "sha256": "9fb8bcb6e64c47f522eb7ad4ca8e72dc849949b11431a83c5da210f08751737d"
+    },
+    {
+      "radical": "竹",
+      "strokeCount": 6,
+      "sens": "bambou",
+      "memberCount": 1,
+      "path": "chunks/竹.json",
+      "bytes": 65,
+      "sha256": "8cd762139966b7ef3723439b8f24eb4e584b1b58afca169742628378910b87f6"
+    },
+    {
+      "radical": "米",
+      "strokeCount": 6,
+      "sens": "riz",
+      "memberCount": 50,
+      "path": "chunks/米.json",
+      "bytes": 1679,
+      "sha256": "75d4fedb7844f1aea005773518fa3c8dc4776eb2722370101aa048f1cba77fcc"
+    },
+    {
+      "radical": "糸",
+      "strokeCount": 6,
+      "sens": "fil de soie",
+      "memberCount": 27,
+      "path": "chunks/糸.json",
+      "bytes": 922,
+      "sha256": "ee5cdbe9e6648574fa2603e83e422d03f3b08560d4ecc5aaca09589ee2b6e075"
+    },
+    {
+      "radical": "糹",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 125,
+      "path": "chunks/糹.json",
+      "bytes": 4147,
+      "sha256": "641c1c87e0a10d9df2c273500a852684f0414b5688026da42e4496c5a6fa851a"
+    },
+    {
+      "radical": "缶",
+      "strokeCount": 6,
+      "sens": "poterie",
+      "memberCount": 11,
+      "path": "chunks/缶.json",
+      "bytes": 394,
+      "sha256": "1a984e902f2191bcbb3c9764a9d3f2c1303a97f4e48e6bd08dd60ebc1bf50149"
+    },
+    {
+      "radical": "网",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/网.json",
+      "bytes": 65,
+      "sha256": "2fb73b16212e2ecce723ba4c707c8f22525acbf04dfd0b7cd2cad88b26fb984c"
+    },
+    {
+      "radical": "羊",
+      "strokeCount": 6,
+      "sens": "mouton",
+      "memberCount": 22,
+      "path": "chunks/羊.json",
+      "bytes": 755,
+      "sha256": "c863c6b9a3139f9e1478375edf648745a68aee4fd9351ffc4957c4876998f8e1"
+    },
+    {
+      "radical": "羽",
+      "strokeCount": 6,
+      "sens": "plume",
+      "memberCount": 26,
+      "path": "chunks/羽.json",
+      "bytes": 889,
+      "sha256": "385aa0210a72c02d0c54ae1d5fc2673567181d95c854c720a31f88da6459f600"
+    },
+    {
+      "radical": "老",
+      "strokeCount": 6,
+      "sens": "vieux",
+      "memberCount": 4,
+      "path": "chunks/老.json",
+      "bytes": 164,
+      "sha256": "2c2fd7131d77dfbf39a3b0b830f24ae21fa3bc78c119aa12cf3c094cde6d4a05"
+    },
+    {
+      "radical": "而",
+      "strokeCount": 6,
+      "sens": "et",
+      "memberCount": 3,
+      "path": "chunks/而.json",
+      "bytes": 129,
+      "sha256": "2d800f29fc72a2edaa16df45feea6e2264a70420477c74a765ecbbdd313146c9"
+    },
+    {
+      "radical": "耒",
+      "strokeCount": 6,
+      "sens": "charrue",
+      "memberCount": 17,
+      "path": "chunks/耒.json",
+      "bytes": 592,
+      "sha256": "b2daf4b207e66e60b47394fab932e477b2fc7faea972090972c8dd30b938ab04"
+    },
+    {
+      "radical": "耳",
+      "strokeCount": 6,
+      "sens": "oreille",
+      "memberCount": 33,
+      "path": "chunks/耳.json",
+      "bytes": 1118,
+      "sha256": "9e282b22bdd6e917e60941dd949039572d13a5778a495c35e23102f2ac0588e4"
+    },
+    {
+      "radical": "聿",
+      "strokeCount": 6,
+      "sens": "pinceau",
+      "memberCount": 4,
+      "path": "chunks/聿.json",
+      "bytes": 164,
+      "sha256": "8f91f0595233637eac7425ca8ce876a58a9a335c88a763ec4af0f48565d709e6"
+    },
+    {
+      "radical": "肉",
+      "strokeCount": 6,
+      "sens": "viande",
+      "memberCount": 5,
+      "path": "chunks/肉.json",
+      "bytes": 197,
+      "sha256": "db66aee3016a8abe7cf4968dc5aacb7684e055d345523d648f774facd078d74a"
+    },
+    {
+      "radical": "臣",
+      "strokeCount": 6,
+      "sens": "sujets",
+      "memberCount": 6,
+      "path": "chunks/臣.json",
+      "bytes": 228,
+      "sha256": "70e5e2671e1ad470071c16861ff0e55bc88694466f5353121a49240c7f6338f2"
+    },
+    {
+      "radical": "自",
+      "strokeCount": 6,
+      "sens": "depuis",
+      "memberCount": 4,
+      "path": "chunks/自.json",
+      "bytes": 164,
+      "sha256": "09d24968cdd91f0ecb1dd4434b37949b2aa72aa96a22f7611567f0c7b6471879"
+    },
+    {
+      "radical": "至",
+      "strokeCount": 6,
+      "sens": "jusqu'à",
+      "memberCount": 4,
+      "path": "chunks/至.json",
+      "bytes": 164,
+      "sha256": "d3fe60a4925dea1f83fcbddbb44d3b3f0daf0a41cc669ece1ed5e60d80564d66"
+    },
+    {
+      "radical": "臼",
+      "strokeCount": 6,
+      "sens": "mortier",
+      "memberCount": 13,
+      "path": "chunks/臼.json",
+      "bytes": 457,
+      "sha256": "d042a579c056ddc825cfdccf09b95e26aa12eefa515f10cf489b78020645d92d"
+    },
+    {
+      "radical": "舌",
+      "strokeCount": 6,
+      "sens": "langue",
+      "memberCount": 8,
+      "path": "chunks/舌.json",
+      "bytes": 295,
+      "sha256": "4ef3d63f6f72e47cafbb408e865300a33b7caa497898883b075b326d7025f7b8"
+    },
+    {
+      "radical": "舛",
+      "strokeCount": 6,
+      "sens": "mésaventure",
+      "memberCount": 3,
+      "path": "chunks/舛.json",
+      "bytes": 131,
+      "sha256": "1f98cc4673f11cc0dbacf1431320e0e12ea4f4f22099d2a4cec0f4a00eb6cf8f"
+    },
+    {
+      "radical": "舟",
+      "strokeCount": 6,
+      "sens": "bateau",
+      "memberCount": 34,
+      "path": "chunks/舟.json",
+      "bytes": 1151,
+      "sha256": "dd68148518ec1a8257afbadc82e431bda90e1f2e171f05f5fa54cb190a10e4bc"
+    },
+    {
+      "radical": "艮",
+      "strokeCount": 6,
+      "sens": "opiniâtre",
+      "memberCount": 2,
+      "path": "chunks/艮.json",
+      "bytes": 98,
+      "sha256": "88f4ec8c5504f5ef0f4c8711a768ae2e0283aea2e7167c677e50ae9dc2362662"
+    },
+    {
+      "radical": "色",
+      "strokeCount": 6,
+      "sens": "couleur",
+      "memberCount": 4,
+      "path": "chunks/色.json",
+      "bytes": 164,
+      "sha256": "bbbb813153e4dd3bfa1542a97f4c88e3e76f643e78ed5ab37e2d0887e75655dc"
+    },
+    {
+      "radical": "艸",
+      "strokeCount": 6,
+      "sens": "herbe",
+      "memberCount": 2,
+      "path": "chunks/艸.json",
+      "bytes": 98,
+      "sha256": "53316f7dcc076bbc89fb99b55f8dd563b125e55e80309af8895aa7f263e7104d"
+    },
+    {
+      "radical": "虍",
+      "strokeCount": 6,
+      "sens": "rayures d'un tigre",
+      "memberCount": 11,
+      "path": "chunks/虍.json",
+      "bytes": 393,
+      "sha256": "6f80b8d6f995354d45a958737b16df6fa40438b05b13cc03fc958e4a22529466"
+    },
+    {
+      "radical": "虫",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 197,
+      "path": "chunks/虫.json",
+      "bytes": 6519,
+      "sha256": "04b0d2e117ef064afc55560d6a1fb8c7e3a1b80018cb2609579ec76c88b1efac"
+    },
+    {
+      "radical": "血",
+      "strokeCount": 6,
+      "sens": "sang",
+      "memberCount": 5,
+      "path": "chunks/血.json",
+      "bytes": 197,
+      "sha256": "34f858aacc187a2dbc1ad7f86a0c32c19d679259f6104551fed90081caeee9ba"
+    },
+    {
+      "radical": "行",
+      "strokeCount": 6,
+      "sens": "action",
+      "memberCount": 12,
+      "path": "chunks/行.json",
+      "bytes": 427,
+      "sha256": "07b8d40bd506bc7431729d0a4f5632b9d78515c3c8beac6fee7587122e54740f"
+    },
+    {
+      "radical": "衣",
+      "strokeCount": 6,
+      "sens": "vêtements",
+      "memberCount": 33,
+      "path": "chunks/衣.json",
+      "bytes": 1120,
+      "sha256": "978bcd4781907479285a07d0eac0af09b0ad66185d49a9048cd27538fae2677a"
+    },
+    {
+      "radical": "西",
+      "strokeCount": 6,
+      "sens": "ouest",
+      "memberCount": 1,
+      "path": "chunks/西.json",
+      "bytes": 65,
+      "sha256": "b5bd26dac5d407ce2f060a10d7bbdc15cf01879e2d9684e05964f18391b5f494"
+    },
+    {
+      "radical": "覀",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 4,
+      "path": "chunks/覀.json",
+      "bytes": 164,
+      "sha256": "663b9b239054c8c44701ab90db181c3a11d363302b355f3a8c133b8301802373"
+    },
+    {
+      "radical": "页",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 39,
+      "path": "chunks/页.json",
+      "bytes": 1315,
+      "sha256": "1818162d9052a1857d9c9a53a82be28bb868072f7d155f7b839db72a5cc77bc6"
+    },
+    {
+      "radical": "齐",
+      "strokeCount": 6,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/齐.json",
+      "bytes": 98,
+      "sha256": "30424a329e39dd0e8ed5812dcdaece63040704ecf50c61ae1cc044e6c09f7b26"
+    },
+    {
+      "radical": "卤",
+      "strokeCount": 7,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/卤.json",
+      "bytes": 98,
+      "sha256": "cf4917f6f0aeee6a6193b9d9dd0bcc517c0f0389e055d688064ddfc2dc2fbae1"
+    },
+    {
+      "radical": "見",
+      "strokeCount": 7,
+      "sens": "voir",
+      "memberCount": 14,
+      "path": "chunks/見.json",
+      "bytes": 494,
+      "sha256": "ec959c116dc1b895d1220b27e327af769a6f9b2c453fb20a813963a48d373a61"
+    },
+    {
+      "radical": "角",
+      "strokeCount": 7,
+      "sens": "rôle",
+      "memberCount": 14,
+      "path": "chunks/角.json",
+      "bytes": 494,
+      "sha256": "aeb24143f8cb8485fb2e72f6cb40c2dc2cfadf51bc0aa6c7d1cddcabbe0c3b8e"
+    },
+    {
+      "radical": "言",
+      "strokeCount": 7,
+      "sens": "dire",
+      "memberCount": 155,
+      "path": "chunks/言.json",
+      "bytes": 5143,
+      "sha256": "e58b00f50831e2843b8f59fadec385fbe1f09fd377fd8bbe68459db4fa92a86f"
+    },
+    {
+      "radical": "訁",
+      "strokeCount": 7,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/訁.json",
+      "bytes": 65,
+      "sha256": "94d9ede4bacfd98fcbde20a9cb31c3213ec92e2fb607724bc86f02646a46b870"
+    },
+    {
+      "radical": "谷",
+      "strokeCount": 7,
+      "sens": "vallée",
+      "memberCount": 3,
+      "path": "chunks/谷.json",
+      "bytes": 131,
+      "sha256": "adbc1dfefaa72a6836b4c3336146e698d9678e23611c8efd928cc32c7c0c56f0"
+    },
+    {
+      "radical": "豆",
+      "strokeCount": 7,
+      "sens": "légumineux",
+      "memberCount": 9,
+      "path": "chunks/豆.json",
+      "bytes": 329,
+      "sha256": "395d1362bb03c29a30bd86dcc08f25c3358c1d69f01468601c24628598a88487"
+    },
+    {
+      "radical": "豕",
+      "strokeCount": 7,
+      "sens": "Sus (genre)",
+      "memberCount": 12,
+      "path": "chunks/豕.json",
+      "bytes": 426,
+      "sha256": "99425771c6c2571e7918412b76d18894181d36d680258d23e3b5fe625c56a64c"
+    },
+    {
+      "radical": "豸",
+      "strokeCount": 7,
+      "sens": "insecte rampant",
+      "memberCount": 13,
+      "path": "chunks/豸.json",
+      "bytes": 461,
+      "sha256": "0dc7394c16d7c270ce2bb70a9bda533d56e2b1826020da03704d9e222bb90a38"
+    },
+    {
+      "radical": "貝",
+      "strokeCount": 7,
+      "sens": "coquillage",
+      "memberCount": 62,
+      "path": "chunks/貝.json",
+      "bytes": 2076,
+      "sha256": "a29e5f61b59b6be251c4896f7c1f2778c8e4c0396486a33bf73e16f9fea3f544"
+    },
+    {
+      "radical": "赤",
+      "strokeCount": 7,
+      "sens": "nu",
+      "memberCount": 5,
+      "path": "chunks/赤.json",
+      "bytes": 197,
+      "sha256": "0d4b3511e55c4958623fffcda71ca192427e9ae8400e4d474cfc5bdce114ca27"
+    },
+    {
+      "radical": "走",
+      "strokeCount": 7,
+      "sens": "marcher",
+      "memberCount": 22,
+      "path": "chunks/走.json",
+      "bytes": 755,
+      "sha256": "9c2c70c7fcd7a5f96cf7f60f397bccbece5d13207725d79a024b2025ab9b58aa"
+    },
+    {
+      "radical": "足",
+      "strokeCount": 7,
+      "sens": "pied",
+      "memberCount": 119,
+      "path": "chunks/足.json",
+      "bytes": 3958,
+      "sha256": "7d8138d66eb1383e1cce58ee9befa5e94a23b44c28de906a77837e14cf45eed0"
+    },
+    {
+      "radical": "身",
+      "strokeCount": 7,
+      "sens": "corps",
+      "memberCount": 7,
+      "path": "chunks/身.json",
+      "bytes": 263,
+      "sha256": "f83675c3208350f6caa8d31376fac2d7946c468ea8e801501813bf99bb85ebd2"
+    },
+    {
+      "radical": "車",
+      "strokeCount": 7,
+      "sens": "chariot (pièce dans le jeu d'échecs chinois Xiangqi)",
+      "memberCount": 48,
+      "path": "chunks/車.json",
+      "bytes": 1613,
+      "sha256": "50e449292cab29c1a5172c4ee42094f443753a11e26deb4108d6879ac9626c4f"
+    },
+    {
+      "radical": "辛",
+      "strokeCount": 7,
+      "sens": "amer",
+      "memberCount": 10,
+      "path": "chunks/辛.json",
+      "bytes": 362,
+      "sha256": "5b6fec2c2a4c610080a048fef263b0e3f9e2893c38b40f45400d6cd695769e20"
+    },
+    {
+      "radical": "辰",
+      "strokeCount": 7,
+      "sens": "car. cycl.",
+      "memberCount": 3,
+      "path": "chunks/辰.json",
+      "bytes": 131,
+      "sha256": "8e42a5538820d63c8b724fddec3047d8b4a29ac7e462d5b41154ccd47b357876"
+    },
+    {
+      "radical": "辵",
+      "strokeCount": 7,
+      "sens": "marche (162e radical)",
+      "memberCount": 1,
+      "path": "chunks/辵.json",
+      "bytes": 65,
+      "sha256": "6c9f111415d55a1d852aa6d4e9962bb0af5b938d15e980c1365c25a3aaf453c0"
+    },
+    {
+      "radical": "邑",
+      "strokeCount": 7,
+      "sens": "ville",
+      "memberCount": 2,
+      "path": "chunks/邑.json",
+      "bytes": 98,
+      "sha256": "dff988add94a56ea896f80b0e6415f41a2fbed4fe681e81402db94f2e791fbd0"
+    },
+    {
+      "radical": "酉",
+      "strokeCount": 7,
+      "sens": "mûr",
+      "memberCount": 67,
+      "path": "chunks/酉.json",
+      "bytes": 2241,
+      "sha256": "7de8ce89c3d4f1abac4424e4cba2cebb03a4000a0769d852b909b92bfa466436"
+    },
+    {
+      "radical": "釆",
+      "strokeCount": 7,
+      "sens": "discerner",
+      "memberCount": 5,
+      "path": "chunks/釆.json",
+      "bytes": 196,
+      "sha256": "cd368ee5fc7631edb5ad571e5de78448ee81464e80167e143428e442d8ede9f5"
+    },
+    {
+      "radical": "里",
+      "strokeCount": 7,
+      "sens": "dans",
+      "memberCount": 5,
+      "path": "chunks/里.json",
+      "bytes": 196,
+      "sha256": "13c0dfe6ebd14feb52448c70db01624056258ece7b1462d84592cfb9b956f754"
+    },
+    {
+      "radical": "镸",
+      "strokeCount": 7,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/镸.json",
+      "bytes": 65,
+      "sha256": "f0074ef734b2342cec0ea74fbb986d5f1ba16b9d4f02c1246e309ab383feb0be"
+    },
+    {
+      "radical": "麦",
+      "strokeCount": 7,
+      "sens": null,
+      "memberCount": 3,
+      "path": "chunks/麦.json",
+      "bytes": 131,
+      "sha256": "169acd305db05220998ac40a8c9bd7bbaa0f9bc4fbba1e9de2588c94d73d2efa"
+    },
+    {
+      "radical": "龟",
+      "strokeCount": 7,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/龟.json",
+      "bytes": 98,
+      "sha256": "3613ce9366ef76000a771defd6018205d4b1fae86d10c1abdc9f7ab1271c513a"
+    },
+    {
+      "radical": "炏",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/炏.json",
+      "bytes": 99,
+      "sha256": "6ea5fd518126aadbfc3816d2fc976a20ce95674451401484ad88e478d74ac605"
+    },
+    {
+      "radical": "羋",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/羋.json",
+      "bytes": 65,
+      "sha256": "b5e2dfc8d718dbac54e5d9169906fe1822c1e8f1430a7c0e7fb3e45272608122"
+    },
+    {
+      "radical": "虎",
+      "strokeCount": 8,
+      "sens": "tigre",
+      "memberCount": 4,
+      "path": "chunks/虎.json",
+      "bytes": 164,
+      "sha256": "f7a5fbd7d966cf74dc4fcd78dd3c7e17ef0b624e0881ef2cf08c5360f2d995ed"
+    },
+    {
+      "radical": "金",
+      "strokeCount": 8,
+      "sens": "métal",
+      "memberCount": 18,
+      "path": "chunks/金.json",
+      "bytes": 626,
+      "sha256": "68b351e955e8c4f66a2ef2d9413dfe6f29702f54543b142f26ae048f63b7741c"
+    },
+    {
+      "radical": "釒",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 133,
+      "path": "chunks/釒.json",
+      "bytes": 4422,
+      "sha256": "e84ed475e791ccf50b7a0b42e252c255e8cc6b4e9b81d44984a7014b18b4d008"
+    },
+    {
+      "radical": "長",
+      "strokeCount": 8,
+      "sens": "chef",
+      "memberCount": 1,
+      "path": "chunks/長.json",
+      "bytes": 65,
+      "sha256": "336d4fbcfb093c783c549dddcfe3d1f4350aa342a78c5d48749800706b8b328b"
+    },
+    {
+      "radical": "門",
+      "strokeCount": 8,
+      "sens": "porte",
+      "memberCount": 41,
+      "path": "chunks/門.json",
+      "bytes": 1384,
+      "sha256": "02e8c2ba04b5c036d1b97bbde0ba25ed5a43cd19cc6ab3831b787dfb27cd8768"
+    },
+    {
+      "radical": "阜",
+      "strokeCount": 8,
+      "sens": "abondant",
+      "memberCount": 1,
+      "path": "chunks/阜.json",
+      "bytes": 65,
+      "sha256": "5cb3fc12867e9edec56671401e9a07330de0405c09f78d92ff681d7651eb05f3"
+    },
+    {
+      "radical": "隶",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/隶.json",
+      "bytes": 98,
+      "sha256": "5ef5d032a80c39090f08ea646b90e6cbce92ae8d176ab6b96f5ef5a7a1174931"
+    },
+    {
+      "radical": "隹",
+      "strokeCount": 8,
+      "sens": "oiseaux à queue courte",
+      "memberCount": 29,
+      "path": "chunks/隹.json",
+      "bytes": 989,
+      "sha256": "862a04ec68c90761183f0d8d6cdf65e602ef92cd6a370d86b99d372c37bf8676"
+    },
+    {
+      "radical": "雨",
+      "strokeCount": 8,
+      "sens": "pleuvoir",
+      "memberCount": 42,
+      "path": "chunks/雨.json",
+      "bytes": 1418,
+      "sha256": "75d07d46aace5f5cb59eaa7bb439afa0ae83c9c8b016433fc5e15ce88b1491ef"
+    },
+    {
+      "radical": "靑",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 1,
+      "path": "chunks/靑.json",
+      "bytes": 65,
+      "sha256": "0cdc4a2c58c3a56478b4b6a7a3a77b70f317647df603af29879c96ae59a08937"
+    },
+    {
+      "radical": "青",
+      "strokeCount": 8,
+      "sens": "bleu ou vert",
+      "memberCount": 7,
+      "path": "chunks/青.json",
+      "bytes": 263,
+      "sha256": "4298085be93c9583a85cacf38f2b4d873b1986a34c19db4562bdd3be3a3040b4"
+    },
+    {
+      "radical": "非",
+      "strokeCount": 8,
+      "sens": "ne pas",
+      "memberCount": 4,
+      "path": "chunks/非.json",
+      "bytes": 164,
+      "sha256": "0d93686ff74cdf098ac443c752b2479afbb5cf00788e4810acaa5febdc60061b"
+    },
+    {
+      "radical": "飠",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 44,
+      "path": "chunks/飠.json",
+      "bytes": 1484,
+      "sha256": "3ede7fe9ee2687c846a0caef78908ccb7325abcf6a21b3cd67ec826bd5111a1a"
+    },
+    {
+      "radical": "鱼",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 77,
+      "path": "chunks/鱼.json",
+      "bytes": 2573,
+      "sha256": "22477c6c28fa8b5b99523677aecf11c595b9b79f8eaf0256d092895eb2815fdc"
+    },
+    {
+      "radical": "黾",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/黾.json",
+      "bytes": 98,
+      "sha256": "cd5ccf4a833bf695a1635f68d732d9b830cfe05b58034c3f37f3c5c704916021"
+    },
+    {
+      "radical": "齿",
+      "strokeCount": 8,
+      "sens": null,
+      "memberCount": 12,
+      "path": "chunks/齿.json",
+      "bytes": 428,
+      "sha256": "d06daef1a6af7fcded6ff42e9abe52f5ab6ae8e259307f42a96340f80969063b"
+    },
+    {
+      "radical": "面",
+      "strokeCount": 9,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/面.json",
+      "bytes": 98,
+      "sha256": "be926fad359184e62ddb3be56f5ac9d2334b4ecb2a5d2051d87c0f8f244c5a09"
+    },
+    {
+      "radical": "革",
+      "strokeCount": 9,
+      "sens": "cuir",
+      "memberCount": 24,
+      "path": "chunks/革.json",
+      "bytes": 824,
+      "sha256": "8e19278eee41070443b2a4059b8e59e6ceba237b8027a1cd6f0b627f751f6276"
+    },
+    {
+      "radical": "韋",
+      "strokeCount": 9,
+      "sens": "(nom de famille)",
+      "memberCount": 5,
+      "path": "chunks/韋.json",
+      "bytes": 197,
+      "sha256": "a4f5d3d4fe75fe0e2fdca61ccafe189e9177e38653952a711180ede31b4fc61c"
+    },
+    {
+      "radical": "韭",
+      "strokeCount": 9,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/韭.json",
+      "bytes": 98,
+      "sha256": "33b8fddb104266033d109bb837df27dfd51dedbe840d2f59ca9daa46f44330e0"
+    },
+    {
+      "radical": "音",
+      "strokeCount": 9,
+      "sens": "son",
+      "memberCount": 6,
+      "path": "chunks/音.json",
+      "bytes": 230,
+      "sha256": "42d260f4746fda4c1faff24bc552cf3d799b2c03724b4ab380b213783069382c"
+    },
+    {
+      "radical": "頁",
+      "strokeCount": 9,
+      "sens": "page",
+      "memberCount": 45,
+      "path": "chunks/頁.json",
+      "bytes": 1517,
+      "sha256": "aefba5879ffc9cc9a7502a7d44825a2221b76f097886eecdd499cb009b1faf05"
+    },
+    {
+      "radical": "風",
+      "strokeCount": 9,
+      "sens": "vent",
+      "memberCount": 10,
+      "path": "chunks/風.json",
+      "bytes": 362,
+      "sha256": "73092eec70980f86cc439b044e73dea9d21badf7efc87b10f0057bdb4facd0c9"
+    },
+    {
+      "radical": "飛",
+      "strokeCount": 9,
+      "sens": "voler",
+      "memberCount": 1,
+      "path": "chunks/飛.json",
+      "bytes": 65,
+      "sha256": "9d3c5c91e80dd906a39cb8b29684280a033336f349c3dbf24370c6c26490fa74"
+    },
+    {
+      "radical": "食",
+      "strokeCount": 9,
+      "sens": "manger",
+      "memberCount": 12,
+      "path": "chunks/食.json",
+      "bytes": 428,
+      "sha256": "f06fc6d41e4be47c13c990fe07f8da581a2e80cb4c48ec0a465f265013739f21"
+    },
+    {
+      "radical": "首",
+      "strokeCount": 9,
+      "sens": "chef",
+      "memberCount": 3,
+      "path": "chunks/首.json",
+      "bytes": 131,
+      "sha256": "3bfe719c7ed37f97c6ba8425bf60b9cb0588fa963bffec9a39711b5c66d1b81a"
+    },
+    {
+      "radical": "香",
+      "strokeCount": 9,
+      "sens": "épice",
+      "memberCount": 3,
+      "path": "chunks/香.json",
+      "bytes": 131,
+      "sha256": "ff3c478c2ffd3d53a181e194da242128149e81daeaa081de970a5031a65e39b1"
+    },
+    {
+      "radical": "骨",
+      "strokeCount": 9,
+      "sens": "os",
+      "memberCount": 21,
+      "path": "chunks/骨.json",
+      "bytes": 725,
+      "sha256": "7d6a071bae3845e6efa941bdb6248dc6155650fcb7bfb4e12387956538ada3f9"
+    },
+    {
+      "radical": "鬼",
+      "strokeCount": 9,
+      "sens": "fantôme",
+      "memberCount": 17,
+      "path": "chunks/鬼.json",
+      "bytes": 593,
+      "sha256": "2269abd4e2649597245af428117e4cb37b03320b465fb79a53bcf49c1010b583"
+    },
+    {
+      "radical": "馬",
+      "strokeCount": 10,
+      "sens": "cheval",
+      "memberCount": 47,
+      "path": "chunks/馬.json",
+      "bytes": 1584,
+      "sha256": "20668ce4aa60700e6cc4dcd1a4ee4204134ea90cf24c6758d8a01307ee616f10"
+    },
+    {
+      "radical": "高",
+      "strokeCount": 10,
+      "sens": "haut",
+      "memberCount": 1,
+      "path": "chunks/高.json",
+      "bytes": 66,
+      "sha256": "0be0e113a5d51097a537adcc8402c6d7618a7cf8faaedf96cf9b921e060bc59d"
+    },
+    {
+      "radical": "髟",
+      "strokeCount": 10,
+      "sens": "cheveux",
+      "memberCount": 21,
+      "path": "chunks/髟.json",
+      "bytes": 726,
+      "sha256": "4c2a28177529a9b73980025338320375caabcff7d6079f6989bb1bd4593b8506"
+    },
+    {
+      "radical": "鬥",
+      "strokeCount": 10,
+      "sens": null,
+      "memberCount": 6,
+      "path": "chunks/鬥.json",
+      "bytes": 231,
+      "sha256": "8214903f5ea5d31a1ea0df41795d9c7ad3c0746889a23ab1f98a84c6ecf25707"
+    },
+    {
+      "radical": "鬯",
+      "strokeCount": 10,
+      "sens": "aromates",
+      "memberCount": 2,
+      "path": "chunks/鬯.json",
+      "bytes": 99,
+      "sha256": "8046431f481bcb95d2f5f7c6dff3341d1847a48cc08af573686497f98a5e2352"
+    },
+    {
+      "radical": "鬲",
+      "strokeCount": 10,
+      "sens": "type de chaudron en céramique à trois pieds creux",
+      "memberCount": 3,
+      "path": "chunks/鬲.json",
+      "bytes": 132,
+      "sha256": "aa11f5d730a06aa61c6340b66ed1b9f430c6163b5c1fb9d52af2501bb99a428e"
+    },
+    {
+      "radical": "魚",
+      "strokeCount": 11,
+      "sens": "poisson",
+      "memberCount": 62,
+      "path": "chunks/魚.json",
+      "bytes": 2079,
+      "sha256": "3a0673688b16c3e01ef6c759a572a8d476b18752a323a59c886c3562a4600014"
+    },
+    {
+      "radical": "鳥",
+      "strokeCount": 11,
+      "sens": "oiseau",
+      "memberCount": 78,
+      "path": "chunks/鳥.json",
+      "bytes": 2607,
+      "sha256": "b7883b62c1215cc6bdb6564bc9ac97bba40b9439b2e3c09d29aa15756110b11c"
+    },
+    {
+      "radical": "鹵",
+      "strokeCount": 11,
+      "sens": "salé",
+      "memberCount": 4,
+      "path": "chunks/鹵.json",
+      "bytes": 165,
+      "sha256": "845ca9bb583b40f374423d4654cb7256a693fc161a2429e0435d4ea4f5d7f613"
+    },
+    {
+      "radical": "鹿",
+      "strokeCount": 11,
+      "sens": "cerf",
+      "memberCount": 12,
+      "path": "chunks/鹿.json",
+      "bytes": 429,
+      "sha256": "8b6a2a10e985414d1d4e4573f6fdb8ec5347e6782d3d2809c6b28ec02f181b6d"
+    },
+    {
+      "radical": "麥",
+      "strokeCount": 11,
+      "sens": "blé",
+      "memberCount": 4,
+      "path": "chunks/麥.json",
+      "bytes": 165,
+      "sha256": "60b992935c598bef9521fd04f0ca117d510dfdf7a5c52919f05e5d249c27319f"
+    },
+    {
+      "radical": "麻",
+      "strokeCount": 11,
+      "sens": "rude",
+      "memberCount": 5,
+      "path": "chunks/麻.json",
+      "bytes": 198,
+      "sha256": "c3408ae24d3caaabfe63a9889c4d8129fa7830b3383dea4959993d494bae241e"
+    },
+    {
+      "radical": "黄",
+      "strokeCount": 11,
+      "sens": null,
+      "memberCount": 2,
+      "path": "chunks/黄.json",
+      "bytes": 99,
+      "sha256": "36f8f70b0a89b848ababf3d78a3f780d02df018949a4a8431d1814296fafe1bf"
+    },
+    {
+      "radical": "黃",
+      "strokeCount": 12,
+      "sens": "jaune",
+      "memberCount": 1,
+      "path": "chunks/黃.json",
+      "bytes": 66,
+      "sha256": "8cf65edba51755568e3790b08183cd4d0f1c9a33b95623e1c2023b06878bcdbc"
+    },
+    {
+      "radical": "黍",
+      "strokeCount": 12,
+      "sens": "millet",
+      "memberCount": 3,
+      "path": "chunks/黍.json",
+      "bytes": 132,
+      "sha256": "953ccf315509315f50c8eb4777f41e05bd186acb2a9a8a929b927c7f30084ab7"
+    },
+    {
+      "radical": "黑",
+      "strokeCount": 12,
+      "sens": "noir",
+      "memberCount": 17,
+      "path": "chunks/黑.json",
+      "bytes": 594,
+      "sha256": "3771188a23405958d060dc2864c0fece45593118ce0e4f318b67fffc7754bb12"
+    },
+    {
+      "radical": "黹",
+      "strokeCount": 12,
+      "sens": "broder",
+      "memberCount": 3,
+      "path": "chunks/黹.json",
+      "bytes": 132,
+      "sha256": "b970603fd1e275a0f4ff5ec7b5c7b3628494debbe26fe6f9c14f82d847e7134f"
+    },
+    {
+      "radical": "鼎",
+      "strokeCount": 12,
+      "sens": "trépied",
+      "memberCount": 2,
+      "path": "chunks/鼎.json",
+      "bytes": 99,
+      "sha256": "787d5154bf5dc4b95aaea67a37d85eecd501eda17e55722cd6027e56c647827b"
+    },
+    {
+      "radical": "黽",
+      "strokeCount": 13,
+      "sens": "s'efforcer",
+      "memberCount": 4,
+      "path": "chunks/黽.json",
+      "bytes": 165,
+      "sha256": "a9235026ce085a6dc4d36ed8c2f0c23b8d5919893d73ccaebca4b8df7c8f705c"
+    },
+    {
+      "radical": "鼓",
+      "strokeCount": 13,
+      "sens": "tambour",
+      "memberCount": 4,
+      "path": "chunks/鼓.json",
+      "bytes": 165,
+      "sha256": "b9954e663c176da6fb24b235064bcae928d2da08cd19b6d7103c37fe7e31df44"
+    },
+    {
+      "radical": "鼠",
+      "strokeCount": 13,
+      "sens": "rat",
+      "memberCount": 9,
+      "path": "chunks/鼠.json",
+      "bytes": 330,
+      "sha256": "48ccf6a5a617c9e0cd5a62b673e12b105b1b271dc5b7a277c023e1e3898818f1"
+    },
+    {
+      "radical": "鼻",
+      "strokeCount": 14,
+      "sens": "nez",
+      "memberCount": 3,
+      "path": "chunks/鼻.json",
+      "bytes": 132,
+      "sha256": "0a7591863f1a5ec3c102af6d78f2b5b7ed4a2c2d2a4a0b07b219c6eaff4bd38d"
+    },
+    {
+      "radical": "齊",
+      "strokeCount": 14,
+      "sens": "ensemble",
+      "memberCount": 4,
+      "path": "chunks/齊.json",
+      "bytes": 165,
+      "sha256": "05f0e0079304947f73eba9b34e7d212760ac4e6132a24a00a220756ef762e823"
+    },
+    {
+      "radical": "齒",
+      "strokeCount": 15,
+      "sens": "dent",
+      "memberCount": 15,
+      "path": "chunks/齒.json",
+      "bytes": 528,
+      "sha256": "b9f6f21aa8026b3a2ecc4c6d3d90cd08c5e36d60582c36dcdfc90691a2bd6819"
+    },
+    {
+      "radical": "龍",
+      "strokeCount": 16,
+      "sens": "dragon",
+      "memberCount": 4,
+      "path": "chunks/龍.json",
+      "bytes": 165,
+      "sha256": "f1b9520e37217e982c5c42d549348d89fe7cc7ce65b1307f8751170a84236de0"
+    },
+    {
+      "radical": "龠",
+      "strokeCount": 17,
+      "sens": "flûte",
+      "memberCount": 2,
+      "path": "chunks/龠.json",
+      "bytes": 99,
+      "sha256": "a8fcf7bcd13e85b0a44f9e1a053b73ed18fc26c00cde89427376801724c8ed74"
+    },
+    {
+      "radical": "龜",
+      "strokeCount": 18,
+      "sens": "tortue",
+      "memberCount": 1,
+      "path": "chunks/龜.json",
+      "bytes": 66,
+      "sha256": "7d9c34ec371e4e1e0bd6fbb9817d877d5a763e9fce7e4d45c6e6f4470c7e12c7"
+    }
+  ]
+}
