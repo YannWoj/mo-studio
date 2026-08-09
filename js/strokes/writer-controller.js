@@ -181,11 +181,10 @@ function speedOpts(speed) {
    };
 }
 
-function strokeBoxHtml(options) {
+function strokeBoxHtml() {
    const speed = normalizedStrokeSpeed(db.settings.strokeSpeed);
    const gallery = strokeGallerySettings();
    const active = ddStrokeTab;
-   const showWritingAction = !options || options.showWritingAction !== false;
    return (
       '<section class="stroke-workspace" aria-label="Ordre des traits">' +
       '<div class="stroke-tabs" role="tablist" aria-label="Mode d’apprentissage des traits">' +
@@ -207,9 +206,6 @@ function strokeBoxHtml(options) {
       '<label class="f-lab" for="dd-speed">Vitesse de l’animation · <span class="speed-lab" id="dd-speed-lab">' +
       speed.toFixed(2) + '×</span></label>' +
       '<input type="range" id="dd-speed" min="0.25" max="2" step="0.05" value="' + speed + '" aria-label="Vitesse de l’animation">' +
-      '<div class="sh-btns stroke-animation-actions"><button class="btn primary" id="dd-anim" type="button">Rejouer</button>' +
-      (showWritingAction ? '<button class="btn" id="dd-write" type="button">写 Écrire</button>' : "") +
-      "</div>" +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-steps" aria-labelledby="stroke-tab-steps"' +
       (active === "steps" ? "" : " hidden") + '>' +
@@ -428,6 +424,7 @@ function wireStrokeWorkspace() {
       };
    }
    if ($("dd-anim")) $("dd-anim").onclick = () => {
+      if (ddStrokeTab !== "animation") activateStrokeTab("animation", false);
       if (!ddWriter) return toast("Animation indisponible pour ce caractère.");
       ddWriter.showCharacter({ duration: 0 });
       ddWriter.animateCharacter();

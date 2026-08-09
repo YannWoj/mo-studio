@@ -6,6 +6,7 @@
          function setView(v, options) {
             const settings = options || {};
             if (seq && v !== "search") teardownSequence();
+            if (lesson && v !== "units") teardownLesson();
             if (!settings.fromHistory && typeof history !== "undefined") {
                if (v === "search" && typeof searchHistoryPayload === "function")
                   history.pushState(searchHistoryPayload(srch.q ? "results" : "landing"), "");
@@ -38,6 +39,7 @@
             else if (activeView === "search") renderSearch();
             else if (activeView === "path") renderPath();
             else if (activeView === "listen") renderListen();
+            else if (activeView === "units") renderLearningUnitsPicker();
             else renderGrammar();
          }
          function refreshActive() {
@@ -46,6 +48,13 @@
 
          window.addEventListener("popstate", (event) => {
             if (seq && (!event.state || event.state.mode !== "sequence")) teardownSequence();
+            if (lesson && event.state && event.state.mode === "lesson" && event.state.unitId === lesson.unit?.id) {
+               lesson.step = event.state.step;
+               lesson.historyDepth = event.state.historyDepth;
+               renderLesson();
+               return;
+            }
+            if (lesson) teardownLesson();
             if (event.state && event.state.moStudioSearch) {
                restoreSearchHistory(event.state);
                return;

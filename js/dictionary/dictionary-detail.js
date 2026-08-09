@@ -195,28 +195,19 @@ async function loadDictionaryCharacterCompletions(characters, token, state, piny
    }
 }
 
-function dictionaryCharacterStudyCardShell(character) {
+function dictionaryCharacterStudyCardShell() {
    return (
-      '<section class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
-      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-      '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
-      '<div class="dd-character-study-actions"><span class="muted">Chargement…</span></div></section>'
+      '<div class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
+      '<span class="muted">Chargement…</span></div>'
    );
 }
 
 function dictionaryCharacterStudyCardHtml(entry, character) {
    const card = findPersonalCardForEntry(entry);
+   if (card) return '<span class="cd-cat jade">Dans Mes mots</span>';
    return (
-      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-      '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
-      '<div class="dd-character-study-actions">' +
-      (card
-         ? '<button class="btn ghost" id="dd-character-manage" type="button">Ouvrir</button>'
-         : '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
-           esc(character) + ' à Mes mots" data-entry-id="' + esc(entry.id) + '">+ Mes mots</button>') +
-      "</div>"
+      '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
+      esc(character) + ' à Mes mots" data-entry-id="' + esc(entry.id) + '">+ Mes mots</button>'
    );
 }
 
@@ -237,22 +228,12 @@ async function renderDictionaryCharacterStudyCard(character, detailToken, comple
       ) return;
       target.innerHTML = dictionaryCharacterStudyCardHtml(entry, character);
       target.setAttribute("aria-busy", "false");
-      wireDDWritingPracticeAction();
       if ($("dd-character-addcard"))
          $("dd-character-addcard").onclick = () => openDictionaryAddToWords(entry);
-      if ($("dd-character-manage")) {
-         const card = findPersonalCardForEntry(entry);
-         $("dd-character-manage").onclick = () => card && openCardDetail(card.id);
-      }
    } catch (error) {
       if (cardToken !== dictionaryCharacterCardToken || detailToken !== dictionaryDetailToken) return;
       target.setAttribute("aria-busy", "false");
-      target.innerHTML =
-         '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-         '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-         '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
-         '<div class="dd-character-study-actions"><span class="muted">Données du caractère indisponibles.</span></div>';
-      wireDDWritingPracticeAction();
+      target.innerHTML = '<span class="muted">Données du caractère indisponibles.</span>';
    }
 }
 
@@ -277,10 +258,8 @@ function dictionaryCharacterInteractionHtml(characters) {
             ).join("") + "</div></div>"
          : "") +
       '<div class="eyebrow">Ordre des traits</div>' +
-      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length, false, {
-         showWritingAction: false,
-      }) +
-      dictionaryCharacterStudyCardShell(characters[0]) +
+      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length, false) +
+      dictionaryCharacterStudyCardShell() +
       "</section>"
    );
 }

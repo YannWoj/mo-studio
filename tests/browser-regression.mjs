@@ -494,8 +494,11 @@ async function main() {
       "Storage keys changed",
    );
    assert(
-      startup.courseProgress.version === 1 && Object.keys(startup.courseProgress.levels).length === 0,
-      `Future course progress is not an empty isolated structure: ${JSON.stringify(startup.courseProgress)}`,
+      startup.courseProgress.version === 2 &&
+         Object.keys(startup.courseProgress.completedLessons).length === 0 &&
+         startup.courseProgress.scope?.mode === "personal" &&
+         startup.courseProgress.scope?.hskLevel === 1,
+      `Course progress is not an empty default structure: ${JSON.stringify(startup.courseProgress)}`,
    );
    measurements.startup = startup;
    await assertNoDuplicateIds("Home startup");
@@ -1480,10 +1483,10 @@ async function main() {
       "Manual Rejouer did not animate",
    );
    assert(
-      await evaluate(`document.querySelector('.stroke-animation-actions').children.length===1 &&
-         !!document.querySelector('#dd-character-study-card > #dd-write') &&
+      await evaluate(`document.querySelector('.stroke-action-icons').children.length===2 &&
+         !!document.querySelector('.stroke-action-icons > #dd-write') &&
          !document.querySelector('#dd-write-word') && ddChar==='你'`),
-      "Dictionary Rejouer row or shared character actions are incomplete",
+      "Dictionary action bar or shared character actions are incomplete",
    );
    await click("#dd-write");
    await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "Dictionary stroke writing practice did not open");
@@ -1893,9 +1896,9 @@ async function main() {
          detailCharacter: document.querySelector('.dd-character-detail-hanzi')?.textContent.trim(),
          detailPinyin: document.querySelector('.dd-character-detail-pinyin')?.textContent.trim(),
          detailTranslation: document.querySelector('.dd-character-detail-translation')?.textContent.trim(),
-         studyAudio: document.querySelector('.dd-character-audio')?.getAttribute('data-say'),
-         cardActionReady: !!document.querySelector('#dd-character-manage') ||
-            !!document.querySelector('#dd-character-addcard')?.dataset.entryId,
+         studyAudio: document.querySelector('.stroke-action-audio')?.getAttribute('data-say'),
+         cardActionReady: !!document.querySelector('#dd-character-addcard')?.dataset.entryId ||
+            !!document.querySelector('#dd-character-study-card .jade'),
          navigationSvgCount: document.querySelectorAll('#dd-character-stage > .character-nav-button svg').length,
          definitionSelectable: getComputedStyle(document.querySelector('.dd-definitions')).userSelect !== 'none',
          gestureCardUnselectable: getComputedStyle(studyCard).userSelect === 'none',
@@ -1929,9 +1932,9 @@ async function main() {
       `你好 character controls are not usable at 360px: ${JSON.stringify(initialWordNavigation)}`,
    );
 
-   await mouseDrag(".dd-character-study-card", -155, 2);
+   await mouseDrag(".character-nav-position", -155, 2);
    await waitFor(
-      () => evaluate(`ddChar === '好' && ddCharacterData?.strokeCount === 6 && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 2} && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy') === 'false' && document.querySelector('.dd-character-audio')?.getAttribute('data-say') === '好'`),
+      () => evaluate(`ddChar === '好' && ddCharacterData?.strokeCount === 6 && window.__strokeWriterAudit.animations.length === ${wordAnimationStart + 2} && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy') === 'false' && document.querySelector('.stroke-action-audio')?.getAttribute('data-say') === '好'`),
       "你好 mouse drag started on the study row did not load 好",
       20_000,
    );
@@ -1940,7 +1943,7 @@ async function main() {
       "你好 last-character controls are wrong",
    );
    assert(
-      await evaluate("document.querySelector('.dd-character-audio').getAttribute('data-say') === '好' && document.querySelectorAll('.dd-character-detail-row').length === 2 && (!!document.querySelector('#dd-character-manage') || !!document.querySelector('#dd-character-addcard')?.dataset.entryId)"),
+      await evaluate("document.querySelector('.stroke-action-audio').getAttribute('data-say') === '好' && document.querySelectorAll('.dd-character-detail-row').length === 2 && (!!document.querySelector('#dd-character-addcard')?.dataset.entryId || !!document.querySelector('#dd-character-study-card .jade'))"),
       "你好 Next did not refresh the active-character audio or personal action",
    );
    await waitFor(
@@ -3219,7 +3222,7 @@ async function main() {
    await evaluate(
       "[...document.querySelectorAll('#dresults .dict-result')].find((item) => item.querySelector('.dict-result-hanzi b')?.textContent === '你好').querySelector('.dict-result-primary').click()",
    );
-   await waitFor(() => evaluate("!!document.querySelector('#dd-character-study-card > #dd-write') && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy')==='false'"), "Dictionary writing action missing");
+   await waitFor(() => evaluate("!!document.querySelector('.stroke-action-icons > #dd-write') && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy')==='false'"), "Dictionary writing action missing");
    await cdp.send("Emulation.setDeviceMetricsOverride", {
       width: 390,
       height: 844,

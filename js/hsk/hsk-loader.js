@@ -161,6 +161,22 @@ async function loadHskLevel(level) {
    return entries;
 }
 
+async function loadHskCumulativeCharacters(level) {
+   const numericLevel = Number(level);
+   if (!Number.isInteger(numericLevel) || numericLevel < 1 || numericLevel > 6)
+      throw new Error("Niveau HSK invalide.");
+   const characters = new Set();
+   for (let lvl = 1; lvl <= numericLevel; lvl++) {
+      const entries = await loadHskLevel(lvl);
+      entries.forEach((entry) =>
+         Array.from(entry.chinese)
+            .filter((character) => HAN_PATTERN.test(character))
+            .forEach((character) => characters.add(character)),
+      );
+   }
+   return characters;
+}
+
 function hskMetadata(entry) {
    return {
       hskEntryId: entry.hskEntryId,

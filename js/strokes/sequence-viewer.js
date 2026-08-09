@@ -12,20 +12,56 @@ function characterChevronHtml(direction) {
       '"></path></svg>';
 }
 
-function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation, workspaceOptions) {
+function strokeReplayIconHtml() {
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="M23 4v6h-6"></path>' +
+      '<path d="M1 20v-6h6"></path>' +
+      '<path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>' +
+      "</svg>"
+   );
+}
+
+function strokeWriteIconHtml() {
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="m14.5 4.5 5 5-9.3 9.3-6.5 1.5 1.5-6.5 9.3-9.3Z"></path>' +
+      '<path d="m12.7 6.3 5 5M5.2 13.8l5 5M3.7 20.3c1.8.3 3.5.1 5-.7"></path>' +
+      "</svg>"
+   );
+}
+
+function strokeActionBarHtml(prefix, character, index, total, hasNavigation, positionClass) {
+   return (
+      '<div class="stroke-action-bar">' +
+      '<button class="seal stroke-action-audio" id="' + prefix + '-audio" type="button" data-say="' + esc(character) +
+      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      (hasNavigation
+         ? '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
+           '-position" role="status" aria-live="polite" aria-atomic="true">' +
+           esc(character) + " · " + (index + 1) + " / " + total + "</strong>"
+         : '<span class="stroke-action-bar-spacer" aria-hidden="true"></span>') +
+      '<div class="stroke-action-icons">' +
+      '<button class="stroke-icon-button" id="dd-anim" type="button" aria-label="Rejouer l’animation" title="Rejouer l’animation">' +
+      strokeReplayIconHtml() + "</button>" +
+      '<button class="stroke-icon-button" id="dd-write" type="button" aria-label="S’entraîner à écrire" title="S’entraîner à écrire">' +
+      strokeWriteIconHtml() + "</button>" +
+      "</div></div>"
+   );
+}
+
+function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation) {
    const previousDisabled = index <= 0 ? " disabled" : "";
    const nextDisabled = index >= total - 1 ? " disabled" : "";
    const positionClass = prefix === "seq" ? " s-count" : "";
    const hasNavigation = total > 1 || forceNavigation;
    return (
-      (hasNavigation ? '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
-      '-position" role="status" aria-live="polite" aria-atomic="true">' +
-      esc(character) + " · " + (index + 1) + " / " + total + "</strong>" : "") +
+      strokeActionBarHtml(prefix, character, index, total, hasNavigation, positionClass) +
       '<div class="stroke-character-stage" id="' + prefix + '-stage">' +
       (hasNavigation ? '<button class="character-nav-button character-nav-previous" id="' + prefix +
          '-prev" type="button" aria-label="Caractère précédent"' + previousDisabled + ">" +
          characterChevronHtml("left") + "</button>" : "") +
-      '<div class="stroke-character-stage-main">' + strokeBoxHtml(workspaceOptions) + "</div>" +
+      '<div class="stroke-character-stage-main">' + strokeBoxHtml() + "</div>" +
       (hasNavigation ? '<button class="character-nav-button character-nav-next" id="' + prefix +
          '-next" type="button" aria-label="Caractère suivant"' + nextDisabled + ">" +
          characterChevronHtml("right") + "</button>" : "") +
@@ -37,10 +73,15 @@ function updateCharacterNavigation(prefix, characters, index, stripSelector) {
    const previous = $(prefix + "-prev");
    const next = $(prefix + "-next");
    const position = $(prefix + "-position");
+   const audio = $(prefix + "-audio");
    if (previous) previous.disabled = index <= 0;
    if (next) next.disabled = index >= characters.length - 1;
    if (position)
       position.textContent = `${characters[index]} · ${index + 1} / ${characters.length}`;
+   if (audio) {
+      audio.setAttribute("data-say", characters[index]);
+      audio.setAttribute("aria-label", "Écouter " + characters[index]);
+   }
    if (!stripSelector) return;
    document.querySelectorAll(stripSelector).forEach((button) => {
       const selected = Number(button.dataset.i) === index;

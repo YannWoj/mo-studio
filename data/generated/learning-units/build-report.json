@@ -1,0 +1,332 @@
+{
+  "format": "mo-studio-learning-units-build-report",
+  "builderVersion": "1.0.0",
+  "derivedFrom": {
+    "characterCompositionBuildId": "d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a",
+    "characterRadicalsBuildId": "b77072378af768cdc74a89e616babc68df7a72646645d124f3a4bb4c790242e8",
+    "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
+    "hsk1RootSha256": "80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419",
+    "personalLibrary": {
+      "found": false,
+      "path": "data/personal/library-export.json",
+      "sha256": null,
+      "cardCount": 0
+    }
+  },
+  "utilityFormula": {
+    "description": "score = niveau * multiplicateur + min(nombreDeMots, multiplicateur - 1) ; niveau 3 = dans mes cartes/packs personnels, niveau 2 = dans hsk1.json, niveau 1 = apparaît dans >=1 mot du dictionnaire, niveau 0 = aucun signal",
+    "tierMultiplier": 10000,
+    "maxWordCountObserved": 2295,
+    "tiers": [
+      {
+        "tier": 3,
+        "name": "personal-library",
+        "description": "apparaît dans db.cards / packs (export personnel)"
+      },
+      {
+        "tier": 2,
+        "name": "hsk1",
+        "description": "apparaît dans hsk1.json"
+      },
+      {
+        "tier": 1,
+        "name": "dictionary-frequency",
+        "description": "apparaît dans au moins un mot du dictionnaire"
+      },
+      {
+        "tier": 0,
+        "name": "none",
+        "description": "aucun des signaux ci-dessus"
+      }
+    ]
+  },
+  "counts": {
+    "dictionaryCharacterCount": 14426,
+    "compositionRecordCount": 9543,
+    "distinctPhoneticComponentsWithAnyDictionaryMember": 1549,
+    "retainedPhoneticFamilyCount": 1026,
+    "phoneticFamiliesWithAtLeast4Members": 646,
+    "phoneticFamilySizeDistribution": {
+      "2": 218,
+      "3": 162,
+      "4": 112,
+      "5": 94,
+      "6": 97,
+      "7": 60,
+      "8": 69,
+      "9": 41,
+      "10+": 173
+    },
+    "retainedSemanticGroupCount": 233,
+    "unitCount": 1793,
+    "phoneticUnitCount": 1287,
+    "semanticUnitCount": 506,
+    "unitsCoveringAtLeastOnePersonalWord": 0,
+    "personalCoverageApplicable": false,
+    "phoneticallyCoveredCharacterCount": 6231,
+    "semanticallyCoveredCharacterCount": 3127,
+    "totalCoveredCharacterCount": 9358,
+    "uncoveredCharacterCount": 5068,
+    "graphNodeCount": 9567,
+    "graphEdgeCount": 19259,
+    "dictionaryReachableCount": 9426,
+    "dictionaryOrphanedCount": 5000,
+    "cyclesDetectedCount": 0,
+    "selfReferencesDetectedCount": 0,
+    "hsk1RootCharacterCount": 174,
+    "hsk1RootCardCount": 150,
+    "personalLibraryFound": false,
+    "personalLibraryCardCount": 0,
+    "personalLibraryCharacterCount": 0
+  },
+  "cyclesDetected": [],
+  "selfReferencesDetected": [],
+  "orphanedCharactersSample": [
+    "㐄",
+    "㐅",
+    "㐖",
+    "㐜",
+    "㐡",
+    "㐤",
+    "㐫",
+    "㐰",
+    "㐷",
+    "㐺",
+    "㑇",
+    "㑊",
+    "㑩",
+    "㑳",
+    "㑺",
+    "㒳",
+    "㒺",
+    "㓂",
+    "㓖",
+    "㓥",
+    "㕁",
+    "㕑",
+    "㕘",
+    "㕥",
+    "㕯",
+    "㕻",
+    "㖊",
+    "㖞",
+    "㗂",
+    "㘎",
+    "㘓",
+    "㘚",
+    "㘭",
+    "㘵",
+    "㙍",
+    "㙡",
+    "㙦",
+    "㚻",
+    "㛀",
+    "㛂"
+  ],
+  "exampleUnit": {
+    "id": "phon-青-1",
+    "type": "phonetic",
+    "component": "青",
+    "componentPinyin": "qīng",
+    "componentGloss": "bleu ou vert",
+    "componentGlossSource": "dictionary",
+    "prerequisites": [
+      "月",
+      "龶"
+    ],
+    "members": [
+      {
+        "character": "请",
+        "pinyin": "qǐng",
+        "gloss": "prier",
+        "utilityScore": 20070,
+        "directComponents": [
+          "讠",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "请",
+            "pinyin": "qǐng",
+            "gloss": "prier"
+          },
+          {
+            "hanzi": "促请",
+            "pinyin": "cù qǐng",
+            "gloss": "exhorter"
+          },
+          {
+            "hanzi": "务请",
+            "pinyin": "wù qǐng",
+            "gloss": "s'il vous plaît (formel)"
+          }
+        ]
+      },
+      {
+        "character": "情",
+        "pinyin": "qíng",
+        "gloss": "sentiment",
+        "utilityScore": 10388,
+        "directComponents": [
+          "忄",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "情",
+            "pinyin": "qíng",
+            "gloss": "sentiment"
+          },
+          {
+            "hanzi": "七情",
+            "pinyin": "qī qíng",
+            "gloss": null
+          },
+          {
+            "hanzi": "下情",
+            "pinyin": "xià qíng",
+            "gloss": null
+          }
+        ]
+      },
+      {
+        "character": "清",
+        "pinyin": "qīng",
+        "gloss": "clair",
+        "utilityScore": 10334,
+        "directComponents": [
+          "氵",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "清",
+            "pinyin": "qīng",
+            "gloss": "clair"
+          },
+          {
+            "hanzi": "三清",
+            "pinyin": "sān qīng",
+            "gloss": "Trois Purs"
+          },
+          {
+            "hanzi": "不清",
+            "pinyin": "bù qīng",
+            "gloss": "pas clair"
+          }
+        ]
+      },
+      {
+        "character": "精",
+        "pinyin": "jīng",
+        "gloss": "finesse",
+        "utilityScore": 10271,
+        "directComponents": [
+          "米",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "精",
+            "pinyin": "jīng",
+            "gloss": "finesse"
+          },
+          {
+            "hanzi": "人精",
+            "pinyin": "rén jīng",
+            "gloss": null
+          },
+          {
+            "hanzi": "受精",
+            "pinyin": "shòu jīng",
+            "gloss": "fécondation"
+          }
+        ]
+      },
+      {
+        "character": "請",
+        "pinyin": "qǐng",
+        "gloss": "prier",
+        "utilityScore": 10070,
+        "directComponents": [
+          "言",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "请",
+            "pinyin": "qǐng",
+            "gloss": "prier"
+          },
+          {
+            "hanzi": "促请",
+            "pinyin": "cù qǐng",
+            "gloss": "exhorter"
+          },
+          {
+            "hanzi": "务请",
+            "pinyin": "wù qǐng",
+            "gloss": "s'il vous plaît (formel)"
+          }
+        ]
+      },
+      {
+        "character": "氰",
+        "pinyin": "qíng",
+        "gloss": "cyanogène",
+        "utilityScore": 10022,
+        "directComponents": [
+          "气",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "氰",
+            "pinyin": "qíng",
+            "gloss": "cyanogène"
+          },
+          {
+            "hanzi": "氰苷",
+            "pinyin": "qíng gān",
+            "gloss": null
+          },
+          {
+            "hanzi": "氰基",
+            "pinyin": "qíng jī",
+            "gloss": null
+          }
+        ]
+      },
+      {
+        "character": "猜",
+        "pinyin": "cāi",
+        "gloss": "deviner",
+        "utilityScore": 10022,
+        "directComponents": [
+          "犭",
+          "青"
+        ],
+        "exampleWords": [
+          {
+            "hanzi": "猜",
+            "pinyin": "cāi",
+            "gloss": "deviner"
+          },
+          {
+            "hanzi": "嫌猜",
+            "pinyin": "xián cāi",
+            "gloss": null
+          },
+          {
+            "hanzi": "无猜",
+            "pinyin": "wú cāi",
+            "gloss": null
+          }
+        ]
+      }
+    ],
+    "utilityScore": 81177,
+    "partIndex": 1,
+    "partCount": 3
+  }
+}

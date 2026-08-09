@@ -645,29 +645,18 @@
    background: color-mix(in srgb, var(--card-2) 68%, transparent);
 }
 .dd-character-study-card {
-   display: grid;
-   grid-template-columns: 44px max-content minmax(0, 1fr);
-   gap: 9px;
+   display: flex;
    align-items: center;
-   min-height: 58px;
+   justify-content: flex-end;
+   min-height: 30px;
    margin: 10px 0 2px;
-   padding: 7px 9px;
-   border: 1px solid color-mix(in srgb, var(--seal) 46%, var(--line-soft));
-   border-radius: 14px;
-   background: var(--card-2);
-   box-shadow: 0 5px 15px rgba(23, 20, 15, 0.06);
 }
 .dd-character-study-card[aria-busy="true"] {
    opacity: 0.72;
 }
-.dd-character-audio {
-   width: 44px;
-   height: 44px;
-}
-.dd-character-write {
+.dd-character-study-card .btn {
    min-height: 44px;
-   padding-inline: 12px;
-   white-space: nowrap;
+   padding-inline: 14px;
 }
 .dictionary-suggestion-personal {
    display: inline-block;
@@ -678,20 +667,6 @@
    color: var(--jade);
    font-style: normal;
    font-weight: 700;
-}
-.dd-character-study-actions {
-   display: flex;
-   align-items: center;
-   justify-content: flex-end;
-   min-width: 0;
-   min-height: 44px;
-}
-.dd-character-study-actions .btn {
-   min-height: 44px;
-   padding-inline: 10px;
-   border-color: var(--line);
-   background: color-mix(in srgb, var(--paper-2) 72%, transparent);
-   white-space: nowrap;
 }
 .dd-character-details {
    margin: 12px 0 8px;
@@ -908,15 +883,7 @@
       margin-top: 5px;
    }
    .dd-character-study-card {
-      grid-template-columns: 44px max-content minmax(0, 1fr);
       margin-top: 7px;
-      padding: 5px 7px;
-   }
-   .dd-character-write,
-   .dd-character-study-actions .btn {
-      width: auto;
-      padding-inline: 8px;
-      font-size: 12px;
    }
    .dd-character-detail-row {
       grid-template-columns: 30px minmax(62px, auto) minmax(0, 1fr);
@@ -1030,9 +997,8 @@
    .seq-character-strip .hzchip {
       min-height: 42px;
    }
-   .seq-card > .character-nav-position {
+   .seq-card > .stroke-action-bar {
       margin-top: 6px;
-      padding-block: 5px;
    }
 }
 .dd-add-word-main {

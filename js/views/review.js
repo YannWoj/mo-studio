@@ -90,7 +90,7 @@ function reviewStrokeBlockHtml(c, st) {
       '<button type="button" role="tab" data-review-stroke-tab="animation" aria-selected="' + String(reviewStrokeTab === "animation") + '">Animation</button>' +
       '<button type="button" role="tab" data-review-stroke-tab="steps" aria-selected="' + String(reviewStrokeTab === "steps") + '">Étapes</button></div>' +
       '<button type="button" class="review-stroke-practice" id="review-stroke-practice">S’entraîner</button></div>' +
-      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="btn sm ghost" id="review-stroke-replay">Rejouer</button></div></div>' +
+      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="stroke-icon-button" id="review-stroke-replay" aria-label="Rejouer l’animation" title="Rejouer l’animation">' + strokeReplayIconHtml() + "</button></div></div>" +
       '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
       characterCompositionShellHtml("review-character-composition") +
       "</div></details>"
@@ -237,11 +237,22 @@ function wireReviewStrokeBlock(c, st) {
 }
 
 /* ================= séance ================= */
+         const SESSION_INTERACTIVE_SELECTOR =
+            "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav, .s-foot";
+         const SWIPE_HINT_KEY = "mo-studio-session-swipe-hint-seen-v1";
+         let sessionSwipeHintSeen = (() => {
+            try { return localStorage.getItem(SWIPE_HINT_KEY) === "1"; } catch (e) { return true; }
+         })();
+         function markSwipeHintSeen() {
+            sessionSwipeHintSeen = true;
+            try { localStorage.setItem(SWIPE_HINT_KEY, "1"); } catch (e) {}
+         }
          const currentCard = () => session.cards[session.index];
          function getState(i) {
             if (!session.states[i])
                session.states[i] = {
                   revealed: false,
+                  everRevealed: false,
                   checked: false,
                   ok: null,
                   front: null,
@@ -411,12 +422,26 @@ function wireReviewStrokeBlock(c, st) {
             if (session.mode === "discover") {
                return sessionNavigationHtml();
             }
-            if (session.mode === "cards" && !st.revealed)
-               return '<div class="s-foot"><button class="btn primary big" id="s-flip">Retourner</button></div>';
+            if (session.mode === "cards") {
+               if (!st.revealed)
+                  return '<div class="s-foot"><button class="btn primary big" id="s-flip" type="button">Retourner</button></div>';
+               // le bouton de retournement reste disponible au verso, mais en retrait
+               // par rapport à la notation SRS pour ne jamais se substituer à elle.
+               return (
+                  '<div class="s-foot s-foot-back"><button class="btn ghost sm" id="s-flip" type="button">↺ Revoir le recto</button></div>' +
+                  gradesHtml(c)
+               );
+            }
             if (session.mode === "written" && !st.checked)
                return '<div class="s-foot"><button class="btn ghost" id="s-skip">Voir la réponse</button><button class="btn primary" id="s-check">Vérifier</button></div>';
             // verso (cartes) ou réponse vérifiée (écrit) : boutons de notation SRS
             return gradesHtml(c);
+         }
+         function sessionSwipeHintHtml() {
+            return (
+               '<div class="session-swipe-hint" role="status" aria-live="polite">' +
+               "Glisse à gauche ou à droite pour changer de carte — ça ne note rien.</div>"
+            );
          }
 
          function renderSession() {
@@ -495,8 +520,10 @@ function wireReviewStrokeBlock(c, st) {
                written: "Écrit",
                discover: "Découverte",
             }[session.mode];
+            const showSwipeHint = session.index === 0 && !sessionSwipeHintSeen;
+            if (showSwipeHint) markSwipeHintSeen();
             $("view").innerHTML =
-               '<section class="sess">' +
+               '<section class="sess" id="sess">' +
                '<div class="s-top">' +
                '<button class="s-x" id="s-exit" aria-label="Quitter">×</button>' +
                '<div class="s-scope">' +
@@ -513,6 +540,7 @@ function wireReviewStrokeBlock(c, st) {
                '<div class="s-bar"><i style="width:' +
                (((session.index + 1) / session.cards.length) * 100).toFixed(1) +
                '%"></i></div>' +
+               (showSwipeHint ? sessionSwipeHintHtml() : "") +
                '<div class="flash card" id="flash">' +
                '<button class="seal fl-seal" data-say="' +
                esc(c.hz) +
@@ -541,37 +569,40 @@ function wireReviewStrokeBlock(c, st) {
             session.index--;
             renderSession();
          }
-         function wireSessionSwipe(flash) {
-            if (!flash || !("PointerEvent" in window)) return;
-            const interactive = "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav";
+         function wireSessionSwipe(zone, card) {
+            // le geste porte sur toute la zone de séance (hors contrôles
+            // interactifs), mais le retour visuel reste localisé à la carte :
+            // glisser ne note jamais rien, seuls les quatre boutons de
+            // notation le font.
+            if (!zone || !card || !("PointerEvent" in window)) return;
             let gesture = null;
             const finish = (event, cancelled) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const current = gesture;
                gesture = null;
-               flash.classList.remove("is-session-dragging");
-               flash.style.removeProperty("--session-drag-x");
-               if (flash.hasPointerCapture && flash.hasPointerCapture(event.pointerId))
-                  flash.releasePointerCapture(event.pointerId);
+               card.classList.remove("is-session-dragging", "is-session-drag-left", "is-session-drag-right");
+               card.style.removeProperty("--session-drag-x");
+               if (zone.hasPointerCapture && zone.hasPointerCapture(event.pointerId))
+                  zone.releasePointerCapture(event.pointerId);
                if (cancelled) {
-                  flash._suppressSessionClickUntil = Date.now() + 500;
+                  card._suppressSessionClickUntil = Date.now() + 500;
                   return;
                }
                if (!current.horizontal) return;
                const dx = event.clientX - current.x;
                const dy = event.clientY - current.y;
-               if (Math.abs(dx) < 72 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+               if (Math.abs(dx) < 56 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
                const selection = typeof getSelection === "function" ? getSelection() : null;
                if (selection && typeof selection.removeAllRanges === "function") selection.removeAllRanges();
                if (dx < 0) advance();
                else previousCard();
             };
-            flash.onpointerdown = (event) => {
-               if (event.button !== 0 || event.target.closest(interactive)) return;
+            zone.onpointerdown = (event) => {
+               if (event.button !== 0 || event.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
                gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
-               if (flash.setPointerCapture) flash.setPointerCapture(event.pointerId);
+               if (zone.setPointerCapture) zone.setPointerCapture(event.pointerId);
             };
-            flash.onpointermove = (event) => {
+            zone.onpointermove = (event) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const dx = event.clientX - gesture.x;
                const dy = event.clientY - gesture.y;
@@ -580,38 +611,41 @@ function wireReviewStrokeBlock(c, st) {
                      finish(event, true);
                      return;
                   }
-                  if (Math.abs(dx) < 16 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+                  if (Math.abs(dx) < 14 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
                   gesture.horizontal = true;
-                  flash.classList.add("is-session-dragging");
+                  card.classList.add("is-session-dragging");
                }
                if (event.cancelable) event.preventDefault();
-               flash.style.setProperty("--session-drag-x", Math.max(-38, Math.min(38, dx)) + "px");
+               const clamped = Math.max(-64, Math.min(64, dx));
+               card.style.setProperty("--session-drag-x", String(clamped));
+               card.classList.toggle("is-session-drag-left", clamped < -4);
+               card.classList.toggle("is-session-drag-right", clamped > 4);
             };
-            flash.onpointerup = (event) => finish(event, false);
-            flash.onpointercancel = (event) => finish(event, true);
-            flash.onlostpointercapture = (event) => {
+            zone.onpointerup = (event) => finish(event, false);
+            zone.onpointercancel = (event) => finish(event, true);
+            zone.onlostpointercapture = (event) => {
                if (gesture && event.pointerId === gesture.pointerId) finish(event, true);
             };
          }
          function wireSession(c, st) {
             $("s-exit").onclick = endSession;
             const flip = () => {
-               st.revealed = true;
+               const revealing = !st.revealed;
+               st.revealed = revealing;
                renderSession();
-               if (frontOf(c, st) === "fr") speak(c.hz);
+               if (revealing && !st.everRevealed) {
+                  st.everRevealed = true;
+                  if (frontOf(c, st) === "fr") speak(c.hz);
+               }
             };
             if ($("s-flip")) $("s-flip").onclick = flip;
             const fl = $("flash");
-            wireSessionSwipe(fl);
-            if (session.mode === "cards" && !st.revealed) {
+            wireSessionSwipe($("sess"), fl);
+            if (session.mode === "cards") {
                fl.style.cursor = "pointer";
                fl.onclick = (e) => {
                   if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
-                  if (
-                     e.target.closest("[data-say]") ||
-                     e.target.closest("button")
-                  )
-                     return;
+                  if (e.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
                   flip();
                };
             }
@@ -896,7 +930,7 @@ function wireReviewStrokeBlock(c, st) {
             destroyReviewStrokeWorkspace();
             const sts = session.states.filter(Boolean);
             const seen = sts.filter(
-               (s) => s.revealed || s.checked || s.grade,
+               (s) => s.everRevealed || s.checked || s.grade,
             ).length;
             const checkedN = sts.filter((s) => s.checked).length;
             const right = sts.filter((s) => s.checked && s.ok === true).length;

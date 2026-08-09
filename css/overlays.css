@@ -198,6 +198,9 @@
             border: 1px solid var(--line);
             color: var(--ink-soft);
          }
+         .cd-cat.jade {
+            color: var(--jade);
+         }
          .cd-status {
             margin-top: 10px;
             font-size: 13.5px;

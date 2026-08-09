@@ -42,6 +42,7 @@
          }
          .sess {
             padding-top: 10px;
+            touch-action: pan-y;
          }
          .s-top {
             display: flex;
@@ -104,8 +105,15 @@
             cursor: grabbing !important;
             user-select: none;
             -webkit-user-select: none;
-            transform: translateX(var(--session-drag-x, 0));
+            transform: translateX(calc(var(--session-drag-x, 0) * 1px)) rotate(calc(var(--session-drag-x, 0) * 0.025deg));
             transition: none;
+            box-shadow: 0 14px 32px rgba(23, 20, 15, 0.16);
+         }
+         .flash.is-session-drag-left {
+            box-shadow: -20px 0 30px -16px color-mix(in srgb, var(--lacquer) 60%, transparent);
+         }
+         .flash.is-session-drag-right {
+            box-shadow: 20px 0 30px -16px color-mix(in srgb, var(--lacquer) 60%, transparent);
          }
          .fl-seal {
             position: absolute;
@@ -264,6 +272,60 @@
          .s-foot .btn.ghost {
             flex: 0 0 auto;
          }
+         .s-foot-back {
+            justify-content: center;
+            margin-top: 10px;
+         }
+         .s-foot-back .btn {
+            flex: 0 0 auto;
+            min-height: 44px;
+            color: var(--ink-faint);
+         }
+         .session-swipe-hint {
+            margin: -2px 0 12px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--card-2) 85%, transparent);
+            color: var(--ink-faint);
+            font-size: 12px;
+            text-align: center;
+            animation: session-swipe-hint-fade 4.2s ease forwards;
+         }
+         @keyframes session-swipe-hint-fade {
+            0% {
+               opacity: 0;
+               transform: translateY(-4px);
+            }
+            12% {
+               opacity: 1;
+               transform: translateY(0);
+            }
+            75% {
+               opacity: 1;
+            }
+            100% {
+               opacity: 0;
+            }
+         }
+         @keyframes session-swipe-hint-fade-only {
+            0% {
+               opacity: 0;
+            }
+            12% {
+               opacity: 1;
+            }
+            75% {
+               opacity: 1;
+            }
+            100% {
+               opacity: 0;
+            }
+         }
+         @media (prefers-reduced-motion: reduce) {
+            .session-swipe-hint {
+               animation-name: session-swipe-hint-fade-only;
+            }
+         }
          .grades {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -274,7 +336,9 @@
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 22px;
+            padding-top: 14px;
+            border-top: 1px solid var(--line-soft);
          }
          .session-nav-button {
             min-width: 0;
@@ -640,6 +704,7 @@
             outline-offset: 2px;
          }
          .gr {
+            min-height: 44px;
             border-radius: 12px;
             padding: 10px 4px 8px;
             color: #f6efdd;

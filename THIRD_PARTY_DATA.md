@@ -78,6 +78,32 @@ and is not subject to the Make Me a Hanzi upstream license. The composition
 build records its hash and merges only its explicitly present entries beside
 the unchanged English source hints.
 
+## Learning-units index (phonetic families, dependency graph, utility scores)
+
+- Inputs: `data/generated/character-composition/`, `data/generated/character-radicals/`,
+  and `data/generated/dictionary/` (all already documented above/below), plus the
+  first-party files `hsk1.json` (repository root) and, optionally, a personal-library
+  export the application already produces (Réglages → Données → Exporter; see
+  `js/storage-transfer.js`) dropped at `data/personal/library-export.json`. That
+  directory is private and gitignored; it is empty in this repository, so the
+  personal-library signal in the generated data honestly reports zero rather than
+  guessing.
+- Generated output: `data/generated/learning-units/` (phonetic families, a character
+  component dependency graph, per-character utility scores, and the resulting
+  learning units, chunked).
+- Because it groups and re-scores the LGPL-derived composition/radical data and
+  reuses CC-CEDICT/CFDICT glosses and pinyin from the dictionary index, this output
+  remains subject to both the GNU Lesser General Public License version 3 or later
+  (Make Me a Hanzi, via character-composition and character-radicals) and the
+  Creative Commons Attribution-ShareAlike terms of CC-CEDICT (4.0) and CFDICT (3.0),
+  the same as the indexes it is built from. No new upstream text is introduced.
+
+Build and deterministic validation are provided by `npm run build:learning-units`
+and `npm run validate:learning-units`. The full build report, including the utility
+formula and measured coverage, is written to
+`data/generated/learning-units/build-report.md`. Nothing under `learning-units/` is
+loaded at application startup; as of this data-only pass, no interface reads it yet.
+
 ## Hanzi Writer character data
 
 - Package: `hanzi-writer-data`

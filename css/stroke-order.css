@@ -111,12 +111,6 @@
    min-height: 22px;
    text-align: center;
 }
-.stroke-animation-actions {
-   flex-wrap: nowrap;
-}
-.stroke-animation-actions .btn {
-   min-width: 0;
-}
 .stroke-gallery-toolbar {
    display: flex;
    align-items: flex-start;
@@ -288,6 +282,68 @@
    white-space: nowrap;
 }
 
+.stroke-action-bar {
+   display: grid;
+   grid-template-columns: 44px minmax(0, 1fr) auto;
+   align-items: center;
+   gap: 10px;
+   margin: 10px 0 12px;
+   padding: 7px 9px;
+   border: 1px solid var(--line-soft);
+   border-radius: 14px;
+   background: var(--card-2);
+}
+.stroke-action-bar .character-nav-position {
+   min-width: 0;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.stroke-action-bar-spacer {
+   min-width: 0;
+}
+.stroke-action-icons {
+   display: flex;
+   justify-self: end;
+   gap: 6px;
+}
+.stroke-icon-button {
+   display: inline-grid;
+   flex: none;
+   place-items: center;
+   width: 44px;
+   height: 44px;
+   padding: 0;
+   border: 1px solid var(--line);
+   border-radius: 12px;
+   background: var(--paper-2);
+   color: var(--ink-soft);
+   box-shadow: 0 3px 9px rgba(23, 20, 15, 0.08);
+   cursor: pointer;
+   transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.stroke-icon-button svg {
+   width: 22px;
+   height: 22px;
+   fill: none;
+   stroke: currentColor;
+   stroke-width: 2;
+   stroke-linecap: round;
+   stroke-linejoin: round;
+}
+.stroke-icon-button:hover,
+.stroke-icon-button:focus-visible {
+   border-color: var(--seal);
+   color: var(--seal);
+}
+.stroke-icon-button:focus-visible {
+   outline: 3px solid rgba(35, 122, 90, 0.5);
+   outline-offset: 2px;
+}
+.stroke-icon-button:active {
+   color: var(--lacquer);
+   transform: scale(0.96);
+}
+
 .stroke-character-stage {
    --character-nav-size: 44px;
    position: relative;
@@ -337,18 +393,6 @@
 .stroke-character-stage + * {
    margin-top: 14px;
 }
-.dd-character-interaction > .character-nav-position,
-#seq-flash > .character-nav-position {
-   display: block;
-   width: fit-content;
-   max-width: 100%;
-   margin: 10px auto 0;
-   padding: 7px 13px;
-   border: 1px solid var(--line-soft);
-   border-radius: 999px;
-   background: color-mix(in srgb, var(--card-2) 82%, transparent);
-}
-
 #dd-character-nav {
    grid-template-columns: 48px minmax(92px, 1fr) 48px;
    width: 100%;

@@ -204,7 +204,7 @@ async function main() {
       const screenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
       await writeFile(width === 390 ? cardDetailScreenshots.mobile : cardDetailScreenshots.desktop, Buffer.from(screenshot.data, "base64"));
       if (width === 390) {
-         const actionRect = await evaluate(`(() => {const rect=document.querySelector('.stroke-animation-actions').getBoundingClientRect();return {x:Math.max(0,rect.left-8),y:Math.max(0,rect.top-8),width:Math.min(innerWidth,rect.width+16),height:rect.height+16};})()`);
+         const actionRect = await evaluate(`(() => {const rect=document.querySelector('.stroke-action-bar').getBoundingClientRect();return {x:Math.max(0,rect.left-8),y:Math.max(0,rect.top-8),width:Math.min(innerWidth,rect.width+16),height:rect.height+16};})()`);
          const actionScreenshot = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true, clip:{...actionRect,scale:1} });
          await writeFile(cardDetailScreenshots.actions, Buffer.from(actionScreenshot.data, "base64"));
       }

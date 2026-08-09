@@ -12,6 +12,7 @@
                categories: db.categories,
                memberships: db.memberships,
                settings: db.settings,
+               courseProgress: courseProgress,
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {
                type: "application/json",
@@ -110,6 +111,17 @@
                !Array.isArray(data.units)
                   ? data.units
                   : null;
+            const incomingCourseProgress =
+               !Array.isArray(data) && data.courseProgress && typeof data.courseProgress === "object"
+                  ? data.courseProgress
+                  : null;
+            const incomingCompletedLessons =
+               incomingCourseProgress &&
+               incomingCourseProgress.completedLessons &&
+               typeof incomingCourseProgress.completedLessons === "object" &&
+               !Array.isArray(incomingCourseProgress.completedLessons)
+                  ? incomingCourseProgress.completedLessons
+                  : null;
             if (replace) {
                makeBackup();
                const raw = Array.isArray(data)
@@ -150,9 +162,27 @@
                      ? data.memberships.filter((membership) => membership && membership.cardId && membership.categoryId)
                      : [];
                db.units = inUnits || {};
+               courseProgress = incomingCompletedLessons
+                  ? {
+                       version: 2,
+                       completedLessons: incomingCompletedLessons,
+                       scope: validCourseProgressScope(incomingCourseProgress.scope)
+                          ? incomingCourseProgress.scope
+                          : emptyCourseProgress().scope,
+                    }
+                  : emptyCourseProgress();
+               saveCourseProgress();
             } else {
                db.cards = db.cards.concat(fresh);
                if (inUnits) db.units = Object.assign({}, db.units, inUnits);
+               if (incomingCompletedLessons) {
+                  courseProgress.completedLessons = Object.assign(
+                     {},
+                     courseProgress.completedLessons,
+                     incomingCompletedLessons,
+                  );
+                  saveCourseProgress();
+               }
             }
             const added = replace ? db.cards.length : fresh.length;
             if (wantPack) {

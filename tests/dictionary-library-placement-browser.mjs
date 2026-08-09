@@ -421,10 +421,31 @@ async function main() {
    const stage = await evaluate(`(() => {const m=document.querySelector('#stroke-panel-animation .mizi').getBoundingClientRect(),p=document.querySelector('#dd-character-prev').getBoundingClientRect(),n=document.querySelector('#dd-character-next').getBoundingClientRect();return {pair:document.querySelectorAll('#dd-character-prev,#dd-character-next').length,direct:document.querySelector('#dd-character-prev').parentElement.id==='dd-character-stage'&&document.querySelector('#dd-character-next').parentElement.id==='dd-character-stage',sizes:[p.width,p.height,n.width,n.height],vertical:[Math.abs(p.top+p.height/2-(m.top+m.height/2)),Math.abs(n.top+n.height/2-(m.top+m.height/2))],edgeGaps:[m.left-p.right,n.left-m.right],overflow:document.querySelector('.sheet-card').scrollWidth!==document.querySelector('.sheet-card').clientWidth};})()`);
    assert(stage.pair===2 && stage.direct && stage.sizes.every((size)=>size>=44) && stage.vertical.every((gap)=>gap<10) && stage.edgeGaps.every((gap)=>Math.abs(gap-8)<1) && !stage.overflow, `chevrons are not wrapped around the grid: ${JSON.stringify(stage)}`);
    const actionLayout = await evaluate(`(() => {
-      const replay=document.querySelector('#dd-anim'),animation=document.querySelector('.stroke-animation-actions'),study=document.querySelector('#dd-character-study-card'),buttons=[study.querySelector('.dd-character-audio'),study.querySelector('#dd-write'),study.querySelector('.dd-character-study-actions .btn')],rects=buttons.map((button)=>button.getBoundingClientRect());
-      return {replayOnly:animation.children.length===1&&animation.firstElementChild===replay,replayFull:Math.abs(replay.getBoundingClientRect().width-animation.getBoundingClientRect().width)<1,obsolete:!!document.querySelector('#dd-write-word'),labels:buttons.map((button)=>button.textContent.trim()),heights:rects.map((rect)=>rect.height),sameLine:rects.every((rect)=>Math.abs(rect.top-rects[0].top)<1),truncated:buttons.some((button)=>button.scrollWidth>button.clientWidth),overflow:study.scrollWidth>study.clientWidth};
+      const bar=document.querySelector('.stroke-action-bar'),replay=document.querySelector('#dd-anim'),write=document.querySelector('#dd-write'),audio=document.querySelector('.stroke-action-audio'),position=document.querySelector('.character-nav-position'),addcard=document.querySelector('#dd-character-addcard'),icons=[replay,write],rects=[audio,position,replay,write].map((el)=>el.getBoundingClientRect());
+      return {
+         sameBar:bar.contains(replay)&&bar.contains(write)&&bar.contains(audio)&&bar.contains(position),
+         obsolete:!!document.querySelector('#dd-write-word')||!!document.querySelector('#dd-character-manage'),
+         addcardLabel:addcard?.textContent.trim(),
+         audioLabel:audio.getAttribute('aria-label'),
+         replayLabel:replay.getAttribute('aria-label'),
+         replayTitle:replay.getAttribute('title'),
+         writeLabel:write.getAttribute('aria-label'),
+         writeTitle:write.getAttribute('title'),
+         replayHasText:replay.textContent.trim().length>0,
+         writeHasText:write.textContent.trim().length>0,
+         sizes:icons.map((button)=>{const r=button.getBoundingClientRect();return [r.width,r.height];}),
+         sameLine:rects.every((rect)=>Math.abs((rect.top+rect.height/2)-(rects[0].top+rects[0].height/2))<2),
+         overflow:bar.scrollWidth>bar.clientWidth,
+      };
    })()`);
-   assert(actionLayout.replayOnly&&actionLayout.replayFull&&!actionLayout.obsolete&&actionLayout.labels[0]==='听'&&actionLayout.labels[1]==='写 Écrire'&&actionLayout.labels[2]==='+ Mes mots'&&actionLayout.heights.every((height)=>height>=40)&&actionLayout.sameLine&&!actionLayout.truncated&&!actionLayout.overflow, `dictionary action rows are incomplete: ${JSON.stringify(actionLayout)}`);
+   assert(
+      actionLayout.sameBar && !actionLayout.obsolete && actionLayout.addcardLabel === '+ Mes mots' &&
+         actionLayout.audioLabel === 'Écouter 你' && actionLayout.replayLabel === 'Rejouer l’animation' &&
+         actionLayout.replayTitle === 'Rejouer l’animation' && actionLayout.writeLabel === 'S’entraîner à écrire' &&
+         actionLayout.writeTitle === 'S’entraîner à écrire' && !actionLayout.replayHasText && !actionLayout.writeHasText &&
+         actionLayout.sizes.every(([w, h]) => w >= 44 && h >= 44) && actionLayout.sameLine && !actionLayout.overflow,
+      `dictionary action bar is incomplete: ${JSON.stringify(actionLayout)}`,
+   );
    await evaluate("document.querySelector('#dd-character-stage').scrollIntoView({block:'center'})");
    const pagingScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true});
    await writeFile(visualProofs.paging, Buffer.from(pagingScreenshot.data, "base64"));
@@ -527,7 +548,7 @@ async function main() {
    await waitFor(() => evaluate("ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "single-character detail did not load");
    const singleCharacterLayout = await evaluate(`(() => {const stage=document.querySelector('#dd-character-stage'),mizi=stage.querySelector('.mizi'),s=stage.getBoundingClientRect(),m=mizi.getBoundingClientRect();return {buttons:stage.querySelectorAll(':scope > .character-nav-button').length,inside:m.left>=s.left&&m.right<=s.right,overflow:document.documentElement.scrollWidth>innerWidth};})()`);
    assert(singleCharacterLayout.buttons === 0 && singleCharacterLayout.inside && !singleCharacterLayout.overflow, `single-character layout failed: ${JSON.stringify(singleCharacterLayout)}`);
-   assert(await evaluate("!document.querySelector('#dd-character-details')&&document.querySelectorAll('#dd-write').length===1&&document.querySelector('.stroke-animation-actions').children.length===1"), "single-character detail kept a duplicate writing action or useless character detail");
+   assert(await evaluate("!document.querySelector('#dd-character-details')&&document.querySelectorAll('#dd-write').length===1&&document.querySelector('.stroke-action-icons').children.length===2"), "single-character detail kept a duplicate writing action or useless character detail");
    await click("#dd-write");
    await waitFor(() => evaluate("document.querySelector('#review-writing-canvas')?.width>1"), "single-character writing practice did not open");
    assert(await evaluate("document.querySelectorAll('[data-writing-practice-character]').length===0&&document.querySelector('#review-writing-model').textContent.trim()==='面'&&sheetOpen()&&document.querySelector('#sheet').inert"), "single-character writing practice showed a character picker or lost its detail");

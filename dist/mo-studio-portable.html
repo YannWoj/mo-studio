@@ -626,6 +626,7 @@
          }
          .sess {
             padding-top: 10px;
+            touch-action: pan-y;
          }
          .s-top {
             display: flex;
@@ -688,8 +689,15 @@
             cursor: grabbing !important;
             user-select: none;
             -webkit-user-select: none;
-            transform: translateX(var(--session-drag-x, 0));
+            transform: translateX(calc(var(--session-drag-x, 0) * 1px)) rotate(calc(var(--session-drag-x, 0) * 0.025deg));
             transition: none;
+            box-shadow: 0 14px 32px rgba(23, 20, 15, 0.16);
+         }
+         .flash.is-session-drag-left {
+            box-shadow: -20px 0 30px -16px color-mix(in srgb, var(--lacquer) 60%, transparent);
+         }
+         .flash.is-session-drag-right {
+            box-shadow: 20px 0 30px -16px color-mix(in srgb, var(--lacquer) 60%, transparent);
          }
          .fl-seal {
             position: absolute;
@@ -848,6 +856,60 @@
          .s-foot .btn.ghost {
             flex: 0 0 auto;
          }
+         .s-foot-back {
+            justify-content: center;
+            margin-top: 10px;
+         }
+         .s-foot-back .btn {
+            flex: 0 0 auto;
+            min-height: 44px;
+            color: var(--ink-faint);
+         }
+         .session-swipe-hint {
+            margin: -2px 0 12px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: color-mix(in srgb, var(--card-2) 85%, transparent);
+            color: var(--ink-faint);
+            font-size: 12px;
+            text-align: center;
+            animation: session-swipe-hint-fade 4.2s ease forwards;
+         }
+         @keyframes session-swipe-hint-fade {
+            0% {
+               opacity: 0;
+               transform: translateY(-4px);
+            }
+            12% {
+               opacity: 1;
+               transform: translateY(0);
+            }
+            75% {
+               opacity: 1;
+            }
+            100% {
+               opacity: 0;
+            }
+         }
+         @keyframes session-swipe-hint-fade-only {
+            0% {
+               opacity: 0;
+            }
+            12% {
+               opacity: 1;
+            }
+            75% {
+               opacity: 1;
+            }
+            100% {
+               opacity: 0;
+            }
+         }
+         @media (prefers-reduced-motion: reduce) {
+            .session-swipe-hint {
+               animation-name: session-swipe-hint-fade-only;
+            }
+         }
          .grades {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -858,7 +920,9 @@
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 22px;
+            padding-top: 14px;
+            border-top: 1px solid var(--line-soft);
          }
          .session-nav-button {
             min-width: 0;
@@ -1224,6 +1288,7 @@
             outline-offset: 2px;
          }
          .gr {
+            min-height: 44px;
             border-radius: 12px;
             padding: 10px 4px 8px;
             color: #f6efdd;
@@ -1510,12 +1575,6 @@
    min-height: 22px;
    text-align: center;
 }
-.stroke-animation-actions {
-   flex-wrap: nowrap;
-}
-.stroke-animation-actions .btn {
-   min-width: 0;
-}
 .stroke-gallery-toolbar {
    display: flex;
    align-items: flex-start;
@@ -1687,6 +1746,68 @@
    white-space: nowrap;
 }
 
+.stroke-action-bar {
+   display: grid;
+   grid-template-columns: 44px minmax(0, 1fr) auto;
+   align-items: center;
+   gap: 10px;
+   margin: 10px 0 12px;
+   padding: 7px 9px;
+   border: 1px solid var(--line-soft);
+   border-radius: 14px;
+   background: var(--card-2);
+}
+.stroke-action-bar .character-nav-position {
+   min-width: 0;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.stroke-action-bar-spacer {
+   min-width: 0;
+}
+.stroke-action-icons {
+   display: flex;
+   justify-self: end;
+   gap: 6px;
+}
+.stroke-icon-button {
+   display: inline-grid;
+   flex: none;
+   place-items: center;
+   width: 44px;
+   height: 44px;
+   padding: 0;
+   border: 1px solid var(--line);
+   border-radius: 12px;
+   background: var(--paper-2);
+   color: var(--ink-soft);
+   box-shadow: 0 3px 9px rgba(23, 20, 15, 0.08);
+   cursor: pointer;
+   transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.stroke-icon-button svg {
+   width: 22px;
+   height: 22px;
+   fill: none;
+   stroke: currentColor;
+   stroke-width: 2;
+   stroke-linecap: round;
+   stroke-linejoin: round;
+}
+.stroke-icon-button:hover,
+.stroke-icon-button:focus-visible {
+   border-color: var(--seal);
+   color: var(--seal);
+}
+.stroke-icon-button:focus-visible {
+   outline: 3px solid rgba(35, 122, 90, 0.5);
+   outline-offset: 2px;
+}
+.stroke-icon-button:active {
+   color: var(--lacquer);
+   transform: scale(0.96);
+}
+
 .stroke-character-stage {
    --character-nav-size: 44px;
    position: relative;
@@ -1736,18 +1857,6 @@
 .stroke-character-stage + * {
    margin-top: 14px;
 }
-.dd-character-interaction > .character-nav-position,
-#seq-flash > .character-nav-position {
-   display: block;
-   width: fit-content;
-   max-width: 100%;
-   margin: 10px auto 0;
-   padding: 7px 13px;
-   border: 1px solid var(--line-soft);
-   border-radius: 999px;
-   background: color-mix(in srgb, var(--card-2) 82%, transparent);
-}
-
 #dd-character-nav {
    grid-template-columns: 48px minmax(92px, 1fr) 48px;
    width: 100%;
@@ -2872,29 +2981,18 @@
    background: color-mix(in srgb, var(--card-2) 68%, transparent);
 }
 .dd-character-study-card {
-   display: grid;
-   grid-template-columns: 44px max-content minmax(0, 1fr);
-   gap: 9px;
+   display: flex;
    align-items: center;
-   min-height: 58px;
+   justify-content: flex-end;
+   min-height: 30px;
    margin: 10px 0 2px;
-   padding: 7px 9px;
-   border: 1px solid color-mix(in srgb, var(--seal) 46%, var(--line-soft));
-   border-radius: 14px;
-   background: var(--card-2);
-   box-shadow: 0 5px 15px rgba(23, 20, 15, 0.06);
 }
 .dd-character-study-card[aria-busy="true"] {
    opacity: 0.72;
 }
-.dd-character-audio {
-   width: 44px;
-   height: 44px;
-}
-.dd-character-write {
+.dd-character-study-card .btn {
    min-height: 44px;
-   padding-inline: 12px;
-   white-space: nowrap;
+   padding-inline: 14px;
 }
 .dictionary-suggestion-personal {
    display: inline-block;
@@ -2905,20 +3003,6 @@
    color: var(--jade);
    font-style: normal;
    font-weight: 700;
-}
-.dd-character-study-actions {
-   display: flex;
-   align-items: center;
-   justify-content: flex-end;
-   min-width: 0;
-   min-height: 44px;
-}
-.dd-character-study-actions .btn {
-   min-height: 44px;
-   padding-inline: 10px;
-   border-color: var(--line);
-   background: color-mix(in srgb, var(--paper-2) 72%, transparent);
-   white-space: nowrap;
 }
 .dd-character-details {
    margin: 12px 0 8px;
@@ -3135,15 +3219,7 @@
       margin-top: 5px;
    }
    .dd-character-study-card {
-      grid-template-columns: 44px max-content minmax(0, 1fr);
       margin-top: 7px;
-      padding: 5px 7px;
-   }
-   .dd-character-write,
-   .dd-character-study-actions .btn {
-      width: auto;
-      padding-inline: 8px;
-      font-size: 12px;
    }
    .dd-character-detail-row {
       grid-template-columns: 30px minmax(62px, auto) minmax(0, 1fr);
@@ -3257,9 +3333,8 @@
    .seq-character-strip .hzchip {
       min-height: 42px;
    }
-   .seq-card > .character-nav-position {
+   .seq-card > .stroke-action-bar {
       margin-top: 6px;
-      padding-block: 5px;
    }
 }
 .dd-add-word-main {
@@ -4058,6 +4133,541 @@
    .path-word-status {
       max-width: none;
       text-align: left;
+   }
+}
+
+/* ---------- parcours : périmètre, prochaine leçon, progression, carte ---------- */
+.path-scope-segments {
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   gap: 6px;
+   margin-top: 8px;
+}
+
+.path-scope-segment {
+   min-width: 0;
+   min-height: 44px;
+   padding: 6px 6px;
+   border: 1px solid var(--line);
+   border-radius: 10px;
+   background: var(--card-2);
+   color: var(--ink-soft);
+   font-size: 12.5px;
+   font-weight: 600;
+   line-height: 1.2;
+}
+
+.path-scope-segment[aria-pressed="true"] {
+   border-color: var(--lacquer);
+   background: color-mix(in srgb, var(--lacquer) 10%, var(--card));
+   color: var(--lacquer);
+   box-shadow: inset 0 -2px var(--lacquer);
+}
+
+.path-scope-hsk-levels {
+   display: grid;
+   grid-template-columns: repeat(6, minmax(0, 1fr));
+   gap: 5px;
+   margin-top: 8px;
+}
+
+.path-scope-hsk-level {
+   min-height: 38px;
+   border: 1px solid var(--line);
+   border-radius: 8px;
+   background: var(--card-2);
+   color: var(--ink-soft);
+   font: 600 13px var(--disp);
+}
+
+.path-scope-hsk-level[aria-pressed="true"] {
+   border-color: var(--lacquer);
+   background: var(--lacquer);
+   color: var(--card);
+}
+
+.path-primary {
+   display: block;
+}
+
+.path-next-head {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   margin-top: 4px;
+}
+
+.path-next-hz {
+   flex: none;
+   color: var(--ink);
+   font: 500 44px var(--serif);
+}
+
+.path-next-main {
+   display: flex;
+   min-width: 0;
+   flex-direction: column;
+   gap: 2px;
+}
+
+.path-next-gloss {
+   color: var(--ink-soft);
+   font-size: 14px;
+}
+
+.path-next-chars {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 6px;
+   margin: 14px 0;
+}
+
+.path-next-more {
+   display: inline-flex;
+   align-items: center;
+   padding: 6px 11px;
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+
+.path-progress {
+   margin-top: 10px;
+}
+
+.path-progress-count {
+   font: 600 20px var(--disp);
+   color: var(--ink);
+}
+
+.path-progress-note {
+   margin-top: 6px;
+   color: var(--ink-soft);
+   font-size: 13px;
+}
+
+.path-scope-note-card p {
+   color: var(--ink-soft);
+   font-size: 14px;
+}
+
+.path-scope-note-card p + p {
+   margin-top: 6px;
+}
+
+.path-map {
+   margin-top: 16px;
+}
+
+.path-map-bucket {
+   margin-bottom: 18px;
+}
+
+.path-map-bucket-title {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin: 0 0 8px;
+   color: var(--ink);
+   font: 600 15px var(--disp);
+}
+
+.path-map-bucket-count {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   min-width: 22px;
+   padding: 2px 6px;
+   border-radius: 999px;
+   background: var(--card-2);
+   color: var(--ink-faint);
+   font-size: 11px;
+}
+
+.path-map-bucket-empty {
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+
+.path-map-rows {
+   display: grid;
+   gap: 6px;
+}
+
+.path-map-row {
+   border-left: 3px solid transparent;
+}
+
+.path-map-row-acquis {
+   border-left-color: var(--jade);
+}
+
+.path-map-row-disponible {
+   border-left-color: var(--lacquer);
+}
+
+.path-map-row-bientot {
+   border-left-color: var(--gold);
+}
+
+.path-map-row-verrouillee {
+   border-left-color: var(--line);
+   opacity: 0.72;
+}
+
+.path-map-remaining {
+   flex: none;
+   color: var(--lacquer);
+   font-size: 12px;
+   font-weight: 600;
+}
+
+.unit-family-tag.path-map-gap {
+   border: 1px solid color-mix(in srgb, var(--lacquer) 45%, var(--line));
+   background: color-mix(in srgb, var(--lacquer) 10%, var(--card-2));
+   color: var(--lacquer);
+}
+
+.path-explore {
+   margin-top: 22px;
+   padding-top: 6px;
+   border-top: 1.5px dashed var(--line);
+}
+
+.path-explore > .btn {
+   margin-bottom: 14px;
+}
+
+@media (max-width: 480px) {
+   .path-next-hz {
+      font-size: 38px;
+   }
+
+   .path-scope-hsk-levels {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+   }
+}
+
+/* ---------- leçons (parcours) ---------- */
+body.in-lesson .nav,
+body.in-lesson .top {
+   display: none;
+}
+
+body.in-lesson {
+   padding-bottom: 28px;
+}
+
+.lesson-component-intro {
+   margin-bottom: 18px;
+}
+
+.lesson-family-intro {
+   margin: 0 0 12px;
+   color: var(--ink-soft);
+   font-size: 14px;
+}
+
+.unit-family-grid {
+   display: grid;
+   gap: 8px;
+}
+
+.unit-family-row {
+   border: 1px solid var(--line);
+   border-radius: var(--r);
+   background: var(--card);
+   overflow: hidden;
+}
+
+.unit-family-row[open] > .unit-family-head {
+   border-bottom: 1px solid var(--line-soft);
+}
+
+.unit-family-row-skeleton {
+   display: flex;
+   min-height: 60px;
+   align-items: center;
+   justify-content: center;
+   background: var(--card-2);
+}
+
+.unit-family-head {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   min-height: 60px;
+   padding: 10px 12px;
+   cursor: pointer;
+   list-style: none;
+}
+
+.unit-family-head::-webkit-details-marker {
+   display: none;
+}
+
+.unit-family-hz {
+   flex: none;
+   color: var(--ink);
+   font: 500 26px var(--serif);
+}
+
+.unit-family-main {
+   display: flex;
+   min-width: 0;
+   flex: 1 1 auto;
+   flex-direction: column;
+   gap: 1px;
+}
+
+.unit-family-pinyin {
+   font-size: 13.5px;
+}
+
+.unit-family-gloss {
+   overflow: hidden;
+   color: var(--ink-soft);
+   font-size: 12.5px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.unit-family-badges {
+   display: flex;
+   flex: none;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+   gap: 4px;
+   max-width: 130px;
+}
+
+.unit-family-tag {
+   display: inline-flex;
+   align-items: center;
+   border-radius: 999px;
+   padding: 4px 8px;
+   font-size: 10px;
+   font-weight: 600;
+   white-space: nowrap;
+}
+
+.unit-family-tag.son {
+   border: 1px solid color-mix(in srgb, var(--lacquer) 45%, var(--line));
+   background: color-mix(in srgb, var(--lacquer) 10%, var(--card-2));
+   color: var(--lacquer);
+}
+
+.unit-family-tag.sens {
+   border: 1px solid color-mix(in srgb, var(--jade) 45%, var(--line));
+   background: color-mix(in srgb, var(--jade) 10%, var(--card-2));
+   color: var(--jade);
+}
+
+.unit-family-tag.key {
+   border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line));
+   background: color-mix(in srgb, var(--gold) 10%, var(--card-2));
+   color: color-mix(in srgb, var(--gold) 72%, var(--ink));
+}
+
+.unit-family-chevron {
+   flex: none;
+   color: var(--ink-faint);
+   font-size: 14px;
+   transition: transform 0.15s;
+}
+
+.unit-family-row[open] .unit-family-chevron {
+   transform: rotate(180deg);
+}
+
+.unit-family-row .character-composition {
+   padding: 4px 12px 14px;
+}
+
+.unit-word-list {
+   display: grid;
+   gap: 8px;
+}
+
+.unit-word-row {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   min-height: 60px;
+   padding: 10px 12px;
+   border: 1px solid var(--line);
+   border-radius: var(--r);
+   background: var(--card);
+}
+
+.unit-word-hz {
+   flex: none;
+   color: var(--ink);
+   font: 500 22px var(--serif);
+}
+
+.unit-word-main {
+   display: flex;
+   min-width: 0;
+   flex: 1 1 auto;
+   flex-direction: column;
+   gap: 1px;
+}
+
+.unit-word-pinyin {
+   font-size: 13.5px;
+}
+
+.unit-word-gloss {
+   color: var(--ink-soft);
+   font-size: 13px;
+}
+
+.unit-word-empty {
+   padding: 24px 4px;
+   color: var(--ink-soft);
+   text-align: center;
+}
+
+.lesson-recap-list {
+   display: grid;
+   gap: 8px;
+   margin-bottom: 14px;
+}
+
+.lesson-recap-row {
+   display: flex;
+   align-items: baseline;
+   gap: 10px;
+   padding: 10px 4px;
+   border-bottom: 1px solid var(--line-soft);
+   font-size: 13.5px;
+}
+
+.lesson-recap-row b {
+   flex: none;
+   color: var(--ink);
+   font: 500 19px var(--serif);
+}
+
+.lesson-recap-row > span:not(.lesson-recap-state) {
+   min-width: 0;
+   flex: 1 1 auto;
+   overflow: hidden;
+   color: var(--ink-soft);
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.lesson-recap-state {
+   flex: none;
+   color: var(--ink-faint);
+   font-size: 11px;
+}
+
+.lesson-recap-total {
+   margin: 0 0 14px;
+   color: var(--ink-soft);
+   font-size: 13px;
+   font-weight: 600;
+}
+
+.lesson-recap-actions .btn {
+   width: 100%;
+}
+
+/* ---------- liste des leçons ---------- */
+.lu-list {
+   display: grid;
+}
+
+.lu-row {
+   display: grid;
+   grid-template-columns: minmax(60px, auto) minmax(0, 1fr) auto;
+   gap: 12px;
+   align-items: center;
+   min-height: 78px;
+   padding: 12px 15px;
+   border-bottom: 1px solid var(--line-soft);
+   text-align: left;
+}
+
+.lu-row:hover,
+.lu-row:focus-visible {
+   background: var(--card-2);
+}
+
+.lu-row-component {
+   color: var(--ink);
+   font: 500 26px var(--serif);
+}
+
+.lu-row-main {
+   display: flex;
+   min-width: 0;
+   flex-direction: column;
+}
+
+.lu-row-pinyin {
+   font-size: 14px;
+}
+
+.lu-row-gloss {
+   overflow: hidden;
+   color: var(--ink-soft);
+   font-size: 13px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.lu-row-meta {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   gap: 4px;
+}
+
+.lu-row-badge {
+   border-radius: 999px;
+   padding: 4px 9px;
+   font-size: 10px;
+   font-weight: 600;
+   white-space: nowrap;
+}
+
+.lu-row-badge-phonetic {
+   border: 1px solid color-mix(in srgb, var(--lacquer) 45%, var(--line));
+   background: color-mix(in srgb, var(--lacquer) 10%, var(--card-2));
+   color: var(--lacquer);
+}
+
+.lu-row-badge-semantic {
+   border: 1px solid color-mix(in srgb, var(--jade) 45%, var(--line));
+   background: color-mix(in srgb, var(--jade) 10%, var(--card-2));
+   color: var(--jade);
+}
+
+.lu-row-count,
+.lu-row-part {
+   color: var(--ink-faint);
+   font-size: 10.5px;
+}
+
+@media (max-width: 480px) {
+   .unit-family-badges {
+      max-width: 96px;
+   }
+
+   .lu-row {
+      grid-template-columns: minmax(50px, auto) minmax(0, 1fr);
+      gap: 10px;
+      padding-inline: 12px;
+   }
+
+   .lu-row-meta {
+      grid-column: 2;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
    }
 }
 
@@ -4928,6 +5538,9 @@ body.writing-fullscreen-open {
             background: var(--card);
             border: 1px solid var(--line);
             color: var(--ink-soft);
+         }
+         .cd-cat.jade {
+            color: var(--jade);
          }
          .cd-status {
             margin-top: 10px;
@@ -7223,6 +7836,22 @@ async function loadHskLevel(level) {
    return entries;
 }
 
+async function loadHskCumulativeCharacters(level) {
+   const numericLevel = Number(level);
+   if (!Number.isInteger(numericLevel) || numericLevel < 1 || numericLevel > 6)
+      throw new Error("Niveau HSK invalide.");
+   const characters = new Set();
+   for (let lvl = 1; lvl <= numericLevel; lvl++) {
+      const entries = await loadHskLevel(lvl);
+      entries.forEach((entry) =>
+         Array.from(entry.chinese)
+            .filter((character) => HAN_PATTERN.test(character))
+            .forEach((character) => characters.add(character)),
+      );
+   }
+   return characters;
+}
+
 function hskMetadata(entry) {
    return {
       hskEntryId: entry.hskEntryId,
@@ -8707,14 +9336,27 @@ const PACK_JSON_EXAMPLE = `{
 
 "use strict";
 
-/* ================= progression des futurs parcours ================= */
+/* ================= progression du parcours ================= */
 const COURSE_PROGRESS_KEY = "mo-studio-course-progress-v1";
+const COURSE_PROGRESS_SCOPE_MODES = ["personal", "hsk", "all"];
 
 function emptyCourseProgress() {
    return {
-      version: 1,
-      levels: {},
+      version: 2,
+      completedLessons: {}, // { [unitId]: horodatage de complétion (ms) }
+      scope: { mode: "personal", hskLevel: 1 },
    };
+}
+
+function validCourseProgressScope(scope) {
+   return (
+      !!scope &&
+      typeof scope === "object" &&
+      COURSE_PROGRESS_SCOPE_MODES.includes(scope.mode) &&
+      Number.isInteger(scope.hskLevel) &&
+      scope.hskLevel >= 1 &&
+      scope.hskLevel <= 6
+   );
 }
 
 function loadCourseProgress() {
@@ -8722,10 +9364,11 @@ function loadCourseProgress() {
       const stored = JSON.parse(localStorage.getItem(COURSE_PROGRESS_KEY));
       if (
          stored &&
-         stored.version === 1 &&
-         stored.levels &&
-         typeof stored.levels === "object" &&
-         !Array.isArray(stored.levels)
+         stored.version === 2 &&
+         stored.completedLessons &&
+         typeof stored.completedLessons === "object" &&
+         !Array.isArray(stored.completedLessons) &&
+         validCourseProgressScope(stored.scope)
       ) {
          return stored;
       }
@@ -8745,6 +9388,28 @@ function saveCourseProgress() {
 
 let courseProgress = loadCourseProgress();
 
+function recordLessonCompletion(unitId) {
+   if (!unitId) return;
+   courseProgress.completedLessons[String(unitId)] = Date.now();
+   saveCourseProgress();
+}
+
+function isLessonCompleted(unitId) {
+   return Object.prototype.hasOwnProperty.call(courseProgress.completedLessons, String(unitId));
+}
+
+function getCourseScope() {
+   return { ...courseProgress.scope };
+}
+
+function setCourseScope(mode, hskLevel) {
+   const resolvedMode = COURSE_PROGRESS_SCOPE_MODES.includes(mode) ? mode : courseProgress.scope.mode;
+   const resolvedLevel =
+      Number.isInteger(hskLevel) && hskLevel >= 1 && hskLevel <= 6 ? hskLevel : courseProgress.scope.hskLevel;
+   courseProgress.scope = { mode: resolvedMode, hskLevel: resolvedLevel };
+   saveCourseProgress();
+}
+
 "use strict";
 
 /* ================= navigation ================= */
@@ -8753,6 +9418,7 @@ let courseProgress = loadCourseProgress();
          function setView(v, options) {
             const settings = options || {};
             if (seq && v !== "search") teardownSequence();
+            if (lesson && v !== "units") teardownLesson();
             if (!settings.fromHistory && typeof history !== "undefined") {
                if (v === "search" && typeof searchHistoryPayload === "function")
                   history.pushState(searchHistoryPayload(srch.q ? "results" : "landing"), "");
@@ -8785,6 +9451,7 @@ let courseProgress = loadCourseProgress();
             else if (activeView === "search") renderSearch();
             else if (activeView === "path") renderPath();
             else if (activeView === "listen") renderListen();
+            else if (activeView === "units") renderLearningUnitsPicker();
             else renderGrammar();
          }
          function refreshActive() {
@@ -8793,6 +9460,13 @@ let courseProgress = loadCourseProgress();
 
          window.addEventListener("popstate", (event) => {
             if (seq && (!event.state || event.state.mode !== "sequence")) teardownSequence();
+            if (lesson && event.state && event.state.mode === "lesson" && event.state.unitId === lesson.unit?.id) {
+               lesson.step = event.state.step;
+               lesson.historyDepth = event.state.historyDepth;
+               renderLesson();
+               return;
+            }
+            if (lesson) teardownLesson();
             if (event.state && event.state.moStudioSearch) {
                restoreSearchHistory(event.state);
                return;
@@ -9112,11 +9786,22 @@ function renderLearn() {
 
 /* ================= parcours HSK (学) ================= */
 const PATH_PAGE_SIZE = 80;
+const PATH_MAP_PAGE_SIZE = 12;
 let openPathLevel = null;
 let pathRenderToken = 0;
 let pathLevelEntries = [];
 let pathLevelFilter = "";
 let pathLevelVisible = PATH_PAGE_SIZE;
+
+/* ================= parcours : recommandation + carte ================= */
+let pathHomeState = null;
+let pathHomeRenderToken = 0;
+let pathMapVisible = {
+   acquis: PATH_MAP_PAGE_SIZE,
+   disponibles: PATH_MAP_PAGE_SIZE,
+   bientot: PATH_MAP_PAGE_SIZE,
+   verrouillees: PATH_MAP_PAGE_SIZE,
+};
 
 function pathLevelCount(manifest, level) {
    return Number(manifest.countsByFirstHskLevel[level] || 0);
@@ -9150,6 +9835,8 @@ function wirePathHome() {
    });
    const grammar = $("path-grammar");
    if (grammar) grammar.onclick = () => setView("grammar");
+   const allLessons = $("path-all-lessons");
+   if (allLessons) allLessons.onclick = () => setView("units");
 }
 
 function pathGrammarCardHtml() {
@@ -9162,38 +9849,342 @@ function pathGrammarCardHtml() {
    );
 }
 
+function pathExploreSectionHtml(manifest) {
+   return (
+      '<section class="path-explore" id="path-explore-shell">' +
+      '<h3 class="eyebrow">Explorer</h3>' +
+      '<button class="btn ghost wide" id="path-all-lessons" type="button">Voir toutes les leçons</button>' +
+      pathGrammarCardHtml() +
+      '<section class="card pad path-continue" aria-labelledby="path-continue-title">' +
+      '<h3 id="path-continue-title">Explorer le vocabulaire HSK</h3>' +
+      "<p><b>" +
+      manifest.totalEntries.toLocaleString("fr-FR") +
+      " entrées</b> disponibles. Les leçons et exercices ne sont pas encore créés.</p></section>" +
+      '<div class="path-levels" aria-label="Niveaux HSK">' +
+      [1, 2, 3, 4, 5, 6].map((level) => pathLevelCardHtml(manifest, level)).join("") +
+      "</div></section>"
+   );
+}
+
+/* ================= sélecteur de périmètre ================= */
+function pathScopeSelectorHtml(scope) {
+   const modes = [
+      ["personal", "Mes mots"],
+      ["hsk", "Niveau HSK"],
+      ["all", "Tout le vocabulaire"],
+   ];
+   return (
+      '<div class="card pad path-scope" id="path-scope">' +
+      '<div class="eyebrow">Périmètre</div>' +
+      '<div class="path-scope-segments" role="group" aria-label="Périmètre du parcours">' +
+      modes
+         .map(
+            ([mode, label]) =>
+               '<button type="button" class="path-scope-segment" data-scope-mode="' +
+               mode +
+               '" aria-pressed="' +
+               String(scope.mode === mode) +
+               '">' +
+               esc(label) +
+               "</button>",
+         )
+         .join("") +
+      "</div>" +
+      (scope.mode === "hsk"
+         ? '<div class="path-scope-hsk-levels" role="group" aria-label="Niveau HSK visé">' +
+           [1, 2, 3, 4, 5, 6]
+              .map(
+                 (level) =>
+                    '<button type="button" class="path-scope-hsk-level" data-scope-hsk-level="' +
+                    level +
+                    '" aria-pressed="' +
+                    String(scope.hskLevel === level) +
+                    '">' +
+                    level +
+                    "</button>",
+              )
+              .join("") +
+           "</div>"
+         : "") +
+      "</div>"
+   );
+}
+
+function wirePathScopeSelector() {
+   document.querySelectorAll("[data-scope-mode]").forEach((button) => {
+      button.onclick = () => {
+         setCourseScope(button.dataset.scopeMode, getCourseScope().hskLevel);
+         repaintPathScope();
+      };
+   });
+   document.querySelectorAll("[data-scope-hsk-level]").forEach((button) => {
+      button.onclick = () => {
+         setCourseScope("hsk", Number(button.dataset.scopeHskLevel));
+         repaintPathScope();
+      };
+   });
+}
+
+function repaintPathScope() {
+   const container = $("path-scope");
+   if (container) container.outerHTML = pathScopeSelectorHtml(getCourseScope());
+   wirePathScopeSelector();
+   renderPathPrimary();
+}
+
+/* ================= zone primaire : prochaine leçon, progression, carte ================= */
+function pathNextLessonHtml(unit) {
+   const preview = unit.memberCharacters.slice(0, 8);
+   const extra = unit.memberCharacters.length - preview.length;
+   return (
+      '<div class="card pad path-next"><div class="eyebrow">Prochaine leçon</div>' +
+      '<div class="path-next-head"><b class="path-next-hz">' +
+      esc(unit.component) +
+      '</b><span class="path-next-main">' +
+      (unit.componentPinyin ? '<span class="path-next-pinyin">' + colorPinyin(unit.componentPinyin) + "</span>" : "") +
+      (unit.componentGloss ? '<span class="path-next-gloss">' + esc(unit.componentGloss) + "</span>" : "") +
+      "</span></div>" +
+      '<div class="path-next-chars" aria-label="Caractères débloqués par cette leçon">' +
+      preview.map((character) => '<span class="chip hzchip">' + esc(character) + "</span>").join("") +
+      (extra > 0 ? '<span class="path-next-more">+' + extra + "</span>" : "") +
+      "</div>" +
+      '<button class="btn primary wide" id="path-next-start" type="button">Commencer</button></div>'
+   );
+}
+
+function pathProgressHtml(progress) {
+   const percent = progress.total ? Math.round((progress.completed / progress.total) * 100) : 0;
+   const remaining = progress.total - progress.completed;
+   return (
+      '<div class="card pad path-progress">' +
+      '<div class="path-progress-count">' +
+      progress.completed.toLocaleString("fr-FR") +
+      " / " +
+      progress.total.toLocaleString("fr-FR") +
+      " leçons</div>" +
+      '<div class="s-bar"><i style="width:' +
+      percent +
+      '%"></i></div>' +
+      '<p class="path-progress-note">' +
+      (remaining === 0
+         ? "Périmètre entièrement terminé."
+         : remaining + " leçon" + (remaining > 1 ? "s" : "") + " restante" + (remaining > 1 ? "s" : "") + " dans ce périmètre.") +
+      "</p></div>"
+   );
+}
+
+function pathEmptyScopeHtml() {
+   return (
+      '<div class="card pad path-scope-note-card">' +
+      "<p>Vous n'avez pas encore de mots personnels à partir desquels construire un parcours.</p>" +
+      "<p>Choisissez un niveau HSK ou tout le vocabulaire ci-dessus pour démarrer, ou ajoutez des mots à Mes mots.</p></div>"
+   );
+}
+
+function pathScopeCompleteHtml() {
+   return (
+      '<div class="card pad path-scope-note-card">' +
+      "<p><b>Bravo — vous avez terminé toutes les leçons de ce périmètre.</b></p>" +
+      "<p>Choisissez un périmètre plus large pour continuer : le total augmente si vous ajoutez du vocabulaire, ce n'est pas une régression.</p></div>"
+   );
+}
+
+function pathStuckHtml() {
+   return (
+      '<div class="card pad path-scope-note-card">' +
+      "<p>Aucune leçon n'est disponible dans ce périmètre pour l'instant — un composant nécessaire n'y figure pas.</p>" +
+      "<p>Élargissez le périmètre, ou ajoutez ce composant à Mes mots pour continuer.</p></div>"
+   );
+}
+
+function pathMapAcquisRowHtml(row) {
+   return (
+      '<div class="lu-row path-map-row path-map-row-acquis"><b class="lu-row-component">' +
+      esc(row.component) +
+      '</b><span class="lu-row-main"><span class="unit-family-tag key">acquis</span></span>' +
+      (row.remainingCount > 0
+         ? '<button class="path-map-remaining" type="button" data-path-map-open="' +
+           esc(row.bestUnit.id) +
+           '">→ ' +
+           row.remainingCount +
+           (row.remainingCount > 1 ? " leçons restantes" : " leçon restante") +
+           "</button>"
+         : '<span class="lu-row-meta">terminé</span>') +
+      "</div>"
+   );
+}
+
+function pathMapDisponibleRowHtml(row) {
+   return (
+      '<button class="lu-row path-map-row path-map-row-disponible" type="button" data-path-map-open="' +
+      esc(row.bestUnit.id) +
+      '"><b class="lu-row-component">' +
+      esc(row.component) +
+      '</b><span class="lu-row-main">' +
+      (row.bestUnit.componentPinyin ? '<span class="lu-row-pinyin">' + colorPinyin(row.bestUnit.componentPinyin) + "</span>" : "") +
+      (row.bestUnit.componentGloss ? '<span class="lu-row-gloss">' + esc(row.bestUnit.componentGloss) + "</span>" : "") +
+      '</span><span class="lu-row-meta">' +
+      row.bestUnit.memberCharacters.length +
+      " caractères</span></button>"
+   );
+}
+
+function pathMapBientotRowHtml(row, disponiblesByComponent) {
+   const missingComponent = row.missing[0];
+   const unlockUnit = disponiblesByComponent.get(missingComponent);
+   const inner =
+      '<b class="lu-row-component">' +
+      esc(row.component) +
+      '</b><span class="lu-row-main"><span class="unit-family-tag path-map-gap">manque ' +
+      esc(missingComponent) +
+      '</span></span><span class="lu-row-meta">' +
+      row.charactersWaiting +
+      " caractères</span>";
+   return unlockUnit
+      ? '<button class="lu-row path-map-row path-map-row-bientot" type="button" data-path-map-open="' +
+           esc(unlockUnit.id) +
+           '" title="Apprendre ' +
+           esc(missingComponent) +
+           ' pour débloquer">' +
+           inner +
+           "</button>"
+      : '<div class="lu-row path-map-row path-map-row-bientot">' + inner + "</div>";
+}
+
+function pathMapVerrouilleeRowHtml(row) {
+   return (
+      '<div class="lu-row path-map-row path-map-row-verrouillee"><b class="lu-row-component">' +
+      esc(row.component) +
+      '</b><span class="lu-row-main"><span class="lu-row-gloss">manque ' +
+      row.missing.map(esc).join(", ") +
+      '</span></span><span class="lu-row-meta">' +
+      row.charactersWaiting +
+      " caractères</span></div>"
+   );
+}
+
+function pathMapBucketHtml(title, rows, kind, rowFn) {
+   const visibleCount = pathMapVisible[kind];
+   const visible = rows.slice(0, visibleCount);
+   return (
+      '<div class="path-map-bucket path-map-bucket-' +
+      kind +
+      '"><h4 class="path-map-bucket-title">' +
+      esc(title) +
+      ' <span class="path-map-bucket-count">' +
+      rows.length +
+      "</span></h4>" +
+      (visible.length
+         ? '<div class="path-map-rows">' + visible.map(rowFn).join("") + "</div>"
+         : '<p class="path-map-bucket-empty">Rien ici pour l\'instant.</p>') +
+      (visible.length < rows.length
+         ? '<button class="btn ghost sm" type="button" data-path-map-more="' +
+           kind +
+           '">Afficher ' +
+           Math.min(PATH_MAP_PAGE_SIZE, rows.length - visible.length) +
+           " de plus</button>"
+         : "") +
+      "</div>"
+   );
+}
+
+function pathMapHtml(buckets) {
+   const disponiblesByComponent = new Map(buckets.disponibles.map((row) => [row.component, row.bestUnit]));
+   return (
+      '<section class="path-map"><h3 class="eyebrow">La carte</h3>' +
+      pathMapBucketHtml("Acquis", buckets.acquis, "acquis", pathMapAcquisRowHtml) +
+      pathMapBucketHtml("Disponibles", buckets.disponibles, "disponibles", pathMapDisponibleRowHtml) +
+      pathMapBucketHtml("Bientôt", buckets.bientot, "bientot", (row) => pathMapBientotRowHtml(row, disponiblesByComponent)) +
+      pathMapBucketHtml("Verrouillées", buckets.verrouillees, "verrouillees", pathMapVerrouilleeRowHtml) +
+      "</section>"
+   );
+}
+
+function wirePathPrimary(state) {
+   const startButton = $("path-next-start");
+   if (startButton && state.recommended) startButton.onclick = () => openLesson(state.recommended.id);
+   document.querySelectorAll("[data-path-map-open]").forEach((button) => {
+      button.onclick = () => openLesson(button.dataset.pathMapOpen);
+   });
+   document.querySelectorAll("[data-path-map-more]").forEach((button) => {
+      button.onclick = () => {
+         pathMapVisible[button.dataset.pathMapMore] += PATH_MAP_PAGE_SIZE;
+         paintPathPrimary(pathHomeState);
+      };
+   });
+}
+
+function paintPathPrimary(state) {
+   const target = $("path-primary");
+   if (!target) return;
+   let body = "";
+   if (!state.progress.total) body = pathEmptyScopeHtml();
+   else if (state.recommended) body = pathNextLessonHtml(state.recommended) + pathProgressHtml(state.progress);
+   else if (state.progress.completed === state.progress.total) body = pathScopeCompleteHtml() + pathProgressHtml(state.progress);
+   else body = pathStuckHtml() + pathProgressHtml(state.progress);
+   if (state.progress.total) body += pathMapHtml(state.buckets);
+   target.outerHTML = '<section class="path-primary" id="path-primary">' + body + "</section>";
+   wirePathPrimary(state);
+}
+
+async function renderPathPrimary() {
+   pathMapVisible = {
+      acquis: PATH_MAP_PAGE_SIZE,
+      disponibles: PATH_MAP_PAGE_SIZE,
+      bientot: PATH_MAP_PAGE_SIZE,
+      verrouillees: PATH_MAP_PAGE_SIZE,
+   };
+   const token = ++pathHomeRenderToken;
+   const target = $("path-primary");
+   if (target) {
+      target.setAttribute("aria-busy", "true");
+      target.innerHTML = '<span class="ink-loader" aria-hidden="true"></span><span>Calcul du parcours…</span>';
+   }
+   try {
+      const state = await computeLearningPath();
+      if (token !== pathHomeRenderToken || activeView !== "path" || openPathLevel != null) return;
+      pathHomeState = state;
+      paintPathPrimary(state);
+   } catch (error) {
+      if (token !== pathHomeRenderToken) return;
+      const el = $("path-primary");
+      if (el)
+         el.innerHTML =
+            '<div class="path-error" role="alert"><b>Parcours indisponible.</b><p>' +
+            esc(error.message) +
+            '</p><button class="btn" id="path-primary-retry" type="button">Réessayer</button></div>';
+      if ($("path-primary-retry")) $("path-primary-retry").onclick = () => renderPathPrimary();
+   }
+}
+
+/* ================= écran d'accueil ================= */
 async function renderPathHome(token) {
    const root = $("view");
    root.innerHTML =
       '<section class="path-page" aria-labelledby="path-title">' +
       '<header class="path-header"><div class="path-mark">学</div><div><h2 class="v-t" id="path-title">学 · Parcours</h2>' +
-      '<p class="muted">Vocabulaire officiel HSK 1 à 6, classé par premier niveau.</p></div></header>' +
-      '<section class="card pad path-loading" role="status"><span class="ink-loader" aria-hidden="true"></span><span>Chargement des niveaux HSK…</span></section></section>';
+      "<p class=\"muted\">Votre prochaine leçon, choisie pour vous, et la carte de ce qu'il reste à débloquer.</p></div></header>" +
+      pathScopeSelectorHtml(getCourseScope()) +
+      '<section class="path-primary" id="path-primary" role="status" aria-busy="true"><span class="ink-loader" aria-hidden="true"></span><span>Calcul du parcours…</span></section>' +
+      '<section class="path-loading" role="status" id="path-explore-shell"><span class="ink-loader" aria-hidden="true"></span><span>Chargement des niveaux HSK…</span></section>' +
+      "</section>";
+   wirePathScopeSelector();
+   renderPathPrimary();
    try {
       const manifest = await loadHskManifest();
       if (token !== pathRenderToken || activeView !== "path" || openPathLevel != null) return;
-      root.innerHTML =
-         '<section class="path-page" aria-labelledby="path-title">' +
-         '<header class="path-header"><div class="path-mark">学</div><div><h2 class="v-t" id="path-title">学 · Parcours</h2>' +
-         '<p class="muted">Vocabulaire officiel HSK 1 à 6, classé par premier niveau.</p></div></header>' +
-         '<section class="card pad path-continue" aria-labelledby="path-continue-title">' +
-         '<h3 id="path-continue-title">Explorer le vocabulaire HSK</h3>' +
-         '<p><b>' +
-         manifest.totalEntries.toLocaleString("fr-FR") +
-         " entrées</b> disponibles. Les leçons et exercices ne sont pas encore créés.</p></section>" +
-         pathGrammarCardHtml() +
-         '<div class="path-levels" aria-label="Niveaux HSK">' +
-         [1, 2, 3, 4, 5, 6].map((level) => pathLevelCardHtml(manifest, level)).join("") +
-         "</div></section>";
+      const shell = $("path-explore-shell");
+      if (shell) shell.outerHTML = pathExploreSectionHtml(manifest);
       wirePathHome();
    } catch (error) {
       if (token !== pathRenderToken) return;
-      root.innerHTML =
-         '<section class="path-page"><header class="path-header"><div class="path-mark">学</div><div><h2 class="v-t" id="path-title">学 · Parcours</h2></div></header>' +
-         '<section class="card pad path-error" role="alert"><b>Données HSK indisponibles.</b><p>' +
-         esc(error.message) +
-         '</p><button class="btn" id="path-retry" type="button">Réessayer</button></section></section>';
-      $("path-retry").onclick = () => renderPath();
+      const shell = $("path-explore-shell");
+      if (shell)
+         shell.outerHTML =
+            '<section class="card pad path-error" role="alert" id="path-explore-shell"><b>Données HSK indisponibles.</b><p>' +
+            esc(error.message) +
+            '</p><button class="btn" id="path-retry" type="button">Réessayer</button></section>';
+      if ($("path-retry")) $("path-retry").onclick = () => renderPath();
    }
 }
 
@@ -9354,7 +10345,7 @@ async function renderPathLevel(level, token) {
 }
 
 function renderPath() {
-   document.body.classList.remove("in-seq");
+   document.body.classList.remove("in-seq", "in-lesson");
    const token = ++pathRenderToken;
    if (openPathLevel == null) renderPathHome(token);
    else renderPathLevel(openPathLevel, token);
@@ -10374,7 +11365,7 @@ function reviewStrokeBlockHtml(c, st) {
       '<button type="button" role="tab" data-review-stroke-tab="animation" aria-selected="' + String(reviewStrokeTab === "animation") + '">Animation</button>' +
       '<button type="button" role="tab" data-review-stroke-tab="steps" aria-selected="' + String(reviewStrokeTab === "steps") + '">Étapes</button></div>' +
       '<button type="button" class="review-stroke-practice" id="review-stroke-practice">S’entraîner</button></div>' +
-      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="btn sm ghost" id="review-stroke-replay">Rejouer</button></div></div>' +
+      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="stroke-icon-button" id="review-stroke-replay" aria-label="Rejouer l’animation" title="Rejouer l’animation">' + strokeReplayIconHtml() + "</button></div></div>" +
       '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
       characterCompositionShellHtml("review-character-composition") +
       "</div></details>"
@@ -10521,11 +11512,22 @@ function wireReviewStrokeBlock(c, st) {
 }
 
 /* ================= séance ================= */
+         const SESSION_INTERACTIVE_SELECTOR =
+            "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav, .s-foot";
+         const SWIPE_HINT_KEY = "mo-studio-session-swipe-hint-seen-v1";
+         let sessionSwipeHintSeen = (() => {
+            try { return localStorage.getItem(SWIPE_HINT_KEY) === "1"; } catch (e) { return true; }
+         })();
+         function markSwipeHintSeen() {
+            sessionSwipeHintSeen = true;
+            try { localStorage.setItem(SWIPE_HINT_KEY, "1"); } catch (e) {}
+         }
          const currentCard = () => session.cards[session.index];
          function getState(i) {
             if (!session.states[i])
                session.states[i] = {
                   revealed: false,
+                  everRevealed: false,
                   checked: false,
                   ok: null,
                   front: null,
@@ -10695,12 +11697,26 @@ function wireReviewStrokeBlock(c, st) {
             if (session.mode === "discover") {
                return sessionNavigationHtml();
             }
-            if (session.mode === "cards" && !st.revealed)
-               return '<div class="s-foot"><button class="btn primary big" id="s-flip">Retourner</button></div>';
+            if (session.mode === "cards") {
+               if (!st.revealed)
+                  return '<div class="s-foot"><button class="btn primary big" id="s-flip" type="button">Retourner</button></div>';
+               // le bouton de retournement reste disponible au verso, mais en retrait
+               // par rapport à la notation SRS pour ne jamais se substituer à elle.
+               return (
+                  '<div class="s-foot s-foot-back"><button class="btn ghost sm" id="s-flip" type="button">↺ Revoir le recto</button></div>' +
+                  gradesHtml(c)
+               );
+            }
             if (session.mode === "written" && !st.checked)
                return '<div class="s-foot"><button class="btn ghost" id="s-skip">Voir la réponse</button><button class="btn primary" id="s-check">Vérifier</button></div>';
             // verso (cartes) ou réponse vérifiée (écrit) : boutons de notation SRS
             return gradesHtml(c);
+         }
+         function sessionSwipeHintHtml() {
+            return (
+               '<div class="session-swipe-hint" role="status" aria-live="polite">' +
+               "Glisse à gauche ou à droite pour changer de carte — ça ne note rien.</div>"
+            );
          }
 
          function renderSession() {
@@ -10779,8 +11795,10 @@ function wireReviewStrokeBlock(c, st) {
                written: "Écrit",
                discover: "Découverte",
             }[session.mode];
+            const showSwipeHint = session.index === 0 && !sessionSwipeHintSeen;
+            if (showSwipeHint) markSwipeHintSeen();
             $("view").innerHTML =
-               '<section class="sess">' +
+               '<section class="sess" id="sess">' +
                '<div class="s-top">' +
                '<button class="s-x" id="s-exit" aria-label="Quitter">×</button>' +
                '<div class="s-scope">' +
@@ -10797,6 +11815,7 @@ function wireReviewStrokeBlock(c, st) {
                '<div class="s-bar"><i style="width:' +
                (((session.index + 1) / session.cards.length) * 100).toFixed(1) +
                '%"></i></div>' +
+               (showSwipeHint ? sessionSwipeHintHtml() : "") +
                '<div class="flash card" id="flash">' +
                '<button class="seal fl-seal" data-say="' +
                esc(c.hz) +
@@ -10825,37 +11844,40 @@ function wireReviewStrokeBlock(c, st) {
             session.index--;
             renderSession();
          }
-         function wireSessionSwipe(flash) {
-            if (!flash || !("PointerEvent" in window)) return;
-            const interactive = "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav";
+         function wireSessionSwipe(zone, card) {
+            // le geste porte sur toute la zone de séance (hors contrôles
+            // interactifs), mais le retour visuel reste localisé à la carte :
+            // glisser ne note jamais rien, seuls les quatre boutons de
+            // notation le font.
+            if (!zone || !card || !("PointerEvent" in window)) return;
             let gesture = null;
             const finish = (event, cancelled) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const current = gesture;
                gesture = null;
-               flash.classList.remove("is-session-dragging");
-               flash.style.removeProperty("--session-drag-x");
-               if (flash.hasPointerCapture && flash.hasPointerCapture(event.pointerId))
-                  flash.releasePointerCapture(event.pointerId);
+               card.classList.remove("is-session-dragging", "is-session-drag-left", "is-session-drag-right");
+               card.style.removeProperty("--session-drag-x");
+               if (zone.hasPointerCapture && zone.hasPointerCapture(event.pointerId))
+                  zone.releasePointerCapture(event.pointerId);
                if (cancelled) {
-                  flash._suppressSessionClickUntil = Date.now() + 500;
+                  card._suppressSessionClickUntil = Date.now() + 500;
                   return;
                }
                if (!current.horizontal) return;
                const dx = event.clientX - current.x;
                const dy = event.clientY - current.y;
-               if (Math.abs(dx) < 72 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+               if (Math.abs(dx) < 56 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
                const selection = typeof getSelection === "function" ? getSelection() : null;
                if (selection && typeof selection.removeAllRanges === "function") selection.removeAllRanges();
                if (dx < 0) advance();
                else previousCard();
             };
-            flash.onpointerdown = (event) => {
-               if (event.button !== 0 || event.target.closest(interactive)) return;
+            zone.onpointerdown = (event) => {
+               if (event.button !== 0 || event.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
                gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
-               if (flash.setPointerCapture) flash.setPointerCapture(event.pointerId);
+               if (zone.setPointerCapture) zone.setPointerCapture(event.pointerId);
             };
-            flash.onpointermove = (event) => {
+            zone.onpointermove = (event) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const dx = event.clientX - gesture.x;
                const dy = event.clientY - gesture.y;
@@ -10864,38 +11886,41 @@ function wireReviewStrokeBlock(c, st) {
                      finish(event, true);
                      return;
                   }
-                  if (Math.abs(dx) < 16 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+                  if (Math.abs(dx) < 14 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
                   gesture.horizontal = true;
-                  flash.classList.add("is-session-dragging");
+                  card.classList.add("is-session-dragging");
                }
                if (event.cancelable) event.preventDefault();
-               flash.style.setProperty("--session-drag-x", Math.max(-38, Math.min(38, dx)) + "px");
+               const clamped = Math.max(-64, Math.min(64, dx));
+               card.style.setProperty("--session-drag-x", String(clamped));
+               card.classList.toggle("is-session-drag-left", clamped < -4);
+               card.classList.toggle("is-session-drag-right", clamped > 4);
             };
-            flash.onpointerup = (event) => finish(event, false);
-            flash.onpointercancel = (event) => finish(event, true);
-            flash.onlostpointercapture = (event) => {
+            zone.onpointerup = (event) => finish(event, false);
+            zone.onpointercancel = (event) => finish(event, true);
+            zone.onlostpointercapture = (event) => {
                if (gesture && event.pointerId === gesture.pointerId) finish(event, true);
             };
          }
          function wireSession(c, st) {
             $("s-exit").onclick = endSession;
             const flip = () => {
-               st.revealed = true;
+               const revealing = !st.revealed;
+               st.revealed = revealing;
                renderSession();
-               if (frontOf(c, st) === "fr") speak(c.hz);
+               if (revealing && !st.everRevealed) {
+                  st.everRevealed = true;
+                  if (frontOf(c, st) === "fr") speak(c.hz);
+               }
             };
             if ($("s-flip")) $("s-flip").onclick = flip;
             const fl = $("flash");
-            wireSessionSwipe(fl);
-            if (session.mode === "cards" && !st.revealed) {
+            wireSessionSwipe($("sess"), fl);
+            if (session.mode === "cards") {
                fl.style.cursor = "pointer";
                fl.onclick = (e) => {
                   if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
-                  if (
-                     e.target.closest("[data-say]") ||
-                     e.target.closest("button")
-                  )
-                     return;
+                  if (e.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
                   flip();
                };
             }
@@ -11180,7 +12205,7 @@ function wireReviewStrokeBlock(c, st) {
             destroyReviewStrokeWorkspace();
             const sts = session.states.filter(Boolean);
             const seen = sts.filter(
-               (s) => s.revealed || s.checked || s.grade,
+               (s) => s.everRevealed || s.checked || s.grade,
             ).length;
             const checkedN = sts.filter((s) => s.checked).length;
             const right = sts.filter((s) => s.checked && s.ok === true).length;
@@ -14991,11 +16016,10 @@ function speedOpts(speed) {
    };
 }
 
-function strokeBoxHtml(options) {
+function strokeBoxHtml() {
    const speed = normalizedStrokeSpeed(db.settings.strokeSpeed);
    const gallery = strokeGallerySettings();
    const active = ddStrokeTab;
-   const showWritingAction = !options || options.showWritingAction !== false;
    return (
       '<section class="stroke-workspace" aria-label="Ordre des traits">' +
       '<div class="stroke-tabs" role="tablist" aria-label="Mode d’apprentissage des traits">' +
@@ -15017,9 +16041,6 @@ function strokeBoxHtml(options) {
       '<label class="f-lab" for="dd-speed">Vitesse de l’animation · <span class="speed-lab" id="dd-speed-lab">' +
       speed.toFixed(2) + '×</span></label>' +
       '<input type="range" id="dd-speed" min="0.25" max="2" step="0.05" value="' + speed + '" aria-label="Vitesse de l’animation">' +
-      '<div class="sh-btns stroke-animation-actions"><button class="btn primary" id="dd-anim" type="button">Rejouer</button>' +
-      (showWritingAction ? '<button class="btn" id="dd-write" type="button">写 Écrire</button>' : "") +
-      "</div>" +
       "</section>" +
       '<section class="stroke-tab-panel" role="tabpanel" id="stroke-panel-steps" aria-labelledby="stroke-tab-steps"' +
       (active === "steps" ? "" : " hidden") + '>' +
@@ -15238,6 +16259,7 @@ function wireStrokeWorkspace() {
       };
    }
    if ($("dd-anim")) $("dd-anim").onclick = () => {
+      if (ddStrokeTab !== "animation") activateStrokeTab("animation", false);
       if (!ddWriter) return toast("Animation indisponible pour ce caractère.");
       ddWriter.showCharacter({ duration: 0 });
       ddWriter.animateCharacter();
@@ -15556,28 +16578,19 @@ async function loadDictionaryCharacterCompletions(characters, token, state, piny
    }
 }
 
-function dictionaryCharacterStudyCardShell(character) {
+function dictionaryCharacterStudyCardShell() {
    return (
-      '<section class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
-      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-      '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
-      '<div class="dd-character-study-actions"><span class="muted">Chargement…</span></div></section>'
+      '<div class="dd-character-study-card" id="dd-character-study-card" aria-busy="true">' +
+      '<span class="muted">Chargement…</span></div>'
    );
 }
 
 function dictionaryCharacterStudyCardHtml(entry, character) {
    const card = findPersonalCardForEntry(entry);
+   if (card) return '<span class="cd-cat jade">Dans Mes mots</span>';
    return (
-      '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-      '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
-      '<div class="dd-character-study-actions">' +
-      (card
-         ? '<button class="btn ghost" id="dd-character-manage" type="button">Ouvrir</button>'
-         : '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
-           esc(character) + ' à Mes mots" data-entry-id="' + esc(entry.id) + '">+ Mes mots</button>') +
-      "</div>"
+      '<button class="btn ghost" id="dd-character-addcard" type="button" aria-label="Ajouter ' +
+      esc(character) + ' à Mes mots" data-entry-id="' + esc(entry.id) + '">+ Mes mots</button>'
    );
 }
 
@@ -15598,22 +16611,12 @@ async function renderDictionaryCharacterStudyCard(character, detailToken, comple
       ) return;
       target.innerHTML = dictionaryCharacterStudyCardHtml(entry, character);
       target.setAttribute("aria-busy", "false");
-      wireDDWritingPracticeAction();
       if ($("dd-character-addcard"))
          $("dd-character-addcard").onclick = () => openDictionaryAddToWords(entry);
-      if ($("dd-character-manage")) {
-         const card = findPersonalCardForEntry(entry);
-         $("dd-character-manage").onclick = () => card && openCardDetail(card.id);
-      }
    } catch (error) {
       if (cardToken !== dictionaryCharacterCardToken || detailToken !== dictionaryDetailToken) return;
       target.setAttribute("aria-busy", "false");
-      target.innerHTML =
-         '<button class="seal dd-character-audio" type="button" data-say="' + esc(character) +
-         '" aria-label="Écouter ' + esc(character) + '">听</button>' +
-         '<button class="btn dd-character-write" id="dd-write" type="button">写 Écrire</button>' +
-         '<div class="dd-character-study-actions"><span class="muted">Données du caractère indisponibles.</span></div>';
-      wireDDWritingPracticeAction();
+      target.innerHTML = '<span class="muted">Données du caractère indisponibles.</span>';
    }
 }
 
@@ -15638,10 +16641,8 @@ function dictionaryCharacterInteractionHtml(characters) {
             ).join("") + "</div></div>"
          : "") +
       '<div class="eyebrow">Ordre des traits</div>' +
-      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length, false, {
-         showWritingAction: false,
-      }) +
-      dictionaryCharacterStudyCardShell(characters[0]) +
+      strokeCharacterStageHtml("dd-character", characters[0], 0, characters.length, false) +
+      dictionaryCharacterStudyCardShell() +
       "</section>"
    );
 }
@@ -16439,20 +17440,56 @@ function characterChevronHtml(direction) {
       '"></path></svg>';
 }
 
-function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation, workspaceOptions) {
+function strokeReplayIconHtml() {
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="M23 4v6h-6"></path>' +
+      '<path d="M1 20v-6h6"></path>' +
+      '<path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>' +
+      "</svg>"
+   );
+}
+
+function strokeWriteIconHtml() {
+   return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="m14.5 4.5 5 5-9.3 9.3-6.5 1.5 1.5-6.5 9.3-9.3Z"></path>' +
+      '<path d="m12.7 6.3 5 5M5.2 13.8l5 5M3.7 20.3c1.8.3 3.5.1 5-.7"></path>' +
+      "</svg>"
+   );
+}
+
+function strokeActionBarHtml(prefix, character, index, total, hasNavigation, positionClass) {
+   return (
+      '<div class="stroke-action-bar">' +
+      '<button class="seal stroke-action-audio" id="' + prefix + '-audio" type="button" data-say="' + esc(character) +
+      '" aria-label="Écouter ' + esc(character) + '">听</button>' +
+      (hasNavigation
+         ? '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
+           '-position" role="status" aria-live="polite" aria-atomic="true">' +
+           esc(character) + " · " + (index + 1) + " / " + total + "</strong>"
+         : '<span class="stroke-action-bar-spacer" aria-hidden="true"></span>') +
+      '<div class="stroke-action-icons">' +
+      '<button class="stroke-icon-button" id="dd-anim" type="button" aria-label="Rejouer l’animation" title="Rejouer l’animation">' +
+      strokeReplayIconHtml() + "</button>" +
+      '<button class="stroke-icon-button" id="dd-write" type="button" aria-label="S’entraîner à écrire" title="S’entraîner à écrire">' +
+      strokeWriteIconHtml() + "</button>" +
+      "</div></div>"
+   );
+}
+
+function strokeCharacterStageHtml(prefix, character, index, total, forceNavigation) {
    const previousDisabled = index <= 0 ? " disabled" : "";
    const nextDisabled = index >= total - 1 ? " disabled" : "";
    const positionClass = prefix === "seq" ? " s-count" : "";
    const hasNavigation = total > 1 || forceNavigation;
    return (
-      (hasNavigation ? '<strong class="character-nav-position' + positionClass + '" id="' + prefix +
-      '-position" role="status" aria-live="polite" aria-atomic="true">' +
-      esc(character) + " · " + (index + 1) + " / " + total + "</strong>" : "") +
+      strokeActionBarHtml(prefix, character, index, total, hasNavigation, positionClass) +
       '<div class="stroke-character-stage" id="' + prefix + '-stage">' +
       (hasNavigation ? '<button class="character-nav-button character-nav-previous" id="' + prefix +
          '-prev" type="button" aria-label="Caractère précédent"' + previousDisabled + ">" +
          characterChevronHtml("left") + "</button>" : "") +
-      '<div class="stroke-character-stage-main">' + strokeBoxHtml(workspaceOptions) + "</div>" +
+      '<div class="stroke-character-stage-main">' + strokeBoxHtml() + "</div>" +
       (hasNavigation ? '<button class="character-nav-button character-nav-next" id="' + prefix +
          '-next" type="button" aria-label="Caractère suivant"' + nextDisabled + ">" +
          characterChevronHtml("right") + "</button>" : "") +
@@ -16464,10 +17501,15 @@ function updateCharacterNavigation(prefix, characters, index, stripSelector) {
    const previous = $(prefix + "-prev");
    const next = $(prefix + "-next");
    const position = $(prefix + "-position");
+   const audio = $(prefix + "-audio");
    if (previous) previous.disabled = index <= 0;
    if (next) next.disabled = index >= characters.length - 1;
    if (position)
       position.textContent = `${characters[index]} · ${index + 1} / ${characters.length}`;
+   if (audio) {
+      audio.setAttribute("data-say", characters[index]);
+      audio.setAttribute("aria-label", "Écouter " + characters[index]);
+   }
    if (!stripSelector) return;
    document.querySelectorAll(stripSelector).forEach((button) => {
       const selected = Number(button.dataset.i) === index;
@@ -16757,6 +17799,1091 @@ async function renderSequence() {
       preloadStrokeCharacterData(nextCharacter);
       seqEntry(nextCharacter).catch(() => null);
    }
+}
+
+"use strict";
+
+const LEARNING_UNITS_ROOT = (() => {
+   const portable = /\/dist\/[^/]+\.html$/u.test(new URL(document.baseURI).pathname);
+   return new URL(
+      portable ? "../data/generated/learning-units/" : "data/generated/learning-units/",
+      document.baseURI,
+   ).href;
+})();
+
+const learningUnitsState = {
+   manifest: null,
+   manifestPending: null,
+   index: null,
+   indexById: null,
+   indexPending: null,
+   chunkCache: new Map(),
+   chunkPending: new Map(),
+   unitCache: new Map(),
+   graph: null,
+   graphPending: null,
+};
+
+async function loadLearningUnitsManifest() {
+   if (learningUnitsState.manifest) return learningUnitsState.manifest;
+   if (learningUnitsState.manifestPending) return learningUnitsState.manifestPending;
+   learningUnitsState.manifestPending = fetch(
+      new URL("manifest.json", LEARNING_UNITS_ROOT).href,
+      { cache: "default" },
+   )
+      .then(async (response) => {
+         if (!response.ok) throw new Error("HTTP " + response.status);
+         const manifest = await response.json();
+         if (manifest?.format !== "mo-studio-learning-units" || manifest.schemaVersion !== 1)
+            throw new Error("Manifeste des unités d'apprentissage incompatible.");
+         learningUnitsState.manifest = manifest;
+         return manifest;
+      })
+      .finally(() => {
+         learningUnitsState.manifestPending = null;
+      });
+   return learningUnitsState.manifestPending;
+}
+
+async function loadLearningUnitsIndex() {
+   if (learningUnitsState.index) return learningUnitsState.index;
+   if (learningUnitsState.indexPending) return learningUnitsState.indexPending;
+   learningUnitsState.indexPending = (async () => {
+      const manifest = await loadLearningUnitsManifest();
+      const response = await fetch(
+         new URL(manifest.files.unitsIndex.path, LEARNING_UNITS_ROOT).href,
+         { cache: "default" },
+      );
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const index = await response.json();
+      if (!Array.isArray(index) || index.length !== manifest.files.unitsIndex.count)
+         throw new Error("Index des unités d'apprentissage incohérent.");
+      learningUnitsState.index = index;
+      learningUnitsState.indexById = new Map(index.map((row, position) => [row.id, position]));
+      return index;
+   })().finally(() => {
+      learningUnitsState.indexPending = null;
+   });
+   return learningUnitsState.indexPending;
+}
+
+async function loadLearningUnitsGraph() {
+   if (learningUnitsState.graph) return learningUnitsState.graph;
+   if (learningUnitsState.graphPending) return learningUnitsState.graphPending;
+   learningUnitsState.graphPending = (async () => {
+      const manifest = await loadLearningUnitsManifest();
+      const response = await fetch(new URL(manifest.files.graph.path, LEARNING_UNITS_ROOT).href, { cache: "default" });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const graph = await response.json();
+      if (graph?.format !== "mo-studio-learning-units-graph" || graph.schemaVersion !== 1 || !graph.prerequisites)
+         throw new Error("Graphe des unités d'apprentissage incompatible.");
+      learningUnitsState.graph = graph;
+      return graph;
+   })().finally(() => {
+      learningUnitsState.graphPending = null;
+   });
+   return learningUnitsState.graphPending;
+}
+
+async function loadLearningUnitsChunk(key) {
+   if (learningUnitsState.chunkCache.has(key)) return learningUnitsState.chunkCache.get(key);
+   if (learningUnitsState.chunkPending.has(key)) return learningUnitsState.chunkPending.get(key);
+   const request = (async () => {
+      try {
+         const manifest = await loadLearningUnitsManifest();
+         const relativePath = manifest.files.units.chunked
+            ? manifest.files.units.chunkPathTemplate.replace("{key}", key)
+            : manifest.files.units.path;
+         const response = await fetch(new URL(relativePath, LEARNING_UNITS_ROOT).href, { cache: "default" });
+         if (!response.ok) throw new Error("HTTP " + response.status);
+         const chunk = await response.json();
+         if (!Array.isArray(chunk)) throw new Error("Fragment d'unités d'apprentissage invalide.");
+         learningUnitsState.chunkCache.set(key, chunk);
+         return chunk;
+      } catch (error) {
+         return [];
+      }
+   })().finally(() => {
+      learningUnitsState.chunkPending.delete(key);
+   });
+   learningUnitsState.chunkPending.set(key, request);
+   return request;
+}
+
+async function scanAllLearningUnitsChunksForUnit(unitId, manifest) {
+   const keys = manifest.files.units.chunked
+      ? manifest.files.units.chunks.map((chunk) => chunk.key)
+      : ["__single__"];
+   for (const key of keys) {
+      const chunk = await loadLearningUnitsChunk(key);
+      const found = chunk.find((row) => row.id === unitId);
+      if (found) return found;
+   }
+   return null;
+}
+
+async function loadLearningUnit(unitId) {
+   if (learningUnitsState.unitCache.has(unitId)) return learningUnitsState.unitCache.get(unitId);
+   const manifest = await loadLearningUnitsManifest();
+   await loadLearningUnitsIndex();
+   const position = learningUnitsState.indexById.get(unitId);
+   let unit = null;
+   if (position != null) {
+      const key = manifest.files.units.chunked
+         ? String(Math.floor(position / (manifest.files.units.chunks[0]?.count || 30))).padStart(3, "0")
+         : "__single__";
+      const chunk = await loadLearningUnitsChunk(key);
+      unit = chunk.find((row) => row.id === unitId) || null;
+   }
+   if (!unit) unit = await scanAllLearningUnitsChunksForUnit(unitId, manifest);
+   learningUnitsState.unitCache.set(unitId, unit);
+   return unit;
+}
+
+"use strict";
+
+let hsk1RootHanziSet = null;
+let hsk1RootPending = null;
+
+function hsk1RootUrl() {
+   const portable = /\/dist\/[^/]+\.html$/u.test(new URL(document.baseURI).pathname);
+   return new URL(portable ? "../hsk1.json" : "hsk1.json", document.baseURI).href;
+}
+
+async function loadHsk1RootHanziSet() {
+   if (hsk1RootHanziSet) return hsk1RootHanziSet;
+   if (hsk1RootPending) return hsk1RootPending;
+   hsk1RootPending = fetch(hsk1RootUrl(), { cache: "default" })
+      .then((response) => {
+         if (!response.ok) throw new Error("HTTP " + response.status);
+         return response.json();
+      })
+      .then((data) => {
+         const cards = Array.isArray(data?.cards) ? data.cards : [];
+         hsk1RootHanziSet = new Set(cards.map((card) => String(card?.hz || "").trim()).filter(Boolean));
+         return hsk1RootHanziSet;
+      })
+      .catch(() => {
+         hsk1RootHanziSet = new Set();
+         return hsk1RootHanziSet;
+      })
+      .finally(() => {
+         hsk1RootPending = null;
+      });
+   return hsk1RootPending;
+}
+
+"use strict";
+
+/* ================= état de la leçon ================= */
+let lesson = null;
+let lessonRenderTokenSeq = 0;
+let lessonFamilyRenderToken = 0;
+let lessonWordsRenderToken = 0;
+
+function lessonHistoryPayload() {
+   return {
+      moStudioUnits: true,
+      mode: "lesson",
+      unitId: lesson?.unit?.id || null,
+      step: lesson?.step,
+      historyDepth: lesson?.historyDepth || 1,
+      moStudioView: lesson?.openedFromView || "units",
+   };
+}
+
+/* ================= filtrage des membres : variantes traditionnelles ================= */
+async function dictionaryWordEntriesForCharacter(character) {
+   try {
+      const index = await loadDictionaryIndex("exactHanzi", false);
+      const references = index[character] || [];
+      if (!references.length) return [];
+      const entries = await loadDictionaryEntriesByReferences(references);
+      return entries.filter((entry) => entry.entryType === "word" && entry.simplified === character);
+   } catch (error) {
+      return [];
+   }
+}
+
+function simplifiedTraditionalPairFor(character, entries) {
+   const wordSelf = entries.find((entry) => entry.traditional && entry.traditional !== character);
+   return wordSelf ? wordSelf.traditional : null;
+}
+
+async function prepareLessonMembers(unit) {
+   const characters = unit.members.map((member) => member.character);
+   const pairs = await Promise.all(
+      characters.map(async (character) => {
+         const entries = await dictionaryWordEntriesForCharacter(character);
+         return simplifiedTraditionalPairFor(character, entries);
+      }),
+   );
+   const excluded = new Set();
+   characters.forEach((character, i) => {
+      if (pairs[i] && characters.includes(pairs[i])) excluded.add(pairs[i]);
+   });
+   return unit.members.filter((member) => !excluded.has(member.character));
+}
+
+/* ================= composant autonome (portail de création de carte) ================= */
+function meaningfulDictionarySenses(values) {
+   return (values || [])
+      .flatMap((definition) => String(definition || "").split(/\s*;\s*/u))
+      .map((sense) => sense.trim())
+      .filter(
+         (sense) =>
+            sense &&
+            !/radical/i.test(sense) &&
+            !/^see also\b/i.test(sense) &&
+            !/^also pr\./i.test(sense) &&
+            !/^also (written|spelled)\b/i.test(sense) &&
+            !/^(old|archaic|variant) (form|writing) of\b/i.test(sense) &&
+            !/^abbr\. for\b/i.test(sense),
+      );
+}
+
+async function hasIndependentDictionaryMeaning(character) {
+   try {
+      const index = await loadDictionaryIndex("exactHanzi", false);
+      const references = index[character] || [];
+      if (!references.length) return false;
+      const entries = (await loadDictionaryEntriesByReferences(references)).filter(
+         (entry) => entry.simplified === character,
+      );
+      return entries.some(
+         (entry) =>
+            meaningfulDictionarySenses(entry.definitionsFr).length ||
+            meaningfulDictionarySenses(entry.definitionsEn).length,
+      );
+   } catch (error) {
+      return false;
+   }
+}
+
+/* ================= entrée / sortie ================= */
+function lessonLoadingShellHtml() {
+   return (
+      '<section class="sess lesson-sess"><div class="dictionary-loading"><span class="ink-loader"></span>' +
+      "<b>Chargement de la leçon…</b></div></section>"
+   );
+}
+
+function lessonErrorShellHtml() {
+   return (
+      '<section class="sess lesson-sess"><div class="path-error" role="alert"><b>Leçon indisponible.</b>' +
+      '<button class="btn" id="lesson-error-back" type="button">Retour à la liste</button></div></section>'
+   );
+}
+
+async function openLesson(unitId, options) {
+   const settings = options || {};
+   destroyStrokeWorkspace();
+   lesson = {
+      unit: null,
+      step: 1,
+      historyDepth: 1,
+      openedFromView: activeView,
+      membersPromise: null,
+      members: null,
+      compositions: null,
+      selectedWords: null,
+      quizQuestions: null,
+      preview: null,
+      renderToken: ++lessonRenderTokenSeq,
+   };
+   document.body.classList.add("in-lesson");
+   if (!settings.fromHistory) history.pushState(lessonHistoryPayload(), "");
+   $("view").innerHTML = lessonLoadingShellHtml();
+   const token = lesson.renderToken;
+   const unit = await loadLearningUnit(unitId);
+   if (!lesson || lesson.renderToken !== token) return;
+   if (!unit) {
+      $("view").innerHTML = lessonErrorShellHtml();
+      if ($("lesson-error-back")) $("lesson-error-back").onclick = () => closeLesson();
+      return;
+   }
+   lesson.unit = unit;
+   if (!settings.fromHistory) history.replaceState(lessonHistoryPayload(), "");
+   lesson.membersPromise = prepareLessonMembers(unit)
+      .catch(() => unit.members)
+      .then((members) => {
+         if (!lesson || lesson.renderToken !== token) return;
+         lesson.members = members;
+         if (lesson.step !== 1) renderLesson();
+      });
+   renderLesson();
+   window.scrollTo(0, 0);
+}
+
+function goToLessonStep(step) {
+   if (!lesson) return;
+   lesson.step = step;
+   lesson.historyDepth++;
+   history.pushState(lessonHistoryPayload(), "");
+   renderLesson();
+   window.scrollTo(0, 0);
+}
+
+function teardownLesson() {
+   destroyStrokeWorkspace();
+   lesson = null;
+   document.body.classList.remove("in-lesson");
+}
+
+function closeLesson(options) {
+   const settings = options || {};
+   if (!settings.fromHistory && lesson && history.state && history.state.mode === "lesson") {
+      history.go(-lesson.historyDepth);
+      return;
+   }
+   teardownLesson();
+   render();
+   window.scrollTo(0, 0);
+}
+
+function renderLesson() {
+   if (!lesson || !lesson.unit) return;
+   if (lesson.step === 1) renderLessonStepComponent();
+   else if (lesson.step === 2) renderLessonStepFamily();
+   else if (lesson.step === 3) renderLessonStepWords();
+   else if (lesson.step === 4) renderLessonStepQuiz();
+   else renderLessonRecap();
+}
+
+/* ================= coquille commune ================= */
+function lessonShellHtml(unit, bodyHtml) {
+   return (
+      '<section class="sess lesson-sess" id="lesson-sess">' +
+      '<div class="s-top"><button class="s-x" id="lesson-exit" aria-label="Quitter la leçon">×</button>' +
+      '<div class="s-scope">' +
+      esc(unit.component) +
+      (unit.componentPinyin ? " · " + esc(unit.componentPinyin) : "") +
+      '</div><div class="s-count">' +
+      lesson.step +
+      " / 4</div></div>" +
+      '<div class="s-bar"><i style="width:' +
+      ((lesson.step / 4) * 100).toFixed(1) +
+      '%"></i></div>' +
+      bodyHtml +
+      lessonStepNavHtml() +
+      "</section>"
+   );
+}
+
+function lessonStepNavHtml() {
+   return (
+      '<nav class="session-nav" aria-label="Navigation dans la leçon">' +
+      '<button type="button" class="session-nav-button previous" id="lesson-prev"' +
+      (lesson.step === 1 ? ' disabled aria-disabled="true"' : "") +
+      ">‹ <span>Précédent</span></button>" +
+      '<button type="button" class="session-nav-button next" id="lesson-next"><span>' +
+      (lesson.step === 4 ? "Récapitulatif" : "Suivant") +
+      "</span> ›</button></nav>"
+   );
+}
+
+function lessonRecapShellHtml(unit, bodyHtml) {
+   return (
+      '<section class="sess lesson-sess" id="lesson-sess">' +
+      '<div class="s-top"><button class="s-x" id="lesson-exit" aria-label="Quitter la leçon">×</button>' +
+      '<div class="s-scope">' +
+      esc(unit.component) +
+      (unit.componentPinyin ? " · " + esc(unit.componentPinyin) : "") +
+      '</div><div class="s-count">Récapitulatif</div></div>' +
+      '<div class="s-bar"><i style="width:100%"></i></div>' +
+      bodyHtml +
+      "</section>"
+   );
+}
+
+function wireLessonNav() {
+   if ($("lesson-exit")) $("lesson-exit").onclick = () => closeLesson();
+   const prev = $("lesson-prev");
+   if (prev) prev.onclick = () => {
+      if (!prev.disabled) history.back();
+   };
+   const next = $("lesson-next");
+   if (next) next.onclick = () => {
+      goToLessonStep(lesson.step >= 4 ? "recap" : lesson.step + 1);
+   };
+}
+
+/* ================= étape 1/4 — le composant ================= */
+function componentIntroHtml(unit) {
+   return (
+      '<div class="lesson-component-intro">' +
+      '<div class="hanzi ink-in" data-say="' +
+      esc(unit.component) +
+      '">' +
+      esc(unit.component) +
+      "</div>" +
+      (unit.componentPinyin ? '<div class="pinyin">' + colorPinyin(unit.componentPinyin) + "</div>" : "") +
+      (unit.componentGloss ? '<div class="fr">' + esc(unit.componentGloss) + "</div>" : "") +
+      "</div>"
+   );
+}
+
+function renderLessonStepComponent() {
+   const unit = lesson.unit;
+   $("view").innerHTML = lessonShellHtml(
+      unit,
+      '<div class="flash card lesson-card">' +
+         componentIntroHtml(unit) +
+         '<div class="eyebrow">Ordre des traits</div>' +
+         strokeCharacterStageHtml("lesson-cmp", unit.component, 0, 1, false) +
+         "</div>",
+   );
+   wireLessonNav();
+   wireStrokeWorkspace();
+   loadDDChar(unit.component, [unit.component]);
+}
+
+/* ================= étape 2/4 — la famille en un coup d'œil ================= */
+function lessonFamilySkeletonRowHtml() {
+   return '<div class="unit-family-row unit-family-row-skeleton" aria-hidden="true"><span class="ink-loader"></span></div>';
+}
+
+function lessonFamilyRowHtml(member, index) {
+   return (
+      '<details class="unit-family-row" id="unit-family-row-' +
+      index +
+      '"><summary class="unit-family-head">' +
+      '<button class="seal" type="button" data-say="' +
+      esc(member.character) +
+      '" aria-label="Écouter ' +
+      esc(member.character) +
+      '">听</button>' +
+      '<b class="unit-family-hz">' +
+      esc(member.character) +
+      "</b>" +
+      '<span class="unit-family-main">' +
+      (member.pinyin ? '<span class="unit-family-pinyin">' + colorPinyin(member.pinyin) + "</span>" : "") +
+      (member.gloss ? '<span class="unit-family-gloss">' + esc(member.gloss) + "</span>" : "") +
+      "</span>" +
+      '<span class="unit-family-badges" id="unit-family-badges-' +
+      index +
+      '" aria-live="polite"></span>' +
+      '<span class="unit-family-chevron" aria-hidden="true">⌄</span>' +
+      "</summary>" +
+      characterCompositionShellHtml("unit-family-detail-" + index) +
+      "</details>"
+   );
+}
+
+function lessonFamilyBodyHtml(unit, members) {
+   const intro =
+      unit.type === "phonetic"
+         ? "Ces caractères partagent le son de " + esc(unit.component) + "."
+         : "Ces caractères partagent le radical " + esc(unit.component) + ".";
+   return (
+      '<p class="lesson-family-intro">' +
+      intro +
+      "</p>" +
+      '<div class="unit-family-grid">' +
+      members.map((member, index) => lessonFamilyRowHtml(member, index)).join("") +
+      "</div>"
+   );
+}
+
+function lessonFamilyBadgeHtml(unit, record) {
+   if (!record) return "";
+   const pictophonetic = record.etymology?.type === "pictophonetic" && record.etymology.phonetic === unit.component;
+   if (pictophonetic) {
+      const semantic = record.etymology.semantic;
+      return (
+         '<span class="unit-family-tag son">son · ' +
+         esc(unit.component) +
+         "</span>" +
+         (semantic ? '<span class="unit-family-tag sens">sens · ' + esc(semantic) + "</span>" : "")
+      );
+   }
+   if (record.radical) return '<span class="unit-family-tag key">clé · ' + esc(record.radical) + "</span>";
+   return "";
+}
+
+function paintLessonFamilyBadges(index, unit, record) {
+   const slot = $("unit-family-badges-" + index);
+   if (slot) slot.innerHTML = lessonFamilyBadgeHtml(unit, record);
+}
+
+function wireLessonFamilyRows(members) {
+   document.querySelectorAll(".unit-family-row [data-say]").forEach((button) => {
+      button.addEventListener("click", (event) => event.preventDefault());
+   });
+   members.forEach((member, index) => {
+      const row = $("unit-family-row-" + index);
+      if (!row) return;
+      row.ontoggle = () => {
+         if (!row.open || row.dataset.rendered) return;
+         row.dataset.rendered = "1";
+         const record = lesson.compositions ? lesson.compositions.get(member.character) : null;
+         renderCharacterComposition(record, ".unit-family-detail-" + index);
+      };
+   });
+}
+
+function renderLessonStepFamily() {
+   const unit = lesson.unit;
+   if (!lesson.members) {
+      $("view").innerHTML = lessonShellHtml(
+         unit,
+         '<p class="lesson-family-intro">Préparation de la famille de caractères…</p>' +
+            '<div class="unit-family-grid" aria-busy="true">' +
+            unit.members.map(lessonFamilySkeletonRowHtml).join("") +
+            "</div>",
+      );
+      wireLessonNav();
+      return;
+   }
+   $("view").innerHTML = lessonShellHtml(unit, lessonFamilyBodyHtml(unit, lesson.members));
+   wireLessonNav();
+   wireLessonFamilyRows(lesson.members);
+   const token = ++lessonFamilyRenderToken;
+   loadCharacterCompositions(lesson.members.map((member) => member.character)).then((compositions) => {
+      if (!lesson || lesson.step !== 2 || token !== lessonFamilyRenderToken) return;
+      lesson.compositions = compositions;
+      lesson.members.forEach((member, index) => paintLessonFamilyBadges(index, unit, compositions.get(member.character)));
+   });
+}
+
+/* ================= étape 3/4 — mots réels ================= */
+function resolveLessonWords(members, hsk1Set) {
+   const byHanzi = new Map();
+   members.forEach((member) => {
+      (member.exampleWords || []).forEach((word) => {
+         if (!word || !word.hanzi || !word.pinyin || !word.gloss) return;
+         if (word.hanzi === member.character || byHanzi.has(word.hanzi)) return;
+         byHanzi.set(word.hanzi, {
+            hanzi: word.hanzi,
+            pinyin: word.pinyin,
+            gloss: word.gloss,
+            sourceUtility: member.utilityScore,
+         });
+      });
+   });
+   const tierOf = (word) =>
+      findReusableCard({ chinese: word.hanzi, pinyin: word.pinyin, translation: word.gloss })
+         ? 0
+         : hsk1Set.has(word.hanzi)
+           ? 1
+           : 2;
+   return Array.from(byHanzi.values())
+      .map((word) => ({ ...word, tier: tierOf(word) }))
+      .sort(
+         (a, b) =>
+            a.tier - b.tier ||
+            b.sourceUtility - a.sourceUtility ||
+            Array.from(a.hanzi).length - Array.from(b.hanzi).length ||
+            a.hanzi.localeCompare(b.hanzi, "zh"),
+      )
+      .slice(0, 5);
+}
+
+async function ensureLessonWordSelection() {
+   if (lesson.selectedWords) return lesson.selectedWords;
+   const hsk1Set = await loadHsk1RootHanziSet();
+   lesson.selectedWords = resolveLessonWords(lesson.members, hsk1Set);
+   return lesson.selectedWords;
+}
+
+function lessonWordRowHtml(word) {
+   return (
+      '<div class="unit-word-row"><button class="seal" type="button" data-say="' +
+      esc(word.hanzi) +
+      '" aria-label="Écouter ' +
+      esc(word.hanzi) +
+      '">听</button>' +
+      '<b class="unit-word-hz">' +
+      esc(word.hanzi) +
+      "</b>" +
+      '<span class="unit-word-main"><span class="unit-word-pinyin">' +
+      colorPinyin(word.pinyin) +
+      '</span><span class="unit-word-gloss">' +
+      esc(word.gloss) +
+      "</span></span></div>"
+   );
+}
+
+async function renderLessonStepWords() {
+   const unit = lesson.unit;
+   $("view").innerHTML = lessonShellHtml(
+      unit,
+      '<div class="unit-word-list" aria-busy="true"><span class="ink-loader"></span></div>',
+   );
+   wireLessonNav();
+   if (!lesson.members) return; // renderLesson() sera rappelé par membersPromise, puis cette fonction à nouveau
+   const token = ++lessonWordsRenderToken;
+   const words = await ensureLessonWordSelection();
+   if (!lesson || lesson.step !== 3 || token !== lessonWordsRenderToken) return;
+   $("view").innerHTML = lessonShellHtml(
+      unit,
+      words.length
+         ? '<div class="unit-word-list">' + words.map(lessonWordRowHtml).join("") + "</div>"
+         : '<p class="unit-word-empty">Aucun mot réel disponible pour cette leçon dans le dictionnaire.</p>',
+   );
+   wireLessonNav();
+}
+
+/* ================= étape 4/4 — mini-quiz ================= */
+function lessonQuizQuestions(members) {
+   const questionMembers = members
+      .slice()
+      .sort((a, b) => b.utilityScore - a.utilityScore)
+      .slice(0, 4);
+   return questionMembers.map((member) => ({
+      gloss: member.gloss,
+      correct: member.character,
+      options: shuffle([
+         member.character,
+         ...shuffle(members.filter((m) => m !== member).map((m) => m.character)).slice(0, 3),
+      ]),
+   }));
+}
+
+function lessonQuizQuestionHtml(question, qi) {
+   return (
+      '<div class="qz-q">' +
+      (qi + 1) +
+      ". Lequel de ces caractères veut dire « " +
+      esc(question.gloss) +
+      ' » ?</div><div class="qz-opts" data-q="' +
+      qi +
+      '">' +
+      question.options
+         .map(
+            (option) =>
+               '<button class="chip hz" data-ok="' +
+               String(option === question.correct) +
+               '">' +
+               esc(option) +
+               "</button>",
+         )
+         .join("") +
+      "</div>"
+   );
+}
+
+function wireLessonQuiz() {
+   document.querySelectorAll(".lesson-quiz .qz-opts").forEach((box) => {
+      box.querySelectorAll(".chip").forEach((button) => {
+         button.onclick = () => {
+            if (box.dataset.done) return;
+            box.dataset.done = "1";
+            const good = box.querySelector('[data-ok="true"]');
+            if (good) good.classList.add("ok");
+            if (button.dataset.ok !== "true") button.classList.add("ko");
+            const boxes = Array.from(document.querySelectorAll(".lesson-quiz .qz-opts"));
+            const done = boxes.filter((b) => b.dataset.done).length;
+            const right = boxes.filter((b) => b.dataset.done && !b.querySelector(".chip.ko")).length;
+            const score = $("lesson-quiz-score");
+            if (score) score.textContent = done === boxes.length ? "Score : " + right + " / " + boxes.length : "";
+         };
+      });
+   });
+}
+
+function renderLessonStepQuiz() {
+   const unit = lesson.unit;
+   if (!lesson.quizQuestions) lesson.quizQuestions = lessonQuizQuestions(lesson.members);
+   $("view").innerHTML = lessonShellHtml(
+      unit,
+      '<div class="qz lesson-quiz"><div class="qz-t">Mini-quiz</div>' +
+         lesson.quizQuestions.map(lessonQuizQuestionHtml).join("") +
+         '<div class="qz-score" id="lesson-quiz-score" aria-live="polite"></div></div>',
+   );
+   wireLessonNav();
+   wireLessonQuiz();
+}
+
+/* ================= récapitulatif et validation ================= */
+function lessonCategoryName(unit) {
+   const type = unit.type === "phonetic" ? "phonétique" : "sémantique";
+   const part = unit.partCount > 1 ? " " + unit.partIndex + "/" + unit.partCount : "";
+   return unit.component + (unit.componentPinyin ? " · " + unit.componentPinyin : "") + " (" + type + part + ")";
+}
+
+async function buildLessonImportPayload(unit, members) {
+   const byHanzi = new Map();
+   const add = (chinese, pinyin, translation) => {
+      if (!chinese || !pinyin || !translation || byHanzi.has(chinese)) return;
+      byHanzi.set(chinese, { chinese, pinyin, translation, tags: ["parcours"] });
+   };
+   if (await hasIndependentDictionaryMeaning(unit.component)) add(unit.component, unit.componentPinyin, unit.componentGloss);
+   members.forEach((member) => add(member.character, member.pinyin, member.gloss));
+   (await ensureLessonWordSelection()).forEach((word) => add(word.hanzi, word.pinyin, word.gloss));
+   return {
+      pack: {
+         name: "Parcours",
+         description: "Cartes créées depuis les leçons du Parcours.",
+         categories: [{ name: lessonCategoryName(unit), words: Array.from(byHanzi.values()) }],
+      },
+   };
+}
+
+function lessonRecapRowHtml(word) {
+   return (
+      '<div class="lesson-recap-row"><b>' +
+      esc(word.chinese) +
+      "</b><span>" +
+      colorPinyin(word.pinyin) +
+      " · " +
+      esc(word.translation) +
+      '</span><span class="lesson-recap-state">' +
+      (word.existingCardId ? "déjà dans vos cartes" : "nouvelle carte") +
+      "</span></div>"
+   );
+}
+
+function lessonRecapBodyHtml(preview) {
+   const words = preview.packs[0]?.categories[0]?.words || [];
+   if (!words.length) {
+      return (
+         '<div class="card pad lesson-recap">' +
+         "<p>Aucun mot ni caractère de cette leçon ne peut être ajouté à Mes mots pour l’instant.</p>" +
+         '<div class="lesson-recap-actions"><button class="btn primary wide" id="lesson-finish">Terminer</button></div></div>'
+      );
+   }
+   const newCount = words.filter((word) => !word.existingCardId).length;
+   const reuseCount = words.length - newCount;
+   return (
+      '<div class="card pad lesson-recap"><div class="lesson-recap-list">' +
+      words.map(lessonRecapRowHtml).join("") +
+      '</div><p class="lesson-recap-total">' +
+      words.length +
+      (words.length > 1 ? " cartes" : " carte") +
+      " — " +
+      newCount +
+      " nouvelle" +
+      (newCount > 1 ? "s" : "") +
+      ", " +
+      reuseCount +
+      " déjà présente" +
+      (reuseCount > 1 ? "s" : "") +
+      '</p><div class="lesson-recap-actions"><button class="btn primary wide" id="lesson-finish">Ajouter ' +
+      words.length +
+      (words.length > 1 ? " mots" : " mot") +
+      " à Mes mots</button></div></div>"
+   );
+}
+
+function wireLessonRecap() {
+   if ($("lesson-exit")) $("lesson-exit").onclick = () => closeLesson();
+   if ($("lesson-finish")) $("lesson-finish").onclick = () => commitLesson();
+}
+
+async function renderLessonRecap() {
+   const unit = lesson.unit;
+   $("view").innerHTML = lessonRecapShellHtml(
+      unit,
+      '<div class="dictionary-loading"><span class="ink-loader"></span><b>Préparation du récapitulatif…</b></div>',
+   );
+   if ($("lesson-exit")) $("lesson-exit").onclick = () => closeLesson();
+   const token = lesson.renderToken;
+   const payload = await buildLessonImportPayload(unit, lesson.members);
+   const preview = await buildPackImportPreview(payload, "json");
+   if (!lesson || lesson.renderToken !== token || lesson.step !== "recap") return;
+   lesson.preview = preview;
+   $("view").innerHTML = lessonRecapShellHtml(unit, lessonRecapBodyHtml(preview));
+   wireLessonRecap();
+}
+
+function commitLesson() {
+   const preview = lesson && lesson.preview;
+   const unit = lesson && lesson.unit;
+   const words = preview && preview.packs[0]?.categories[0]?.words;
+   if (!words || !words.length) {
+      if (unit) recordLessonCompletion(unit.id);
+      closeLesson();
+      return;
+   }
+   const result = applyPackImport(preview, { mode: "merge", importMissing: true });
+   if (unit) recordLessonCompletion(unit.id);
+   toast(
+      result.added +
+         " nouvelle" +
+         (result.added > 1 ? "s" : "") +
+         " carte" +
+         (result.added > 1 ? "s" : "") +
+         ", " +
+         result.reused +
+         " déjà présente" +
+         (result.reused > 1 ? "s" : "") +
+         " — ajoutées à « Parcours ».",
+   );
+   closeLesson();
+}
+
+"use strict";
+
+const UNITS_PAGE_SIZE = 60;
+let unitsPickerFilter = "";
+let unitsPickerVisible = UNITS_PAGE_SIZE;
+let unitsPickerRenderToken = 0;
+
+function unitsPickerTypeLabel(type) {
+   return type === "phonetic" ? "phonétique" : "sémantique";
+}
+
+function unitsPickerRowHtml(row, index) {
+   const part =
+      row.partCount > 1
+         ? '<span class="lu-row-part">' + row.partIndex + "/" + row.partCount + "</span>"
+         : "";
+   const count = row.memberCharacters.length;
+   return (
+      '<button class="lu-row" type="button" data-lu-index="' +
+      index +
+      '"><b class="lu-row-component">' +
+      esc(row.component) +
+      "</b>" +
+      '<span class="lu-row-main">' +
+      (row.componentPinyin ? '<span class="lu-row-pinyin">' + colorPinyin(row.componentPinyin) + "</span>" : "") +
+      (row.componentGloss ? '<span class="lu-row-gloss">' + esc(row.componentGloss) + "</span>" : "") +
+      "</span>" +
+      '<span class="lu-row-meta"><span class="lu-row-badge lu-row-badge-' +
+      row.type +
+      '">' +
+      unitsPickerTypeLabel(row.type) +
+      "</span><span class=\"lu-row-count\">" +
+      count +
+      (count > 1 ? " caractères" : " caractère") +
+      "</span>" +
+      part +
+      "</span></button>"
+   );
+}
+
+function filteredLearningUnits(rows) {
+   const visible = normalizeVisibleWhitespace(unitsPickerFilter).toLowerCase();
+   if (!visible) return rows;
+   const plain = normalizePinyinPlain(visible);
+   const translation = normalizeTranslation(visible);
+   return rows.filter(
+      (row) =>
+         row.component.includes(visible) ||
+         (plain && normalizePinyinPlain(row.componentPinyin || "").includes(plain)) ||
+         (translation && normalizeTranslation(row.componentGloss || "").includes(translation)),
+   );
+}
+
+function wireLearningUnitsPicker(filtered) {
+   const search = $("units-filter");
+   if (search) {
+      search.oninput = () => {
+         unitsPickerFilter = search.value;
+         unitsPickerVisible = UNITS_PAGE_SIZE;
+         renderLearningUnitsList();
+      };
+   }
+   document.querySelectorAll("[data-lu-index]").forEach((button) => {
+      button.onclick = () => {
+         const row = filtered[Number(button.dataset.luIndex)];
+         if (row) openLesson(row.id);
+      };
+   });
+   if ($("units-show-more"))
+      $("units-show-more").onclick = () => {
+         unitsPickerVisible += UNITS_PAGE_SIZE;
+         renderLearningUnitsList();
+      };
+}
+
+function renderLearningUnitsList() {
+   const target = $("units-list");
+   if (!target) return;
+   const rows = learningUnitsState.index || [];
+   const filtered = filteredLearningUnits(rows);
+   const visible = filtered.slice(0, unitsPickerVisible);
+   target.innerHTML =
+      '<div class="path-level-tools"><label for="units-filter">Filtrer</label>' +
+      '<input class="search" id="units-filter" type="search" placeholder="composant, pinyin ou sens…" value="' +
+      esc(unitsPickerFilter) +
+      '"><span class="path-filter-count" aria-live="polite">' +
+      filtered.length.toLocaleString("fr-FR") +
+      (filtered.length > 1 ? " leçons" : " leçon") +
+      "</span></div>" +
+      (visible.length
+         ? '<div class="lu-list">' + visible.map(unitsPickerRowHtml).join("") + "</div>"
+         : '<div class="path-no-results"><p>Aucune leçon pour cette recherche.</p></div>') +
+      (visible.length < filtered.length
+         ? '<div class="path-more"><button class="btn ghost" id="units-show-more" type="button">Afficher ' +
+           Math.min(UNITS_PAGE_SIZE, filtered.length - visible.length) +
+           " leçons de plus</button></div>"
+         : "");
+   const search = $("units-filter");
+   if (search && unitsPickerFilter) {
+      search.focus({ preventScroll: true });
+      search.setSelectionRange(search.value.length, search.value.length);
+   }
+   wireLearningUnitsPicker(filtered);
+}
+
+async function renderLearningUnitsPicker() {
+   document.body.classList.remove("in-seq", "in-lesson");
+   const token = ++unitsPickerRenderToken;
+   $("view").innerHTML =
+      '<section class="path-page path-level-page" aria-labelledby="units-title">' +
+      '<header class="path-level-header"><button class="btn ghost" id="units-back" type="button">← Retour</button>' +
+      "<div><h2 class=\"v-t\" id=\"units-title\">Leçons</h2><p class=\"muted\">Un composant, les caractères qu’il débloque, une leçon complète.</p></div></header>" +
+      '<section class="card path-vocabulary" id="units-list"><div class="path-loading" role="status"><span class="ink-loader"></span><span>Chargement des leçons…</span></div></section></section>';
+   if ($("units-back")) $("units-back").onclick = () => setView("path");
+   try {
+      await loadLearningUnitsIndex();
+      if (token !== unitsPickerRenderToken || activeView !== "units") return;
+      renderLearningUnitsList();
+   } catch (error) {
+      if (token !== unitsPickerRenderToken) return;
+      const target = $("units-list");
+      if (target)
+         target.innerHTML =
+            '<div class="path-error" role="alert"><b>Leçons indisponibles.</b><p>' +
+            esc(error.message) +
+            '</p><button class="btn" id="units-retry" type="button">Réessayer</button></div>';
+      if ($("units-retry")) $("units-retry").onclick = () => renderLearningUnitsPicker();
+   }
+}
+
+"use strict";
+
+/* ================= « connu » : monotone, dérivé du réel ================= */
+function learningPathSufficientProgress(card) {
+   // acquired : bouton "Maîtrisé" (js/views/library.js). lvl>=2 : au moins une note
+   // correct/facile (js/state.js applyGrade). reviewHistory : plus haut niveau jamais atteint —
+   // indispensable car applyGrade fait retomber lvl sur une note "difficile"/"raté" sans tenir
+   // compte du niveau précédent ; un composant acquis ne doit jamais se reperdre.
+   return (
+      card.acquired === true ||
+      (card.lvl || 0) >= 2 ||
+      (card.reviewHistory || []).some((entry) => (entry.level || 0) >= 2)
+   );
+}
+
+function learningPathKnownComponents(cards, completedLessons, unitsIndex, graph) {
+   const known = new Map(); // composant -> "lesson" | "card"
+   const unitById = new Map(unitsIndex.map((unit) => [unit.id, unit]));
+   Object.keys(completedLessons).forEach((unitId) => {
+      const unit = unitById.get(unitId);
+      if (unit) known.set(unit.component, "lesson");
+   });
+   cards.forEach((card) => {
+      if (!learningPathSufficientProgress(card)) return;
+      Array.from(String(card.hz || ""))
+         .filter((character) => HAN_PATTERN.test(character))
+         .forEach((character) => {
+            if (!known.has(character)) known.set(character, "card");
+            (graph.prerequisites[character] || []).forEach((component) => {
+               if (!known.has(component)) known.set(component, "card");
+            });
+         });
+   });
+   return known;
+}
+
+/* ================= périmètre ================= */
+function learningPathScopeCharacters(scope, { cards, unitsIndex, hskChars }) {
+   if (scope.mode === "all") {
+      const all = new Set();
+      unitsIndex.forEach((unit) => unit.memberCharacters.forEach((character) => all.add(character)));
+      return all;
+   }
+   if (scope.mode === "hsk") return hskChars || new Set();
+   const characters = new Set(); // "personal" (défaut)
+   cards.forEach((card) =>
+      Array.from(String(card.hz || ""))
+         .filter((character) => HAN_PATTERN.test(character))
+         .forEach((character) => characters.add(character)),
+   );
+   return characters;
+}
+
+/* ================= annotation des unités ================= */
+function learningPathAnnotateUnits(unitsInScope, known, completedLessons) {
+   return unitsInScope.map((unit) => {
+      const completed = Object.prototype.hasOwnProperty.call(completedLessons, unit.id);
+      const missing = completed ? [] : unit.prerequisites.filter((component) => !known.has(component));
+      return { unit, completed, missing, available: !completed && missing.length === 0 };
+   });
+}
+
+function learningPathPickRecommended(annotated) {
+   const candidates = annotated.filter((entry) => entry.available);
+   if (!candidates.length) return null;
+   return candidates
+      .slice()
+      .sort(
+         (a, b) =>
+            b.unit.utilityScore - a.unit.utilityScore ||
+            a.unit.component.localeCompare(b.unit.component, "zh") ||
+            a.unit.id.localeCompare(b.unit.id),
+      )[0].unit;
+}
+
+/* ================= la carte : regroupée par composant, jamais par unité brute ================= */
+function learningPathBuckets(annotated, known) {
+   const byComponent = new Map();
+   annotated.forEach((entry) => {
+      if (!byComponent.has(entry.unit.component)) byComponent.set(entry.unit.component, []);
+      byComponent.get(entry.unit.component).push(entry);
+   });
+   const acquis = [];
+   const disponibles = [];
+   const bientot = [];
+   const verrouillees = [];
+   byComponent.forEach((entries, component) => {
+      const remaining = entries.filter((entry) => !entry.completed);
+      if (known.has(component)) {
+         const bestUnit = remaining.length
+            ? remaining.slice().sort((a, b) => b.unit.utilityScore - a.unit.utilityScore)[0].unit
+            : null;
+         acquis.push({ component, remainingCount: remaining.length, bestUnit });
+         return;
+      }
+      if (!remaining.length) return; // ne se produit jamais : terminer une unité rend son composant connu
+      const missing = remaining[0].missing; // identique pour toutes les parts d'un même composant (vérifié)
+      const bestUnit = remaining.slice().sort((a, b) => b.unit.utilityScore - a.unit.utilityScore)[0].unit;
+      const charactersWaiting = new Set(remaining.flatMap((entry) => entry.unit.memberCharacters)).size;
+      const row = { component, missing, bestUnit, charactersWaiting };
+      if (missing.length === 0) disponibles.push(row);
+      else if (missing.length === 1) bientot.push(row);
+      else verrouillees.push(row);
+   });
+   const byComponentLocale = (a, b) => a.component.localeCompare(b.component, "zh");
+   acquis.sort(byComponentLocale);
+   disponibles.sort((a, b) => b.bestUnit.utilityScore - a.bestUnit.utilityScore || byComponentLocale(a, b));
+   bientot.sort(
+      (a, b) =>
+         b.charactersWaiting - a.charactersWaiting ||
+         b.bestUnit.utilityScore - a.bestUnit.utilityScore ||
+         byComponentLocale(a, b),
+   );
+   verrouillees.sort(
+      (a, b) => a.missing.length - b.missing.length || b.bestUnit.utilityScore - a.bestUnit.utilityScore || byComponentLocale(a, b),
+   );
+   return { acquis, disponibles, bientot, verrouillees };
+}
+
+/* ================= point d'entrée ================= */
+async function computeLearningPath(scopeOverride) {
+   const scope = scopeOverride || getCourseScope();
+   const [unitsIndex, graph, hskChars] = await Promise.all([
+      loadLearningUnitsIndex(),
+      loadLearningUnitsGraph(),
+      scope.mode === "hsk" ? loadHskCumulativeCharacters(scope.hskLevel) : Promise.resolve(null),
+   ]);
+   const known = learningPathKnownComponents(db.cards, courseProgress.completedLessons, unitsIndex, graph);
+   const scopeCharacters = learningPathScopeCharacters(scope, { cards: db.cards, unitsIndex, hskChars });
+   const unitsInScope = unitsIndex.filter((unit) => unit.memberCharacters.some((character) => scopeCharacters.has(character)));
+   const annotated = learningPathAnnotateUnits(unitsInScope, known, courseProgress.completedLessons);
+   return {
+      scope,
+      scopeCharacterCount: scopeCharacters.size,
+      recommended: learningPathPickRecommended(annotated),
+      buckets: learningPathBuckets(annotated, known),
+      progress: {
+         completed: annotated.filter((entry) => entry.completed).length,
+         total: annotated.length,
+      },
+   };
 }
 
 "use strict";
@@ -17993,6 +20120,7 @@ function exitRadicalMode(options) {
                categories: db.categories,
                memberships: db.memberships,
                settings: db.settings,
+               courseProgress: courseProgress,
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {
                type: "application/json",
@@ -18091,6 +20219,17 @@ function exitRadicalMode(options) {
                !Array.isArray(data.units)
                   ? data.units
                   : null;
+            const incomingCourseProgress =
+               !Array.isArray(data) && data.courseProgress && typeof data.courseProgress === "object"
+                  ? data.courseProgress
+                  : null;
+            const incomingCompletedLessons =
+               incomingCourseProgress &&
+               incomingCourseProgress.completedLessons &&
+               typeof incomingCourseProgress.completedLessons === "object" &&
+               !Array.isArray(incomingCourseProgress.completedLessons)
+                  ? incomingCourseProgress.completedLessons
+                  : null;
             if (replace) {
                makeBackup();
                const raw = Array.isArray(data)
@@ -18131,9 +20270,27 @@ function exitRadicalMode(options) {
                      ? data.memberships.filter((membership) => membership && membership.cardId && membership.categoryId)
                      : [];
                db.units = inUnits || {};
+               courseProgress = incomingCompletedLessons
+                  ? {
+                       version: 2,
+                       completedLessons: incomingCompletedLessons,
+                       scope: validCourseProgressScope(incomingCourseProgress.scope)
+                          ? incomingCourseProgress.scope
+                          : emptyCourseProgress().scope,
+                    }
+                  : emptyCourseProgress();
+               saveCourseProgress();
             } else {
                db.cards = db.cards.concat(fresh);
                if (inUnits) db.units = Object.assign({}, db.units, inUnits);
+               if (incomingCompletedLessons) {
+                  courseProgress.completedLessons = Object.assign(
+                     {},
+                     courseProgress.completedLessons,
+                     incomingCompletedLessons,
+                  );
+                  saveCourseProgress();
+               }
             }
             const added = replace ? db.cards.length : fresh.length;
             if (wantPack) {
