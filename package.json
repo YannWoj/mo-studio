@@ -8,14 +8,17 @@
     "validate:character-radicals": "node scripts/validate-character-radicals.mjs",
     "build:learning-units": "node scripts/build-learning-units.mjs",
     "validate:learning-units": "node scripts/validate-learning-units.mjs",
+    "build:confusable-pairs": "node scripts/build-confusable-pairs.mjs",
+    "validate:confusable-pairs": "node scripts/validate-confusable-pairs.mjs",
     "build:hsk-runtime": "node scripts/build-hsk-runtime.mjs",
     "build:portable": "node scripts/build-portable.mjs",
-    "test:data": "node tests/search-normalization.test.cjs && node tests/hsk-runtime.test.cjs && node tests/character-composition.test.cjs && node scripts/validate-character-composition.mjs && node tests/character-radicals.test.cjs && node scripts/validate-character-radicals.mjs && node tests/learning-units.test.cjs && node scripts/validate-learning-units.mjs",
+    "test:data": "node tests/search-normalization.test.cjs && node tests/hsk-runtime.test.cjs && node tests/character-composition.test.cjs && node scripts/validate-character-composition.mjs && node tests/character-radicals.test.cjs && node scripts/validate-character-radicals.mjs && node tests/learning-units.test.cjs && node scripts/validate-learning-units.mjs && node tests/confusable-pairs.test.cjs && node scripts/validate-confusable-pairs.mjs",
     "test:browser": "node tests/browser-regression.mjs",
     "test:character-radicals": "node tests/character-radicals-browser.mjs",
     "test:packs-review": "node tests/packs-review-browser.mjs",
     "test:dictionary-placement": "node tests/dictionary-library-placement-browser.mjs",
-    "test:review-simplification": "node tests/review-simplification-browser.mjs"
+    "test:review-simplification": "node tests/review-simplification-browser.mjs",
+    "test:confusable-pairs": "node tests/confusable-pairs-browser.mjs"
   },
   "dependencies": {
     "hanzi-writer": "3.7.3",

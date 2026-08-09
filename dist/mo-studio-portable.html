@@ -4671,6 +4671,114 @@ body.in-lesson {
    }
 }
 
+/* ================= fiche : ligne « à ne pas confondre » ================= */
+.confusable-pairs {
+   margin-top: 14px;
+   padding-top: 12px;
+   border-top: 1px solid var(--line-soft);
+}
+.confusable-pairs[hidden] {
+   display: none;
+}
+.confusable-pairs-list {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-top: 6px;
+}
+.confusable-pair-item {
+   display: flex;
+   align-items: center;
+   gap: 4px;
+}
+.confusable-pair-mini {
+   display: inline-block;
+   width: 30px;
+   height: 30px;
+   flex: none;
+}
+/* strokePathsSvg (js/strokes/stroke-gallery.js) colore les traits après l'indice
+   actif en gris clair "à venir", pensé pour l'animation progressive. Ici, rien
+   n'est "à venir" : on ne met en évidence qu'un seul trait qui diffère, le reste
+   du caractère doit rester net. */
+.confusable-pair-mini .stroke-future {
+   fill: #17140f;
+}
+.confusable-pair-versus {
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+.confusable-pair-chip {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 5px 12px 5px 8px;
+}
+.confusable-pair-chip .confusable-pair-mini {
+   border-radius: 6px;
+   background: var(--card);
+}
+.confusable-pair-chip-hanzi {
+   font-size: 17px;
+}
+
+/* ================= révision : test de discrimination ================= */
+.confusable-test {
+   text-align: center;
+}
+.confusable-test-prompt {
+   margin: 4px 0 18px;
+   color: var(--ink-soft);
+   font-size: 15px;
+}
+.confusable-test-choices {
+   display: flex;
+   gap: 12px;
+   justify-content: center;
+}
+.confusable-test-choice {
+   flex: 1;
+   max-width: 150px;
+   padding: 22px 8px;
+   border: 1px solid var(--line);
+   border-radius: 14px;
+   background: var(--card-2);
+   font: 700 44px var(--serif);
+   color: var(--ink);
+   transition: all 0.15s;
+}
+.confusable-test-choice:active {
+   transform: scale(0.97);
+}
+.confusable-test-choice.ok {
+   border-color: var(--jade);
+   background: color-mix(in srgb, var(--jade) 14%, var(--card-2));
+   color: var(--jade);
+}
+.confusable-test-choice.ko {
+   border-color: var(--lacquer);
+   background: color-mix(in srgb, var(--lacquer) 14%, var(--card-2));
+   color: var(--lacquer);
+}
+.confusable-test-verdict {
+   margin-top: 16px;
+   font-size: 14.5px;
+   color: var(--ink-soft);
+}
+.confusable-test-verdict.ok {
+   color: var(--jade);
+}
+.confusable-test-verdict.ko {
+   color: var(--lacquer);
+}
+
+@media (max-width: 430px) {
+   .confusable-test-choice {
+      padding: 18px 6px;
+      font-size: 38px;
+   }
+}
+
 /* ---------- tableau d'écriture ---------- */
 .writing-page {
    padding-top: 10px;
@@ -9579,9 +9687,14 @@ function startCardsWith(cards, label, mode) {
       cards,
       index: 0,
       states: new Array(cards.length).fill(null),
-      live: { marked: 0, acquired: 0 },
+      live: { marked: 0, acquired: 0, confusableShown: 0 },
       scopeLabel: label,
    };
+   // Précharge le cache des paires confusables pour tous les caractères de la
+   // séance : le test d'éligibilité déclenché à chaque note doit rester une
+   // simple lecture de cache, jamais une requête réseau (voir
+   // js/confusable-pairs-review.js).
+   if (typeof preloadConfusablePairs === "function") preloadConfusablePairs(cards.map((card) => card.hz));
    document.body.classList.add("in-session");
    renderSession();
    window.scrollTo(0, 0);
@@ -11942,6 +12055,8 @@ function wireReviewStrokeBlock(c, st) {
                      const g = b.dataset.grade;
                      st.grade = g;
                      applyGrade(c, g);
+                     if (typeof maybeShowConfusablePairTest === "function" && maybeShowConfusablePairTest(c, advance))
+                        return;
                      advance();
                   }),
             );
@@ -12409,6 +12524,126 @@ function wireReviewStrokeBlock(c, st) {
                };
             $("dl-close").onclick = closeSheet;
          }
+
+"use strict";
+
+/* ================= « connu raisonnablement bien », pour ce test précis ================= */
+// Volontairement plus strict que learningPathSufficientProgress (js/learning-units/
+// learning-path-engine.js) : celle-ci débloque du contenu neuf, une erreur n'y coûte
+// qu'un délai. Ici, une erreur signifie montrer un caractère peut-être mal maîtrisé
+// dans un test à risque d'interférence — donc au moins deux réussites enregistrées,
+// pas une seule (une réussite isolée peut être un coup de chance), ou le drapeau
+// manuel "Maîtrisée". Prédicat autonome plutôt qu'une réutilisation paramétrée, pour
+// ne jamais risquer d'assouplir accidentellement l'usage Parcours.
+function wellKnownForConfusablePairs(card) {
+   if (!card) return false;
+   if (card.acquired === true) return true;
+   const successCount = (card.reviewHistory || []).filter(
+      (entry) => entry.grade === "good" || entry.grade === "easy",
+   ).length;
+   return successCount >= 2;
+}
+
+// Signal exact de "jamais étudié" : lastReviewed n'est écrit que par applyGrade
+// (js/state.js) et n'est jamais réinitialisé ailleurs.
+function confusablePairEverStudied(card) {
+   return !!card && card.lastReviewed != null;
+}
+
+// Règle de sécurité pédagogique non négociable : un caractère jamais étudié —
+// carte absente ou jamais notée — ne doit jamais apparaître dans ce test, même si
+// l'autre caractère de la paire est parfaitement connu.
+function confusablePairCandidate(c) {
+   if (!c || !c.hz || typeof reviewHanzi !== "function" || reviewHanzi(c.hz).length !== 1) return null;
+   if (!session || !session.active || !session.live || session.live.confusableShown) return null;
+   const record = typeof confusablePairsCached === "function" ? confusablePairsCached(c.hz) : undefined;
+   if (!record) return null; // pas de partenaire connu, ou pas encore préchargé — jamais deviné
+   const activePartners = record.partners.filter((partner) => partner.activeTier);
+   if (!activePartners.length) return null;
+   const selfWellKnown = wellKnownForConfusablePairs(c);
+   for (const partner of activePartners) {
+      const twinCard = db.cards.find((card) => card.hz === partner.character);
+      if (!confusablePairEverStudied(twinCard)) continue;
+      if (!selfWellKnown && !wellKnownForConfusablePairs(twinCard)) continue;
+      return { partner, twinCard };
+   }
+   return null;
+}
+
+/* ================= sheet du test ================= */
+
+function confusableTestChoiceHtml(character) {
+   return (
+      '<button type="button" class="confusable-test-choice" data-confusable-choice="' +
+      esc(character) + '" lang="zh-Hans" aria-label="Répondre ' + esc(character) + '">' +
+      esc(character) +
+      "</button>"
+   );
+}
+
+function confusableTestPromptHtml(c, leftCharacter, rightCharacter) {
+   return (
+      '<h3 class="sh-t">Lequel signifie…</h3>' +
+      '<p class="confusable-test-prompt">« ' + esc(c.fr) + " »</p>" +
+      '<div class="confusable-test confusable-test-choices">' +
+      confusableTestChoiceHtml(leftCharacter) +
+      confusableTestChoiceHtml(rightCharacter) +
+      "</div>"
+   );
+}
+
+function confusableTestVerdictHtml(correct, chosenCharacter, correctCharacter) {
+   return (
+      '<div class="confusable-test">' +
+      '<div class="confusable-test-choice ' + (correct ? "ok" : "ko") + '" lang="zh-Hans">' + esc(chosenCharacter) + "</div>" +
+      '<p class="confusable-test-verdict ' + (correct ? "ok" : "ko") + '">' +
+      (correct
+         ? "Correct."
+         : "« " + esc(correctCharacter) + " », pas « " + esc(chosenCharacter) + " ». « " + esc(correctCharacter) + " » revient plus tôt en révision.") +
+      "</p></div>" +
+      '<button type="button" class="btn primary wide" id="confusable-test-continue">Continuer</button>'
+   );
+}
+
+// Interstitiel mi-séance sur le modèle exact d'openDelaySheet (js/views/review.js) :
+// ouvre un sheet lié à la carte courante, et ne reprend la séance que via le
+// callback after() une fois l'utilisateur passé à l'écran suivant.
+function maybeShowConfusablePairTest(c, after) {
+   const candidate = confusablePairCandidate(c);
+   if (!candidate) return false;
+   session.live.confusableShown = (session.live.confusableShown || 0) + 1;
+
+   const twinCharacter = candidate.partner.character;
+   const swapSides = Math.random() < 0.5;
+   const leftCharacter = swapSides ? twinCharacter : c.hz;
+   const rightCharacter = swapSides ? c.hz : twinCharacter;
+
+   openSheet(confusableTestPromptHtml(c, leftCharacter, rightCharacter));
+
+   const finish = (chosenCharacter) => {
+      const correct = chosenCharacter === c.hz;
+      // Le test s'ajoute à la notation déjà faite, il ne la remplace pas : pas de
+      // changement de c.lvl, pas d'entrée dans c.reviewHistory (réservé aux quatre
+      // boutons de note). Seule la programmation change, exactement comme le fait
+      // déjà openDelaySheet's setDue pour un ajustement manuel — donc rien
+      // d'invisible : un toast explique le changement, comme ailleurs dans l'app.
+      if (!correct) {
+         c.due = now() + INTERVALS[0];
+         if (c.acquired) c.acquired = false;
+         save();
+         toast("« " + c.hz + " » reprogrammé plus tôt — confusion avec « " + twinCharacter + " ».");
+      }
+      openSheet(confusableTestVerdictHtml(correct, chosenCharacter, c.hz));
+      $("confusable-test-continue").onclick = () => {
+         closeSheet();
+         after();
+      };
+   };
+   document.querySelectorAll("#sheet [data-confusable-choice]").forEach((button) => {
+      button.onclick = () => finish(button.dataset.confusableChoice);
+   });
+   return true;
+}
 
 "use strict";
 
@@ -15615,6 +15850,257 @@ async function openCompositionCharacter(character) {
 
 "use strict";
 
+const CONFUSABLE_PAIRS_CHUNK_MODULO = 64;
+const CONFUSABLE_PAIRS_ROOT = (() => {
+   const portable = /\/dist\/[^/]+\.html$/u.test(new URL(document.baseURI).pathname);
+   return new URL(
+      portable
+         ? "../data/generated/confusable-pairs/"
+         : "data/generated/confusable-pairs/",
+      document.baseURI,
+   ).href;
+})();
+const confusablePairsCache = new Map();
+const confusablePairsChunkCache = new Map();
+const confusablePairsChunkPending = new Map();
+let confusablePairsManifestPending = null;
+let confusablePairsUnavailable = false;
+
+function confusablePairsChunkKey(character) {
+   return ((character.codePointAt(0) || 0) % CONFUSABLE_PAIRS_CHUNK_MODULO)
+      .toString(16)
+      .padStart(2, "0");
+}
+
+function confusablePairsCharacters(values) {
+   return Array.from(
+      new Set(
+         (Array.isArray(values) ? values : [values])
+            .flatMap((value) => Array.from(String(value || "").normalize("NFC")))
+            .filter((character) => /^\p{Script=Han}$/u.test(character)),
+      ),
+   );
+}
+
+async function loadConfusablePairsManifest() {
+   if (confusablePairsUnavailable) return null;
+   if (confusablePairsManifestPending) return confusablePairsManifestPending;
+   confusablePairsManifestPending = fetch(
+      new URL("manifest.json", CONFUSABLE_PAIRS_ROOT).href,
+      { cache: "default" },
+   )
+      .then(async (response) => {
+         if (!response.ok) throw new Error(`HTTP ${response.status}`);
+         const manifest = await response.json();
+         if (
+            manifest?.format !== "mo-studio-confusable-pairs" ||
+            manifest.schemaVersion !== 1 ||
+            manifest.chunkModulo !== CONFUSABLE_PAIRS_CHUNK_MODULO
+         ) throw new Error("Manifest de paires confusables incompatible");
+         return Object.freeze(manifest);
+      })
+      .catch(() => {
+         confusablePairsUnavailable = true;
+         return null;
+      });
+   return confusablePairsManifestPending;
+}
+
+function normalizeConfusablePairsRecord(character, rawPartners) {
+   if (!Array.isArray(rawPartners) || !rawPartners.length) return null;
+   const partners = rawPartners
+      .filter((partner) => partner && typeof partner.character === "string")
+      .map((partner) =>
+         Object.freeze({
+            character: partner.character,
+            structural: partner.structural === true,
+            geometricScore: typeof partner.geometricScore === "number" ? partner.geometricScore : null,
+            activeTier: partner.activeTier === true,
+            diffStrokeIndex: Number.isInteger(partner.diffStrokeIndex) ? partner.diffStrokeIndex : null,
+         }),
+      );
+   if (!partners.length) return null;
+   return Object.freeze({ character, partners: Object.freeze(partners) });
+}
+
+async function loadConfusablePairsChunk(key, manifest) {
+   if (confusablePairsChunkCache.has(key)) return confusablePairsChunkCache.get(key);
+   if (confusablePairsChunkPending.has(key)) return confusablePairsChunkPending.get(key);
+   const declared = manifest.chunks.find((chunk) => chunk.key === key);
+   if (!declared) return {};
+   const request = fetch(new URL(declared.path, CONFUSABLE_PAIRS_ROOT).href, {
+      cache: "default",
+   })
+      .then(async (response) => {
+         if (!response.ok) throw new Error(`HTTP ${response.status}`);
+         const chunk = await response.json();
+         if (!chunk || typeof chunk !== "object" || Array.isArray(chunk))
+            throw new Error("Chunk de paires confusables invalide");
+         confusablePairsChunkCache.set(key, chunk);
+         return chunk;
+      })
+      .catch(() => ({}))
+      .finally(() => confusablePairsChunkPending.delete(key));
+   confusablePairsChunkPending.set(key, request);
+   return request;
+}
+
+async function loadConfusablePairs(values) {
+   const characters = confusablePairsCharacters(values);
+   const result = new Map();
+   const unresolved = characters.filter((character) => {
+      if (!confusablePairsCache.has(character)) return true;
+      result.set(character, confusablePairsCache.get(character));
+      return false;
+   });
+   if (!unresolved.length) return result;
+   const manifest = await loadConfusablePairsManifest();
+   if (!manifest) {
+      unresolved.forEach((character) => {
+         confusablePairsCache.set(character, null);
+         result.set(character, null);
+      });
+      return result;
+   }
+
+   const charactersByChunk = new Map();
+   unresolved.forEach((character) => {
+      const key = confusablePairsChunkKey(character);
+      if (!charactersByChunk.has(key)) charactersByChunk.set(key, []);
+      charactersByChunk.get(key).push(character);
+   });
+   await Promise.all(
+      Array.from(charactersByChunk, async ([key, chunkCharacters]) => {
+         const chunk = await loadConfusablePairsChunk(key, manifest);
+         chunkCharacters.forEach((character) => {
+            const record = normalizeConfusablePairsRecord(character, chunk[character]);
+            confusablePairsCache.set(character, record);
+            result.set(character, record);
+         });
+      }),
+   );
+   return result;
+}
+
+function preloadConfusablePairs(values) {
+   return loadConfusablePairs(values).catch(() => new Map());
+}
+
+// Lecture synchrone du cache déjà chargé (préchargé par preloadConfusablePairs),
+// pour les points d'appel qui ne peuvent pas attendre une promesse — notamment le
+// gestionnaire de notation en révision. undefined = pas encore chargé (à traiter
+// comme non éligible, jamais comme "pas de partenaire") ; null = confirmé sans
+// partenaire ; sinon l'enregistrement.
+function confusablePairsCached(character) {
+   return confusablePairsCache.has(character) ? confusablePairsCache.get(character) : undefined;
+}
+
+"use strict";
+
+const CONFUSABLE_PAIRS_DISPLAY_LIMIT = 2; // jamais plus de 2 partenaires affichés, quel que soit le nombre réel dans l'index
+const CONFUSABLE_PAIR_MINI_SETTINGS = { showGrid: false, showFuture: true, highlightRadical: false };
+
+function confusablePairsShellHtml() {
+   return '<section class="confusable-pairs" id="dd-confusable-pairs" hidden aria-label="Caractères à ne pas confondre"></section>';
+}
+
+function confusablePairMiniSvg(strokeCharacterData, diffIndex, labelledBy) {
+   if (!strokeCharacterData || !Number.isInteger(diffIndex)) return "";
+   return strokePanelSvg(strokeCharacterData, diffIndex, CONFUSABLE_PAIR_MINI_SETTINGS, labelledBy);
+}
+
+function confusablePairItemHtml(character, item, strokeData, index) {
+   const partnerCharacter = item.partner.character;
+   const labelId = "confusable-pair-label-" + index;
+   const selfSvg = confusablePairMiniSvg(strokeData.get(character), item.selfDiffIndex, labelId);
+   const partnerSvg = confusablePairMiniSvg(strokeData.get(partnerCharacter), item.partnerDiffIndex, labelId);
+   const hasDiagram = Boolean(selfSvg && partnerSvg);
+   return (
+      '<div class="confusable-pair-item">' +
+      (hasDiagram
+         ? '<span class="confusable-pair-mini" aria-hidden="true">' + selfSvg + "</span>" +
+           '<span class="confusable-pair-versus" aria-hidden="true">≠</span>'
+         : "") +
+      '<button type="button" class="chip hzchip confusable-pair-chip" data-confusable-character="' +
+      esc(partnerCharacter) + '" id="' + labelId + '" aria-label="Voir la fiche de ' + esc(partnerCharacter) + '">' +
+      (hasDiagram ? '<span class="confusable-pair-mini" aria-hidden="true">' + partnerSvg + "</span>" : "") +
+      '<span class="confusable-pair-chip-hanzi" lang="zh-Hans">' + esc(partnerCharacter) + "</span>" +
+      "</button></div>"
+   );
+}
+
+function confusablePairsHtml(character, items, strokeData) {
+   if (!items.length) return "";
+   return (
+      '<div class="eyebrow">À ne pas confondre</div>' +
+      '<div class="confusable-pairs-list">' +
+      items.map((item, index) => confusablePairItemHtml(character, item, strokeData, index)).join("") +
+      "</div>"
+   );
+}
+
+async function renderConfusablePairs(character, selector) {
+   const targets = Array.from(document.querySelectorAll(selector || "#dd-confusable-pairs"));
+   if (!targets.length) return;
+   let record = null;
+   try {
+      const ownMap = await loadConfusablePairs(character);
+      record = ownMap.get(character);
+   } catch (error) {
+      record = null;
+   }
+   if (!record || !record.partners.length) {
+      targets.forEach((target) => {
+         target.hidden = true;
+         target.innerHTML = "";
+      });
+      return;
+   }
+
+   const shown = record.partners.slice(0, CONFUSABLE_PAIRS_DISPLAY_LIMIT);
+   let partnerRecords = new Map();
+   try {
+      partnerRecords = await loadConfusablePairs(shown.map((partner) => partner.character));
+   } catch (error) {
+      partnerRecords = new Map();
+   }
+   const strokeCharacters = [character, ...shown.map((partner) => partner.character)];
+   const strokeData = new Map();
+   await Promise.all(
+      strokeCharacters.map(async (value) => {
+         try {
+            strokeData.set(value, await loadStrokeCharacterData(value));
+         } catch (error) {
+            strokeData.set(value, null);
+         }
+      }),
+   );
+
+   const items = shown.map((partner) => {
+      const partnerRecord = partnerRecords.get(partner.character);
+      const partnerOwnEntry = partnerRecord?.partners.find((entry) => entry.character === character);
+      return {
+         partner,
+         selfDiffIndex: partner.diffStrokeIndex,
+         partnerDiffIndex: partnerOwnEntry ? partnerOwnEntry.diffStrokeIndex : null,
+      };
+   });
+
+   targets.forEach((target) => {
+      target.hidden = false;
+      target.innerHTML = confusablePairsHtml(character, items, strokeData);
+      target.querySelectorAll("[data-confusable-character]").forEach((button) => {
+         button.onclick = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openCompositionCharacter(button.dataset.confusableCharacter);
+         };
+      });
+   });
+}
+
+"use strict";
+
 const STROKE_SVG_VIEWBOX = "0 0 1024 1024";
 let strokeGalleryObserver = null;
 let strokeFocusState = null;
@@ -17188,6 +17674,7 @@ function openDictDetail(rawEntry, options) {
          dictionaryHskSourceHtml(entry) +
          dictionaryEnglishDefinitionsHtml(entry) +
          dictionarySourcesHtml(entry) +
+         confusablePairsShellHtml() +
          '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
          '<div class="sh-btns"><button class="btn ghost wide" id="dd-close">' +
          (settings.fromSearch ? "← Retour aux résultats" : "Fermer") +
@@ -17349,6 +17836,7 @@ function wireDictDetail(entry, characters, card, token, options) {
                : nextIndex,
       });
       renderDictionaryRelatedWords(character, token);
+      renderConfusablePairs(character);
       if (characters.length > 1 && (!completionState || completionState.ready))
          renderDictionaryCharacterStudyCard(character, token, completionState);
    };

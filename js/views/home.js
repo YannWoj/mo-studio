@@ -97,9 +97,14 @@ function startCardsWith(cards, label, mode) {
       cards,
       index: 0,
       states: new Array(cards.length).fill(null),
-      live: { marked: 0, acquired: 0 },
+      live: { marked: 0, acquired: 0, confusableShown: 0 },
       scopeLabel: label,
    };
+   // Précharge le cache des paires confusables pour tous les caractères de la
+   // séance : le test d'éligibilité déclenché à chaque note doit rester une
+   // simple lecture de cache, jamais une requête réseau (voir
+   // js/confusable-pairs-review.js).
+   if (typeof preloadConfusablePairs === "function") preloadConfusablePairs(cards.map((card) => card.hz));
    document.body.classList.add("in-session");
    renderSession();
    window.scrollTo(0, 0);

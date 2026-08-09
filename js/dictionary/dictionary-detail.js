@@ -805,6 +805,7 @@ function openDictDetail(rawEntry, options) {
          dictionaryHskSourceHtml(entry) +
          dictionaryEnglishDefinitionsHtml(entry) +
          dictionarySourcesHtml(entry) +
+         confusablePairsShellHtml() +
          '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
          '<div class="sh-btns"><button class="btn ghost wide" id="dd-close">' +
          (settings.fromSearch ? "← Retour aux résultats" : "Fermer") +
@@ -966,6 +967,7 @@ function wireDictDetail(entry, characters, card, token, options) {
                : nextIndex,
       });
       renderDictionaryRelatedWords(character, token);
+      renderConfusablePairs(character);
       if (characters.length > 1 && (!completionState || completionState.ready))
          renderDictionaryCharacterStudyCard(character, token, completionState);
    };

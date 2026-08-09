@@ -104,6 +104,34 @@ formula and measured coverage, is written to
 `data/generated/learning-units/build-report.md`. Nothing under `learning-units/` is
 loaded at application startup; as of this data-only pass, no interface reads it yet.
 
+## Confusable-pairs index (visually similar character pairs)
+
+- Inputs: `data/generated/character-composition/` and `data/generated/hanzi-writer/2.0.1/`
+  (both already documented above), plus `data/generated/dictionary/`. The dictionary is
+  used only at build time to filter the comparable universe to characters actually in
+  the dictionary, and to detect simplified/traditional variant pairs to exclude (via the
+  same word-entry `simplified`/`traditional` fields already used by the Parcours
+  learning-unit lesson filter, `js/learning-units/learning-unit-lesson.js`). No
+  CC-CEDICT/CFDICT text (definitions, pinyin) is read or copied into this output.
+- Generated output: `data/generated/confusable-pairs/` (a per-character index of
+  visually or structurally confusable partner characters, each tagged with its
+  detection criterion, geometric similarity score, an `activeTier` flag, and — when
+  both characters share the same stroke count — the index of the stroke that differs
+  most between them).
+- Because it groups and re-scores the LGPL-derived composition data and derives stroke
+  indexes from the Arphic-licensed hanzi-writer-data medians, this output remains
+  subject to the GNU Lesser General Public License version 3 or later (Make Me a Hanzi,
+  via character-composition) and the Arphic Public License (hanzi-writer-data), the
+  same as the indexes it is built from. Unlike `learning-units/`, it does **not** carry
+  a CC BY-SA obligation from CC-CEDICT/CFDICT, since no dictionary gloss or pinyin text
+  is copied into the generated files — the dictionary is consulted only to decide
+  inclusion/exclusion, never quoted.
+
+Build and deterministic validation are provided by `npm run build:confusable-pairs` and
+`npm run validate:confusable-pairs`. The full build report, including both detection
+criteria, the two confidence tiers, and documented known gaps, is written to
+`data/generated/confusable-pairs/build-report.md`.
+
 ## Hanzi Writer character data
 
 - Package: `hanzi-writer-data`

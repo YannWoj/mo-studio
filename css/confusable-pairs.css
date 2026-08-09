@@ -1,0 +1,107 @@
+/* ================= fiche : ligne « à ne pas confondre » ================= */
+.confusable-pairs {
+   margin-top: 14px;
+   padding-top: 12px;
+   border-top: 1px solid var(--line-soft);
+}
+.confusable-pairs[hidden] {
+   display: none;
+}
+.confusable-pairs-list {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-top: 6px;
+}
+.confusable-pair-item {
+   display: flex;
+   align-items: center;
+   gap: 4px;
+}
+.confusable-pair-mini {
+   display: inline-block;
+   width: 30px;
+   height: 30px;
+   flex: none;
+}
+/* strokePathsSvg (js/strokes/stroke-gallery.js) colore les traits après l'indice
+   actif en gris clair "à venir", pensé pour l'animation progressive. Ici, rien
+   n'est "à venir" : on ne met en évidence qu'un seul trait qui diffère, le reste
+   du caractère doit rester net. */
+.confusable-pair-mini .stroke-future {
+   fill: #17140f;
+}
+.confusable-pair-versus {
+   color: var(--ink-faint);
+   font-size: 13px;
+}
+.confusable-pair-chip {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 5px 12px 5px 8px;
+}
+.confusable-pair-chip .confusable-pair-mini {
+   border-radius: 6px;
+   background: var(--card);
+}
+.confusable-pair-chip-hanzi {
+   font-size: 17px;
+}
+
+/* ================= révision : test de discrimination ================= */
+.confusable-test {
+   text-align: center;
+}
+.confusable-test-prompt {
+   margin: 4px 0 18px;
+   color: var(--ink-soft);
+   font-size: 15px;
+}
+.confusable-test-choices {
+   display: flex;
+   gap: 12px;
+   justify-content: center;
+}
+.confusable-test-choice {
+   flex: 1;
+   max-width: 150px;
+   padding: 22px 8px;
+   border: 1px solid var(--line);
+   border-radius: 14px;
+   background: var(--card-2);
+   font: 700 44px var(--serif);
+   color: var(--ink);
+   transition: all 0.15s;
+}
+.confusable-test-choice:active {
+   transform: scale(0.97);
+}
+.confusable-test-choice.ok {
+   border-color: var(--jade);
+   background: color-mix(in srgb, var(--jade) 14%, var(--card-2));
+   color: var(--jade);
+}
+.confusable-test-choice.ko {
+   border-color: var(--lacquer);
+   background: color-mix(in srgb, var(--lacquer) 14%, var(--card-2));
+   color: var(--lacquer);
+}
+.confusable-test-verdict {
+   margin-top: 16px;
+   font-size: 14.5px;
+   color: var(--ink-soft);
+}
+.confusable-test-verdict.ok {
+   color: var(--jade);
+}
+.confusable-test-verdict.ko {
+   color: var(--lacquer);
+}
+
+@media (max-width: 430px) {
+   .confusable-test-choice {
+      padding: 18px 6px;
+      font-size: 38px;
+   }
+}

@@ -1,0 +1,268 @@
+{
+  "format": "mo-studio-confusable-pairs-build-report",
+  "builderVersion": "1.0.0",
+  "derivedFrom": {
+    "characterCompositionBuildId": "d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a",
+    "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
+    "hanziWriterVersion": "2.0.1"
+  },
+  "criteria": {
+    "comparableUniverse": {
+      "description": "Intersection des caractères du dictionnaire et des caractères disposant de données hanzi-writer.",
+      "dictionaryCharacterCount": 14426,
+      "comparableCharacterCount": 9433
+    },
+    "strokeCountSource": "hanzi-writer 2.0.1 (strokes.length) — plus complet que character-radicals sur ce périmètre",
+    "strokeCountWindow": 1,
+    "structural": {
+      "description": "Ensemble des composants IDS de premier niveau nommés (composants inconnus \"？\" ignorés) identique entre les deux caractères (ordre indifférent), ensemble non vide, différence de traits ≤ 1."
+    },
+    "geometric": {
+      "description": "Grille d'occupation booléenne carrée, construite en échantillonnant les polylignes de médianes hanzi-writer ; similarité de Jaccard entre caractères de traits ±1.",
+      "gridSize": 24,
+      "gridBox": 1024,
+      "samplesPerCell": 2,
+      "dilationTestedAndRejected": true,
+      "mutualTopKTestedAndRejected": true,
+      "retentionThreshold": 0.47,
+      "activeTierThreshold": 0.65
+    },
+    "simplifiedTraditionalExclusion": {
+      "description": "Réutilise le mécanisme déjà écrit pour le Parcours (js/learning-units/learning-unit-lesson.js : dictionaryWordEntriesForCharacter + simplifiedTraditionalPairFor) : une entrée de dictionnaire de type mot dont le simplifié est le caractère et le traditionnel distinct (un seul caractère) désigne un couple à exclure."
+    },
+    "retentionRule": "structurel OU géométrique(≥ seuil de rétention), puis exclusion des couples simplifié/traditionnel",
+    "activeTierRule": "structurel OU géométrique(≥ seuil du niveau révision) — sous-ensemble du niveau fiche"
+  },
+  "counts": {
+    "comparableCharacterCount": 9433,
+    "dictionaryCharacterCount": 14426,
+    "structuralPairCount": 120,
+    "geometricPairCount": 3048,
+    "unionPreExclusionCount": 3158,
+    "simplifiedTraditionalPairsInDictionary": 3717,
+    "removedAsSimplifiedTraditionalVariantCount": 72,
+    "finalPairCount": 3086,
+    "activeTierPairCount": 157,
+    "passiveOnlyPairCount": 2929,
+    "charactersWithAtLeastOnePartner": 3487
+  },
+  "requiredVerificationPairs": [
+    {
+      "a": "未",
+      "b": "末",
+      "found": true,
+      "structural": true,
+      "geometricScore": 0.6702127659574468,
+      "activeTier": true
+    },
+    {
+      "a": "日",
+      "b": "曰",
+      "found": true,
+      "structural": true,
+      "geometricScore": null,
+      "activeTier": true
+    },
+    {
+      "a": "己",
+      "b": "已",
+      "found": true,
+      "structural": false,
+      "geometricScore": 0.4935064935064935,
+      "activeTier": false
+    },
+    {
+      "a": "土",
+      "b": "士",
+      "found": true,
+      "structural": false,
+      "geometricScore": 0.47692307692307695,
+      "activeTier": false
+    }
+  ],
+  "knownGaps": [
+    {
+      "a": "已",
+      "b": "巳",
+      "reason": "已 absent des données de composition ; score géométrique sous le seuil de rétention",
+      "geometricScore": 0.29411764705882354,
+      "inFinalIndex": false
+    },
+    {
+      "a": "人",
+      "b": "入",
+      "reason": "décomposition atomique des deux côtés ; score géométrique sous le seuil de rétention",
+      "geometricScore": 0.18840579710144928,
+      "inFinalIndex": false
+    },
+    {
+      "a": "己",
+      "b": "巳",
+      "reason": "ne partagent qu'un seul composant nommé ({乚}) ; score géométrique sous le seuil de rétention — voir la note sur l'exigence d'au moins deux composants nommés",
+      "geometricScore": 0.2696629213483146,
+      "inFinalIndex": false
+    }
+  ],
+  "removedAsVariantSample": [
+    {
+      "a": "丟",
+      "b": "丢"
+    },
+    {
+      "a": "佛",
+      "b": "彿"
+    },
+    {
+      "a": "侣",
+      "b": "侶"
+    },
+    {
+      "a": "兌",
+      "b": "兑"
+    },
+    {
+      "a": "內",
+      "b": "内"
+    },
+    {
+      "a": "冊",
+      "b": "册"
+    },
+    {
+      "a": "冲",
+      "b": "沖"
+    },
+    {
+      "a": "决",
+      "b": "決"
+    },
+    {
+      "a": "凉",
+      "b": "涼"
+    },
+    {
+      "a": "删",
+      "b": "刪"
+    },
+    {
+      "a": "別",
+      "b": "别"
+    },
+    {
+      "a": "券",
+      "b": "劵"
+    },
+    {
+      "a": "刹",
+      "b": "剎"
+    },
+    {
+      "a": "剝",
+      "b": "剥"
+    },
+    {
+      "a": "剿",
+      "b": "勦"
+    },
+    {
+      "a": "勻",
+      "b": "匀"
+    },
+    {
+      "a": "卺",
+      "b": "巹"
+    },
+    {
+      "a": "厮",
+      "b": "廝"
+    },
+    {
+      "a": "吕",
+      "b": "呂"
+    },
+    {
+      "a": "吳",
+      "b": "吴"
+    },
+    {
+      "a": "嘘",
+      "b": "噓"
+    },
+    {
+      "a": "够",
+      "b": "夠"
+    },
+    {
+      "a": "奥",
+      "b": "奧"
+    },
+    {
+      "a": "娛",
+      "b": "娱"
+    },
+    {
+      "a": "宫",
+      "b": "宮"
+    },
+    {
+      "a": "寝",
+      "b": "寢"
+    },
+    {
+      "a": "廩",
+      "b": "廪"
+    },
+    {
+      "a": "弑",
+      "b": "弒"
+    },
+    {
+      "a": "強",
+      "b": "强"
+    },
+    {
+      "a": "彝",
+      "b": "彞"
+    },
+    {
+      "a": "彥",
+      "b": "彦"
+    },
+    {
+      "a": "恆",
+      "b": "恒"
+    },
+    {
+      "a": "悅",
+      "b": "悦"
+    },
+    {
+      "a": "愠",
+      "b": "慍"
+    },
+    {
+      "a": "懑",
+      "b": "懣"
+    },
+    {
+      "a": "戶",
+      "b": "户"
+    },
+    {
+      "a": "抛",
+      "b": "拋"
+    },
+    {
+      "a": "搒",
+      "b": "榜"
+    },
+    {
+      "a": "搖",
+      "b": "摇"
+    },
+    {
+      "a": "撐",
+      "b": "撑"
+    }
+  ]
+}

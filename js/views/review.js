@@ -667,6 +667,8 @@ function wireReviewStrokeBlock(c, st) {
                      const g = b.dataset.grade;
                      st.grade = g;
                      applyGrade(c, g);
+                     if (typeof maybeShowConfusablePairTest === "function" && maybeShowConfusablePairTest(c, advance))
+                        return;
                      advance();
                   }),
             );
