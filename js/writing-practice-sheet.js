@@ -8,28 +8,66 @@ function writingPracticeCharacters(value) {
    );
 }
 
-function writingPracticeCharacterPickerHtml(characters, selectedIndex) {
+// Pinyin aligné sur les caractères Han : une syllabe par caractère, sinon rien.
+// En révision, mieux vaut n'afficher aucun pinyin que d'en deviner un — « yī diǎnr »
+// compte deux syllabes pour les trois caractères de 一点儿.
+function writingPracticePinyinSyllables(characters, pinyin) {
+   const syllables = String(pinyin || "").trim().split(/\s+/).filter(Boolean);
+   return syllables.length === characters.length ? syllables : [];
+}
+
+// Point unique où se décide ce que la modale montre et annonce d'un caractère.
+// En mode « review », rien ici ne doit contenir le caractère lui-même : ni à
+// l'écran, ni pour un lecteur d'écran. Le pinyin sert de consigne ; à défaut, le
+// rang du caractère dans le mot.
+function writingPracticeLabels(characters, pinyin, review) {
+   const syllables = review ? writingPracticePinyinSyllables(characters, pinyin) : [];
+   return characters.map((character, index) => {
+      if (!review)
+         return {
+            title: character,
+            pill: character,
+            pick: "Tracer " + character,
+            canvas: "Zone d’essai pour " + character,
+         };
+      const syllable = syllables[index] || "";
+      const rank = "caractère " + (index + 1) + " sur " + characters.length;
+      return {
+         title: syllable,
+         pill: syllable || String(index + 1),
+         pick: syllable ? "Tracer " + syllable : "Tracer le " + rank,
+         canvas: syllable ? "Zone d’essai pour " + syllable : "Zone d’essai",
+      };
+   });
+}
+
+function writingPracticeCharacterPickerHtml(characters, selectedIndex, labels, review) {
    if (characters.length <= 1) return "";
    return (
       '<div class="review-stroke-characters writing-practice-character-picker" aria-label="Caractères du mot">' +
       characters.map((character, index) =>
-         '<button type="button" class="review-stroke-character" data-writing-practice-character="' +
+         '<button type="button" class="review-stroke-character' +
+         (review ? " writing-practice-character-review" : "") +
+         '" data-writing-practice-character="' +
          index + '" aria-pressed="' + String(index === selectedIndex) +
-         '" aria-label="Tracer ' + esc(character) + '">' + esc(character) + "</button>",
+         '" aria-label="' + esc(labels[index].pick) + '">' + esc(labels[index].pill) + "</button>",
       ).join("") +
       "</div>"
    );
 }
 
-function writingPracticeSheetHtml(word, characters, selectedIndex, preferences) {
+function writingPracticeSheetHtml(word, characters, selectedIndex, preferences, labels, review) {
    const character = characters[selectedIndex];
    return (
       '<article class="review-writing-practice writing-practice-dialog" role="dialog" aria-modal="true" aria-labelledby="writing-practice-title" data-writing-practice-word="' +
-      esc(word) + '" data-review-writing-character="' + esc(character) + '">' +
+      esc(word) + '" data-review-writing-character="' + esc(character) + '" data-writing-practice-mode="' +
+      (review ? "review" : "search") + '">' +
       '<button class="sheet-x writing-practice-close" type="button" aria-label="Fermer">×</button>' +
       '<header class="review-writing-head"><div><p class="eyebrow">Essai rapide</p>' +
-      '<h3 class="sh-t" id="writing-practice-title">Tracer <span>' + esc(character) + "</span></h3></div></header>" +
-      writingPracticeCharacterPickerHtml(characters, selectedIndex) +
+      '<h3 class="sh-t" id="writing-practice-title">Tracer <span' +
+      (review ? ' class="writing-practice-title-pinyin"' : "") + ">" +
+      esc(labels[selectedIndex].title) + "</span></h3></div></header>" +
+      writingPracticeCharacterPickerHtml(characters, selectedIndex, labels, review) +
       '<div class="review-writing-model-controls writing-practice-sliders">' +
       '<label for="review-writing-width"><span>Trait</span><output id="review-writing-width-value">' +
       preferences.width + ' px</output><input id="review-writing-width" type="range" min="1" max="24" step="1" value="' +
@@ -40,7 +78,7 @@ function writingPracticeSheetHtml(word, characters, selectedIndex, preferences) 
       '<div class="writing-surface review-writing-surface" id="review-writing-surface" data-grid="' + preferences.grid + '">' +
       '<div class="writing-model review-writing-model" id="review-writing-model" aria-hidden="true" style="opacity:' + preferences.opacity + '"' +
       (preferences.modelVisible ? "" : " hidden") + ">" + esc(character) + "</div>" +
-      '<canvas class="writing-canvas" id="review-writing-canvas" aria-label="Zone d’essai pour ' + esc(character) + '" tabindex="0"></canvas>' +
+      '<canvas class="writing-canvas" id="review-writing-canvas" aria-label="' + esc(labels[selectedIndex].canvas) + '" tabindex="0"></canvas>' +
       writingModelToggleButtonHtml("review-writing-model-visible", preferences.modelVisible, false, "writing-surface-model-toggle") + "</div>" +
       '<section class="review-writing-grids" aria-labelledby="review-writing-grid-title"><div class="review-writing-grid-head">' +
       '<h4 id="review-writing-grid-title">Grille</h4><small>Le tracé reste intact</small></div>' +
@@ -74,13 +112,19 @@ function openWritingPracticeSheet(word, options) {
       0,
       Math.min(Number(options && options.initialIndex) || 0, characters.length - 1),
    );
+   // « review » : ouverte depuis une séance, la modale est un exercice de rappel.
+   // « search » (défaut) : ouverte depuis l'atelier des traits, comportement inchangé.
+   const review = (options && options.mode) === "review";
+   const labels = writingPracticeLabels(characters, options && options.pinyin, review);
    const basePreferences = writingPreferences();
+   // copie de travail : masquer le modèle en révision ne doit jamais toucher le
+   // réglage persisté qu'utilise la page Écrire.
    const preferences = {
       color: basePreferences.color,
       width: basePreferences.width,
       grid: basePreferences.grid,
       opacity: basePreferences.opacity,
-      modelVisible: basePreferences.modelVisible,
+      modelVisible: review ? false : basePreferences.modelVisible,
    };
    const slot = { actions: [], redo: [] };
    const listeners = new AbortController();
@@ -89,8 +133,8 @@ function openWritingPracticeSheet(word, options) {
       .filter(Boolean)
       .map((element) => ({ element, inert: element.inert }));
    const root = document.createElement("div");
-   root.className = "writing-practice-backdrop";
-   root.innerHTML = writingPracticeSheetHtml(visibleWord, characters, selectedIndex, preferences);
+   root.className = "writing-practice-backdrop" + (review ? " writing-practice-backdrop-review" : "");
+   root.innerHTML = writingPracticeSheetHtml(visibleWord, characters, selectedIndex, preferences, labels, review);
    document.body.appendChild(root);
    inertStates.forEach(({ element }) => (element.inert = true));
    const previousBodyOverflow = document.body.style.overflow;
@@ -129,10 +173,12 @@ function openWritingPracticeSheet(word, options) {
       const character = characters[state.selectedIndex];
       slot.actions.length = 0;
       slot.redo.length = 0;
+      const label = labels[state.selectedIndex];
       root.querySelector(".writing-practice-dialog").dataset.reviewWritingCharacter = character;
-      root.querySelector("#writing-practice-title span").textContent = character;
+      root.querySelector("#writing-practice-title span").textContent = label.title;
+      // le modèle porte toujours le vrai caractère : c'est lui que l'œil révèle
       root.querySelector("#review-writing-model").textContent = character;
-      canvas.setAttribute("aria-label", "Zone d’essai pour " + character);
+      canvas.setAttribute("aria-label", label.canvas);
       root.querySelectorAll("[data-writing-practice-character]").forEach((button) =>
          button.setAttribute(
             "aria-pressed",

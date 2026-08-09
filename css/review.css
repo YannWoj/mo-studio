@@ -170,6 +170,13 @@
          .fl-seal {
             margin-right: -2px;
          }
+         /* crayon du recto : à portée de pouce, hors du flux qui défile */
+         .fl-practice {
+            position: absolute;
+            z-index: 2;
+            right: 12px;
+            bottom: 12px;
+         }
          .seal {
             width: 44px;
             height: 44px;
@@ -404,7 +411,8 @@
             position: absolute;
             z-index: 3;
             right: 12px;
-            bottom: 12px;
+            /* au-dessus du crayon du recto, jamais par-dessus */
+            bottom: 64px;
             left: 12px;
             margin: 0;
             padding: 8px 14px;
@@ -738,6 +746,11 @@
             padding: 8px;
             background: rgba(23, 20, 15, .68);
          }
+         /* ouverte depuis une séance : la carte derrière ne doit plus être lisible */
+         .writing-practice-backdrop-review {
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+         }
          .writing-practice-dialog {
             position: relative;
             width: min(480px, 100%);
@@ -763,10 +776,22 @@
             color: var(--lacquer);
             font: 600 30px var(--serif);
          }
+         /* en révision le titre porte le pinyin : même couleur, corps adapté au texte */
+         .review-writing-head .sh-t span.writing-practice-title-pinyin {
+            font: 600 25px var(--disp);
+            letter-spacing: 0.01em;
+         }
          .writing-practice-character-picker {
             gap: 6px;
             margin: 8px 0 6px;
             padding-bottom: 2px;
+         }
+         /* pastilles au pinyin (ou au rang) : plus larges qu'un carré de caractère */
+         .writing-practice-character-picker .writing-practice-character-review {
+            flex: 0 0 auto;
+            min-width: 44px;
+            padding: 0 11px;
+            font: 600 14px var(--ui);
          }
          .review-writing-model-controls {
             display: flex;

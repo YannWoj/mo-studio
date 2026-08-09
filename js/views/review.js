@@ -104,6 +104,13 @@ function reviewStrokeBlockHtml(c, st) {
    );
 }
 
+// Depuis une séance, l'entraînement est un exercice de rappel : modèle masqué,
+// consigne en pinyin, arrière-plan flouté (voir js/writing-practice-sheet.js).
+function openReviewWritingPractice(c, initialIndex) {
+   if (!c || typeof openWritingPracticeSheet !== "function") return;
+   openWritingPracticeSheet(c.hz, { mode: "review", pinyin: c.py, initialIndex });
+}
+
 function setReviewStrokeCountLabel(text) {
    // Le compteur de traits vit désormais hors du panneau Animation : il reste
    // donc visible sous l'onglet Étapes et doit être mis à jour dans les deux cas.
@@ -242,7 +249,7 @@ function wireReviewStrokeBlock(c, st) {
    );
    $("review-stroke-practice").onclick = () => {
       const index = Math.max(0, Math.min(Number(st.strokeCharacterIndex) || 0, characters.length - 1));
-      openWritingPracticeSheet(c.hz, { initialIndex: index });
+      openReviewWritingPractice(c, index);
    };
    $("review-stroke-replay").onclick = () => {
       if (!reviewStrokeData) return;
@@ -518,6 +525,16 @@ function wireReviewStrokeBlock(c, st) {
             // verso (cartes) ou réponse vérifiée (écrit) : boutons de notation SRS
             return gradesHtml(c);
          }
+         // Crayon du recto : s'entraîner avant d'avoir vu la réponse. Il n'ouvre que la
+         // modale — pas de retournement, pas de changement de st.revealed.
+         function sessionPracticeButtonHtml() {
+            return (
+               '<button type="button" class="stroke-icon-button fl-practice" id="s-practice" ' +
+               'aria-label="S’entraîner à écrire" title="S’entraîner à écrire">' +
+               strokeWriteIconHtml() +
+               "</button>"
+            );
+         }
          function sessionSwipeHintHtml() {
             return (
                '<div class="session-swipe-hint" role="status" aria-live="polite">' +
@@ -605,6 +622,9 @@ function wireReviewStrokeBlock(c, st) {
             }[session.mode];
             const showSwipeHint = session.index === 0 && !sessionSwipeHintSeen;
             if (showSwipeHint) markSwipeHintSeen();
+            // le verso garde son propre accès dans « Écriture du caractère »
+            const showPracticeButton =
+               session.mode === "cards" && !st.revealed && reviewHanzi(c.hz).length > 0;
             $("view").innerHTML =
                '<section class="sess" id="sess">' +
                '<div class="s-top">' +
@@ -638,6 +658,7 @@ function wireReviewStrokeBlock(c, st) {
                '<div class="fl-body"><div class="fl-inner">' +
                body +
                "</div></div>" +
+               (showPracticeButton ? sessionPracticeButtonHtml() : "") +
                (showSwipeHint ? sessionSwipeHintHtml() : "") +
                "</div>" +
                sessionFooterHtml(c, st) +
@@ -757,6 +778,8 @@ function wireReviewStrokeBlock(c, st) {
                fl.style.cursor = "pointer";
                fl.onclick = (e) => tapCard(e.target);
             }
+            if ($("s-practice"))
+               $("s-practice").onclick = () => openReviewWritingPractice(c, 0);
             if ($("s-next")) $("s-next").onclick = advance;
             if ($("s-prev"))
                $("s-prev").onclick = previousCard;

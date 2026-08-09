@@ -170,9 +170,13 @@ async function main() {
       return {character:document.querySelector('.review-writing-practice').dataset.reviewWritingCharacter,word:document.querySelector('.review-writing-practice').dataset.writingPracticeWord,characters:document.querySelectorAll('[data-writing-practice-character]').length,model:model.textContent.trim(),sheetHeight:rect.height,viewport:innerHeight,top:rect.top,width:rect.width,surfaceSize:[surfaceRect.width,surfaceRect.height],surfaceMinHeight:getComputedStyle(surface).minHeight,overflow:document.documentElement.scrollWidth>innerWidth,canvasTouch:getComputedStyle(canvas).touchAction,grids:document.querySelectorAll('.review-writing-practice [data-writing-grid]').length,widthControl:!!document.querySelector('#review-writing-width'),undo:!!document.querySelector('#review-writing-undo'),touchTargets:undersizedTargets.length===0,undersizedTargets,session:{active:session.active,index:session.index,card:currentCard().id,stroke:getState(session.index).strokeCharacterIndex,tab:reviewStrokeTab},inert:document.querySelector('#view').inert};
    })()`);
    assert(practiceLayout.character==='好'&&practiceLayout.word==='你好吗'&&practiceLayout.characters===3&&practiceLayout.model==='好'&&practiceLayout.sheetHeight<=practiceLayout.viewport-16+1&&practiceLayout.top>0&&practiceLayout.width<practiceLayout.viewport&&Math.abs(practiceLayout.surfaceSize[0]-practiceLayout.surfaceSize[1])<1&&!practiceLayout.overflow&&practiceLayout.canvasTouch==='none'&&practiceLayout.grids===4&&practiceLayout.widthControl&&practiceLayout.undo&&practiceLayout.touchTargets&&practiceLayout.session.active&&practiceLayout.session.index===0&&practiceLayout.session.card==='c1'&&practiceLayout.session.stroke===1&&practiceLayout.session.tab==='steps'&&practiceLayout.inert, `compact review writing layout/state failed: ${JSON.stringify(practiceLayout)}`);
+   // Ouverte depuis une séance, la modale est un exercice de rappel : le modèle part
+   // masqué et c'est l'utilisateur qui décide de le révéler.
+   assert(await evaluate("document.querySelector('#review-writing-model').hidden&&document.querySelector('#review-writing-model-visible').getAttribute('aria-pressed')==='false'&&document.querySelector('.writing-practice-backdrop').classList.contains('writing-practice-backdrop-review')"), "review writing practice revealed the model or skipped the blurred backdrop");
    await click("#review-writing-model-visible");
-   assert(await evaluate("document.querySelector('#review-writing-model').hidden"), "review writing model toggle did not hide the guide");
+   assert(await evaluate("!document.querySelector('#review-writing-model').hidden&&document.querySelector('#review-writing-model').textContent==='好'"), "review writing model toggle did not reveal the guide");
    await click("#review-writing-model-visible");
+   assert(await evaluate("document.querySelector('#review-writing-model').hidden"), "review writing model toggle did not hide the guide again");
    await evaluate("(() => {const input=document.querySelector('#review-writing-opacity');input.value='31';input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-writing-grid=mi]').click();})()");
    const practiceGesture = await evaluate(`(() => {
       const canvas=document.querySelector('#review-writing-canvas'),rect=canvas.getBoundingClientRect(),x=rect.left+rect.width*.35,y=rect.top+rect.height*.35,init={bubbles:true,cancelable:true,isPrimary:true,pointerId:71,pointerType:'touch',button:0};
@@ -182,7 +186,7 @@ async function main() {
       canvas.dispatchEvent(new PointerEvent('pointerup',{...init,clientX:x+64,clientY:y+48}));
       return {selection:getSelection().toString(),clearDisabled:document.querySelector('#review-writing-clear').disabled,grid:document.querySelector('#review-writing-surface').dataset.grid,opacity:document.querySelector('#review-writing-opacity-value').textContent,modelHidden:document.querySelector('#review-writing-model').hidden};
    })()`);
-   assert(!practiceGesture.selection&&!practiceGesture.clearDisabled&&practiceGesture.grid==='mi'&&practiceGesture.opacity==='31%'&&!practiceGesture.modelHidden, `review writing controls/touch failed: ${JSON.stringify(practiceGesture)}`);
+   assert(!practiceGesture.selection&&!practiceGesture.clearDisabled&&practiceGesture.grid==='mi'&&practiceGesture.opacity==='31%'&&practiceGesture.modelHidden, `review writing controls/touch failed: ${JSON.stringify(practiceGesture)}`);
    await evaluate("document.querySelector('.review-writing-practice .sheet-x').focus({preventScroll:true});document.querySelector('.writing-practice-dialog').scrollTop=0");
    await new Promise((resolve) => setTimeout(resolve, 300));
    const practiceImage = await cdp.send("Page.captureScreenshot", { format:"png", fromSurface:true });
@@ -221,12 +225,14 @@ async function main() {
       await cdp.send("Input.dispatchMouseEvent", { type:"mousePressed", x:point.x, y:point.y, button:"left", buttons:1, clickCount:1 });
       await cdp.send("Input.dispatchMouseEvent", { type:"mouseReleased", x:point.x, y:point.y, button:"left", buttons:0, clickCount:1 });
    }
+   // recto 中文 imposé : avec le sens « Mélanger », un recto français masque le sceau
+   // audio (hideSay) et le point visé retomberait sur la carte elle-même.
    for (const fractionY of [0.08, 0.94]) {
-      await evaluate("getState(0).revealed=false;renderSession()");
+      await evaluate("getState(0).front='zh';getState(0).revealed=false;renderSession()");
       await tapCard(fractionY);
       assert(await evaluate("getState(0).revealed===true"), `tap at ${fractionY * 100}% of the enlarged card did not flip it`);
    }
-   await evaluate("getState(0).revealed=false;renderSession()");
+   await evaluate("getState(0).front='zh';getState(0).revealed=false;renderSession()");
    await evaluate(`(() => { const r=document.querySelector('.fl-seal').getBoundingClientRect(); const point={x:r.left+r.width/2,y:r.top+r.height/2}; window.__sealPoint=point; return true; })()`);
    const sealPoint = await evaluate("window.__sealPoint");
    await cdp.send("Input.dispatchMouseEvent", { type:"mousePressed", x:sealPoint.x, y:sealPoint.y, button:"left", buttons:1, clickCount:1 });
@@ -234,6 +240,52 @@ async function main() {
    assert(await evaluate("getState(0).revealed===false"), "the audio seal flipped the card");
    pass("appui n’importe où sur la carte pleine hauteur, contrôles toujours protégés");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
+
+   // Entraînement à l'écriture depuis le recto : exercice de rappel, pas de réponse.
+   // « leaks » ne retient que les caractères du mot révisé : les noms de grille
+   // (田字格, 米字格) sont des libellés fixes, ils ne donnent aucune réponse.
+   const practiceAudit = (answer) => `(() => {
+      const dialog=document.querySelector('.writing-practice-dialog'),strings=[],answer=[...${JSON.stringify(answer)}];
+      dialog.querySelectorAll('*').forEach((node)=>{
+         if (node.hidden||node.closest('[hidden]')) return;
+         for (const attribute of ['aria-label','title','alt','placeholder'])
+            if (node.hasAttribute(attribute)) strings.push(node.getAttribute(attribute));
+         const own=[...node.childNodes].filter((child)=>child.nodeType===3).map((child)=>child.nodeValue).join('');
+         if (own.trim()&&!node.closest('[aria-hidden="true"]')) strings.push(own);
+      });
+      return {mode:dialog.dataset.writingPracticeMode,title:document.querySelector('#writing-practice-title').textContent.trim(),
+         canvas:document.querySelector('#review-writing-canvas').getAttribute('aria-label'),
+         pills:[...document.querySelectorAll('[data-writing-practice-character]')].map((button)=>button.textContent),
+         modelHidden:document.querySelector('#review-writing-model').hidden,
+         blurred:document.querySelector('.writing-practice-backdrop').classList.contains('writing-practice-backdrop-review'),
+         leaks:strings.filter((value)=>answer.some((character)=>value.includes(character)))};
+   })()`;
+   await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();startCardsWith([db.cards.find(c=>c.id==='c1'),db.cards.find(c=>c.id==='c2')],'Recto','cards')");
+   const preferenceBefore = await evaluate("JSON.stringify(JSON.parse(localStorage.getItem(DB_KEY)).settings.writingBoard)");
+   assert(await evaluate("!!document.querySelector('#s-practice')&&getState(0).revealed===false"), "front-of-card practice entry missing");
+   await evaluate("(() => {const button=document.querySelector('#s-practice');button.focus({preventScroll:true});button.click();})()");
+   await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')&&document.querySelector('#review-writing-canvas')?.width>1"), "front-of-card writing practice did not open");
+   const fromFront = await evaluate(practiceAudit('你好吗'));
+   assert(fromFront.mode==='review'&&fromFront.modelHidden&&fromFront.blurred&&fromFront.title==='Tracer nǐ'&&fromFront.canvas==='Zone d’essai pour nǐ'&&JSON.stringify(fromFront.pills)===JSON.stringify(['nǐ','hǎo','ma'])&&!fromFront.leaks.length, `front-of-card practice leaked the answer: ${JSON.stringify(fromFront)}`);
+   await evaluate("document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))");
+   await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')"), "front-of-card practice did not close");
+   assert(await evaluate("session.active&&session.index===0&&getState(0).revealed===false&&!!document.querySelector('#s-practice')&&document.activeElement===document.querySelector('#s-practice')"), "front-of-card practice flipped the card or lost focus");
+   assert((await evaluate("JSON.stringify(JSON.parse(localStorage.getItem(DB_KEY)).settings.writingBoard)")) === preferenceBefore, "review practice wrote the hidden model into the saved preferences");
+   // pinyin non alignable sur les caractères (朋友 · « péngyou ») : ni pinyin inventé, ni caractère en repli
+   await evaluate("advance()"); // le recto n'expose pas #s-next : la barre de navigation vit sous les notes
+   await evaluate("(() => {const button=document.querySelector('#s-practice');button.focus({preventScroll:true});button.click();})()");
+   await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')"), "second front-of-card practice did not open");
+   const withoutPinyin = await evaluate(practiceAudit('朋友'));
+   assert(withoutPinyin.title==='Tracer'&&JSON.stringify(withoutPinyin.pills)===JSON.stringify(['1','2'])&&withoutPinyin.canvas==='Zone d’essai'&&!withoutPinyin.leaks.length, `unaligned pinyin fallback failed: ${JSON.stringify(withoutPinyin)}`);
+   await click(".writing-practice-close");
+   // l'atelier des traits garde son comportement : modèle visible, caractère au titre, pas de flou
+   await evaluate("openWritingPracticeSheet('你')");
+   await waitFor(() => evaluate("!!document.querySelector('.writing-practice-backdrop')&&document.querySelector('#review-writing-canvas')?.width>1"), "search-mode writing practice did not open");
+   const fromSearch = await evaluate(practiceAudit(''));
+   assert(fromSearch.mode==='search'&&!fromSearch.modelHidden&&!fromSearch.blurred&&fromSearch.title==='Tracer 你'&&fromSearch.canvas==='Zone d’essai pour 你', `search-mode writing practice changed: ${JSON.stringify(fromSearch)}`);
+   await click(".writing-practice-close");
+   await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
+   pass("entraînement contextuel : rappel en révision, atelier des traits inchangé");
 
    await evaluate("document.body.style.minHeight='';reviewSelectionMode='all';reviewMode='cards';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewOptionsOpen=false;clearSavedSession();renderLearn()");
    for (const [width,height,screenshot] of [[390,844,reviewHubMobileScreenshot],[1440,900,reviewHubDesktopScreenshot]]) {
