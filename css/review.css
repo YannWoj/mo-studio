@@ -5,9 +5,18 @@
          body.in-seq .top {
             display: none;
          }
-         body.in-session,
          body.in-seq {
             padding-bottom: 28px;
+         }
+         /* En séance la barre de navigation et l'en-tête sont masqués : toute la
+            hauteur du viewport revient à la colonne de séance, qui gère elle-même
+            ses marges et les zones sûres iOS. */
+         body.in-session {
+            padding-bottom: 0;
+         }
+         body.in-session #view {
+            max-width: none;
+            padding: 0;
          }
          .dict-stats {
             display: grid;
@@ -40,12 +49,26 @@
             font-size: 13px;
             color: var(--ink-faint);
          }
+         /* colonne pleine hauteur : zones fixes en haut et en bas, carte extensible
+            au milieu. 100dvh et non 100vh — la barre d'adresse mobile fausse vh. */
          .sess {
-            padding-top: 10px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 560px;
+            /* hauteur définie, sinon la colonne s'étire avec la carte et c'est la
+               page qui défile au lieu du contenu de la carte. Si les zones fixes
+               dépassaient malgré tout, le débordement reste visible et défilable. */
+            height: 100dvh;
+            margin: 0 auto;
+            padding: calc(8px + env(safe-area-inset-top)) 16px
+               calc(10px + env(safe-area-inset-bottom));
             touch-action: pan-y;
          }
          .s-top {
             display: flex;
+            flex: none;
             align-items: center;
             gap: 10px;
             margin-bottom: 8px;
@@ -74,11 +97,12 @@
             color: var(--ink-soft);
          }
          .s-bar {
+            flex: none;
             height: 4px;
             border-radius: 99px;
             background: var(--line-soft);
             overflow: hidden;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
          }
          .s-bar i {
             display: block;
@@ -88,18 +112,46 @@
             transition: width 0.25s;
          }
          .flash {
-            padding: 52px 20px 24px;
-            text-align: center;
-            min-height: 330px;
             display: flex;
+            flex: 1 1 auto;
+            /* min-height: 0 laisse la carte se caler sur la place restante ; c'est
+               son contenu qui défile, jamais la page. */
+            min-height: 0;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            padding: 12px 18px 16px;
+            text-align: center;
             max-width: 100%;
             touch-action: pan-y;
             transform: translateX(0);
             transition: transform 140ms ease, box-shadow 140ms ease;
             will-change: transform;
+         }
+         .fl-tools {
+            display: flex;
+            flex: none;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            min-height: 44px;
+         }
+         .fl-body {
+            display: flex;
+            flex: 1 1 auto;
+            min-height: 0;
+            flex-direction: column;
+            overflow-y: auto;
+            overscroll-behavior-block: contain;
+            scrollbar-width: thin;
+         }
+         /* marges automatiques plutôt que justify-content : le centrage tient sans
+            rogner le haut du contenu quand le verso déplié dépasse. */
+         .fl-inner {
+            display: flex;
+            width: 100%;
+            min-width: 0;
+            flex-direction: column;
+            align-items: center;
+            margin-block: auto;
          }
          .flash.is-session-dragging {
             cursor: grabbing !important;
@@ -116,9 +168,7 @@
             box-shadow: 20px 0 30px -16px color-mix(in srgb, var(--lacquer) 60%, transparent);
          }
          .fl-seal {
-            position: absolute;
-            top: 14px;
-            right: 14px;
+            margin-right: -2px;
          }
          .seal {
             width: 44px;
@@ -205,6 +255,28 @@
             font-style: italic;
             margin-top: 2px;
          }
+         /* Section « Écriture du caractère » dépliée : l'en-tête du mot se resserre
+            pour laisser la place à la grille, sans rien retirer du verso. */
+         .flash:has(#review-strokes[open]) .hanzi {
+            font-size: clamp(42px, 13vw, 64px);
+         }
+         .flash:has(#review-strokes[open]) .pinyin {
+            margin-top: 5px;
+            font-size: 18px;
+         }
+         .flash:has(#review-strokes[open]) .acts-compact {
+            margin-top: 8px;
+         }
+         .flash:has(#review-strokes[open]) .sep {
+            margin: 10px auto 7px;
+         }
+         .flash:has(#review-strokes[open]) .fr {
+            font-size: 20px;
+         }
+         .flash:has(#review-strokes[open]) .ex {
+            margin-top: 9px;
+            padding: 9px 12px;
+         }
          .note {
             margin-top: 12px;
             font-size: 13.5px;
@@ -242,6 +314,59 @@
             background: var(--jade);
             border-color: var(--jade);
          }
+         /* actions secondaires de la séance : un trio d'icônes, pas une ligne pleine */
+         .acts-compact {
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: nowrap;
+         }
+         .act-icon {
+            display: inline-grid;
+            width: 44px;
+            height: 44px;
+            flex: none;
+            place-items: center;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            background: none;
+            color: var(--ink-faint);
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+         }
+         .act-icon svg {
+            width: 21px;
+            height: 21px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+         }
+         .act-icon.fav {
+            border-color: var(--line);
+            background: var(--card-2);
+            color: var(--ink-soft);
+         }
+         .act-icon:hover,
+         .act-icon:focus-visible {
+            border-color: var(--line);
+            background: var(--card-2);
+            color: var(--ink);
+         }
+         .act-icon:active {
+            transform: scale(0.94);
+         }
+         .act-icon.on {
+            border-color: var(--lacquer);
+            background: var(--lacquer);
+            color: var(--card);
+         }
+         .act-icon.fav.on svg {
+            fill: currentColor;
+         }
+         .act-icon.jade.on {
+            border-color: var(--jade);
+            background: var(--jade);
+         }
          .verdict {
             font-weight: 600;
             font-size: 16px;
@@ -263,8 +388,9 @@
          }
          .s-foot {
             display: flex;
+            flex: none;
             gap: 10px;
-            margin-top: 14px;
+            margin-top: 12px;
          }
          .s-foot .btn {
             flex: 1;
@@ -272,23 +398,23 @@
          .s-foot .btn.ghost {
             flex: 0 0 auto;
          }
-         .s-foot-back {
-            justify-content: center;
-            margin-top: 10px;
-         }
-         .s-foot-back .btn {
-            flex: 0 0 auto;
-            min-height: 44px;
-            color: var(--ink-faint);
-         }
+         /* l'astuce de balayage flotte en bas de la carte : une fois estompée elle
+            ne doit pas laisser un vide dans la colonne. */
          .session-swipe-hint {
-            margin: -2px 0 12px;
+            position: absolute;
+            z-index: 3;
+            right: 12px;
+            bottom: 12px;
+            left: 12px;
+            margin: 0;
             padding: 8px 14px;
             border-radius: 999px;
-            background: color-mix(in srgb, var(--card-2) 85%, transparent);
+            background: color-mix(in srgb, var(--card-2) 92%, transparent);
+            box-shadow: 0 6px 18px rgba(23, 20, 15, 0.12);
             color: var(--ink-faint);
             font-size: 12px;
             text-align: center;
+            pointer-events: none;
             animation: session-swipe-hint-fade 4.2s ease forwards;
          }
          @keyframes session-swipe-hint-fade {
@@ -328,53 +454,72 @@
          }
          .grades {
             display: grid;
+            flex: none;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 14px;
+            gap: 7px;
+            margin-top: 10px;
          }
+         /* rangée discrète : ni bordure de séparation, ni boutons pleine largeur */
          .session-nav {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 8px;
-            margin-top: 22px;
-            padding-top: 14px;
-            border-top: 1px solid var(--line-soft);
+            display: flex;
+            flex: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-top: 6px;
          }
          .session-nav-button {
+            display: inline-flex;
             min-width: 0;
             min-height: 44px;
-            padding: 8px 14px;
-            border: 1px solid var(--line);
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 6px 11px;
+            border: 1px solid transparent;
             border-radius: 11px;
-            background: var(--card);
-            color: var(--ink-soft);
-            font: 600 14px var(--disp);
-            text-align: left;
+            background: none;
+            color: var(--ink-faint);
+            font: 600 13.5px var(--disp);
             transition: border-color 120ms, color 120ms, background 120ms;
          }
          .session-nav-button.next {
-            border-color: color-mix(in srgb, var(--lacquer) 42%, var(--line));
             color: var(--lacquer);
-            text-align: right;
          }
          .session-nav-button:hover:not(:disabled),
          .session-nav-button:focus-visible,
          .session-nav-button:active:not(:disabled) {
-            border-color: var(--lacquer);
+            border-color: color-mix(in srgb, var(--lacquer) 42%, var(--line));
             background: color-mix(in srgb, var(--lacquer) 6%, var(--card));
             color: var(--lacquer);
          }
          .session-nav-button:disabled {
-            border-color: var(--line-soft);
-            background: var(--card-2);
             color: var(--ink-faint);
             cursor: default;
-            opacity: .48;
+            opacity: .4;
             pointer-events: none;
+         }
+         /* en Découverte la rangée porte la seule action d'avancement de l'écran */
+         .session-nav.solo {
+            gap: 10px;
+            margin-top: 12px;
+         }
+         .session-nav.solo .session-nav-button {
+            min-height: 50px;
+            flex: 1 1 0;
+            border-color: var(--line);
+            background: var(--card);
+            color: var(--ink-soft);
+            font-size: 15px;
+         }
+         .session-nav.solo .session-nav-button.next {
+            border-color: var(--ink);
+            background: var(--ink);
+            color: var(--card);
          }
          .review-strokes {
             width: min(100%, 560px);
-            margin-top: 14px;
+            margin-top: 12px;
             border: 1px solid var(--line);
             border-radius: 13px;
             background: color-mix(in srgb, var(--card-2) 72%, var(--card));
@@ -412,13 +557,13 @@
             font-size: 11px;
          }
          .review-stroke-content {
-            padding: 10px 12px 12px;
+            padding: 9px 11px 11px;
          }
          .review-stroke-character-nav {
             display: grid;
             grid-template-columns: 44px minmax(0, 1fr) 44px auto;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
          }
          .review-stroke-chevron,
          .review-stroke-character {
@@ -453,11 +598,26 @@
             box-shadow: inset 0 -2px var(--lacquer);
             color: var(--lacquer);
          }
-         .review-stroke-count {
+         /* le compteur de caractères et le nombre de traits partagent le même coin :
+            « 10 traits » n'occupe plus une ligne à lui seul. */
+         .review-stroke-meta {
+            display: flex;
             min-width: 36px;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 2px 6px;
             color: var(--ink-faint);
             font-size: 12px;
-            text-align: right;
+            line-height: 1.35;
+         }
+         .review-stroke-count {
+            font-variant-numeric: tabular-nums;
+         }
+         .review-stroke-strokes {
+            color: var(--seal);
+            font-size: 11px;
+            white-space: nowrap;
          }
          .review-stroke-tabs {
             display: grid;
@@ -468,22 +628,24 @@
             border-radius: 10px;
             background: var(--card-2);
          }
+         /* rejouer et s'entraîner tiennent sur la ligne des onglets, en icônes */
          .review-stroke-actions {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-columns: minmax(0, 1fr) auto auto;
             align-items: stretch;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 7px;
+         }
+         .review-stroke-actions .stroke-icon-button {
+            height: auto;
+            min-height: 44px;
+            border-radius: 10px;
+            box-shadow: none;
          }
          .review-stroke-practice {
-            min-height: 44px;
-            padding: 8px 12px;
-            border: 1px solid color-mix(in srgb, var(--lacquer) 45%, var(--line));
-            border-radius: 10px;
+            border-color: color-mix(in srgb, var(--lacquer) 45%, var(--line));
             background: color-mix(in srgb, var(--lacquer) 8%, var(--card));
             color: var(--lacquer);
-            font-size: 13px;
-            font-weight: 650;
          }
          .review-stroke-practice:hover,
          .review-stroke-practice:focus-visible {
@@ -503,11 +665,15 @@
             color: var(--lacquer);
          }
          .review-stroke-panel {
-            margin-top: 9px;
+            margin-top: 8px;
          }
+         /* composition et origine conservées intégralement, espacements resserrés */
          .review-character-composition {
             width: 100%;
-            margin-top: 8px;
+            min-height: 0;
+            gap: 2px;
+            margin: 7px 0 0;
+            padding: 6px 8px;
          }
          .review-stroke-grid {
             display: grid;
@@ -523,19 +689,6 @@
                linear-gradient(90deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%),
                linear-gradient(0deg, transparent 49.7%, var(--line-soft) 50%, transparent 50.3%);
             background-color: var(--card);
-         }
-         .review-stroke-animation-meta {
-            display: flex;
-            min-height: 44px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 6px;
-            color: var(--ink-faint);
-            font-size: 12px;
-         }
-         .review-stroke-animation-meta .btn {
-            min-height: 44px;
          }
          .review-stroke-steps-list {
             display: flex;
@@ -740,17 +893,24 @@
             margin-top: 10px;
          }
          @media (max-width: 430px) {
+            .sess {
+               padding-inline: 12px;
+            }
             .flash {
-               padding: 50px 12px 18px;
+               padding: 10px 13px 14px;
             }
             .grades {
                gap: 5px;
             }
             .session-nav {
-               gap: 6px;
+               gap: 4px;
+            }
+            .session-nav-button {
+               padding: 6px 8px;
+               font-size: 13px;
             }
             .review-strokes {
-               margin-top: 11px;
+               margin-top: 10px;
             }
             .review-stroke-content {
                padding: 8px 9px 10px;
@@ -762,9 +922,9 @@
             .review-stroke-character-nav {
                grid-template-columns: 44px minmax(0, 1fr) 44px;
             }
-            .review-stroke-count {
+            .review-stroke-meta {
                grid-column: 1 / -1;
-               text-align: center;
+               justify-content: center;
             }
             .writing-surface.review-writing-surface {
                width: min(100%, 230px);

@@ -156,7 +156,7 @@ async function main() {
    await waitFor(() => evaluate("document.querySelector('.review-character-composition')?.dataset.character==='\u4f60'&&!document.querySelector('.review-character-composition').hidden"), "review composition did not load inside the expanded stroke block");
    assert(await evaluate("document.querySelector('#review-strokes .review-stroke-content > .review-character-composition')!==null&&document.querySelectorAll('.review-character-composition .composition-role').length===0"), "review composition escaped the collapsible stroke content or invented roles");
    assert(await evaluate("document.querySelectorAll('[data-review-stroke-character]').length===3&&document.querySelector('#review-stroke-count').textContent.trim()==='1 / 3'"), "multi-character stroke selector failed");
-   assert(await evaluate("document.querySelector('#s-prev').disabled&&document.querySelector('#s-next').textContent.includes('Passer')"), "first card navigation failed");
+   assert(await evaluate("document.querySelector('#s-prev').disabled&&document.querySelector('#s-next').textContent.includes('Suivant')"), "first card navigation failed");
    await evaluate("window.__previousReviewWriter=reviewStrokeWriter;true"); await click("#review-stroke-replay"); assert(await evaluate("!!reviewStrokeWriter&&reviewStrokeWriter!==window.__previousReviewWriter"), "replay did not recreate animation"); pass("ordre des traits · Animation et Rejouer");
    await click('[data-review-stroke-tab="steps"]'); await waitFor(() => evaluate("document.querySelectorAll('.review-stroke-step').length===reviewStrokeData?.strokeCount"), "stroke steps missing"); pass("ordre des traits · Étapes");
    await click("#review-stroke-character-next"); await waitFor(() => evaluate("reviewStrokeData?.character==='好'"), "second character did not load"); assert(await evaluate("document.querySelector('#review-stroke-count').textContent.trim()==='2 / 3'"), "second character counter failed");
@@ -198,7 +198,7 @@ async function main() {
    await waitFor(() => evaluate("!document.querySelector('.writing-practice-backdrop')&&!sheetOpen()&&session.active&&session.index===0"), "Escape left the review writing practice or session open incorrectly");
    pass(`essai tactile jetable sur le caractère sélectionné, sheet compacte 360 px · capture ${reviewWritingScreenshot}`);
    await click('[data-review-stroke-character="2"]'); await waitFor(() => evaluate("reviewStrokeData?.character==='吗'"), "third character did not load"); assert(await evaluate(`document.querySelector('#review-stroke-count').textContent.trim()==='3 / 3'&&document.querySelector('[data-review-stroke-character="2"]').getAttribute('aria-pressed')==='true'`), "third character state failed"); pass("navigation entre 你, 好 et 吗");
-   const listenerCount = await evaluate("reviewStrokeWriterListeners.length"); await click("#s-next"); assert(await evaluate("session.index===1&&reviewStrokeWriter===null&&reviewStrokeWriterListeners.length===0"), "writer was not destroyed on card change"); await click("#s-flip"); await waitFor(() => evaluate("reviewStrokeData?.character==='书'"), "next card stroke data did not load"); assert((await evaluate("reviewStrokeWriterListeners.length")) <= Math.max(listenerCount, 2), "writer listeners leaked"); assert(await evaluate("document.querySelector('#s-next').textContent.includes('Terminer')&&!document.querySelector('#s-prev').disabled"), "last card navigation failed"); await click("#s-prev"); assert((await evaluate("session.index")) === 0, "previous navigation failed"); pass("nettoyage Hanzi Writer et barre Précédent / Passer / Terminer");
+   const listenerCount = await evaluate("reviewStrokeWriterListeners.length"); await click("#s-next"); assert(await evaluate("session.index===1&&reviewStrokeWriter===null&&reviewStrokeWriterListeners.length===0"), "writer was not destroyed on card change"); await click("#s-flip"); await waitFor(() => evaluate("reviewStrokeData?.character==='书'"), "next card stroke data did not load"); assert((await evaluate("reviewStrokeWriterListeners.length")) <= Math.max(listenerCount, 2), "writer listeners leaked"); assert(await evaluate("document.querySelector('#s-next').textContent.includes('Terminer')&&!document.querySelector('#s-prev').disabled"), "last card navigation failed"); await click("#s-prev"); assert((await evaluate("session.index")) === 0, "previous navigation failed"); pass("nettoyage Hanzi Writer et barre Précédent / Suivant / Terminer");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();startCardsWith([{id:'latin',hz:'hello',py:'',fr:'bonjour',lvl:0,due:null,acquired:false}],'Sans hanzi','cards')"); await click("#s-flip"); assert(!(await evaluate("!!document.querySelector('#review-strokes')")), "stroke block shown without Han character"); await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()"); pass("verso sans caractère chinois");
 
    async function dragCard(dx, dy, selector = "#flash") {
@@ -213,6 +213,26 @@ async function main() {
    await evaluate("getState(0).revealed=false;renderSession()");
    await dragCard(3, 110); assert(await evaluate("session.index===0&&getComputedStyle(document.querySelector('#flash')).touchAction==='pan-y'"), "vertical gesture blocked or changed card");
    await click("#s-flip"); await dragCard(-120, 0, "#a-fav"); assert((await evaluate("session.index")) === 0, "interactive control triggered swipe"); assert(await evaluate("!document.querySelector('#flash').classList.contains('is-session-dragging')&&(getSelection().isCollapsed||!String(getSelection()))"), "drag state or text selection remained"); pass("swipes gauche/droite, toucher simple, scroll vertical et contrôles protégés");
+
+   // La capture de pointeur du balayage redirige le clic natif vers .sess : sans le
+   // relais d'appui, aucun endroit de la carte agrandie ne la retournerait.
+   async function tapCard(fractionY) {
+      const point = await evaluate(`(() => { const r=document.querySelector('#flash').getBoundingClientRect(); return {x:r.left+r.width*0.5,y:r.top+r.height*${fractionY}}; })()`);
+      await cdp.send("Input.dispatchMouseEvent", { type:"mousePressed", x:point.x, y:point.y, button:"left", buttons:1, clickCount:1 });
+      await cdp.send("Input.dispatchMouseEvent", { type:"mouseReleased", x:point.x, y:point.y, button:"left", buttons:0, clickCount:1 });
+   }
+   for (const fractionY of [0.08, 0.94]) {
+      await evaluate("getState(0).revealed=false;renderSession()");
+      await tapCard(fractionY);
+      assert(await evaluate("getState(0).revealed===true"), `tap at ${fractionY * 100}% of the enlarged card did not flip it`);
+   }
+   await evaluate("getState(0).revealed=false;renderSession()");
+   await evaluate(`(() => { const r=document.querySelector('.fl-seal').getBoundingClientRect(); const point={x:r.left+r.width/2,y:r.top+r.height/2}; window.__sealPoint=point; return true; })()`);
+   const sealPoint = await evaluate("window.__sealPoint");
+   await cdp.send("Input.dispatchMouseEvent", { type:"mousePressed", x:sealPoint.x, y:sealPoint.y, button:"left", buttons:1, clickCount:1 });
+   await cdp.send("Input.dispatchMouseEvent", { type:"mouseReleased", x:sealPoint.x, y:sealPoint.y, button:"left", buttons:0, clickCount:1 });
+   assert(await evaluate("getState(0).revealed===false"), "the audio seal flipped the card");
+   pass("appui n’importe où sur la carte pleine hauteur, contrôles toujours protégés");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
 
    await evaluate("document.body.style.minHeight='';reviewSelectionMode='all';reviewMode='cards';reviewExtraFilters={newOnly:false,favoritesOnly:false,difficultOnly:false,includeLearned:false};reviewOptionsOpen=false;clearSavedSession();renderLearn()");
@@ -230,11 +250,17 @@ async function main() {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
       await evaluate("startCardsWith([db.cards.find(c=>c.id==='c1')],'Responsive','cards');getState(0).revealed=true;reviewStrokeExpanded=true;renderSession()");
       await waitFor(() => evaluate("!!document.querySelector('#review-strokes')"), "responsive stroke block missing");
-      const layout = await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth+1,flash:document.querySelector('#flash').getBoundingClientRect().width,viewport:innerWidth,controls:[...document.querySelectorAll('.review-strokes button,.session-nav button,.grades button')].every(button=>button.getBoundingClientRect().height>=44),overlap:document.querySelector('.session-nav').getBoundingClientRect().left<0})`);
+      // Les puces de composition (.composition-component) sont des jetons de texte
+      // partagés avec le dictionnaire, dimensionnés sur la ligne : la règle des 44 px
+      // vise les commandes de la séance.
+      const layout = await evaluate(`(() => {const flash=document.querySelector('#flash').getBoundingClientRect(),grades=document.querySelector('.grades').getBoundingClientRect();return {overflow:document.documentElement.scrollWidth>innerWidth+1,flash:flash.width,viewport:innerWidth,controls:[...document.querySelectorAll('.review-strokes button:not(.composition-component),.session-nav button,.grades button')].every(button=>button.getBoundingClientRect().height>=44),overlap:document.querySelector('.session-nav').getBoundingClientRect().left<0,pageScroll:document.documentElement.scrollHeight>innerHeight+1,gapUnderCard:Math.round(grades.top-flash.bottom),cardTop:Math.round(flash.top),cardScrolls:getComputedStyle(document.querySelector('.fl-body')).overflowY==='auto'};})()`);
       assert(!layout.overflow&&layout.flash<=layout.viewport&&layout.controls&&!layout.overlap, `session layout ${width} failed: ${JSON.stringify(layout)}`);
+      // la carte descend jusqu'aux boutons de notation, et c'est elle qui défile
+      assert(!layout.pageScroll&&layout.cardScrolls&&layout.gapUnderCard<=14&&layout.cardTop<=90, `session full-height layout ${width} failed: ${JSON.stringify(layout)}`);
       await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
    }
    pass("session responsive 360, 430 et 1024 px sans chevauchement");
+   pass("carte pleine hauteur : aucun défilement de page, défilement interne à la carte");
 
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:2, mobile:true });
    await evaluate("writingState.mode='free';writingState.free={actions:[],redo:[]};setView('write',{fromHistory:true});renderWriting()");

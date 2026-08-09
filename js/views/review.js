@@ -77,6 +77,10 @@ function reviewStrokeBlockHtml(c, st) {
    const pills = characters.map((character, index) =>
       '<button type="button" class="review-stroke-character" data-review-stroke-character="' + index + '" aria-pressed="' + String(index === selected) + '" aria-label="Afficher ' + esc(character) + '">' + esc(character) + "</button>",
    ).join("");
+   // Le nombre de traits et les deux actions (rejouer, s'entraîner) sont
+   // regroupés avec le compteur de caractères et les onglets : sur mobile, la
+   // section dépliée doit tenir sur un écran sans qu'aucune information ne
+   // disparaisse.
    return (
       '<details class="review-strokes" id="review-strokes"' + (reviewStrokeExpanded ? " open" : "") + ' data-no-session-swipe>' +
       '<summary><span>Écriture du caractère</span><small>Voir l’ordre des traits</small></summary>' +
@@ -85,16 +89,26 @@ function reviewStrokeBlockHtml(c, st) {
       '<button type="button" class="review-stroke-chevron" id="review-stroke-character-prev" aria-label="Caractère précédent"' + (selected === 0 ? " disabled" : "") + '>‹</button>' +
       '<div class="review-stroke-characters" aria-label="Caractères du mot">' + pills + "</div>" +
       '<button type="button" class="review-stroke-chevron" id="review-stroke-character-next" aria-label="Caractère suivant"' + (selected === characters.length - 1 ? " disabled" : "") + '>›</button>' +
-      '<span class="review-stroke-count" id="review-stroke-count" aria-live="polite">' + (selected + 1) + " / " + characters.length + "</span></div>" +
+      '<span class="review-stroke-meta" role="status" aria-live="polite">' +
+      '<span class="review-stroke-count" id="review-stroke-count">' + (selected + 1) + " / " + characters.length + "</span>" +
+      '<span class="review-stroke-strokes" id="review-stroke-status">Chargement…</span></span></div>' +
       '<div class="review-stroke-actions"><div class="review-stroke-tabs" role="tablist" aria-label="Affichage de l’ordre des traits">' +
       '<button type="button" role="tab" data-review-stroke-tab="animation" aria-selected="' + String(reviewStrokeTab === "animation") + '">Animation</button>' +
       '<button type="button" role="tab" data-review-stroke-tab="steps" aria-selected="' + String(reviewStrokeTab === "steps") + '">Étapes</button></div>' +
-      '<button type="button" class="review-stroke-practice" id="review-stroke-practice">S’entraîner</button></div>' +
-      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div><div class="review-stroke-animation-meta"><span id="review-stroke-status" role="status" aria-live="polite">Chargement…</span><button type="button" class="stroke-icon-button" id="review-stroke-replay" aria-label="Rejouer l’animation" title="Rejouer l’animation">' + strokeReplayIconHtml() + "</button></div></div>" +
+      '<button type="button" class="stroke-icon-button" id="review-stroke-replay" aria-label="Rejouer l’animation" title="Rejouer l’animation">' + strokeReplayIconHtml() + "</button>" +
+      '<button type="button" class="stroke-icon-button review-stroke-practice" id="review-stroke-practice" aria-label="S’entraîner à écrire" title="S’entraîner à écrire">' + strokeWriteIconHtml() + "</button></div>" +
+      '<div class="review-stroke-panel" id="review-stroke-animation"' + (reviewStrokeTab === "animation" ? "" : " hidden") + '><div class="review-stroke-grid"><div id="review-stroke-target"></div></div></div>' +
       '<div class="review-stroke-panel" id="review-stroke-steps"' + (reviewStrokeTab === "steps" ? "" : " hidden") + '><div class="review-stroke-steps-list" id="review-stroke-steps-list" aria-label="Étapes des traits"></div></div>' +
       characterCompositionShellHtml("review-character-composition") +
       "</div></details>"
    );
+}
+
+function setReviewStrokeCountLabel(text) {
+   // Le compteur de traits vit désormais hors du panneau Animation : il reste
+   // donc visible sous l'onglet Étapes et doit être mis à jour dans les deux cas.
+   const status = $("review-stroke-status");
+   if (status) status.textContent = text;
 }
 
 function renderReviewStrokeSteps(data) {
@@ -141,8 +155,7 @@ async function loadReviewStrokeCharacter(character, autoplay, characters) {
    const token = ++reviewStrokeLoadToken;
    destroyReviewStrokeWriter();
    reviewStrokeData = null;
-   const status = $("review-stroke-status");
-   if (status) status.textContent = "Chargement…";
+   setReviewStrokeCountLabel("Chargement…");
    setCharacterCompositionLoading(character, ".review-character-composition");
    if (typeof loadCharacterCompositions === "function") {
       loadCharacterCompositions(characters || [character]).then((compositions) => {
@@ -165,6 +178,7 @@ async function loadReviewStrokeCharacter(character, autoplay, characters) {
       const data = await loadStrokeCharacterData(character);
       if (token !== reviewStrokeLoadToken || !$("review-strokes") || !session.active) return;
       reviewStrokeData = data;
+      setReviewStrokeCountLabel(data.strokeCount + " traits");
       if (reviewStrokeTab === "steps") renderReviewStrokeSteps(data);
       else createReviewStrokeAnimation(data, autoplay);
    } catch (error) {
@@ -231,7 +245,11 @@ function wireReviewStrokeBlock(c, st) {
       openWritingPracticeSheet(c.hz, { initialIndex: index });
    };
    $("review-stroke-replay").onclick = () => {
-      if (reviewStrokeData) createReviewStrokeAnimation(reviewStrokeData, true);
+      if (!reviewStrokeData) return;
+      // le bouton partage désormais la ligne des onglets : depuis « Étapes », il
+      // ramène d'abord sur l'animation plutôt que de rejouer dans un panneau masqué
+      if (reviewStrokeTab !== "animation") activateReviewStrokeTab("animation");
+      createReviewStrokeAnimation(reviewStrokeData, true);
    };
    if (root.open) selectCharacter(st.strokeCharacterIndex || 0);
 }
@@ -322,16 +340,74 @@ function wireReviewStrokeBlock(c, st) {
                ? '<div class="note"><strong>Note ·</strong> ' + esc(c.note) + "</div>"
                : "";
          }
+         function reviewFavoriteIconHtml() {
+            return (
+               '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+               '<path d="M12 20.3 4.7 13a4.55 4.55 0 0 1 6.44-6.43l.86.86.86-.86A4.55 4.55 0 0 1 19.3 13Z"></path>' +
+               "</svg>"
+            );
+         }
+         function reviewScheduleIconHtml() {
+            return (
+               '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+               '<path d="M4.5 6h15v13.5h-15zM4.5 10.5h15M8.5 3.5v5M15.5 3.5v5"></path>' +
+               '<path d="M12 13v2.6l1.8 1.1"></path>' +
+               "</svg>"
+            );
+         }
+         function reviewMasteredIconHtml() {
+            return (
+               '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+               '<circle cx="12" cy="12" r="8.6"></circle>' +
+               '<path d="m8.1 12.3 2.7 2.7 5.1-5.6"></path>' +
+               "</svg>"
+            );
+         }
+         // Actions secondaires : trois icônes compactes plutôt qu'une ligne pleine
+         // largeur de boutons texte. Le favori reste bien visible, la date et la
+         // maîtrise restent discrètes mais gardent un libellé accessible.
+         function actionIconHtml(id, label, icon, variant, pressed) {
+            return (
+               '<button type="button" class="act-icon' +
+               (variant ? " " + variant : "") +
+               (pressed === true ? " on" : "") +
+               '" id="' +
+               id +
+               '"' +
+               (pressed == null ? "" : ' aria-pressed="' + String(pressed) + '"') +
+               ' aria-label="' +
+               esc(label) +
+               '" title="' +
+               esc(label) +
+               '">' +
+               icon +
+               "</button>"
+            );
+         }
          function actionsHtml(c) {
             return (
-               '<div class="acts">' +
-               '<button class="act' +
-               (c.fav ? " on" : "") +
-               '" id="a-fav">Favori</button>' +
-               '<button class="act" id="a-hard">Choisir la date</button>' +
-               '<button class="act' +
-               (c.acquired ? " on jade" : "") +
-               '" id="a-acq">Maîtrisée</button>' +
+               '<div class="acts acts-compact">' +
+               actionIconHtml(
+                  "a-fav",
+                  c.fav ? "Retirer des favoris" : "Ajouter aux favoris",
+                  reviewFavoriteIconHtml(),
+                  "fav",
+                  !!c.fav,
+               ) +
+               actionIconHtml(
+                  "a-hard",
+                  "Choisir la date de révision",
+                  reviewScheduleIconHtml(),
+                  "",
+                  null,
+               ) +
+               actionIconHtml(
+                  "a-acq",
+                  c.acquired ? "Ne plus considérer comme maîtrisée" : "Marquer comme maîtrisée",
+                  reviewMasteredIconHtml(),
+                  "jade",
+                  !!c.acquired,
+               ) +
                "</div>"
             );
          }
@@ -385,7 +461,7 @@ function wireReviewStrokeBlock(c, st) {
             );
          }
 
-         function gradesHtml(c) {
+         function gradesHtml(c, options) {
             const iv = gradeIv(c);
             const b = (g, lab) =>
                '<button class="gr ' +
@@ -403,34 +479,39 @@ function wireReviewStrokeBlock(c, st) {
                b("hard", "Difficile") +
                b("good", "Correct") +
                b("easy", "Facile") +
-               "</div>" + sessionNavigationHtml()
+               "</div>" + sessionNavigationHtml(options)
             );
          }
-         function sessionNavigationHtml() {
+         // Rangée discrète : le balayage horizontal fait déjà précédent/suivant, cette
+         // barre sert la découvrabilité et le desktop. En Découverte elle porte la seule
+         // action d'avancement de l'écran, elle reprend donc un gabarit plein format.
+         function sessionNavigationHtml(options) {
+            const { flip = false, solo = false } = options || {};
             const last = session.index >= session.cards.length - 1;
             return (
-               '<nav class="session-nav" aria-label="Navigation dans la séance">' +
+               '<nav class="session-nav' + (solo ? " solo" : "") + '" aria-label="Navigation dans la séance">' +
                '<button type="button" class="session-nav-button previous" id="s-prev"' +
                (session.index === 0 ? " disabled aria-disabled=\"true\"" : "") +
                '>‹ <span>Précédent</span></button>' +
+               (flip
+                  ? '<button type="button" class="session-nav-button flip" id="s-flip" aria-label="Revoir le recto" title="Revoir le recto">↺ <span>Recto</span></button>'
+                  : "") +
                '<button type="button" class="session-nav-button next" id="s-next"><span>' +
-               (last ? "Terminer" : "Passer") +
+               (last ? "Terminer" : "Suivant") +
                "</span> ›</button></nav>"
             );
          }
          function sessionFooterHtml(c, st) {
             if (session.mode === "discover") {
-               return sessionNavigationHtml();
+               return sessionNavigationHtml({ solo: true });
             }
             if (session.mode === "cards") {
                if (!st.revealed)
                   return '<div class="s-foot"><button class="btn primary big" id="s-flip" type="button">Retourner</button></div>';
                // le bouton de retournement reste disponible au verso, mais en retrait
-               // par rapport à la notation SRS pour ne jamais se substituer à elle.
-               return (
-                  '<div class="s-foot s-foot-back"><button class="btn ghost sm" id="s-flip" type="button">↺ Revoir le recto</button></div>' +
-                  gradesHtml(c)
-               );
+               // par rapport à la notation SRS pour ne jamais se substituer à elle : il
+               // rejoint la rangée de navigation, sous les quatre boutons de note.
+               return gradesHtml(c, { flip: true });
             }
             if (session.mode === "written" && !st.checked)
                return '<div class="s-foot"><button class="btn ghost" id="s-skip">Voir la réponse</button><button class="btn primary" id="s-check">Vérifier</button></div>';
@@ -496,6 +577,8 @@ function wireReviewStrokeBlock(c, st) {
                      (st.note ? " <span>· " + esc(st.note) + "</span>" : "") +
                      "</div>";
                }
+               // ordre du verso : le caractère et son pinyin, les actions secondaires
+               // compactes, puis le sens, l'exemple, la note et l'écriture.
                body =
                   verdict +
                   '<div class="hanzi ink-in" data-say="' +
@@ -506,12 +589,12 @@ function wireReviewStrokeBlock(c, st) {
                   (showPyBack && c.py
                      ? '<div class="pinyin">' + colorPinyin(c.py) + "</div>"
                      : "") +
+                  (session.mode === "discover" ? "" : actionsHtml(c)) +
                   (session.mode !== "cards" || front === "zh"
                      ? '<div class="sep"></div><div class="fr">' + esc(c.fr) + "</div>"
                      : "") +
                   (c.exHz ? exampleHtml(c) : "") +
                   noteHtml(c) +
-                  (session.mode === "discover" ? "" : actionsHtml(c)) +
                   (session.mode === "cards" ? reviewStrokeBlockHtml(c, st) : "");
             }
 
@@ -540,14 +623,22 @@ function wireReviewStrokeBlock(c, st) {
                '<div class="s-bar"><i style="width:' +
                (((session.index + 1) / session.cards.length) * 100).toFixed(1) +
                '%"></i></div>' +
-               (showSwipeHint ? sessionSwipeHintHtml() : "") +
+               // la carte occupe toute la hauteur restante : une barre d'outils en
+               // haut, puis une zone centrée qui défile d'elle-même si le verso
+               // déplié dépasse — la page, elle, ne défile pas. L'astuce de balayage
+               // flotte au-dessus du bas de la carte, sans rien pousser.
                '<div class="flash card" id="flash">' +
+               '<div class="fl-tools">' +
                '<button class="seal fl-seal" data-say="' +
                esc(c.hz) +
                '"' +
                (hideSay ? ' style="visibility:hidden"' : "") +
                ' aria-label="Écouter">听</button>' +
+               "</div>" +
+               '<div class="fl-body"><div class="fl-inner">' +
                body +
+               "</div></div>" +
+               (showSwipeHint ? sessionSwipeHintHtml() : "") +
                "</div>" +
                sessionFooterHtml(c, st) +
                "</section>";
@@ -569,7 +660,7 @@ function wireReviewStrokeBlock(c, st) {
             session.index--;
             renderSession();
          }
-         function wireSessionSwipe(zone, card) {
+         function wireSessionSwipe(zone, card, onTap) {
             // le geste porte sur toute la zone de séance (hors contrôles
             // interactifs), mais le retour visuel reste localisé à la carte :
             // glisser ne note jamais rien, seuls les quatre boutons de
@@ -588,7 +679,15 @@ function wireReviewStrokeBlock(c, st) {
                   card._suppressSessionClickUntil = Date.now() + 500;
                   return;
                }
-               if (!current.horizontal) return;
+               if (!current.horizontal) {
+                  // La capture, indispensable pour suivre un balayage qui sort de la
+                  // zone, redirige aussi le clic qui suit vers la zone — un ancêtre de
+                  // la carte, que le gestionnaire de retournement n'atteint donc jamais.
+                  // Un appui simple est relayé ici, à l'élément réellement sous le doigt.
+                  if (current.captured && onTap)
+                     onTap(document.elementFromPoint(event.clientX, event.clientY));
+                  return;
+               }
                const dx = event.clientX - current.x;
                const dy = event.clientY - current.y;
                if (Math.abs(dx) < 56 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
@@ -599,8 +698,13 @@ function wireReviewStrokeBlock(c, st) {
             };
             zone.onpointerdown = (event) => {
                if (event.button !== 0 || event.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
-               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false };
-               if (zone.setPointerCapture) zone.setPointerCapture(event.pointerId);
+               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false, captured: false };
+               if (zone.setPointerCapture) {
+                  try {
+                     zone.setPointerCapture(event.pointerId);
+                     gesture.captured = true;
+                  } catch (error) {}
+               }
             };
             zone.onpointermove = (event) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
@@ -640,14 +744,18 @@ function wireReviewStrokeBlock(c, st) {
             };
             if ($("s-flip")) $("s-flip").onclick = flip;
             const fl = $("flash");
-            wireSessionSwipe($("sess"), fl);
+            // toute la surface de la carte retourne, hors contrôles interactifs :
+            // même règle que le clic soit natif ou relayé par le gestionnaire de geste.
+            const tapCard = (target) => {
+               if (session.mode !== "cards") return;
+               if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
+               if (!target || !fl.contains(target) || target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
+               flip();
+            };
+            wireSessionSwipe($("sess"), fl, tapCard);
             if (session.mode === "cards") {
                fl.style.cursor = "pointer";
-               fl.onclick = (e) => {
-                  if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
-                  if (e.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
-                  flip();
-               };
+               fl.onclick = (e) => tapCard(e.target);
             }
             if ($("s-next")) $("s-next").onclick = advance;
             if ($("s-prev"))
