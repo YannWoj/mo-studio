@@ -80,18 +80,24 @@ function reviewStrokeBlockHtml(c, st) {
    // Le nombre de traits et les deux actions (rejouer, s'entraîner) sont
    // regroupés avec le compteur de caractères et les onglets : sur mobile, la
    // section dépliée doit tenir sur un écran sans qu'aucune information ne
-   // disparaisse.
+   // disparaisse. Sur un mot d'un seul caractère, la rangée de navigation ne
+   // porterait que deux chevrons inertes et un « 1 / 1 » : seul le nombre de
+   // traits est conservé, sur une ligne.
+   const single = characters.length === 1;
    return (
-      '<details class="review-strokes" id="review-strokes"' + (reviewStrokeExpanded ? " open" : "") + ' data-no-session-swipe>' +
+      '<details class="review-strokes" id="review-strokes"' + (reviewStrokeExpanded ? " open" : "") + ' data-no-session-tap>' +
       '<summary><span>Écriture du caractère</span><small>Voir l’ordre des traits</small></summary>' +
       '<div class="review-stroke-content">' +
-      '<div class="review-stroke-character-nav">' +
-      '<button type="button" class="review-stroke-chevron" id="review-stroke-character-prev" aria-label="Caractère précédent"' + (selected === 0 ? " disabled" : "") + '>‹</button>' +
-      '<div class="review-stroke-characters" aria-label="Caractères du mot">' + pills + "</div>" +
-      '<button type="button" class="review-stroke-chevron" id="review-stroke-character-next" aria-label="Caractère suivant"' + (selected === characters.length - 1 ? " disabled" : "") + '>›</button>' +
-      '<span class="review-stroke-meta" role="status" aria-live="polite">' +
-      '<span class="review-stroke-count" id="review-stroke-count">' + (selected + 1) + " / " + characters.length + "</span>" +
-      '<span class="review-stroke-strokes" id="review-stroke-status">Chargement…</span></span></div>' +
+      (single
+         ? '<span class="review-stroke-meta review-stroke-meta-solo" role="status" aria-live="polite">' +
+           '<span class="review-stroke-strokes" id="review-stroke-status">Chargement…</span></span>'
+         : '<div class="review-stroke-character-nav">' +
+           '<button type="button" class="review-stroke-chevron" id="review-stroke-character-prev" aria-label="Caractère précédent"' + (selected === 0 ? " disabled" : "") + '>‹</button>' +
+           '<div class="review-stroke-characters" aria-label="Caractères du mot">' + pills + "</div>" +
+           '<button type="button" class="review-stroke-chevron" id="review-stroke-character-next" aria-label="Caractère suivant"' + (selected === characters.length - 1 ? " disabled" : "") + '>›</button>' +
+           '<span class="review-stroke-meta" role="status" aria-live="polite">' +
+           '<span class="review-stroke-count" id="review-stroke-count">' + (selected + 1) + " / " + characters.length + "</span>" +
+           '<span class="review-stroke-strokes" id="review-stroke-status">Chargement…</span></span></div>') +
       '<div class="review-stroke-actions"><div class="review-stroke-tabs" role="tablist" aria-label="Affichage de l’ordre des traits">' +
       '<button type="button" role="tab" data-review-stroke-tab="animation" aria-selected="' + String(reviewStrokeTab === "animation") + '">Animation</button>' +
       '<button type="button" role="tab" data-review-stroke-tab="steps" aria-selected="' + String(reviewStrokeTab === "steps") + '">Étapes</button></div>' +
@@ -242,8 +248,11 @@ function wireReviewStrokeBlock(c, st) {
    root.querySelectorAll("[data-review-stroke-character]").forEach((button) =>
       button.onclick = () => selectCharacter(Number(button.dataset.reviewStrokeCharacter)),
    );
-   $("review-stroke-character-prev").onclick = () => selectCharacter((st.strokeCharacterIndex || 0) - 1);
-   $("review-stroke-character-next").onclick = () => selectCharacter((st.strokeCharacterIndex || 0) + 1);
+   // absents sur un mot d'un seul caractère
+   const previousCharacter = $("review-stroke-character-prev");
+   const nextCharacter = $("review-stroke-character-next");
+   if (previousCharacter) previousCharacter.onclick = () => selectCharacter((st.strokeCharacterIndex || 0) - 1);
+   if (nextCharacter) nextCharacter.onclick = () => selectCharacter((st.strokeCharacterIndex || 0) + 1);
    root.querySelectorAll("[data-review-stroke-tab]").forEach((button) =>
       button.onclick = () => activateReviewStrokeTab(button.dataset.reviewStrokeTab),
    );
@@ -262,8 +271,18 @@ function wireReviewStrokeBlock(c, st) {
 }
 
 /* ================= séance ================= */
+         // Deux filtres, deux conflits différents.
+         // TAP (retourner la carte) : le grand caractère lit son audio, la section
+         // d'écriture se manipule — ni l'un ni l'autre ne doit retourner la carte.
          const SESSION_INTERACTIVE_SELECTOR =
-            "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-swipe], .acts, .grades, .session-nav, .s-foot";
+            "button, input, select, textarea, a, label, summary, [data-say], [data-no-session-tap], .acts, .grades, .session-nav, .s-foot";
+         // GESTE (changer de carte) : seuls les contrôles réellement actionnables et
+         // les zones qui défilent horizontalement d'elles-mêmes bloquent un glissement.
+         // Le caractère et le corps de la section d'écriture sont, eux, des zones de
+         // glissement : c'est là que le pouce se pose naturellement.
+         const SESSION_SWIPE_BLOCKING_SELECTOR =
+            "button, input, select, textarea, a, label, summary, canvas, .mizi, " +
+            ".review-stroke-characters, .review-stroke-steps-list, .composition-formula, .composition-roles";
          const SWIPE_HINT_KEY = "mo-studio-session-swipe-hint-seen-v1";
          let sessionSwipeHintSeen = (() => {
             try { return localStorage.getItem(SWIPE_HINT_KEY) === "1"; } catch (e) { return true; }
@@ -681,13 +700,29 @@ function wireReviewStrokeBlock(c, st) {
             session.index--;
             renderSession();
          }
-         function wireSessionSwipe(zone, card, onTap) {
+         // seuils calés sur un pouce : assez haut pour ne pas s'amorcer sur un appui
+         // tremblotant, assez bas pour qu'un mouvement franc mais court suffise.
+         const SESSION_SWIPE_START = 16;
+         const SESSION_SWIPE_COMMIT = 44;
+         function wireSessionSwipe(zone, card) {
             // le geste porte sur toute la zone de séance (hors contrôles
             // interactifs), mais le retour visuel reste localisé à la carte :
             // glisser ne note jamais rien, seuls les quatre boutons de
             // notation le font.
             if (!zone || !card || !("PointerEvent" in window)) return;
             let gesture = null;
+            // La capture, indispensable pour suivre un balayage qui sort de la zone,
+            // redirige le clic qui suit vers la zone — un ancêtre de la carte. On
+            // rejoue donc l'appui sur l'élément réellement sous le doigt, pour que le
+            // retournement comme la lecture audio (data-say) se déclenchent.
+            // Rejoué seulement si le doigt n'a pas quitté l'élément pressé : un
+            // relâchement au-dessus d'un bouton ne doit jamais l'actionner.
+            const relayTap = (event, origin) => {
+               const target = document.elementFromPoint(event.clientX, event.clientY);
+               if (!target || !origin) return;
+               if (target !== origin && !origin.contains(target)) return;
+               target.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
+            };
             const finish = (event, cancelled) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const current = gesture;
@@ -701,25 +736,20 @@ function wireReviewStrokeBlock(c, st) {
                   return;
                }
                if (!current.horizontal) {
-                  // La capture, indispensable pour suivre un balayage qui sort de la
-                  // zone, redirige aussi le clic qui suit vers la zone — un ancêtre de
-                  // la carte, que le gestionnaire de retournement n'atteint donc jamais.
-                  // Un appui simple est relayé ici, à l'élément réellement sous le doigt.
-                  if (current.captured && onTap)
-                     onTap(document.elementFromPoint(event.clientX, event.clientY));
+                  if (current.captured) relayTap(event, current.target);
                   return;
                }
                const dx = event.clientX - current.x;
                const dy = event.clientY - current.y;
-               if (Math.abs(dx) < 56 || Math.abs(dx) <= Math.abs(dy) * 1.25) return;
+               if (Math.abs(dx) < SESSION_SWIPE_COMMIT || Math.abs(dx) <= Math.abs(dy) * 1.1) return;
                const selection = typeof getSelection === "function" ? getSelection() : null;
                if (selection && typeof selection.removeAllRanges === "function") selection.removeAllRanges();
                if (dx < 0) advance();
                else previousCard();
             };
             zone.onpointerdown = (event) => {
-               if (event.button !== 0 || event.target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
-               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false, captured: false };
+               if (event.button !== 0 || event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR)) return;
+               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false, captured: false, target: event.target };
                if (zone.setPointerCapture) {
                   try {
                      zone.setPointerCapture(event.pointerId);
@@ -736,7 +766,7 @@ function wireReviewStrokeBlock(c, st) {
                      finish(event, true);
                      return;
                   }
-                  if (Math.abs(dx) < 14 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
+                  if (Math.abs(dx) < SESSION_SWIPE_START || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
                   gesture.horizontal = true;
                   card.classList.add("is-session-dragging");
                }
@@ -773,7 +803,7 @@ function wireReviewStrokeBlock(c, st) {
                if (!target || !fl.contains(target) || target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
                flip();
             };
-            wireSessionSwipe($("sess"), fl, tapCard);
+            wireSessionSwipe($("sess"), fl);
             if (session.mode === "cards") {
                fl.style.cursor = "pointer";
                fl.onclick = (e) => tapCard(e.target);

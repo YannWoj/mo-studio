@@ -239,6 +239,23 @@ async function main() {
    await cdp.send("Input.dispatchMouseEvent", { type:"mouseReleased", x:sealPoint.x, y:sealPoint.y, button:"left", buttons:0, clickCount:1 });
    assert(await evaluate("getState(0).revealed===false"), "the audio seal flipped the card");
    pass("appui n’importe où sur la carte pleine hauteur, contrôles toujours protégés");
+
+   // Le grand caractère (data-say) et le corps de la section d'écriture sont exclus du
+   // TAP mais doivent rester des zones de GLISSEMENT : c'est là que le pouce se pose.
+   await evaluate("getState(0).front='zh';getState(0).revealed=true;reviewStrokeExpanded=true;renderSession()");
+   await waitFor(() => evaluate("!!document.querySelector('.review-stroke-grid')&&!!document.querySelector('.hanzi')"), "expanded verso did not render for the swipe surface check");
+   for (const [selector, label] of [[".hanzi", "le grand caractère"], [".review-stroke-grid", "la zone d’écriture"]]) {
+      await evaluate("session.index=0;getState(0).front='zh';getState(0).revealed=true;renderSession()");
+      await waitFor(() => evaluate(`!!document.querySelector(${JSON.stringify(selector)})`), "swipe origin missing: " + selector);
+      await dragCard(-110, 5, selector);
+      assert((await evaluate("session.index")) === 1, `swipe from ${label} did not change card`);
+   }
+   // les zones qui défilent horizontalement gardent la main sur le geste
+   await evaluate("session.index=0;getState(0).front='zh';getState(0).revealed=true;reviewStrokeExpanded=true;renderSession()");
+   await waitFor(() => evaluate("!!document.querySelector('.review-stroke-characters')"), "character pills missing");
+   await dragCard(-110, 5, ".review-stroke-characters");
+   assert((await evaluate("session.index")) === 0, "horizontal scroller handed its gesture to the card swipe");
+   pass("glissement depuis le caractère et la zone d’écriture, défileurs horizontaux préservés");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
 
    // Entraînement à l'écriture depuis le recto : exercice de rappel, pas de réponse.

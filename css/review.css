@@ -132,7 +132,9 @@
             align-items: center;
             justify-content: flex-end;
             gap: 8px;
-            min-height: 44px;
+            /* le bouton garde sa cible de 44 px ; la rangée, elle, se rapproche
+               du contenu — le caractère centré ne croise jamais le sceau. */
+            margin-bottom: -8px;
          }
          .fl-body {
             display: flex;
@@ -236,7 +238,7 @@
             height: 1.5px;
             background: var(--gold);
             opacity: 0.6;
-            margin: 16px auto 10px;
+            margin: 13px auto 9px;
          }
          .ex {
             margin-top: 14px;
@@ -268,14 +270,14 @@
             font-size: clamp(42px, 13vw, 64px);
          }
          .flash:has(#review-strokes[open]) .pinyin {
-            margin-top: 5px;
+            margin-top: 4px;
             font-size: 18px;
          }
          .flash:has(#review-strokes[open]) .acts-compact {
-            margin-top: 8px;
+            margin-top: 5px;
          }
          .flash:has(#review-strokes[open]) .sep {
-            margin: 10px auto 7px;
+            margin: 8px auto 6px;
          }
          .flash:has(#review-strokes[open]) .fr {
             font-size: 20px;
@@ -324,7 +326,7 @@
          /* actions secondaires de la séance : un trio d'icônes, pas une ligne pleine */
          .acts-compact {
             gap: 6px;
-            margin-top: 10px;
+            margin-top: 6px;
             flex-wrap: nowrap;
          }
          .act-icon {
@@ -465,7 +467,7 @@
             flex: none;
             grid-template-columns: repeat(4, 1fr);
             gap: 7px;
-            margin-top: 10px;
+            margin-top: 7px;
          }
          /* rangée discrète : ni bordure de séparation, ni boutons pleine largeur */
          .session-nav {
@@ -474,7 +476,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 6px;
-            margin-top: 6px;
+            margin-top: 4px;
          }
          .session-nav-button {
             display: inline-flex;
@@ -527,7 +529,7 @@
          }
          .review-strokes {
             width: min(100%, 560px);
-            margin-top: 12px;
+            margin-top: 9px;
             border: 1px solid var(--line);
             border-radius: 13px;
             background: color-mix(in srgb, var(--card-2) 72%, var(--card));
@@ -565,7 +567,7 @@
             font-size: 11px;
          }
          .review-stroke-content {
-            padding: 9px 11px 11px;
+            padding: 7px 11px 9px;
          }
          .review-stroke-character-nav {
             display: grid;
@@ -617,7 +619,7 @@
             gap: 2px 6px;
             color: var(--ink-faint);
             font-size: 12px;
-            line-height: 1.35;
+            line-height: 1.25;
          }
          .review-stroke-count {
             font-variant-numeric: tabular-nums;
@@ -627,11 +629,15 @@
             font-size: 11px;
             white-space: nowrap;
          }
+         /* mot d'un seul caractère : le nombre de traits tient seul sur sa ligne */
+         .review-stroke-meta-solo {
+            justify-content: center;
+         }
          .review-stroke-tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px;
-            padding: 3px;
+            padding: 2px;
             border: 1px solid var(--line-soft);
             border-radius: 10px;
             background: var(--card-2);
@@ -642,7 +648,7 @@
             grid-template-columns: minmax(0, 1fr) auto auto;
             align-items: stretch;
             gap: 6px;
-            margin-top: 7px;
+            margin-top: 6px;
          }
          .review-stroke-actions .stroke-icon-button {
             height: auto;
@@ -673,15 +679,15 @@
             color: var(--lacquer);
          }
          .review-stroke-panel {
-            margin-top: 8px;
+            margin-top: 5px;
          }
          /* composition et origine conservées intégralement, espacements resserrés */
          .review-character-composition {
             width: 100%;
             min-height: 0;
-            gap: 2px;
-            margin: 7px 0 0;
-            padding: 6px 8px;
+            gap: 1px;
+            margin: 6px 0 0;
+            padding: 5px 8px;
          }
          .review-stroke-grid {
             display: grid;
@@ -922,7 +928,7 @@
                padding-inline: 12px;
             }
             .flash {
-               padding: 10px 13px 14px;
+               padding: 8px 13px 11px;
             }
             .grades {
                gap: 5px;
@@ -935,10 +941,10 @@
                font-size: 13px;
             }
             .review-strokes {
-               margin-top: 10px;
+               margin-top: 8px;
             }
             .review-stroke-content {
-               padding: 8px 9px 10px;
+               padding: 6px 9px 8px;
             }
             .review-stroke-grid {
                width: 144px;
