@@ -14,9 +14,9 @@ const edge = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 const profile = await mkdtemp(path.join(os.tmpdir(), "mo-character-radicals-"));
 const visualProofs = {
    table390: path.join(os.tmpdir(), "mo-studio-radical-table-390.png"),
-   table1024: path.join(os.tmpdir(), "mo-studio-radical-table-1024.png"),
-   members390: path.join(os.tmpdir(), "mo-studio-radical-members-390.png"),
-   members1024: path.join(os.tmpdir(), "mo-studio-radical-members-1024.png"),
+   table1280: path.join(os.tmpdir(), "mo-studio-radical-table-1280.png"),
+   selected390: path.join(os.tmpdir(), "mo-studio-radical-selected-390x844.png"),
+   selected1280: path.join(os.tmpdir(), "mo-studio-radical-selected-1280x900.png"),
    backToSearch390: path.join(os.tmpdir(), "mo-studio-radical-back-to-search-390.png"),
 };
 let server, browser, cdp;
@@ -113,13 +113,68 @@ async function main() {
    pass(`tableau des clés à 390px : ${catalogCheck.chipCount} pastilles, aucune cible < 44px, aucun débordement`);
 
    await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
-   const gridMetrics1024 = await evaluate(`(() => {
+   const gridMetrics1280 = await evaluate(`(() => {
       const grids = [...document.querySelectorAll('.radical-grid')];
       return { overflow: grids.some((g) => g.scrollWidth > g.clientWidth + 1), pageOverflow: document.documentElement.scrollWidth > innerWidth + 1 };
    })()`);
-   assert(!gridMetrics1024.overflow && !gridMetrics1024.pageOverflow, `desktop radical grid failed: ${JSON.stringify(gridMetrics1024)}`);
-   await screenshot(visualProofs.table1024);
+   assert(!gridMetrics1280.overflow && !gridMetrics1280.pageOverflow, `desktop radical grid failed: ${JSON.stringify(gridMetrics1280)}`);
+   await screenshot(visualProofs.table1280);
    pass("tableau des clés en desktop : aucun débordement horizontal");
+
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+   await evaluate("window.scrollTo(0, 420)");
+   const radicalTableScroll = await evaluate("window.scrollY");
+   await click('[data-radical="覀"]');
+   await waitFor(() => evaluate("radicalBrowser.radical === '覀' && Array.isArray(radicalBrowser.members)"), "覀 member list did not load");
+   const linkedContext = await evaluate(`(() => {
+      const glyph=document.querySelector('.radical-context-glyph');
+      const card=document.querySelector('.radical-context-card');
+      return {
+         glyph:glyph?.textContent.trim(), glyphLabel:glyph?.getAttribute('aria-label'),
+         sense:document.querySelector('.radical-context-sense')?.textContent.trim(),
+         strokes:document.querySelector('[data-radical-strokes]')?.textContent.trim(),
+         count:document.querySelector('[data-radical-count]')?.textContent.trim(),
+         linked:document.querySelector('[data-radical-linked]')?.textContent.trim(),
+         rows:document.querySelectorAll('#dradical-panel .dict-result').length,
+         title:document.querySelector('#radical-results-title')?.textContent.trim(),
+         backButtons:document.querySelectorAll('#radical-back').length,
+         cardTop:card?.getBoundingClientRect().top,
+      };
+   })()`);
+   assert(linkedContext.glyph === "覀" && linkedContext.glyphLabel === "Clé 覀", `linked radical glyph was substituted: ${JSON.stringify(linkedContext)}`);
+   assert(linkedContext.sense === "ouest (forme liée de 西)" && linkedContext.strokes === "6 traits" && linkedContext.count === "4 caractères associés" && linkedContext.linked.includes("Forme liée") && linkedContext.linked.includes("西"), `覀 context metadata is incomplete: ${JSON.stringify(linkedContext)}`);
+   assert(linkedContext.rows === 4 && linkedContext.title === "Caractères utilisant cette clé" && linkedContext.backButtons === 1, `覀 list hierarchy is incomplete: ${JSON.stringify(linkedContext)}`);
+
+   const selectedWidths = [[320, 568], [375, 667], [390, 844], [430, 932], [1280, 900]];
+   for (const [width, height] of selectedWidths) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: width <= 430 });
+      const layout = await evaluate(`(() => {
+         const rect=(selector)=>{const node=document.querySelector(selector),box=node?.getBoundingClientRect();return node?{top:box.top,bottom:box.bottom,left:box.left,right:box.right,height:box.height}:null};
+         const targets=[...document.querySelectorAll('#search-mode-toggle,#radical-back,#dradical-panel .dict-result-primary,#radical-show-more')].filter((node)=>getComputedStyle(node).display!=='none');
+         const ids=[...document.querySelectorAll('[id]')].map((node)=>node.id),duplicates=ids.filter((id,index)=>ids.indexOf(id)!==index);
+         const top=rect('.search-hero-top'),context=rect('.radical-context-card'),heading=rect('.radical-members-heading'),first=rect('#dradical-panel .dict-result'),nav=rect('.nav');
+         return {width:innerWidth,overflow:document.documentElement.scrollWidth>innerWidth+1,minTarget:Math.min(...targets.map((node)=>node.getBoundingClientRect().height)),duplicates:[...new Set(duplicates)],gap:context.top-top.bottom,context,heading,first,nav};
+      })()`);
+      assert(!layout.overflow && layout.minTarget >= 44 && !layout.duplicates.length, `selected radical responsive/a11y failed at ${width}px: ${JSON.stringify(layout)}`);
+      assert(layout.gap <= 16 && layout.context.top >= 0 && layout.context.bottom < layout.nav.top && layout.heading.top < layout.nav.top && layout.first.top < layout.nav.top, `selected context was not useful in the first viewport at ${width}px: ${JSON.stringify(layout)}`);
+      if (width === 390) await screenshot(visualProofs.selected390);
+      if (width === 1280) await screenshot(visualProofs.selected1280);
+      await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
+      const bottomSafety = await evaluate(`(() => {const last=[...document.querySelectorAll('#dradical-panel .dict-result')].at(-1)?.getBoundingClientRect(),nav=document.querySelector('.nav').getBoundingClientRect();return {lastBottom:last?.bottom,navTop:nav.top,scrollY:window.scrollY};})()`);
+      assert(bottomSafety.lastBottom <= bottomSafety.navTop + 1, `selected radical content passed under navigation at ${width}px: ${JSON.stringify(bottomSafety)}`);
+      await evaluate("window.scrollTo(0, 0)");
+   }
+   pass("覀 : glyphe exact, forme liée de 西, 6 traits, 4 membres et contexte visible dès le premier écran à 320/375/390/430/1280px");
+
+   await evaluate("history.back()");
+   await waitFor(() => evaluate("radicalBrowser.radical === null && document.querySelectorAll('.radical-chip').length > 0"), "browser Back did not restore the radical table");
+   const restoredTableScroll = await waitFor(() => evaluate(`Math.abs(window.scrollY - ${radicalTableScroll}) <= 2 ? window.scrollY : false`), "browser Back did not restore the radical table scroll");
+   await evaluate("history.forward()");
+   await waitFor(() => evaluate("radicalBrowser.radical === '覀' && document.querySelector('.radical-context-glyph')?.textContent.trim() === '覀'"), "browser Forward did not restore the selected radical");
+   assert(restoredTableScroll >= 0, "restored table scroll is invalid");
+   await click("#radical-back");
+   await waitFor(() => evaluate("radicalBrowser.radical === null && document.querySelectorAll('.radical-chip').length > 0"), "context back action did not return to all radicals");
+   pass("retour navigateur, avance navigateur et unique action Toutes les clés préservent les deux niveaux du mode");
 
    await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
    for (const radical of ["氵", "亻", "女", "木"]) {
@@ -133,25 +188,35 @@ async function main() {
       const ascending = info.strokes.every((value, index, all) => index === 0 || (all[index - 1] ?? Infinity) <= (value ?? Infinity));
       assert(ascending, `${radical} members are not sorted ascending by stroke count: ${JSON.stringify(info.strokes)}`);
       if (radical === "氵") {
-         await screenshot(visualProofs.members390);
-         await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
-         await screenshot(visualProofs.members1024);
-         await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+         assert(info.count > 100 && info.rows === 32 && await evaluate("!!document.querySelector('#radical-show-more')"), `large radical did not expose its 32-row first page: ${JSON.stringify(info)}`);
+         await click("#radical-show-more");
+         const expandedRows = await evaluate("document.querySelectorAll('#dradical-panel .dict-result').length");
+         assert(expandedRows === 64, `Afficher plus did not advance the 32-row page: ${expandedRows}`);
       }
       await click("#radical-back");
       await waitFor(() => evaluate("radicalBrowser.radical === null && document.querySelectorAll('.radical-chip').length > 0"), `${radical} did not return to the radical table`);
    }
-   pass("氵/亻/女/木 : listes de caractères correctes, triées par nombre de traits croissant");
+   pass("氵/亻/女/木 : tri conservé ; clé > 100 membres paginée 32 puis 64 lignes");
 
    await click('[data-radical="氵"]');
    await waitFor(() => evaluate("radicalBrowser.radical === '氵' && document.querySelectorAll('#dradical-panel .dict-result').length > 0"), "氵 member list did not reload");
-   await click("#dradical-panel .dict-result-primary");
+   await click("#radical-show-more");
+   await waitFor(() => evaluate("document.querySelectorAll('#dradical-panel .dict-result').length === 64"), "second radical member page did not open before detail");
+   await evaluate("window.scrollTo(0, Math.min(1500, document.documentElement.scrollHeight - innerHeight))");
+   const listScrollBeforeDetail = await evaluate("window.scrollY");
+   await evaluate(`(() => {
+      const navTop=document.querySelector('.nav').getBoundingClientRect().top;
+      const buttons=[...document.querySelectorAll('#dradical-panel .dict-result-primary')];
+      const target=buttons.find((button)=>{const rect=button.getBoundingClientRect();return rect.top>=0&&rect.bottom<navTop;})||buttons[0];
+      target.click();
+   })()`);
    await waitFor(() => evaluate("sheetOpen() && !!document.querySelector('.dd-entry')"), "character detail did not open from radical mode");
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "detail sheet did not close");
-   const historyAfterClose = await evaluate("({ mode: history.state?.mode, radical: history.state?.radical, rows: document.querySelectorAll('#dradical-panel .dict-result').length, panelHidden: document.querySelector('#dradical-panel').hidden })");
-   assert(historyAfterClose.mode === "radical" && historyAfterClose.radical === "氵" && !historyAfterClose.panelHidden && historyAfterClose.rows > 0, `closing a character detail from radical mode did not return to the same radical's list: ${JSON.stringify(historyAfterClose)}`);
-   pass("fermeture d’une fiche depuis le mode clés → retour dans la même liste de clé (pas de résultats génériques)");
+   await waitFor(() => evaluate(`Math.abs(window.scrollY - ${listScrollBeforeDetail}) <= 2`), "closing a character detail did not restore the list scroll");
+   const historyAfterClose = await evaluate("({ mode: history.state?.mode, radical: history.state?.radical, rows: document.querySelectorAll('#dradical-panel .dict-result').length, panelHidden: document.querySelector('#dradical-panel').hidden, scrollY: window.scrollY })");
+   assert(historyAfterClose.mode === "radical" && historyAfterClose.radical === "氵" && !historyAfterClose.panelHidden && historyAfterClose.rows === 64 && Math.abs(historyAfterClose.scrollY - listScrollBeforeDetail) <= 2, `closing a character detail from radical mode did not return to the same radical's list and position: ${JSON.stringify(historyAfterClose)}`);
+   pass("fermeture d’une fiche depuis le mode clés → même clé, même page de 64 éléments et même position de défilement");
 
    const oneMember = manifest.radicals.find((row) => row.memberCount === 1);
    assert(oneMember, "no genuine 1-member radical found in the manifest");
@@ -159,9 +224,13 @@ async function main() {
    await waitFor(() => evaluate("radicalBrowser.radical === null"), "did not return to radical table before 1-member check");
    await click(`[data-radical="${oneMember.radical}"]`);
    await waitFor(() => evaluate(`radicalBrowser.radical === ${JSON.stringify(oneMember.radical)} && Array.isArray(radicalBrowser.members)`), "1-member radical did not load");
-   const oneMemberInfo = await evaluate("({ rows: document.querySelectorAll('#dradical-panel .dict-result').length, showMore: !!document.querySelector('#radical-show-more') })");
-   assert(oneMemberInfo.rows === 1 && !oneMemberInfo.showMore, `1-member radical (${oneMember.radical}) rendering unexpected: ${JSON.stringify(oneMemberInfo)}`);
-   pass(`clé à 1 membre (${oneMember.radical}) : une seule ligne, pas de pagination`);
+   const oneMemberInfo = await evaluate("({ rows: document.querySelectorAll('#dradical-panel .dict-result').length, showMore: !!document.querySelector('#radical-show-more'), count: document.querySelector('[data-radical-count]')?.textContent.trim(), sense: document.querySelector('.radical-context-sense')?.textContent.trim() })");
+   assert(oneMemberInfo.rows === 1 && !oneMemberInfo.showMore && oneMemberInfo.count === "1 caractère associé", `1-member radical (${oneMember.radical}) rendering unexpected: ${JSON.stringify(oneMemberInfo)}`);
+   if (!oneMember.sens) assert(oneMemberInfo.sense === "Sens français vérifié indisponible", `missing verified-French state is unclear: ${JSON.stringify(oneMemberInfo)}`);
+   pass(`clé à 1 membre (${oneMember.radical}) : contexte explicite, une seule ligne et pas de pagination`);
+
+   await click("#radical-back");
+   await waitFor(() => evaluate("radicalBrowser.radical === null"), "did not return to radical table before synthetic states");
 
    // No real radical is missing hanzi-writer stroke data today (confirmed at build time), so the
    // "unknown stroke count" fallback is exercised here by injecting a synthetic catalog row.
@@ -171,10 +240,26 @@ async function main() {
       renderRadicalTable();
       const heading = [...document.querySelectorAll('.radical-group-heading')].find((node) => node.textContent.includes('inconnu'));
       const chip = document.querySelector('[data-radical="' + sentinel + '"]');
-      return { headingFound: !!heading, chipFound: !!chip, chipHasNoStrokeLabel: !!chip && !chip.textContent.includes('null') };
+      radicalBrowser.radical = sentinel;
+      radicalBrowser.members = [];
+      setRadicalPanelVisible(true);
+      renderRadicalMembers();
+      const selected = {
+         glyph:document.querySelector('.radical-context-glyph')?.textContent.trim(),
+         strokes:document.querySelector('[data-radical-strokes]')?.textContent.trim(),
+         sense:document.querySelector('.radical-context-sense')?.textContent.trim(),
+         count:document.querySelector('[data-radical-count]')?.textContent.trim(),
+         empty:document.querySelector('.radical-members-empty')?.textContent.trim(),
+      };
+      renderRadicalMembersError(sentinel);
+      const retry=document.querySelector('#radical-retry');
+      return { headingFound: !!heading, chipFound: !!chip, chipHasNoStrokeLabel: !!chip && !chip.textContent.includes('null'), selected,
+         error:document.querySelector('[role="alert"]')?.textContent.trim(), retryHeight:retry?.getBoundingClientRect().height,
+         preservedGlyph:document.querySelector('.radical-context-glyph')?.textContent.trim() };
    })()`);
-   assert(syntheticCheck.headingFound && syntheticCheck.chipFound && syntheticCheck.chipHasNoStrokeLabel, `synthetic missing-stroke-count radical did not render safely: ${JSON.stringify(syntheticCheck)}`);
-   pass("clé sans nombre de traits (cas synthétique — aucune clé réelle n’en manque aujourd’hui) : rendu sans plantage ni valeur inventée");
+   assert(syntheticCheck.headingFound && syntheticCheck.chipFound && syntheticCheck.chipHasNoStrokeLabel && syntheticCheck.selected.strokes === "Nombre de traits inconnu" && syntheticCheck.selected.sense === "Sens français vérifié indisponible" && syntheticCheck.selected.count === "3 caractères associés", `synthetic missing metadata radical did not render safely: ${JSON.stringify(syntheticCheck)}`);
+   assert(syntheticCheck.selected.empty.includes("Aucun caractère associé") && syntheticCheck.error.includes("n’ont pas pu être chargés") && syntheticCheck.retryHeight >= 44 && syntheticCheck.preservedGlyph === syntheticCheck.selected.glyph, `empty/error states lost their selected-radical context: ${JSON.stringify(syntheticCheck)}`);
+   pass("traits inconnus, sens français absent, aucun résultat et erreur : états explicites sans valeur inventée");
    await evaluate("openRadicalMode({fromHistory:true})");
    await waitFor(() => evaluate("radicalBrowser.catalog.length === " + manifest.radicals.length), "radical catalog did not reset after the synthetic test");
    await evaluate("exitRadicalMode({fromHistory:true})");

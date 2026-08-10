@@ -35,6 +35,7 @@ const visualProofs = {
    sequenceShell430: path.join(os.tmpdir(), "mo-studio-sequence-shell-430x932.png"),
    decomposition390: path.join(os.tmpdir(), "mo-studio-character-decomposition-390.png"),
    decomposition1024: path.join(os.tmpdir(), "mo-studio-character-decomposition-1024.png"),
+   frenchReadings390: path.join(os.tmpdir(), "mo-studio-french-readings-390.png"),
 };
 let server, browser, cdp;
 
@@ -250,7 +251,7 @@ async function main() {
    assert(riceTrace.resolved.sibling === "word-36f6538d2d4c5de27f843b75" && riceTrace.resolved.fr.includes("riz cuit"), `饭 French sibling was not resolved: ${JSON.stringify(riceTrace)}`);
    await evaluate(`(async()=>openDictDetail(await loadDictionaryEntryById('char-饭')))()`);
    await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('riz cuit')"), "饭 detail did not reuse its French sibling");
-   assert(!(await evaluate("document.querySelector('#dd-french-definitions').textContent.includes('Traduction française indisponible')")), "饭 detail kept the unavailable notice");
+   assert(!(await evaluate("document.querySelector('#dd-french-definitions').textContent.includes('Sens français vérifié indisponible')")), "饭 detail kept the unavailable notice");
    assert(await evaluate("!document.querySelector('#dd-close')&&!!document.querySelector('#dd-close-top')"), "non-search detail kept the redundant bottom Fermer action");
    await click("#dd-close-top");
 
@@ -276,7 +277,7 @@ async function main() {
    await waitFor(() => evaluate("!!document.querySelector('#dd-picker [data-character=\"饭\"]')"), "吃饭 character picker missing");
    await click('#dd-picker [data-character="饭"]');
    await waitFor(() => evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭')?.querySelector('.dd-character-detail-translation').textContent.includes('riz cuit')"), "吃饭 → 饭 character detail did not reuse French");
-   assert(!(await evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭').textContent.includes('Traduction française indisponible')")), "吃饭 → 饭 character detail kept the fallback");
+   assert(!(await evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭').textContent.includes('Sens français vérifié indisponible')")), "吃饭 → 饭 character detail kept the fallback");
    await click("#dd-close-top");
 
    await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('你好')))()`);
@@ -371,7 +372,7 @@ async function main() {
       return {fr:resolved.definitionsFr,en:entry.definitionsEn};
    })()`);
    assert(!genuineFallback.fr.length && genuineFallback.en.length, `並 should remain an English fallback: ${JSON.stringify(genuineFallback)}`);
-   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('Traduction française indisponible')"), "genuine French fallback disappeared");
+   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('Sens français vérifié indisponible')"), "genuine French fallback disappeared");
    assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Sens anglais de référence"), "genuine English reference disappeared");
    assert(await evaluate("!document.querySelector('#dd-close')"), "genuine non-search fallback kept a bottom Fermer action");
    await click("#dd-close-top");
@@ -382,7 +383,7 @@ async function main() {
    assert(face.results[0].hsk.includes(2) && face.results[0].hsk.includes(5), "distinct HSK senses missing");
    assert(face.results[0].group.length === 2 && face.merged >= 1, "character/word visual duplicate not merged");
    assert(!face.results[0].en.some((value) => /^flour$/i.test(value)), "flour incorrectly became the main 面 definition");
-   assert(face.html.includes("Traduction française indisponible") && face.html.includes("Sens anglais de référence"), "French/English fallback labeling unclear");
+   assert(face.html.includes("Sens français vérifié indisponible") && face.html.includes("Sens anglais de référence"), "French/English fallback labeling unclear");
    assert(face.results[0].variants.some((item) => item.traditional === "麵") && face.results[0].variants.some((item) => item.traditional === "麪") && face.grouped >= 2, "traditional variants were not grouped under the modern entry");
    assert(await evaluate("document.querySelectorAll('.dict-result:first-of-type .dict-result-meta .b').length <= 2 && !document.querySelector('.dict-result:first-of-type .dict-result-meta').textContent.includes('mot + caractère')"), "result badges are not compact");
    assert(await evaluate("document.querySelector('.dict-result:first-of-type .dict-result-variants:not([open])')?.textContent.includes('2 variantes traditionnelles')"), "variant disclosure is not collapsed or clear");
@@ -442,6 +443,38 @@ async function main() {
    const ordinary = await search("菜");
    assert(!ordinary.results[0].variants.length, "variant grouping created an artificial group for an ordinary word");
    pass("homographes/prononciations distincts et recherche traditionnelle conservés");
+
+   const mao = await search("毛");
+   assert(mao.results.some((item)=>item.hz==='毛'&&item.pinyin.includes('mao2')&&item.fr.includes('poil')) && !mao.html.includes('Torr'), "毛 lost its verified mao2 senses or inherited 乇");
+   const tuo = await search("tuo1");
+   const tuoEntry = tuo.results.flatMap((item)=>[item,...item.variants]).find((item)=>item.hz==='乇'&&item.pinyin.includes('tuo1'));
+   assert(tuoEntry?.fr.includes('ancienne variante de 托'), `乇 tuo1 correction missing: ${JSON.stringify(tuo.results.slice(0,8))}`);
+   const zhe = await search("zhe2");
+   const zheEntry = zhe.results.flatMap((item)=>[item,...item.variants]).find((item)=>item.hz==='乇'&&item.pinyin.includes('zhe2'));
+   assert(zheEntry?.fr.some((value)=>value.includes('brin d’herbe')) && !zheEntry.fr.includes('Torr'), `乇 zhe2 correction missing: ${JSON.stringify(zheEntry)}`);
+   const sideBySide = await search("乑");
+   const sideBySideFull = await evaluate(`(async()=>{const item=(await searchDictionary('乑')).results.find((result)=>result.entry.simplified==='乑'&&result.entry.pinyin.some((p)=>p.numbered==='zhong4'));const full=item&&await loadDictionaryEntryById(item.entry.id);return full&&{pinyin:full.pinyin.map((p)=>p.numbered),fr:full.definitionsFr};})()`);
+   assert(sideBySide.results.some((item)=>item.pinyin.includes('zhong4'))&&sideBySideFull?.fr.includes('se tenir côte à côte')&&sideBySideFull.fr.includes('variante de 眾/众'), "乑 verified senses missing");
+   const alkene = await search("烯");
+   assert(alkene.results[0].pinyin.includes('xi1')&&alkene.results[0].fr.includes('alcène')&&!alkene.html.includes('blaze de feu')&&!alkene.html.includes('glorieux'), "烯 did not keep the chemistry sense only");
+   const speed = await search("vitesse");
+   assert(!speed.results.some((item)=>item.hz==='叕'), "quarantined 叕 jue2 text remained searchable");
+
+   await search("乇");
+   await evaluate(`(async()=>openDictDetail(await loadDictionaryEntryById('char-乇')))()`);
+   await waitFor(() => evaluate("document.querySelectorAll('.dd-reading-group').length===2"), "乇 detail did not separate its readings");
+   const selectedPronunciationKeys = await evaluate(`(async()=>[...dictionaryEntryPronunciationKeys(dictionaryEntryForReading(await loadDictionaryEntryById('char-乇'),'zhe2'))])()`);
+   assert(selectedPronunciationKeys.join(',')==='zhe2', `selected reading leaked into sibling resolution: ${JSON.stringify(selectedPronunciationKeys)}`);
+   const readingGroups = await evaluate(`([...document.querySelectorAll('.dd-reading-group')].map((node)=>({reading:node.dataset.reading,text:node.textContent})))`);
+   assert(readingGroups.some((item)=>item.reading==='tuo1'&&item.text.includes('ancienne variante de 托'))&&readingGroups.some((item)=>item.reading==='zhe2'&&item.text.includes('brin d’herbe'))&&!readingGroups.some((item)=>item.text.includes('Torr'))&&await evaluate("document.querySelector('.dd-sources')?.textContent.includes('Révision éditoriale')"), `乇 detail/provenance is incoherent: ${JSON.stringify(readingGroups)}`);
+   await evaluate("document.querySelector('#dd-french-definitions').scrollIntoView({block:'center'})");
+   await new Promise((resolve) => setTimeout(resolve, 260));
+   const frenchReadingsScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
+   await writeFile(visualProofs.frenchReadings390, Buffer.from(frenchReadingsScreenshot.data, "base64"));
+   await click("#dd-close-top");
+   const radicalTuo = await evaluate(`(async()=>{for(const radical of ['丿','乙']){const entries=await resolveRadicalMembers(radical);const entry=entries.find((item)=>item.simplified==='乇');if(entry)return {pinyin:entry.pinyin.map((item)=>item.numbered),fr:entry.definitionsFr};}return null;})()`);
+   assert(radicalTuo?.pinyin.includes('tuo1')&&radicalTuo.fr.includes('ancienne variante de 托')&&!radicalTuo.fr.includes('Torr'), `radical browser inherited a mismatched reading: ${JSON.stringify(radicalTuo)}`);
+   pass("corrections françaises, quarantaine, lectures séparées et provenance visibles");
 
    await evaluate("openDictionaryAddToWords(window.__cai)");
    for (const width of [360, 430, 768, 1024, 1440]) {

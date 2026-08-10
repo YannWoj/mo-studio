@@ -65,6 +65,8 @@ function dictionaryPinyinSortTier(entry, query) {
 }
 
 function entryPinyinVariants(entry) {
+   if (Array.isArray(entry.readings) && entry.readings.length)
+      return entry.readings.map((reading) => reading.pinyin).filter(Boolean);
    if (Array.isArray(entry.pinyin)) return entry.pinyin;
    if (entry.py) {
       return [
@@ -79,6 +81,10 @@ function entryPinyinVariants(entry) {
 }
 
 function entryDefinitions(entry, language) {
+   if (Array.isArray(entry.readings) && entry.readings.length) {
+      const field = language === "fr" ? "definitionsFr" : "definitionsEn";
+      return Array.from(new Set(entry.readings.flatMap((reading) => reading[field] || [])));
+   }
    if (language === "fr")
       return Array.isArray(entry.definitionsFr)
          ? entry.definitionsFr

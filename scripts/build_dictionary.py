@@ -8,6 +8,7 @@ from dataclasses import asdict
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 import shutil
 import time
 from typing import Any, Iterable
@@ -24,11 +25,21 @@ from dictionary_common import (
 )
 from parse_cc_cedict import parse_cc_cedict
 from parse_cfdict import parse_cfdict
+from dictionary_french_policy import (
+    DEFAULT_OVERRIDES,
+    OVERRIDE_SOURCE_ID,
+    FrenchOverridePolicy,
+    apply_french_policy,
+    lexical_key,
+    load_french_override_policy,
+    policy_metadata,
+    validate_policy_targets,
+)
 
 
-SCHEMA_VERSION = 1
-BUILDER_VERSION = "1.3.1"
-SOURCE_ORDER = {"CFDICT": 0, "CC-CEDICT": 1}
+SCHEMA_VERSION = 2
+BUILDER_VERSION = "2.0.0"
+SOURCE_ORDER = {"CFDICT": 0, "CC-CEDICT": 1, OVERRIDE_SOURCE_ID: 2}
 DEFAULT_OUTPUT = Path("data/generated/dictionary")
 
 
@@ -65,6 +76,17 @@ def search_preview(entry: dict[str, Any]) -> list[Any]:
         entry["hskLegacy"],
         entry["hsk30"],
         entry["frequencyRank"],
+        [
+            [
+                reading["pinyin"]["marked"],
+                reading["pinyin"]["numbered"],
+                reading["pinyin"]["plain"],
+                reading["definitionsFr"],
+                reading["definitionsEn"],
+                reading["frenchStatus"],
+            ]
+            for reading in (entry_readings(entry) if entry["entryType"] == "character" else [])
+        ],
     ]
 
 
@@ -82,7 +104,10 @@ def source_refs(records: Iterable[DictionaryRecord]) -> list[dict[str, Any]]:
     ]
 
 
-def _merge_records(results: Iterable[ParseResult]) -> list[dict[str, Any]]:
+def _merge_records(
+    results: Iterable[ParseResult],
+    policy: FrenchOverridePolicy,
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
     groups: dict[tuple[str, str, str], list[DictionaryRecord]] = defaultdict(list)
     for result in results:
         for record in result.records:
@@ -93,8 +118,12 @@ def _merge_records(results: Iterable[ParseResult]) -> list[dict[str, Any]]:
             )
             groups[key].append(record)
 
+    validate_policy_targets(policy, groups)
+    policy_by_key = {lexical_key(entry): entry for entry in policy.entries}
     entries: list[dict[str, Any]] = []
     ids: set[str] = set()
+    raw_french_word_count = 0
+    changed_entry_count = 0
     for traditional, simplified, numbered in sorted(groups):
         records = groups[(traditional, simplified, numbered)]
         entry_id = stable_word_id(traditional, simplified, numbered)
@@ -102,12 +131,22 @@ def _merge_records(results: Iterable[ParseResult]) -> list[dict[str, Any]]:
             raise RuntimeError(f"Stable ID collision for {traditional} [{numbered}]")
         ids.add(entry_id)
 
-        definitions_fr = unique_in_order(
+        raw_definitions_fr = unique_in_order(
             definition
             for record in records
             if record.definition_language == "fr"
             for definition in record.definitions
         )
+        if raw_definitions_fr:
+            raw_french_word_count += 1
+        definitions_fr, french_status, french_provenance = apply_french_policy(
+            (traditional, simplified, numbered),
+            raw_definitions_fr,
+            policy_by_key,
+            policy,
+        )
+        if definitions_fr != raw_definitions_fr:
+            changed_entry_count += 1
         definitions_en = unique_in_order(
             definition
             for record in records
@@ -126,8 +165,13 @@ def _merge_records(results: Iterable[ParseResult]) -> list[dict[str, Any]]:
                 "pinyin": [pinyin_triplet(numbered)],
                 "definitionsFr": definitions_fr,
                 "definitionsEn": definitions_en,
-                "sources": source_sort(record.source for record in records),
+                "sources": source_sort([
+                    *(record.source for record in records),
+                    *([OVERRIDE_SOURCE_ID] if french_provenance else []),
+                ]),
                 "sourceRefs": source_refs(records),
+                "frenchStatus": french_status,
+                "frenchProvenance": french_provenance,
                 "hskLegacy": [],
                 "hsk30": [],
                 "frequencyRank": None,
@@ -135,7 +179,12 @@ def _merge_records(results: Iterable[ParseResult]) -> list[dict[str, Any]]:
                 "searchAliases": [],
             }
         )
-    return sorted(entries, key=lambda entry: entry["id"])
+    return sorted(entries, key=lambda entry: entry["id"]), {
+        "rawFrenchDefinitionWordCount": raw_french_word_count,
+        "changedEntryCount": changed_entry_count,
+        "verifiedOverrideCount": sum(entry["action"] != "quarantine" for entry in policy.entries),
+        "quarantinedEntryCount": sum(entry["action"] == "quarantine" for entry in policy.entries),
+    }
 
 
 def _build_character_entries(
@@ -171,25 +220,54 @@ def _build_character_entries(
     characters: list[dict[str, Any]] = []
     for character in all_characters:
         verified = standalone.get(character, [])
+        words_by_reading: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for word in verified:
+            words_by_reading[word["pinyin"][0]["numbered"]].append(word)
+        readings = []
+        for numbered, reading_words in words_by_reading.items():
+            reading_words.sort(key=lambda word: word["id"])
+            definitions_fr = unique_in_order(
+                definition for word in reading_words for definition in word["definitionsFr"]
+            )
+            statuses = {word["frenchStatus"] for word in reading_words}
+            readings.append({
+                "pinyin": pinyin_triplet(numbered),
+                "definitionsFr": definitions_fr,
+                "definitionsEn": unique_in_order(
+                    definition for word in reading_words for definition in word["definitionsEn"]
+                ),
+                "frenchStatus": (
+                    "verified" if "verified" in statuses and definitions_fr
+                    else "source" if definitions_fr
+                    else "unavailable"
+                ),
+                "sources": source_sort(
+                    source for word in reading_words for source in word["sources"]
+                ),
+                "sourceRefs": merge_source_ref_dicts(
+                    reference for word in reading_words for reference in word["sourceRefs"]
+                ),
+                "frenchProvenance": unique_provenance(
+                    item for word in reading_words for item in word["frenchProvenance"]
+                ),
+                "wordIds": [word["id"] for word in reading_words],
+            })
+        readings.sort(key=lambda reading: (
+            0 if reading["definitionsFr"] else 1,
+            0 if reading["definitionsEn"] else 1,
+            reading["pinyin"]["numbered"],
+            reading["wordIds"],
+        ))
+        primary = readings[0] if readings else None
         characters.append(
             {
                 "id": f"char-{character}",
                 "simplified": character,
                 "traditional": character,
                 "entryType": "character",
-                "pinyin": unique_dicts(
-                    variant for word in verified for variant in word["pinyin"]
-                ),
-                "definitionsFr": unique_in_order(
-                    definition
-                    for word in verified
-                    for definition in word["definitionsFr"]
-                ),
-                "definitionsEn": unique_in_order(
-                    definition
-                    for word in verified
-                    for definition in word["definitionsEn"]
-                ),
+                "pinyin": [primary["pinyin"]] if primary else [],
+                "definitionsFr": list(primary["definitionsFr"]) if primary else [],
+                "definitionsEn": list(primary["definitionsEn"]) if primary else [],
                 "sources": source_sort(
                     source for word in verified for source in word["sources"]
                 ),
@@ -198,6 +276,11 @@ def _build_character_entries(
                     for word in verified
                     for reference in word["sourceRefs"]
                 ),
+                "frenchStatus": primary["frenchStatus"] if primary else "unavailable",
+                "frenchProvenance": unique_provenance(
+                    item for reading in readings for item in reading["frenchProvenance"]
+                ),
+                "readings": readings,
                 "hskLegacy": [],
                 "hsk30": [],
                 "frequencyRank": None,
@@ -210,6 +293,35 @@ def _build_character_entries(
         sorted(characters, key=lambda entry: entry["id"]),
         {character: sorted(set(word_ids)) for character, word_ids in linked_words.items()},
     )
+
+
+def entry_readings(entry: dict[str, Any]) -> list[dict[str, Any]]:
+    if entry.get("entryType") == "character":
+        return entry.get("readings", [])
+    pinyin = entry.get("pinyin", [])
+    if not pinyin:
+        return []
+    return [{
+        "pinyin": pinyin[0],
+        "definitionsFr": entry["definitionsFr"],
+        "definitionsEn": entry["definitionsEn"],
+        "frenchStatus": entry["frenchStatus"],
+        "sources": entry["sources"],
+        "sourceRefs": entry["sourceRefs"],
+        "frenchProvenance": entry["frenchProvenance"],
+        "wordIds": [entry["id"]],
+    }]
+
+
+def unique_provenance(values: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    output: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for value in values:
+        key = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        if key not in seen:
+            seen.add(key)
+            output.append(value)
+    return output
 
 
 def unique_dicts(values: Iterable[dict[str, str]]) -> list[dict[str, str]]:
@@ -245,12 +357,19 @@ def add_posting(
 def search_priority(entry: dict[str, Any]) -> tuple[Any, ...]:
     """Order postings by verified, query-independent quality signals."""
 
+    readings = entry_readings(entry)
+    french = unique_in_order(
+        definition for reading in readings for definition in reading["definitionsFr"]
+    )
+    english = unique_in_order(
+        definition for reading in readings for definition in reading["definitionsEn"]
+    )
     return (
         0 if entry["entryType"] == "character" else 1,
-        0 if entry["definitionsFr"] else 1,
+        0 if french else 1,
         -min(len(entry["sources"]), 2),
-        -min(len(entry["definitionsFr"]), 8),
-        -min(len(entry["definitionsEn"]), 8),
+        -min(len(french), 8),
+        -min(len(english), 8),
         len(entry["simplified"]),
         entry["simplified"],
         entry["traditional"],
@@ -294,7 +413,8 @@ def _build_indexes(
         reference = reference_by_id[entry["id"]]
         add_posting(exact, entry["simplified"], reference)
         add_posting(exact, entry["traditional"], reference)
-        for variant in entry["pinyin"]:
+        readings = entry_readings(entry)
+        for variant in [reading["pinyin"] for reading in readings]:
             for key in unique_in_order(
                 [variant["numbered"], variant["marked"], variant["plain"]]
                 + variant["numbered"].split()
@@ -302,10 +422,14 @@ def _build_indexes(
                 + variant["plain"].split()
             ):
                 add_posting(pinyin, key, reference)
-        for definition in entry["definitionsFr"]:
+        for definition in unique_in_order(
+            definition for reading in readings for definition in reading["definitionsFr"]
+        ):
             for token in search_tokens(definition):
                 add_posting(french, token, reference)
-        for definition in entry["definitionsEn"]:
+        for definition in unique_in_order(
+            definition for reading in readings for definition in reading["definitionsEn"]
+        ):
             for token in search_tokens(definition):
                 add_posting(english, token, reference)
 
@@ -345,7 +469,9 @@ def _tree_file_metadata(directory: Path) -> list[dict[str, Any]]:
     return files
 
 
-def _source_attribution(results: Iterable[ParseResult]) -> dict[str, Any]:
+def _source_attribution(
+    results: Iterable[ParseResult], policy: FrenchOverridePolicy
+) -> dict[str, Any]:
     return {
         "schemaVersion": SCHEMA_VERSION,
         "sources": [
@@ -356,6 +482,7 @@ def _source_attribution(results: Iterable[ParseResult]) -> dict[str, Any]:
             }
             for result in results
         ],
+        "frenchEditorialPolicy": policy_metadata(policy),
     }
 
 
@@ -373,17 +500,187 @@ def _hsk_compatibility(path: Path, exact_index: dict[str, Any]) -> dict[str, Any
     }
 
 
+MOJIBAKE_MARKERS = ("Ã", "Â", "â€", "ï¿½", "�")
+OTHER_LANGUAGE_PATTERNS = (
+    ("english-fragment", re.compile(r"\b(?:the|and|blaze|glorious)\b", re.IGNORECASE)),
+    ("german-fragment", re.compile(r"\b(?:der|die|das|und|Torr)\b", re.IGNORECASE)),
+)
+
+
+def _coverage(count: int, total: int) -> dict[str, Any]:
+    return {
+        "covered": count,
+        "total": total,
+        "percent": round(count * 100 / total, 6) if total else 0,
+    }
+
+
+def _french_audit_report(
+    words: list[dict[str, Any]],
+    characters: list[dict[str, Any]],
+    indexes: dict[str, Any],
+    entry_locations: list[list[str]],
+    policy: FrenchOverridePolicy,
+    policy_stats: dict[str, int],
+    hsk_path: Path,
+    results: list[ParseResult],
+) -> dict[str, Any]:
+    policy_by_key = {lexical_key(entry): entry for entry in policy.entries}
+    words_by_key = {
+        (
+            word["traditional"],
+            word["simplified"],
+            word["pinyin"][0]["numbered"],
+        ): word
+        for word in words
+    }
+    reference_by_id = {
+        entry_id: reference for reference, (entry_id, _chunk) in enumerate(entry_locations)
+    }
+    critical: list[dict[str, Any]] = []
+    anomalies: list[dict[str, Any]] = []
+
+    for word in words:
+        for language in ("definitionsFr", "definitionsEn"):
+            for definition in word[language]:
+                if not isinstance(definition, str) or not definition.strip():
+                    critical.append({"type": "empty-definition", "entryId": word["id"], "field": language})
+        for definition in word["definitionsFr"]:
+            if any(marker in definition for marker in MOJIBAKE_MARKERS):
+                anomalies.append({"type": "mojibake", "entryId": word["id"], "text": definition})
+            for anomaly_type, pattern in OTHER_LANGUAGE_PATTERNS:
+                if pattern.search(definition):
+                    anomalies.append({"type": anomaly_type, "entryId": word["id"], "text": definition})
+
+    for key, override in policy_by_key.items():
+        word = words_by_key[key]
+        if not word["frenchProvenance"] or OVERRIDE_SOURCE_ID not in word["sources"]:
+            critical.append({"type": "override-provenance-loss", "entryId": word["id"]})
+        reference = reference_by_id[word["id"]]
+        for quarantined in override.get("quarantinedDefinitionsFr", []):
+            if quarantined in word["definitionsFr"]:
+                critical.append({"type": "quarantined-definition-visible", "entryId": word["id"], "text": quarantined})
+            indexed_tokens = search_tokens(quarantined)
+            if any(reference in indexes["french-index.json"].get(token, []) for token in indexed_tokens):
+                critical.append({"type": "quarantined-definition-indexed", "entryId": word["id"], "text": quarantined})
+
+    for character in characters:
+        readings = character["readings"]
+        if not readings:
+            continue
+        primary = readings[0]
+        if (
+            character["pinyin"] != [primary["pinyin"]]
+            or character["definitionsFr"] != primary["definitionsFr"]
+            or character["definitionsEn"] != primary["definitionsEn"]
+        ):
+            critical.append({"type": "polyphonic-primary-concatenation", "entryId": character["id"]})
+        numbered = [reading["pinyin"]["numbered"] for reading in readings]
+        if len(numbered) != len(set(numbered)):
+            critical.append({"type": "duplicate-reading", "entryId": character["id"]})
+
+    english_without_french = [
+        [
+            word["id"],
+            word["simplified"],
+            word["traditional"],
+            word["pinyin"][0]["numbered"],
+            word["definitionsEn"][0],
+        ]
+        for word in sorted(words, key=lambda item: item["id"])
+        if word["definitionsEn"] and not word["definitionsFr"]
+    ]
+    french_word_count = sum(bool(word["definitionsFr"]) for word in words)
+    french_character_count = sum(
+        any(reading["definitionsFr"] for reading in character["readings"])
+        for character in characters
+    )
+    hsk_data = json.loads(hsk_path.read_bytes().decode("utf-8"))
+    pedagogical_words = sorted({
+        card.get("hz", "")
+        for card in hsk_data.get("cards", [])
+        if isinstance(card, dict) and card.get("hz")
+    })
+    french_by_graph = defaultdict(bool)
+    for word in words:
+        if word["definitionsFr"]:
+            french_by_graph[word["simplified"]] = True
+            french_by_graph[word["traditional"]] = True
+    pedagogical_covered = sum(french_by_graph[word] for word in pedagogical_words)
+    anomaly_counts: dict[str, int] = defaultdict(int)
+    for anomaly in anomalies:
+        anomaly_counts[anomaly["type"]] += 1
+
+    corrected = []
+    quarantined_entries = []
+    for override in policy.entries:
+        word = words_by_key[lexical_key(override)]
+        item = {
+            "entryId": word["id"],
+            "traditional": word["traditional"],
+            "simplified": word["simplified"],
+            "pinyinNumbered": word["pinyin"][0]["numbered"],
+            "action": override["action"],
+            "definitionsFr": word["definitionsFr"],
+            "verifiedAt": override["verifiedAt"],
+        }
+        (quarantined_entries if override["action"] == "quarantine" else corrected).append(item)
+
+    return {
+        "schemaVersion": SCHEMA_VERSION,
+        "status": "PASS" if not critical else "FAIL",
+        "policy": policy_metadata(policy),
+        "sourceIntegrity": [
+            {
+                "id": result.metadata.source_id,
+                "sha256": result.metadata.sha256,
+                "entries": result.metadata.raw_entry_count,
+                "malformedLines": result.metadata.malformed_line_count,
+            }
+            for result in results
+        ],
+        "coverage": {
+            "overallWordsBeforePolicy": _coverage(policy_stats["rawFrenchDefinitionWordCount"], len(words)),
+            "overallWordsAfterPolicy": _coverage(french_word_count, len(words)),
+            "charactersWithAtLeastOneFrenchReading": _coverage(french_character_count, len(characters)),
+            "hsk1CompatibilityPedagogicalWords": _coverage(pedagogical_covered, len(pedagogical_words)),
+        },
+        "corrections": {
+            "verifiedOverrideCount": policy_stats["verifiedOverrideCount"],
+            "changedEntryCount": policy_stats["changedEntryCount"],
+            "entries": corrected,
+        },
+        "quarantine": {
+            "entryCount": policy_stats["quarantinedEntryCount"],
+            "entries": quarantined_entries,
+        },
+        "englishWithoutVerifiedFrench": {
+            "count": len(english_without_french),
+            "itemFormat": ["entryId", "simplified", "traditional", "pinyinNumbered", "firstEnglishDefinition"],
+            "items": english_without_french,
+        },
+        "potentialAnomalies": {
+            "count": len(anomalies),
+            "countsByType": dict(sorted(anomaly_counts.items())),
+            "items": anomalies,
+        },
+        "criticalIssues": critical,
+    }
+
+
 def build_dictionary(
     cc_path: Path,
     cf_path: Path,
     hsk_path: Path,
     output_dir: Path,
+    overrides_path: Path = DEFAULT_OVERRIDES,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     cc_result = parse_cc_cedict(cc_path)
     cf_result = parse_cfdict(cf_path)
     results = [cc_result, cf_result]
-    words = _merge_records(results)
+    policy = load_french_override_policy(overrides_path)
+    words, policy_stats = _merge_records(results, policy)
     characters, character_word_ids = _build_character_entries(words)
     indexes, entry_locations = _build_indexes(words, characters, character_word_ids)
 
@@ -421,8 +718,25 @@ def build_dictionary(
             )
             chunk_descriptors.append({"key": key, "path": relative, "count": len(entries)})
 
-        attribution = _source_attribution(results)
+        attribution = _source_attribution(results, policy)
         write_json(temporary / "source-attribution.json", attribution, pretty=True)
+
+        audit = _french_audit_report(
+            words,
+            characters,
+            indexes,
+            entry_locations,
+            policy,
+            policy_stats,
+            hsk_path,
+            results,
+        )
+        if audit["status"] != "PASS":
+            raise RuntimeError(
+                "French dictionary audit failed: "
+                + json.dumps(audit["criticalIssues"], ensure_ascii=False)
+            )
+        write_json(temporary / "french-audit-report.json", audit)
 
         word_count = len(words)
         french_count = sum(bool(entry["definitionsFr"]) for entry in words)
@@ -450,6 +764,15 @@ def build_dictionary(
             ),
             "mergedSourceRecordCount": source_record_count - word_count,
             "hskCompatibility": hsk,
+            "frenchEditorialPolicy": policy_metadata(policy),
+            "frenchQuality": {
+                "rawFrenchDefinitionWordCount": policy_stats["rawFrenchDefinitionWordCount"],
+                "verifiedOverrideCount": policy_stats["verifiedOverrideCount"],
+                "changedEntryCount": policy_stats["changedEntryCount"],
+                "quarantinedEntryCount": policy_stats["quarantinedEntryCount"],
+                "englishWithoutVerifiedFrenchCount": audit["englishWithoutVerifiedFrench"]["count"],
+                "potentialAnomalyCount": audit["potentialAnomalies"]["count"],
+            },
             "limitations": [
                 "HSK arrays are empty because no verified complete redistributable HSK source was provided.",
                 "Frequency ranks, stroke counts, components, examples, and common-word rankings are absent.",
@@ -464,7 +787,7 @@ def build_dictionary(
             result.metadata.sha256 for result in sorted(results, key=lambda r: r.metadata.source_id)
         )
         build_id = sha256(
-            f"{BUILDER_VERSION}|{SCHEMA_VERSION}|{source_hashes}".encode("utf-8")
+            f"{BUILDER_VERSION}|{SCHEMA_VERSION}|{source_hashes}|{policy.sha256}".encode("utf-8")
         ).hexdigest()
         manifest = {
             "format": "mo-studio-offline-dictionary",
@@ -490,6 +813,8 @@ def build_dictionary(
             },
             "attribution": "source-attribution.json",
             "report": "build-report.json",
+            "frenchAudit": "french-audit-report.json",
+            "frenchEditorialPolicy": policy_metadata(policy),
             "chunks": chunk_descriptors,
             "sources": [
                 {
@@ -499,7 +824,12 @@ def build_dictionary(
                     "entries": result.metadata.raw_entry_count,
                 }
                 for result in results
-            ],
+            ] + [{
+                "id": OVERRIDE_SOURCE_ID,
+                "filename": policy.filename,
+                "sha256": policy.sha256,
+                "entries": len(policy.entries),
+            }],
             "files": pre_manifest_files,
         }
         write_json(temporary / "manifest.json", manifest, pretty=True)
@@ -528,9 +858,12 @@ def main() -> None:
     parser.add_argument("--cc", type=Path, default=Path("data/source/cc-cedict.u8"))
     parser.add_argument("--cf", type=Path, default=Path("data/source/cfdict.u8"))
     parser.add_argument("--hsk", type=Path, default=Path("hsk1.json"))
+    parser.add_argument("--fr-overrides", type=Path, default=DEFAULT_OVERRIDES)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    report = build_dictionary(args.cc, args.cf, args.hsk, args.output_dir)
+    report = build_dictionary(
+        args.cc, args.cf, args.hsk, args.output_dir, args.fr_overrides
+    )
     print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
 
 

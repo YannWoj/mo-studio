@@ -18,6 +18,10 @@ function radicalHistoryPayload(radical) {
       mode: "radical",
       q: srch.q,
       radical: radical || null,
+      visible:
+         radical && radical === radicalBrowser.radical
+            ? radicalBrowser.visible
+            : RADICAL_PAGE_SIZE,
       scrollY: window.scrollY,
    };
 }
@@ -28,8 +32,7 @@ function setRadicalPanelVisible(active) {
    const panel = $("dradical-panel");
    if (normal) normal.hidden = active;
    if (panel) panel.hidden = !active;
-   const toggle = $("search-mode-toggle");
-   if (toggle) toggle.setAttribute("aria-pressed", String(active));
+   syncRadicalHeader();
 }
 
 function radicalLoadingHtml(label) {
@@ -41,10 +44,10 @@ function radicalLoadingHtml(label) {
 
 async function openRadicalMode(options) {
    const settings = options || {};
-   setRadicalPanelVisible(true);
-   if (!settings.fromHistory) history.pushState(radicalHistoryPayload(null), "");
    radicalBrowser.radical = null;
    radicalBrowser.filter = "";
+   setRadicalPanelVisible(true);
+   if (!settings.fromHistory) history.pushState(radicalHistoryPayload(null), "");
    const panel = $("dradical-panel");
    if (panel) panel.innerHTML = radicalLoadingHtml();
    try {
@@ -52,12 +55,85 @@ async function openRadicalMode(options) {
    } catch (error) {
       radicalBrowser.catalog = [];
    }
-   if (radicalBrowser.active && !radicalBrowser.radical) renderRadicalTable();
+   if (radicalBrowser.active && !radicalBrowser.radical) {
+      renderRadicalTable();
+      requestAnimationFrame(() => window.scrollTo(0, settings.fromHistory ? Number(settings.scrollY) || 0 : 0));
+   }
 }
 
 function radicalGroupHeading(strokeCount) {
    if (strokeCount == null) return "Nombre de traits inconnu";
    return strokeCount + " trait" + (strokeCount > 1 ? "s" : "");
+}
+
+function radicalCatalogRow(radical) {
+   const catalog = Array.isArray(radicalBrowser.catalog) ? radicalBrowser.catalog : [];
+   return catalog.find((row) => row.radical === radical) || null;
+}
+
+function radicalLinkedForm(sens) {
+   if (!sens) return null;
+   const match = sens.match(/forme liée(?: simplifiée)? de\s+(\p{Script=Han}+)/iu);
+   return match ? { origin: match[1] } : null;
+}
+
+function radicalContextHeaderHtml(row, resolvedMemberCount) {
+   const radical = row?.radical || radicalBrowser.radical || "";
+   const sens = typeof row?.sens === "string" ? row.sens.trim() : "";
+   const linked = radicalLinkedForm(sens);
+   const memberCount = Number.isInteger(row?.memberCount)
+      ? row.memberCount
+      : Math.max(0, Number(resolvedMemberCount) || 0);
+   const strokeLabel = radicalGroupHeading(row?.strokeCount == null ? null : row.strokeCount);
+   const memberLabel = memberCount + " caractère" + (memberCount > 1 ? "s" : "") + " associé" +
+      (memberCount > 1 ? "s" : "");
+   return (
+      '<section class="radical-context-card" aria-labelledby="radical-context-title">' +
+      '<div class="radical-context-actions"><button type="button" class="radical-context-back" id="radical-back">' +
+      '<span aria-hidden="true">←</span> Toutes les clés</button></div>' +
+      '<div class="radical-context-body"><div class="radical-context-glyph" lang="zh-Hans" role="img" aria-label="Clé ' +
+      esc(radical) + '">' + esc(radical) + '</div><div class="radical-context-copy">' +
+      '<h3 class="eyebrow" id="radical-context-title">Clé sélectionnée</h3>' +
+      '<p class="radical-context-sense' + (sens ? "" : " is-unavailable") + '">' +
+      esc(sens || "Sens français vérifié indisponible") + '</p><div class="radical-context-meta">' +
+      '<span data-radical-strokes>' + esc(strokeLabel) + '</span>' +
+      '<span data-radical-count>' + esc(memberLabel) + '</span>' +
+      (linked ? '<span class="is-linked" data-radical-linked>Forme liée · <b lang="zh-Hans">' + esc(linked.origin) + '</b></span>' : "") +
+      '</div></div></div></section>'
+   );
+}
+
+function syncRadicalHeader(resolvedMemberCount) {
+   const hero = $("search-hero");
+   const pageTitle = $("search-page-title");
+   const description = $("search-hero-description");
+   const toggle = $("search-mode-toggle");
+   const modeIcon = toggle && toggle.querySelector("[data-search-mode-icon]");
+   const modeLabel = toggle && toggle.querySelector("[data-search-mode-label]");
+   const context = $("radical-context-host");
+   if (!hero || !toggle || !context) return;
+   const selected = radicalBrowser.active && !!radicalBrowser.radical;
+   hero.classList.toggle("is-radical-mode", radicalBrowser.active);
+   hero.classList.toggle("has-radical-selection", selected);
+   toggle.setAttribute("aria-pressed", String(radicalBrowser.active));
+   toggle.setAttribute("aria-label", radicalBrowser.active ? "Quitter le mode Clés" : "Parcourir par clés");
+   if (pageTitle) pageTitle.textContent = radicalBrowser.active ? "部 · Clés" : "查 · Rechercher";
+   if (modeIcon) modeIcon.textContent = radicalBrowser.active ? "×" : "部";
+   if (modeLabel) modeLabel.textContent = radicalBrowser.active ? "Quitter les clés" : "Clés";
+   if (description) {
+      description.hidden = selected;
+      description.textContent = radicalBrowser.active
+         ? "Choisis une clé pour explorer les caractères qui l’utilisent."
+         : "Trouve un caractère, un mot, un pinyin ou une traduction.";
+   }
+   context.hidden = !selected;
+   if (!selected) {
+      context.innerHTML = "";
+      return;
+   }
+   context.innerHTML = radicalContextHeaderHtml(radicalCatalogRow(radicalBrowser.radical), resolvedMemberCount);
+   const back = $("radical-back");
+   if (back) back.onclick = () => backToRadicalTable();
 }
 
 function radicalMatchesFilter(row, filter) {
@@ -120,6 +196,7 @@ function renderRadicalGroups() {
 function renderRadicalTable() {
    const panel = $("dradical-panel");
    if (!panel) return;
+   syncRadicalHeader();
    const catalog = Array.isArray(radicalBrowser.catalog) ? radicalBrowser.catalog : [];
    if (!catalog.length) {
       panel.innerHTML =
@@ -169,21 +246,27 @@ async function resolveRadicalMembers(radical) {
 
 async function selectRadical(radical, options) {
    const settings = options || {};
-   setRadicalPanelVisible(true);
+   if (!settings.fromHistory && history.state?.moStudioSearch && history.state.mode === "radical")
+      history.replaceState(radicalHistoryPayload(history.state.radical), "");
    if (!settings.fromHistory) history.pushState(radicalHistoryPayload(radical), "");
    radicalBrowser.radical = radical;
-   radicalBrowser.visible = RADICAL_PAGE_SIZE;
+   radicalBrowser.members = null;
+   radicalBrowser.visible = Math.max(RADICAL_PAGE_SIZE, Number(settings.visible) || RADICAL_PAGE_SIZE);
+   setRadicalPanelVisible(true);
+   if (!settings.fromHistory) window.scrollTo(0, 0);
    const panel = $("dradical-panel");
    if (panel) panel.innerHTML = radicalLoadingHtml("Chargement des caractères…");
    try {
+      if (!Array.isArray(radicalBrowser.catalog)) radicalBrowser.catalog = await loadRadicalCatalog();
+      syncRadicalHeader();
       radicalBrowser.members = await resolveRadicalMembers(radical);
-      if (radicalBrowser.active && radicalBrowser.radical === radical) renderRadicalMembers();
+      if (radicalBrowser.active && radicalBrowser.radical === radical) {
+         renderRadicalMembers();
+         if (settings.fromHistory)
+            requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, Number(settings.scrollY) || 0)));
+      }
    } catch (error) {
-      if (panel)
-         panel.innerHTML =
-            '<div class="search-empty error" role="alert"><b>Les caractères n’ont pas pu être chargés.</b>' +
-            '<button class="btn" id="radical-retry">Réessayer</button></div>';
-      if ($("radical-retry")) $("radical-retry").onclick = () => selectRadical(radical, { fromHistory: true });
+      renderRadicalMembersError(radical);
    }
 }
 
@@ -193,10 +276,21 @@ function openRadicalCharacterDetail(entry) {
    openSearchDictionaryDetail(entry, false);
 }
 
+function renderRadicalMembersError(radical) {
+   const panel = $("dradical-panel");
+   if (!panel) return;
+   panel.innerHTML =
+      '<div class="search-empty error radical-members-error" role="alert"><b>Les caractères n’ont pas pu être chargés.</b>' +
+      '<p>La clé sélectionnée est conservée. Réessaie quand les données locales sont disponibles.</p>' +
+      '<button class="btn" id="radical-retry">Réessayer</button></div>';
+   if ($("radical-retry")) $("radical-retry").onclick = () => selectRadical(radical, { fromHistory: true });
+}
+
 function renderRadicalMembers() {
    const panel = $("dradical-panel");
    if (!panel) return;
    const entries = Array.isArray(radicalBrowser.members) ? radicalBrowser.members : [];
+   syncRadicalHeader(entries.length);
    const visible = entries.slice(0, radicalBrowser.visible);
    const items = visible.map((entry) => ({
       entry,
@@ -208,15 +302,14 @@ function renderRadicalMembers() {
       },
    }));
    panel.innerHTML =
-      '<button type="button" class="btn ghost radical-back" id="radical-back">← Retour aux clés</button>' +
-      '<div class="radical-summary search-result-summary"><span>' + entries.length + " caractère" +
-      (entries.length > 1 ? "s" : "") + " pour la clé " + esc(radicalBrowser.radical) + "</span></div>" +
+      '<section class="radical-members" aria-labelledby="radical-results-title">' +
+      '<header class="radical-members-heading"><div><h3 id="radical-results-title">Caractères utilisant cette clé</h3>' +
+      '<p>Triés par nombre de traits croissant.</p></div></header>' +
       (items.map((item, index) => dictionaryResultHtml(item, index)).join("") ||
-         '<div class="search-empty"><p>Aucun caractère.</p></div>') +
+         '<div class="search-empty radical-members-empty"><p>Aucun caractère associé à cette clé.</p></div>') +
       (radicalBrowser.visible < entries.length
          ? '<div class="search-more"><button class="btn ghost" id="radical-show-more">Afficher plus</button></div>'
-         : "");
-   $("radical-back").onclick = () => backToRadicalTable();
+         : "") + '</section>';
    panel.querySelectorAll("[data-result-index]").forEach((button) => {
       button.onclick = () => {
          const entry = visible[Number(button.dataset.resultIndex)];
@@ -228,6 +321,8 @@ function renderRadicalMembers() {
    if ($("radical-show-more"))
       $("radical-show-more").onclick = () => {
          radicalBrowser.visible += RADICAL_PAGE_SIZE;
+         if (history.state?.moStudioSearch && history.state.mode === "radical")
+            history.replaceState(radicalHistoryPayload(radicalBrowser.radical), "");
          renderRadicalMembers();
       };
 }
@@ -244,6 +339,7 @@ function backToRadicalTable(options) {
       history.back();
    } else {
       radicalBrowser.radical = null;
+      syncRadicalHeader();
       renderRadicalTable();
    }
 }

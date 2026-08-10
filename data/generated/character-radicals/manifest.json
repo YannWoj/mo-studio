@@ -2,11 +2,11 @@
   "format": "mo-studio-character-radicals",
   "schemaVersion": 1,
   "builderVersion": "1.1.0",
-  "buildId": "952adb1ed76e96af6ca15afeb966ef0a829c3478df2627834509b308d47fe9cd",
+  "buildId": "c37b6d73d04bfddec12ddf6062d006cdb5b9b9ef4e601144d19233d104e8f56a",
   "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/",
   "derivedFrom": {
-    "characterCompositionBuildId": "7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567",
-    "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
+    "characterCompositionBuildId": "1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4",
+    "dictionaryBuildId": "4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813",
     "hanziWriterVersion": "2.0.1"
   },
   "componentLabelsFr": {
@@ -37,7 +37,7 @@
     {
       "radical": "丨",
       "strokeCount": 1,
-      "sens": "ligne (radical)",
+      "sens": "radical dans les caractères chinois (radical 2 Kangxi)",
       "memberCount": 10,
       "path": "chunks/丨.json",
       "bytes": 354,
@@ -496,7 +496,7 @@
     {
       "radical": "子",
       "strokeCount": 3,
-      "sens": "(suffixe substantif)",
+      "sens": "jeune",
       "memberCount": 30,
       "path": "chunks/子.json",
       "bytes": 1003,
@@ -1144,7 +1144,7 @@
     {
       "radical": "片",
       "strokeCount": 4,
-      "sens": "tranche",
+      "sens": "disque",
       "memberCount": 7,
       "path": "chunks/片.json",
       "bytes": 262,
@@ -1180,7 +1180,7 @@
     {
       "radical": "王",
       "strokeCount": 4,
-      "sens": "régner sur",
+      "sens": "roi",
       "memberCount": 103,
       "path": "chunks/王.json",
       "bytes": 3403,
@@ -1468,7 +1468,7 @@
     {
       "radical": "石",
       "strokeCount": 5,
-      "sens": "pierre",
+      "sens": "(mesure pour les grains)",
       "memberCount": 113,
       "path": "chunks/石.json",
       "bytes": 3740,
@@ -1819,7 +1819,7 @@
     {
       "radical": "行",
       "strokeCount": 6,
-      "sens": "action",
+      "sens": "classe",
       "memberCount": 12,
       "path": "chunks/行.json",
       "bytes": 427,
@@ -1891,7 +1891,7 @@
     {
       "radical": "角",
       "strokeCount": 7,
-      "sens": "rôle",
+      "sens": "corne",
       "memberCount": 14,
       "path": "chunks/角.json",
       "bytes": 494,
@@ -1999,7 +1999,7 @@
     {
       "radical": "車",
       "strokeCount": 7,
-      "sens": "chariot (pièce dans le jeu d'échecs chinois Xiangqi)",
+      "sens": "véhicule",
       "memberCount": 48,
       "path": "chunks/車.json",
       "bytes": 1613,
@@ -2143,7 +2143,7 @@
     {
       "radical": "長",
       "strokeCount": 8,
-      "sens": "chef",
+      "sens": "long",
       "memberCount": 1,
       "path": "chunks/長.json",
       "bytes": 65,
@@ -2188,7 +2188,7 @@
     {
       "radical": "雨",
       "strokeCount": 8,
-      "sens": "pleuvoir",
+      "sens": "pluie",
       "memberCount": 42,
       "path": "chunks/雨.json",
       "bytes": 1418,

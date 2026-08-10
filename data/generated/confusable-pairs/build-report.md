@@ -2,9 +2,9 @@
 
 ## Provenance
 
-- Composition des caractères : `data/generated/character-composition/` (buildId `7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567`)
+- Composition des caractères : `data/generated/character-composition/` (buildId `1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4`)
 - Traits (SVG + médianes) : `data/generated/hanzi-writer/2.0.1/`
-- Dictionnaire : `data/generated/dictionary/` (buildId `f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea`) — utilisé uniquement pour filtrer
+- Dictionnaire : `data/generated/dictionary/` (buildId `4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813`) — utilisé uniquement pour filtrer
   l'univers comparable et détecter les couples simplifié/traditionnel ; aucun texte CC-CEDICT/CFDICT n'est copié dans cette sortie.
 
 Cet index hérite de la licence GNU Lesser General Public License v3 ou ultérieure (Make Me a Hanzi, via character-composition) et de

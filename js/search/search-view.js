@@ -104,8 +104,8 @@ function dictionaryResultDefinition(entry) {
    if (entry.definitionsFr && entry.definitionsFr.length)
       return { text: entry.definitionsFr[0], english: false, unavailable: false };
    if (entry.definitionsEn && entry.definitionsEn.length)
-      return { text: "Traduction française indisponible", english: true, englishText: entry.definitionsEn[0], unavailable: true };
-   return { text: "Traduction française indisponible", english: false, unavailable: true };
+      return { text: "Sens français vérifié indisponible", english: true, englishText: entry.definitionsEn[0], unavailable: true };
+   return { text: "Sens français vérifié indisponible", english: false, unavailable: true };
 }
 
 function dictionaryEntryDetailedTypeLabels(entry) {
@@ -444,6 +444,7 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
    }
    srch.mode = "detail";
    const selectedHanzi = entry.__selectedHanzi || "";
+   const selectedReading = entry.__displayReadingNumbered || "";
    const visualGroup = Array.isArray(entry.visualGroup) ? entry.visualGroup.slice() : [];
    if (entry.__preview) {
       openSheet(
@@ -451,6 +452,8 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
       );
       try {
          entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
+         if (selectedReading && typeof dictionaryEntryForReading === "function")
+            entry = dictionaryEntryForReading(entry, selectedReading);
          if (selectedHanzi) entry.__selectedHanzi = selectedHanzi;
          if (visualGroup.length > 1) {
             const grouped = (await Promise.all(
@@ -515,8 +518,9 @@ function restoreSearchHistory(state) {
    if (state.mode === "radical") {
       srch.mode = srch.q ? "results" : "landing";
       renderSearch();
-      if (state.radical) selectRadical(state.radical, { fromHistory: true });
-      else openRadicalMode({ fromHistory: true });
+      if (state.radical)
+         selectRadical(state.radical, { fromHistory: true, scrollY: srch.scrollY, visible: state.visible });
+      else openRadicalMode({ fromHistory: true, scrollY: srch.scrollY });
       return;
    }
    renderSearch();
@@ -538,10 +542,12 @@ function renderSearch() {
    radicalBrowser.radical = null;
    const root = $("view");
    root.innerHTML =
-      '<section class="card pad search-page"><header class="search-hero"><h2 class="v-t">查 · Rechercher</h2>' +
-      '<p class="muted">Trouve un caractère, un mot, un pinyin ou une traduction.</p>' +
-      '<div class="search-mode-bar"><button type="button" class="chip search-mode-toggle" id="search-mode-toggle" aria-pressed="false">' +
-      '<b lang="zh-Hans">部</b> Clés</button></div></header>' +
+      '<section class="card pad search-page"><header class="search-hero" id="search-hero">' +
+      '<div class="search-hero-top"><div class="search-hero-copy"><h2 class="v-t" id="search-page-title">查 · Rechercher</h2>' +
+      '<p class="muted" id="search-hero-description">Trouve un caractère, un mot, un pinyin ou une traduction.</p></div>' +
+      '<button type="button" class="chip search-mode-toggle" id="search-mode-toggle" aria-pressed="false" aria-label="Parcourir par clés">' +
+      '<b lang="zh-Hans" data-search-mode-icon>部</b><span data-search-mode-label>Clés</span></button></div>' +
+      '<div class="radical-context-host" id="radical-context-host" hidden></div></header>' +
       '<div id="dsearch-normal">' +
       '<form class="dictionary-search-form" id="dsearch-form"><div class="dictionary-search-input">' +
       '<input class="search" id="dq" placeholder="汉字, pinyin ou français…" value="' + esc(srch.q) +

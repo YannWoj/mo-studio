@@ -154,10 +154,62 @@ function dictionaryEntryIdentity(entry) {
 }
 
 function dictionaryEntryPronunciationKeys(entry) {
+   if (entry.__displayReadingNumbered)
+      return new Set([normalizePinyinNumbered(entry.__displayReadingNumbered)].filter(Boolean));
    return new Set(
       entryPinyinVariants(entry)
          .map((variant) => normalizePinyinNumbered(variant.numbered || variant.marked || ""))
          .filter(Boolean),
+   );
+}
+
+function dictionaryReadingMatchesPinyin(reading, query) {
+   const variant = reading.pinyin || {};
+   const marked = normalizePinyinMarked(variant.marked || variant.numbered || "");
+   const numbered = normalizePinyinNumbered(variant.numbered || variant.marked || "");
+   const plain = normalizePinyinPlain(variant.plain || variant.numbered || variant.marked || "");
+   if (query.type === "pinyin-marked") return marked === query.marked;
+   if (query.type === "pinyin-numbered") return numbered === query.numbered;
+   return plain === query.plain || plain.startsWith(query.plain);
+}
+
+function dictionaryReadingMatchesTranslation(reading, query, englishFallback) {
+   const field = englishFallback ? "definitionsEn" : "definitionsFr";
+   const words = (reading[field] || [])
+      .flatMap((definition) => normalizeTranslation(definition).split(" "))
+      .filter(Boolean);
+   return (query.tokens || []).every((token) =>
+      words.some((word) => word === token || word.startsWith(token)),
+   );
+}
+
+function dictionaryEntryForReading(entry, numbered) {
+   if (!entry || !Array.isArray(entry.readings) || !entry.readings.length) return entry;
+   const reading = entry.readings.find((candidate) =>
+      normalizePinyinNumbered(candidate.pinyin?.numbered || candidate.pinyin?.marked || "") === numbered,
+   ) || entry.readings[0];
+   return {
+      ...entry,
+      pinyin: reading.pinyin ? [reading.pinyin] : [],
+      definitionsFr: (reading.definitionsFr || []).slice(),
+      definitionsEn: (reading.definitionsEn || []).slice(),
+      frenchStatus: reading.frenchStatus || ((reading.definitionsFr || []).length ? "source" : "unavailable"),
+      __displayReadingNumbered: reading.pinyin?.numbered || "",
+   };
+}
+
+function dictionaryEntryForQuery(entry, query, englishFallback) {
+   if (!entry || !Array.isArray(entry.readings) || !entry.readings.length) return entry;
+   let reading = null;
+   if (query.type.startsWith("pinyin"))
+      reading = entry.readings.find((candidate) => dictionaryReadingMatchesPinyin(candidate, query));
+   else if (query.type === "translation")
+      reading = entry.readings.find((candidate) =>
+         dictionaryReadingMatchesTranslation(candidate, query, englishFallback),
+      );
+   return dictionaryEntryForReading(
+      entry,
+      (reading || entry.readings[0]).pinyin?.numbered || "",
    );
 }
 
@@ -466,7 +518,9 @@ async function searchDictionaryLocally(rawQuery, options) {
    ensureCurrentSearch(epoch);
    const references = Array.from(indexed.candidates.keys()).slice(0, candidateLimit);
    if (settings.onStatus) settings.onStatus("Chargement des meilleures fiches…");
-   const dictionaryEntries = await loadDictionaryPreviewsByReferences(references);
+   const dictionaryEntries = (await loadDictionaryPreviewsByReferences(references)).map((entry) =>
+      dictionaryEntryForQuery(entry, query, indexed.englishFallback),
+   );
    ensureCurrentSearch(epoch);
 
    const personalEntries = db.cards

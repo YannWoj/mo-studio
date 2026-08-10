@@ -1,5 +1,18 @@
 {
-  "schemaVersion": 1,
+  "frenchEditorialPolicy": {
+    "actionCounts": {
+      "add-verified": 2,
+      "quarantine": 1,
+      "replace": 3
+    },
+    "entryCount": 6,
+    "filename": "data/source/dictionary-fr-overrides.json",
+    "policyId": "mo-studio-french-lexicography-2026-08",
+    "schemaVersion": 1,
+    "sha256": "fec50e8604b2e90a0496ca14dbe798ffc733188eb97fb1d9726ee2c72f18edd0",
+    "sourceId": "MÒ-FR-OVERRIDES"
+  },
+  "schemaVersion": 2,
   "sources": [
     {
       "definition_language": "en",

@@ -325,10 +325,53 @@ function dictionarySplitSenses(values) {
    ));
 }
 
+function dictionaryDetailReadings(entry) {
+   if (Array.isArray(entry.readings) && entry.readings.length) return entry.readings;
+   const pinyin = (entry.pinyin || [])[0];
+   if (!pinyin) return [];
+   return [{
+      pinyin,
+      definitionsFr: entry.definitionsFr || [],
+      definitionsEn: entry.definitionsEn || [],
+      frenchStatus: entry.frenchStatus || ((entry.definitionsFr || []).length ? "source" : "unavailable"),
+      sources: entry.sources || [],
+      frenchProvenance: entry.frenchProvenance || [],
+   }];
+}
+
+function dictionaryReadingProvenanceHtml(reading) {
+   const verified = (reading.frenchProvenance || []).filter((item) => item.verifiedAt);
+   if (!verified.length) return "";
+   return '<small class="dd-reading-provenance">Révision éditoriale Mò Studio · vérifiée le ' +
+      verified.map((item) => esc(item.verifiedAt)).join(" · ") + "</small>";
+}
+
+function dictionaryReadingGroupsHtml(entry) {
+   const readings = dictionaryDetailReadings(entry);
+   if (readings.length <= 1) return "";
+   return '<section class="dd-definitions dd-reading-groups" id="dd-french-definitions" aria-label="Lectures et sens">' +
+      '<div class="eyebrow">Lectures et sens</div>' + readings.map((reading) => {
+         const french = dictionarySplitSenses(reading.definitionsFr);
+         const english = dictionarySplitSenses(reading.definitionsEn).filter((definition) => /\p{L}/u.test(definition));
+         return '<article class="dd-reading-group" data-reading="' + esc(reading.pinyin?.numbered || "") + '">' +
+            '<h3>' + colorPinyin(reading.pinyin?.marked || reading.pinyin?.numbered || "") + '</h3>' +
+            (french.length
+               ? '<ol class="dd-sense-list">' + french.map((definition) => '<li>' + esc(definition) + '</li>').join("") + '</ol>'
+               : '<p class="dd-french-unavailable">Sens français vérifié indisponible</p>') +
+            (english.length
+               ? '<details class="dd-reading-english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
+                 english.map((definition) => '<li>' + esc(definition) + '</li>').join("") + '</ol></details>'
+               : "") +
+            dictionaryReadingProvenanceHtml(reading) + '</article>';
+      }).join("") + '</section>';
+}
+
 function dictionaryFrenchDefinitionsHtml(entry) {
+   const readingGroups = dictionaryReadingGroupsHtml(entry);
+   if (readingGroups) return readingGroups;
    const french = dictionarySplitSenses(entry.definitionsFr);
    if (!french.length)
-      return '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+      return '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Sens français vérifié indisponible</p></section>';
    const joined = french.join(" ; ");
    if (french.length <= 3)
       return '<section class="dd-definitions dd-french-compact dd-french-short" id="dd-french-definitions" aria-label="Sens français"><p class="dd-french-preview" title="' +
@@ -381,6 +424,7 @@ function wireDictionaryPickerOverflowCue() {
 }
 
 function dictionaryEnglishDefinitionsHtml(entry) {
+   if (dictionaryDetailReadings(entry).length > 1) return "";
    const english = dictionarySplitSenses(entry.definitionsEn).filter((definition) =>
       /\p{L}/u.test(definition),
    );
@@ -402,10 +446,23 @@ function dictionaryVariantExplanationHtml(entry) {
 
 function dictionarySourcesHtml(entry) {
    if (!entry.sources || !entry.sources.length) return "";
+   const provenance = Array.from(new Map(
+      [
+         ...(entry.frenchProvenance || []),
+         ...dictionaryDetailReadings(entry).flatMap((reading) => reading.frenchProvenance || []),
+      ].map((item) => [JSON.stringify(item), item]),
+   ).values());
    return (
-      '<details class="dd-sources"><summary>Sources du dictionnaire</summary><span>' +
+      '<details class="dd-sources"><summary>Sources du dictionnaire et provenance</summary><span>' +
       entry.sources.map(esc).join(" · ") +
-      "</span></details>"
+      "</span>" + provenance.map((item) =>
+         '<div class="dd-source-provenance"><b>Révision éditoriale · ' + esc(item.action) +
+         ' · ' + esc(item.verifiedAt) + '</b><p>' + esc(item.justification) + '</p>' +
+         '<ul>' + (item.references || []).map((reference) =>
+            '<li><a href="' + esc(reference.url) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(reference.title) + '</a> · ' + esc(reference.locator) + '</li>'
+         ).join("") + '</ul></div>'
+      ).join("") + "</details>"
    );
 }
 
@@ -577,7 +634,7 @@ function openDictionaryAddToWords(entry, options, suppliedState) {
    const frenchBlock = existing
       ? '<section class="dd-personal-definition"><div class="eyebrow">Définition française personnelle</div><p>' + (esc(existing.fr) || '<span class="muted">Non renseignée</span>') + "</p></section>"
       : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' + esc(state.french) + '" autocomplete="off"></label>' +
-        (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Traduction française indisponible dans les sources. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
+        (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Sens français vérifié indisponible. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
    const selectedHanzi = dictionaryDetailDisplayHanzi(entry);
    const identity = entry.traditional && entry.traditional !== entry.simplified
       ? (dictionaryVariantStatus(entry) !== "modern"

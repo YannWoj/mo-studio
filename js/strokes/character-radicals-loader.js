@@ -46,22 +46,19 @@ async function loadRadicalCharacters(radical) {
    if (radicalChunkPending.has(radical)) return radicalChunkPending.get(radical);
    const request = (async () => {
       const manifest = await loadRadicalsManifest();
-      const declared = manifest && manifest.radicals.find((row) => row.radical === radical);
+      if (!manifest) throw new Error("Données de clés indisponibles");
+      const declared = manifest.radicals.find((row) => row.radical === radical);
       if (!declared) return { radical, characters: [] };
-      try {
-         const response = await fetch(new URL(declared.path, CHARACTER_RADICALS_ROOT).href, {
-            cache: "default",
-         });
-         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-         const chunk = await response.json();
-         if (!chunk || chunk.radical !== radical || !Array.isArray(chunk.characters))
-            throw new Error("Chunk de clé invalide");
-         const frozen = Object.freeze({ radical, characters: Object.freeze(chunk.characters) });
-         radicalChunkCache.set(radical, frozen);
-         return frozen;
-      } catch (error) {
-         return { radical, characters: [] };
-      }
+      const response = await fetch(new URL(declared.path, CHARACTER_RADICALS_ROOT).href, {
+         cache: "default",
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const chunk = await response.json();
+      if (!chunk || chunk.radical !== radical || !Array.isArray(chunk.characters))
+         throw new Error("Chunk de clé invalide");
+      const frozen = Object.freeze({ radical, characters: Object.freeze(chunk.characters) });
+      radicalChunkCache.set(radical, frozen);
+      return frozen;
    })().finally(() => radicalChunkPending.delete(radical));
    radicalChunkPending.set(radical, request);
    return request;

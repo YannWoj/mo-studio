@@ -1,11 +1,32 @@
 {
-  "builderVersion": "1.3.1",
+  "builderVersion": "2.0.0",
   "duplicateKeyCount": 1168,
   "englishCoveragePercent": 94.502512,
   "englishDefinitionWordCount": 123597,
   "exactDuplicateCount": 15,
-  "frenchCoveragePercent": 46.20031,
-  "frenchDefinitionWordCount": 60424,
+  "frenchCoveragePercent": 46.201075,
+  "frenchDefinitionWordCount": 60425,
+  "frenchEditorialPolicy": {
+    "actionCounts": {
+      "add-verified": 2,
+      "quarantine": 1,
+      "replace": 3
+    },
+    "entryCount": 6,
+    "filename": "data/source/dictionary-fr-overrides.json",
+    "policyId": "mo-studio-french-lexicography-2026-08",
+    "schemaVersion": 1,
+    "sha256": "fec50e8604b2e90a0496ca14dbe798ffc733188eb97fb1d9726ee2c72f18edd0",
+    "sourceId": "MÒ-FR-OVERRIDES"
+  },
+  "frenchQuality": {
+    "changedEntryCount": 6,
+    "englishWithoutVerifiedFrenchCount": 70361,
+    "potentialAnomalyCount": 60,
+    "quarantinedEntryCount": 1,
+    "rawFrenchDefinitionWordCount": 60424,
+    "verifiedOverrideCount": 5
+  },
   "hskCompatibility": {
     "cardCount": 150,
     "exactDictionaryMatches": 150,
@@ -23,6 +44,6 @@
   "mergedSourceRecordCount": 54402,
   "normalizedCharacterCount": 14426,
   "normalizedWordCount": 130787,
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "sourceRecordCount": 185189
 }

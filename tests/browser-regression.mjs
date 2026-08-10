@@ -1355,7 +1355,7 @@ async function main() {
    assert((await evaluate("document.querySelector('#dresults .dict-result').textContent")).includes("Sens anglais de référence"), "English fallback result was not labelled");
    await click("#dresults .dict-result-primary");
    await waitFor(() => evaluate("!!document.querySelector('#sheet .dd-entry')"), "English fallback detail missing", 20_000);
-   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Traduction française indisponible") &&
+   assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Sens français vérifié indisponible") &&
       (await evaluate("document.querySelector('#sheet').textContent")).includes("Sens anglais de référence"), "English fallback detail was not labelled");
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "English fallback detail did not close", 20_000);

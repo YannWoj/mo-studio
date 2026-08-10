@@ -1,7 +1,7 @@
 "use strict";
 
-const DICTIONARY_SCHEMA_VERSION = 1;
-const DICTIONARY_CACHE_NAME = "mo-studio-dictionary-v1";
+const DICTIONARY_SCHEMA_VERSION = 2;
+const DICTIONARY_CACHE_NAME = "mo-studio-dictionary-v2";
 const DICTIONARY_PARSED_CHUNK_LIMIT = 10;
 const DICTIONARY_ENTRY_CACHE_LIMIT = 240;
 const DICTIONARY_ROOT = (() => {
@@ -204,8 +204,18 @@ async function loadDictionaryChunk(key, reload) {
 }
 
 function dictionaryPreviewFromArray(value, reference) {
-   if (!Array.isArray(value) || value.length !== 11)
+   if (!Array.isArray(value) || value.length !== 12)
       throw new Error("Aperçu de dictionnaire invalide.");
+   const readings = (value[11] || []).map((reading) => ({
+      pinyin: {
+         marked: reading[0],
+         numbered: reading[1],
+         plain: reading[2],
+      },
+      definitionsFr: Array.isArray(reading[3]) ? reading[3].slice() : [],
+      definitionsEn: Array.isArray(reading[4]) ? reading[4].slice() : [],
+      frenchStatus: reading[5] || (reading[3]?.length ? "source" : "unavailable"),
+   }));
    return {
       id: value[0],
       simplified: value[1],
@@ -219,6 +229,9 @@ function dictionaryPreviewFromArray(value, reference) {
       definitionsFr: value[5] ? [value[5]] : [],
       definitionsEn: value[6] ? [value[6]] : [],
       sources: value[7] || [],
+      frenchStatus: readings[0]?.frenchStatus || (value[5] ? "source" : "unavailable"),
+      frenchProvenance: [],
+      readings,
       hskLegacy: value[8] || [],
       hsk30: value[9] || [],
       frequencyRank: value[10],

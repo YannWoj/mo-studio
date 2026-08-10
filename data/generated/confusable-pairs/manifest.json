@@ -2,11 +2,11 @@
   "format": "mo-studio-confusable-pairs",
   "schemaVersion": 1,
   "builderVersion": "1.0.0",
-  "buildId": "7b6130c022cbcd3f355fb47f95c783455374dc7bd9e69d66a88152dd6521d1e2",
+  "buildId": "65e374e7ea2d84e658b362b2f889dd9bf5e45bb3191b51b55bb3f4160f7d5ebe",
   "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later, via data/generated/character-composition/) and hanzi-writer-data (Arphic Public License, via data/generated/hanzi-writer/). data/generated/dictionary/ is used only to filter the comparable universe and to detect simplified/traditional variant pairs at build time; no CC-CEDICT/CFDICT text is copied into this output.",
   "derivedFrom": {
-    "characterCompositionBuildId": "7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567",
-    "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
+    "characterCompositionBuildId": "1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4",
+    "dictionaryBuildId": "4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813",
     "hanziWriterVersion": "2.0.1"
   },
   "chunkModulo": 64,

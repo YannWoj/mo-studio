@@ -2,9 +2,9 @@
 
 ## Provenance
 
-- Composition des caractères : `data/generated/character-composition/` (buildId `7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567`)
-- Clés/radicaux : `data/generated/character-radicals/` (buildId `952adb1ed76e96af6ca15afeb966ef0a829c3478df2627834509b308d47fe9cd`)
-- Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea`)
+- Composition des caractères : `data/generated/character-composition/` (buildId `1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4`)
+- Clés/radicaux : `data/generated/character-radicals/` (buildId `c37b6d73d04bfddec12ddf6062d006cdb5b9b9ef4e601144d19233d104e8f56a`)
+- Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813`)
 - HSK 1 (pack personnel) : `hsk1.json` (racine du dépôt), SHA-256 `80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419`
 - Bibliothèque personnelle (`db.cards`/packs) : **absente** — aucun fichier à `data/personal/library-export.json`. Ce signal vaut honnêtement zéro pour tous les caractères plutôt que d'être deviné. Pour l'inclure : Réglages → Données → Exporter dans l'application, puis enregistrer le fichier téléchargé à ce chemin et relancer le build.
 
@@ -83,8 +83,8 @@ au nombre de mots maximal observé, 2295).
 | --- | ---: |
 | Composants distincts enseignés | 1113 |
 | … nommés par `data/source/character-components-fr.json` (écrit à la main) | 142 |
-| … nommés par le dictionnaire français | 967 |
-| … repli sur la définition anglaise de Make Me a Hanzi | 1 |
+| … nommés par le dictionnaire français | 966 |
+| … repli sur la définition anglaise de Make Me a Hanzi | 2 |
 | … sans aucun nom dans les sources | 3 |
 
 `componentGlossSource` décrit désormais l'origine du **texte** affiché, et rien d'autre : un composant

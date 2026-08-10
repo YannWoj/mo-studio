@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "policyId": "mo-studio-french-lexicography-2026-08",
+  "entries": [
+    {
+      "traditional": "乇",
+      "simplified": "乇",
+      "pinyinNumbered": "tuo1",
+      "action": "add-verified",
+      "definitionsFr": [
+        "ancienne variante de 托"
+      ],
+      "justification": "CC-CEDICT rattache explicitement cette graphie et cette lecture à l’ancienne variante de 托. La définition française a été relue et saisie manuellement.",
+      "references": [
+        {
+          "title": "CC-CEDICT",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "乇 乇 [tuo1] /old variant of 托[tuo1]/"
+        },
+        {
+          "title": "Academia Sinica — Chinese Character Database",
+          "url": "https://chardb.iis.sinica.edu.tw/char/6711",
+          "locator": "U+4E47, lectures tuo1 et zhe2 ; sens 委託 et 通「托」"
+        }
+      ],
+      "verifiedAt": "2026-08-10"
+    },
+    {
+      "traditional": "乇",
+      "simplified": "乇",
+      "pinyinNumbered": "zhe2",
+      "action": "replace",
+      "definitionsFr": [
+        "composant graphique « brin d’herbe »"
+      ],
+      "quarantinedDefinitionsFr": [
+        "Torr"
+      ],
+      "justification": "La ligne CFDICT associe à tort « Torr » à la lecture zhe2. Les sources concordantes décrivent ici une feuille ou pousse d’herbe employée comme composant graphique.",
+      "references": [
+        {
+          "title": "CC-CEDICT",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "乇 乇 [zhe2] /\"blade of grass\" component in Chinese characters/"
+        },
+        {
+          "title": "Academia Sinica — Chinese Character Database",
+          "url": "https://chardb.iis.sinica.edu.tw/char/6711",
+          "locator": "U+4E47, zhe2 : 草葉"
+        }
+      ],
+      "verifiedAt": "2026-08-10"
+    },
+    {
+      "traditional": "乑",
+      "simplified": "乑",
+      "pinyinNumbered": "zhong4",
+      "action": "add-verified",
+      "definitionsFr": [
+        "se tenir côte à côte",
+        "variante de 眾/众"
+      ],
+      "justification": "Le sens lexical et le renvoi de variante sont concordants dans CC-CEDICT ; Unihan atteste le sens « stand side by side ». La formulation française a été relue et saisie manuellement.",
+      "references": [
+        {
+          "title": "CC-CEDICT",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "乑 乑 [zhong4] /to stand side by side/variant of 眾|众[zhong4]/"
+        },
+        {
+          "title": "Unicode Unihan Database",
+          "url": "https://www.unicode.org/charts/unihansearch.html",
+          "locator": "U+4E51, kDefinition: stand side by side"
+        }
+      ],
+      "verifiedAt": "2026-08-10"
+    },
+    {
+      "traditional": "叕",
+      "simplified": "叕",
+      "pinyinNumbered": "jue2",
+      "action": "quarantine",
+      "definitionsFr": [],
+      "quarantinedDefinitionsFr": [
+        "vitesse"
+      ],
+      "justification": "CFDICT fournit le mot isolé « vitesse » sans contexte ni correspondance anglaise sur cette identité lexicale. Faute de définition française suffisamment étayée selon la politique du projet, ce texte n’est ni affiché ni indexé.",
+      "references": [
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "叕 叕 [jue2] /vitesse/"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — Revised Mandarin Chinese Dictionary",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8061&la=1&powerMode=0",
+          "locator": "fiche principale 叕, zhuó : 聯、綴 ; 短淺"
+        }
+      ],
+      "verifiedAt": "2026-08-10"
+    },
+    {
+      "traditional": "毛",
+      "simplified": "毛",
+      "pinyinNumbered": "mao2",
+      "action": "replace",
+      "definitionsFr": [
+        "poil",
+        "plume",
+        "laine",
+        "rude",
+        "brusque",
+        "affolé",
+        "dixième de yuan",
+        "nom de famille"
+      ],
+      "justification": "Les sens français déjà corrects de CFDICT sont maintenus explicitement. Le Wiktionnaire français confirme notamment poil, cheveux, fourrure, crin, laine, duvet, végétation et décime ; aucune donnée de 乇 ne doit être agrégée à 毛.",
+      "references": [
+        {
+          "title": "Wiktionnaire français — 毛",
+          "url": "https://fr.wiktionary.org/wiki/%E6%AF%9B",
+          "locator": "毛 máo : poil, cheveux, fourrure, crin, laine, duvet ; végétation ; décime"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "毛 毛 [mao2]"
+        }
+      ],
+      "verifiedAt": "2026-08-10"
+    },
+    {
+      "traditional": "烯",
+      "simplified": "烯",
+      "pinyinNumbered": "xi1",
+      "action": "replace",
+      "definitionsFr": [
+        "alcène"
+      ],
+      "quarantinedDefinitionsFr": [
+        "blaze de feu",
+        "glorieux"
+      ],
+      "justification": "CC-CEDICT donne le terme chimique anglais « alkene » ; l’Office québécois de la langue française atteste son équivalent français « alcène ». Les deux gloses CFDICT sont sans rapport avec cette entrée.",
+      "references": [
+        {
+          "title": "Office québécois de la langue française — Grand dictionnaire terminologique",
+          "url": "https://vitrinelinguistique.oqlf.gouv.qc.ca/fiche-gdt/fiche/8366237/alcene",
+          "locator": "alcène ; anglais : alkene"
+        },
+        {
+          "title": "CC-CEDICT",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "烯 烯 [xi1] /alkene/"
+        }
+      ],
+      "verifiedAt": "2026-08-10"
+    }
+  ]
+}

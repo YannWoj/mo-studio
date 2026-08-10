@@ -12,7 +12,14 @@ import tempfile
 import time
 from typing import Any
 
-from build_dictionary import build_dictionary, chunk_key, search_priority, stable_word_id
+from build_dictionary import (
+    SCHEMA_VERSION,
+    build_dictionary,
+    chunk_key,
+    entry_readings,
+    search_priority,
+    stable_word_id,
+)
 from dictionary_common import (
     canonical_numbered_pinyin,
     han_characters,
@@ -21,6 +28,15 @@ from dictionary_common import (
 )
 from parse_cc_cedict import parse_cc_cedict
 from parse_cfdict import parse_cfdict
+from dictionary_french_policy import (
+    DEFAULT_OVERRIDES,
+    OVERRIDE_SOURCE_ID,
+    apply_french_policy,
+    lexical_key,
+    load_french_override_policy,
+    policy_metadata,
+    validate_policy_targets,
+)
 
 
 REQUIRED_WORD_KEYS = {
@@ -33,6 +49,8 @@ REQUIRED_WORD_KEYS = {
     "definitionsEn",
     "sources",
     "sourceRefs",
+    "frenchStatus",
+    "frenchProvenance",
     "hskLegacy",
     "hsk30",
     "frequencyRank",
@@ -49,6 +67,9 @@ REQUIRED_CHARACTER_KEYS = {
     "definitionsEn",
     "sources",
     "sourceRefs",
+    "frenchStatus",
+    "frenchProvenance",
+    "readings",
     "hskLegacy",
     "hsk30",
     "frequencyRank",
@@ -111,6 +132,41 @@ def validate_pinyin(variants: Any, entry_id: str) -> None:
         )
 
 
+READING_KEYS = {
+    "pinyin",
+    "definitionsFr",
+    "definitionsEn",
+    "frenchStatus",
+    "sources",
+    "sourceRefs",
+    "frenchProvenance",
+    "wordIds",
+}
+
+
+def validate_french_fields(value: dict[str, Any], entry_id: str) -> None:
+    require(value["frenchStatus"] in {"source", "verified", "unavailable"}, f"{entry_id}: invalid French status")
+    require(isinstance(value["frenchProvenance"], list), f"{entry_id}: invalid French provenance")
+    require(
+        value["frenchStatus"] != "unavailable" or not value["definitionsFr"],
+        f"{entry_id}: unavailable French status has definitions",
+    )
+    require(
+        not value["definitionsFr"] or value["frenchStatus"] != "unavailable",
+        f"{entry_id}: French definitions have unavailable status",
+    )
+    if value["frenchProvenance"]:
+        require(OVERRIDE_SOURCE_ID in value["sources"], f"{entry_id}: override source missing")
+
+
+def validate_reading(reading: Any, entry_id: str) -> None:
+    require(isinstance(reading, dict) and set(reading) == READING_KEYS, f"{entry_id}: invalid reading schema")
+    validate_pinyin([reading["pinyin"]], entry_id)
+    for key in ("definitionsFr", "definitionsEn", "sources", "sourceRefs", "frenchProvenance", "wordIds"):
+        require(isinstance(reading[key], list), f"{entry_id}: reading {key} must be a list")
+    validate_french_fields(reading, entry_id)
+
+
 def validate_entry(entry: dict[str, Any]) -> None:
     entry_id = entry.get("id", "<missing>")
     entry_type = entry.get("entryType")
@@ -124,7 +180,9 @@ def validate_entry(entry: dict[str, Any]) -> None:
         require(isinstance(entry[key], list), f"{entry_id}: {key} must be a list")
     require(entry["hskLegacy"] == [] and entry["hsk30"] == [], f"{entry_id}: unverified HSK data present")
     require(entry["frequencyRank"] is None, f"{entry_id}: unverified frequency rank present")
+    validate_french_fields(entry, entry_id)
     if entry_type == "word":
+        require(len(entry["pinyin"]) == 1, f"{entry_id}: lexical entry must have exactly one reading")
         numbered = entry["pinyin"][0]["numbered"]
         require(
             entry_id == stable_word_id(entry["traditional"], entry["simplified"], numbered),
@@ -142,6 +200,14 @@ def validate_entry(entry: dict[str, Any]) -> None:
         require(entry["strokeCount"] is None, f"{entry_id}: fabricated stroke count")
         require(entry["components"] == [], f"{entry_id}: fabricated components")
         require(entry["commonWords"] == [], f"{entry_id}: unverified common words")
+        require(isinstance(entry["readings"], list), f"{entry_id}: readings must be a list")
+        for reading in entry["readings"]:
+            validate_reading(reading, entry_id)
+        if entry["readings"]:
+            primary = entry["readings"][0]
+            require(entry["pinyin"] == [primary["pinyin"]], f"{entry_id}: primary pinyin mismatch")
+            require(entry["definitionsFr"] == primary["definitionsFr"], f"{entry_id}: primary French mismatch")
+            require(entry["definitionsEn"] == primary["definitionsEn"], f"{entry_id}: primary English mismatch")
     else:
         raise ValidationError(f"{entry_id}: invalid entry type {entry_type}")
 
@@ -178,19 +244,22 @@ def validate_dictionary(
     cf_path: Path,
     hsk_path: Path,
     determinism_check: bool,
+    overrides_path: Path = DEFAULT_OVERRIDES,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     manifest = load_json(generated_dir / "manifest.json")
     report = load_json(generated_dir / "build-report.json")
     attribution = load_json(generated_dir / "source-attribution.json")
-    require(manifest["schemaVersion"] == 1, "Unsupported manifest schema")
+    audit = load_json(generated_dir / "french-audit-report.json")
+    policy = load_french_override_policy(overrides_path)
+    require(manifest["schemaVersion"] == SCHEMA_VERSION, "Unsupported manifest schema")
     require(manifest["format"] == "mo-studio-offline-dictionary", "Unexpected manifest format")
 
     entries: dict[str, dict[str, Any]] = {}
     id_chunks: dict[str, str] = {}
     for descriptor in manifest["chunks"]:
         chunk = load_json(generated_dir / descriptor["path"])
-        require(chunk["schemaVersion"] == 1, f"Bad chunk schema: {descriptor['path']}")
+        require(chunk["schemaVersion"] == SCHEMA_VERSION, f"Bad chunk schema: {descriptor['path']}")
         require(len(chunk["entries"]) == descriptor["count"], f"Bad chunk count: {descriptor['path']}")
         for entry in chunk["entries"]:
             validate_entry(entry)
@@ -216,10 +285,10 @@ def validate_dictionary(
     require(len(ids_by_ref) == len(set(ids_by_ref)), "Duplicate entry-location IDs")
 
     previews = load_json(generated_dir / manifest["searchPreviews"])
-    require(previews["schemaVersion"] == 1, "Unsupported search-preview schema")
+    require(previews["schemaVersion"] == SCHEMA_VERSION, "Unsupported search-preview schema")
     require(len(previews["entries"]) == len(ids_by_ref), "Search-preview count mismatch")
     for reference, preview in enumerate(previews["entries"]):
-        require(isinstance(preview, list) and len(preview) == 11, f"Bad preview shape: {reference}")
+        require(isinstance(preview, list) and len(preview) == 12, f"Bad preview shape: {reference}")
         require(preview[0] == ids_by_ref[reference], f"Search-preview ID mismatch: {reference}")
         require(preview[1] == entries[preview[0]]["simplified"], f"Search-preview simplified mismatch: {reference}")
         expected_traditional = entries[preview[0]]["traditional"]
@@ -232,6 +301,22 @@ def validate_dictionary(
         require(preview[8] == entries[preview[0]]["hskLegacy"], f"Search-preview HSK Legacy mismatch: {reference}")
         require(preview[9] == entries[preview[0]]["hsk30"], f"Search-preview HSK 3.0 mismatch: {reference}")
         require(preview[10] == entries[preview[0]]["frequencyRank"], f"Search-preview frequency mismatch: {reference}")
+        expected_readings = [
+            [
+                reading["pinyin"]["marked"],
+                reading["pinyin"]["numbered"],
+                reading["pinyin"]["plain"],
+                reading["definitionsFr"],
+                reading["definitionsEn"],
+                reading["frenchStatus"],
+            ]
+            for reading in (
+                entry_readings(entries[preview[0]])
+                if entries[preview[0]]["entryType"] == "character"
+                else []
+            )
+        ]
+        require(preview[11] == expected_readings, f"Search-preview readings mismatch: {reference}")
 
     indexes = {
         name: load_json(generated_dir / path)
@@ -295,6 +380,8 @@ def validate_dictionary(
                     canonical_numbered_pinyin(record.pinyin_raw),
                 )
             ].append(record)
+    validate_policy_targets(policy, source_groups)
+    policy_by_key = {lexical_key(entry): entry for entry in policy.entries}
     for word in words:
         key = (
             word["traditional"],
@@ -303,11 +390,14 @@ def validate_dictionary(
         )
         source_records = source_groups.get(key)
         require(bool(source_records), f"No source record for {word['id']}")
-        expected_fr = unique_in_order(
+        raw_expected_fr = unique_in_order(
             definition
             for record in source_records
             if record.definition_language == "fr"
             for definition in record.definitions
+        )
+        expected_fr, expected_status, expected_provenance = apply_french_policy(
+            key, raw_expected_fr, policy_by_key, policy
         )
         expected_en = unique_in_order(
             definition
@@ -317,6 +407,8 @@ def validate_dictionary(
         )
         require(word["definitionsFr"] == expected_fr, f"French source fidelity failed: {word['id']}")
         require(word["definitionsEn"] == expected_en, f"English source fidelity failed: {word['id']}")
+        require(word["frenchStatus"] == expected_status, f"French status policy failed: {word['id']}")
+        require(word["frenchProvenance"] == expected_provenance, f"French provenance policy failed: {word['id']}")
     parsed_by_id = {cc.metadata.source_id: cc, cf.metadata.source_id: cf}
     attribution_by_id = {source["source_id"]: source for source in attribution["sources"]}
     for source_id, parsed in parsed_by_id.items():
@@ -324,6 +416,14 @@ def validate_dictionary(
         require(stored["header_lines"] == list(parsed.metadata.header_lines), f"Header changed for {source_id}")
         require(stored["sha256"] == parsed.metadata.sha256, f"Source hash changed for {source_id}")
         require(stored["raw_entry_count"] == parsed.metadata.raw_entry_count, f"Entry count changed for {source_id}")
+    require(
+        attribution["frenchEditorialPolicy"] == policy_metadata(policy),
+        "French editorial attribution changed",
+    )
+    require(manifest["frenchEditorialPolicy"] == policy_metadata(policy), "Manifest French policy changed")
+    require(manifest["frenchAudit"] == "french-audit-report.json", "French audit path missing")
+    require(audit["status"] == "PASS" and not audit["criticalIssues"], "French audit contains critical issues")
+    require(audit["policy"] == policy_metadata(policy), "French audit policy metadata changed")
 
     hsk_raw = hsk_path.read_bytes()
     hsk = json.loads(hsk_raw.decode("utf-8"))
@@ -355,7 +455,7 @@ def validate_dictionary(
         with tempfile.TemporaryDirectory(prefix="mo-dictionary-rebuild-") as directory:
             rebuilt = Path(directory) / "dictionary"
             rebuild_started = time.perf_counter()
-            build_dictionary(cc_path, cf_path, hsk_path, rebuilt)
+            build_dictionary(cc_path, cf_path, hsk_path, rebuilt, overrides_path)
             deterministic_build_duration = time.perf_counter() - rebuild_started
             deterministic = tree_hashes(generated_dir) == tree_hashes(rebuilt)
             require(deterministic, "Rebuilt dictionary files are not byte-for-byte deterministic")
@@ -386,6 +486,13 @@ def validate_dictionary(
         "validationDurationSeconds": round(duration, 6),
         "generatedFileSizes": generated_sizes(generated_dir),
         "buildReport": report,
+        "frenchAudit": {
+            "status": audit["status"],
+            "corrected": audit["corrections"]["verifiedOverrideCount"],
+            "quarantined": audit["quarantine"]["entryCount"],
+            "englishWithoutVerifiedFrench": audit["englishWithoutVerifiedFrench"]["count"],
+            "coverage": audit["coverage"],
+        },
     }
 
 
@@ -397,6 +504,7 @@ def main() -> None:
     parser.add_argument("--cc", type=Path, default=Path("data/source/cc-cedict.u8"))
     parser.add_argument("--cf", type=Path, default=Path("data/source/cfdict.u8"))
     parser.add_argument("--hsk", type=Path, default=Path("hsk1.json"))
+    parser.add_argument("--fr-overrides", type=Path, default=DEFAULT_OVERRIDES)
     parser.add_argument("--skip-determinism", action="store_true")
     parser.add_argument("--report-json", type=Path)
     args = parser.parse_args()
@@ -406,6 +514,7 @@ def main() -> None:
         args.cf,
         args.hsk,
         not args.skip_determinism,
+        args.fr_overrides,
     )
     text = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True)
     if args.report_json:
