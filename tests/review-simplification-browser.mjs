@@ -256,6 +256,38 @@ async function main() {
    await dragCard(-110, 5, ".review-stroke-characters");
    assert((await evaluate("session.index")) === 0, "horizontal scroller handed its gesture to the card swipe");
    pass("glissement depuis le caractère et la zone d’écriture, défileurs horizontaux préservés");
+
+   // Régression du glissement tactile. Les événements souris ne reproduisent pas le
+   // bug : seul le compositeur tactile revendique le geste. .fl-body défile
+   // verticalement ; sans touch-action explicite il vaut `auto`, le compositeur
+   // s'attribue aussi l'horizontal et annule le pointeur (pointercancel) — plus aucun
+   // balayage ne part. On rejoue donc la séquence exacte en vrai tactile.
+   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+   async function touchSwipe(dx) {
+      const point = await evaluate(`(() => { const r=document.querySelector('#flash').getBoundingClientRect(); return {x:Math.round(r.left+r.width*0.5), y:Math.round(r.top+r.height*0.35)}; })()`);
+      await cdp.send("Input.dispatchTouchEvent", { type:"touchStart", touchPoints:[{ x:point.x, y:point.y, id:1 }] });
+      for (let step = 1; step <= 6; step++)
+         await cdp.send("Input.dispatchTouchEvent", { type:"touchMove", touchPoints:[{ x:point.x + (dx*step)/6, y:point.y + (dx < 0 ? 5 : -5)*step/6, id:1 }] });
+      await cdp.send("Input.dispatchTouchEvent", { type:"touchEnd", touchPoints:[] });
+      await new Promise((resolve) => setTimeout(resolve, 180));
+   }
+   await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();startCardsWith([db.cards.find(c=>c.id==='c1'),db.cards.find(c=>c.id==='c2'),db.cards.find(c=>c.id==='c3'),db.cards.find(c=>c.id==='c4')],'Tactile','cards')");
+   assert((await evaluate("getComputedStyle(document.querySelector('.fl-body')).touchAction")) === "pan-y", "the card scroll container no longer declares touch-action: pan-y");
+   const srsBeforeTouch = await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,h:c.reviewHistory,last:c.lastReviewed})))");
+   const touchPath = [];
+   for (const step of ["next", "next", "previous", "next", "previous", "previous", "next"]) {
+      await touchSwipe(step === "next" ? -110 : 110);
+      touchPath.push(await evaluate("session.index"));
+   }
+   assert(JSON.stringify(touchPath) === JSON.stringify([1, 2, 1, 2, 1, 0, 1]), `touch swipe sequence drifted: ${JSON.stringify(touchPath)}`);
+   // la séquence laisse l'index à 1 ; deux glissements de plus atteignent la dernière
+   // carte des quatre sans terminer la séance (advance() y appellerait endSession).
+   for (let index = 0; index < 2; index++) await touchSwipe(-110);
+   assert((await evaluate("session.index")) === 3 && (await evaluate("session.active")) === true, "repeated forward touch swipes stalled");
+   assert((await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,h:c.reviewHistory,last:c.lastReviewed})))")) === srsBeforeTouch, "a swipe graded a card");
+   assert(await evaluate("session.states.filter(Boolean).every((state)=>!state.grade)"), "a swipe recorded a grade in the session state");
+   await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
+   pass("glissement tactile : séquence suivant/précédent fiable, aucune note enregistrée");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");
 
    // Entraînement à l'écriture depuis le recto : exercice de rappel, pas de réponse.

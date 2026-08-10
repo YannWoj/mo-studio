@@ -143,6 +143,12 @@
             flex-direction: column;
             overflow-y: auto;
             overscroll-behavior-block: contain;
+            /* Ce conteneur défile : sans déclaration il vaut `auto`, et le
+               compositeur s'attribue aussi l'axe horizontal — il annule alors le
+               pointeur (pointercancel) et le balayage de carte ne part jamais.
+               Même contrat que .sess et .flash : le vertical au navigateur,
+               l'horizontal à la séance. */
+            touch-action: pan-y;
             scrollbar-width: thin;
          }
          /* marges automatiques plutôt que justify-content : le centrage tient sans

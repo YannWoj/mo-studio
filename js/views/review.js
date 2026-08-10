@@ -710,35 +710,31 @@ function wireReviewStrokeBlock(c, st) {
             // glisser ne note jamais rien, seuls les quatre boutons de
             // notation le font.
             if (!zone || !card || !("PointerEvent" in window)) return;
+            // Pas de setPointerCapture : la capture ne sert qu'à continuer de recevoir
+            // les événements hors de la zone, et des écouteurs document le font aussi
+            // bien — sans son effet de bord. La capture redirige en effet le clic qui
+            // suit vers l'élément capturant, mais pour la souris seulement : au doigt
+            // le clic natif atteint sa vraie cible. Toute compensation de ce clic
+            // redirigé faisait donc double emploi au tactile (carte retournée deux
+            // fois, audio joué deux fois). Sans capture, un appui produit un seul clic,
+            // à la bonne cible, pour les deux types de pointeur.
             let gesture = null;
-            // La capture, indispensable pour suivre un balayage qui sort de la zone,
-            // redirige le clic qui suit vers la zone — un ancêtre de la carte. On
-            // rejoue donc l'appui sur l'élément réellement sous le doigt, pour que le
-            // retournement comme la lecture audio (data-say) se déclenchent.
-            // Rejoué seulement si le doigt n'a pas quitté l'élément pressé : un
-            // relâchement au-dessus d'un bouton ne doit jamais l'actionner.
-            const relayTap = (event, origin) => {
-               const target = document.elementFromPoint(event.clientX, event.clientY);
-               if (!target || !origin) return;
-               if (target !== origin && !origin.contains(target)) return;
-               target.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
+            const release = () => {
+               if (gesture) gesture.listeners.abort();
+               gesture = null;
             };
             const finish = (event, cancelled) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const current = gesture;
-               gesture = null;
+               release();
                card.classList.remove("is-session-dragging", "is-session-drag-left", "is-session-drag-right");
                card.style.removeProperty("--session-drag-x");
-               if (zone.hasPointerCapture && zone.hasPointerCapture(event.pointerId))
-                  zone.releasePointerCapture(event.pointerId);
                if (cancelled) {
                   card._suppressSessionClickUntil = Date.now() + 500;
                   return;
                }
-               if (!current.horizontal) {
-                  if (current.captured) relayTap(event, current.target);
-                  return;
-               }
+               // appui simple : le clic natif suit et fait le reste (retournement, audio)
+               if (!current.horizontal) return;
                const dx = event.clientX - current.x;
                const dy = event.clientY - current.y;
                if (Math.abs(dx) < SESSION_SWIPE_COMMIT || Math.abs(dx) <= Math.abs(dy) * 1.1) return;
@@ -747,17 +743,7 @@ function wireReviewStrokeBlock(c, st) {
                if (dx < 0) advance();
                else previousCard();
             };
-            zone.onpointerdown = (event) => {
-               if (event.button !== 0 || event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR)) return;
-               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false, captured: false, target: event.target };
-               if (zone.setPointerCapture) {
-                  try {
-                     zone.setPointerCapture(event.pointerId);
-                     gesture.captured = true;
-                  } catch (error) {}
-               }
-            };
-            zone.onpointermove = (event) => {
+            const move = (event) => {
                if (!gesture || event.pointerId !== gesture.pointerId) return;
                const dx = event.clientX - gesture.x;
                const dy = event.clientY - gesture.y;
@@ -776,10 +762,17 @@ function wireReviewStrokeBlock(c, st) {
                card.classList.toggle("is-session-drag-left", clamped < -4);
                card.classList.toggle("is-session-drag-right", clamped > 4);
             };
-            zone.onpointerup = (event) => finish(event, false);
-            zone.onpointercancel = (event) => finish(event, true);
-            zone.onlostpointercapture = (event) => {
-               if (gesture && event.pointerId === gesture.pointerId) finish(event, true);
+            zone.onpointerdown = (event) => {
+               if (event.button !== 0 || event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR)) return;
+               release(); // un geste resté ouvert (pointerup perdu) ne survit jamais au suivant
+               const listeners = new AbortController();
+               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false, listeners };
+               // écouteurs posés pour la durée du geste et retirés par abort() : ils ne
+               // s'accumulent pas d'un rendu à l'autre.
+               const options = { signal: listeners.signal, passive: false };
+               document.addEventListener("pointermove", move, options);
+               document.addEventListener("pointerup", (up) => finish(up, false), options);
+               document.addEventListener("pointercancel", (up) => finish(up, true), options);
             };
          }
          function wireSession(c, st) {
