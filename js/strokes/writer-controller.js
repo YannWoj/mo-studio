@@ -13,6 +13,8 @@ let ddWriterDocumentListeners = [];
 let ddAutoplaySelectionKey = null;
 let ddAutoplayPending = false;
 let ddAutoplayLoadToken = 0;
+let ddStrokeWorkspace = null;
+const strokeWorkspaceLoads = new WeakMap();
 const strokeCharacterNavigationStates = new Map();
 let strokeCharacterNavigationResizeTimer = 0;
 
@@ -245,6 +247,8 @@ function destroyDDWriter() {
 
 function destroyStrokeWorkspace() {
    ddCharacterLoadToken++;
+   if (ddStrokeWorkspace) strokeWorkspaceLoads.delete(ddStrokeWorkspace);
+   ddStrokeWorkspace = null;
    destroyRenderedStrokeCharacterNavigation();
    destroyDDWriter();
    ddChar = null;
@@ -254,6 +258,20 @@ function destroyStrokeWorkspace() {
    if (strokeGalleryObserver) strokeGalleryObserver.disconnect();
    strokeGalleryObserver = null;
    closeStrokeFocus();
+}
+
+function resolveStrokeWorkspace(scope) {
+   const root = typeof scope === "string" ? document.querySelector(scope) : scope;
+   if (root && root.matches && root.matches(".stroke-workspace")) return root;
+   if (root && root.querySelector) return root.querySelector(".stroke-workspace");
+   const workspaces = document.querySelectorAll(".stroke-workspace");
+   return workspaces.length === 1 ? workspaces[0] : null;
+}
+
+function strokeWorkspaceLoadIsCurrent(workspace, request) {
+   return !!workspace && workspace.isConnected &&
+      strokeWorkspaceLoads.get(workspace) === request &&
+      workspace.dataset.strokeCharacter === request.character;
 }
 
 function setStrokeWorkspaceMessage(id, message) {
@@ -473,11 +491,20 @@ function wireStrokeWorkspace() {
 
 async function loadDDChar(character, characters, options) {
    const settings = options || {};
+   const workspace = resolveStrokeWorkspace(settings.workspace);
    const selectionKey = String(
       settings.selectionKey == null ? character : settings.selectionKey,
    );
    destroyDDWriter();
    const token = ++ddCharacterLoadToken;
+   if (ddStrokeWorkspace && ddStrokeWorkspace !== workspace)
+      strokeWorkspaceLoads.delete(ddStrokeWorkspace);
+   ddStrokeWorkspace = workspace;
+   const workspaceRequest = workspace ? { token, character } : null;
+   if (workspace) {
+      workspace.dataset.strokeCharacter = character;
+      strokeWorkspaceLoads.set(workspace, workspaceRequest);
+   }
    if (selectionKey !== ddAutoplaySelectionKey) {
       ddAutoplaySelectionKey = selectionKey;
       ddAutoplayPending = true;
@@ -490,20 +517,23 @@ async function loadDDChar(character, characters, options) {
       ? settings.selectionIndex
       : ddWorkspaceCharacters.indexOf(character);
    ddWorkspaceCharacterIndex = workspaceIndex;
-   setCharacterCompositionLoading(character);
+   setCharacterCompositionLoading(character, workspace);
    if (typeof loadCharacterCompositions === "function") {
       loadCharacterCompositions(ddWorkspaceCharacters).then((compositions) => {
          if (
             token !== ddCharacterLoadToken ||
             ddChar !== character ||
-            !document.querySelector(".stroke-workspace")
+            !strokeWorkspaceLoadIsCurrent(workspace, workspaceRequest)
          ) return;
-         renderCharacterComposition(compositions.get(character) || null);
+         renderCharacterComposition(compositions.get(character) || null, workspace);
       }).catch(() => {
-         if (token === ddCharacterLoadToken && ddChar === character)
-            renderCharacterComposition(null);
+         if (
+            token === ddCharacterLoadToken &&
+            ddChar === character &&
+            strokeWorkspaceLoadIsCurrent(workspace, workspaceRequest)
+         ) renderCharacterComposition(null, workspace);
       });
-   } else renderCharacterComposition(null);
+   } else renderCharacterComposition(null, workspace);
    const stripSelectionIndex = Number.isInteger(settings.stripSelectionIndex)
       ? settings.stripSelectionIndex
       : workspaceIndex;
@@ -529,12 +559,16 @@ async function loadDDChar(character, characters, options) {
       if (
          token !== ddCharacterLoadToken ||
          ddChar !== character ||
-         !document.querySelector(".stroke-workspace")
+         !strokeWorkspaceLoadIsCurrent(workspace, workspaceRequest)
       ) return;
       ddCharacterData = data;
       renderActiveStrokeTab();
    } catch (error) {
-      if (token !== ddCharacterLoadToken || ddChar !== character) return;
+      if (
+         token !== ddCharacterLoadToken ||
+         ddChar !== character ||
+         !strokeWorkspaceLoadIsCurrent(workspace, workspaceRequest)
+      ) return;
       ddAutoplayPending = false;
       renderStrokeGalleryError(character, error);
       setStrokeWorkspaceMessage("dd-note", "Animation indisponible · aucune donnée inventée.");

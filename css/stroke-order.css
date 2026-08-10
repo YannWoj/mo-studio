@@ -168,7 +168,7 @@
 }
 .dd-character-interaction .dd-character-study-card,
 .dd-character-interaction .stroke-character-stage-main,
-#seq-flash > .hanzi,
+#seq-flash .seq-card-primary,
 #seq-flash .stroke-character-stage-main {
    transform: translateX(var(--character-swipe-offset, 0));
    transition: transform 150ms cubic-bezier(0.22, 0.72, 0.3, 1), opacity 120ms ease-out;
@@ -176,13 +176,13 @@
 }
 .dd-character-interaction.is-pointer-swiping .dd-character-study-card,
 .dd-character-interaction.is-pointer-swiping .stroke-character-stage-main,
-#seq-flash.is-pointer-swiping > .hanzi,
+#seq-flash.is-pointer-swiping .seq-card-primary,
 #seq-flash.is-pointer-swiping .stroke-character-stage-main {
    transition: none;
 }
 .dd-character-interaction.is-swipe-committing .dd-character-study-card,
 .dd-character-interaction.is-swipe-committing .stroke-character-stage-main,
-#seq-flash.is-swipe-committing > .hanzi,
+#seq-flash.is-swipe-committing .seq-card-primary,
 #seq-flash.is-swipe-committing .stroke-character-stage-main {
    opacity: 0.9;
 }
@@ -831,7 +831,7 @@
    }
    .dd-character-interaction .dd-character-study-card,
    .stroke-character-stage-main,
-   #seq-flash > .hanzi {
+   #seq-flash .seq-card-primary {
       transition: none !important;
    }
 }

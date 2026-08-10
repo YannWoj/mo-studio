@@ -29,6 +29,10 @@ const visualProofs = {
    sequenceStrokeSteps1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-steps-1024.png"),
    sequenceStrokePractice390: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-390.png"),
    sequenceStrokePractice1024: path.join(os.tmpdir(), "mo-studio-sequence-strokes-practice-1024.png"),
+   sequenceShell320: path.join(os.tmpdir(), "mo-studio-sequence-shell-320x568.png"),
+   sequenceShell375: path.join(os.tmpdir(), "mo-studio-sequence-shell-375x667.png"),
+   sequenceShell390: path.join(os.tmpdir(), "mo-studio-sequence-shell-390x844.png"),
+   sequenceShell430: path.join(os.tmpdir(), "mo-studio-sequence-shell-430x932.png"),
    decomposition390: path.join(os.tmpdir(), "mo-studio-character-decomposition-390.png"),
    decomposition1024: path.join(os.tmpdir(), "mo-studio-character-decomposition-1024.png"),
 };
@@ -224,6 +228,7 @@ async function main() {
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
    await evaluate("openSearchDictionaryDetail(srch.search.results[0].entry, false)");
    await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('riz cuit') && !!document.querySelector('#dd-target svg')"), "饭 result click lost its French definition or stroke grid");
+   assert(await evaluate("document.querySelector('#dd-close')?.textContent.trim()==='← Retour aux résultats'&&!!document.querySelector('#dd-close-top')"), "search detail lost its distinct return-to-results footer action");
    assert((await evaluate("document.querySelector('.dd-entry').dataset.entryId")) === listedRice.id, "饭 result click loaded a different entry");
    await evaluate("(async()=>{const toast=document.querySelector('#toast');toast.classList.remove('show');await new Promise((resolve)=>setTimeout(resolve,320));toast.style.visibility='hidden'})()");
    await evaluate("(async()=>{if(typeof ddWriter?.showCharacter==='function')await ddWriter.showCharacter({duration:0})})()");
@@ -246,14 +251,33 @@ async function main() {
    await evaluate(`(async()=>openDictDetail(await loadDictionaryEntryById('char-饭')))()`);
    await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('riz cuit')"), "饭 detail did not reuse its French sibling");
    assert(!(await evaluate("document.querySelector('#dd-french-definitions').textContent.includes('Traduction française indisponible')")), "饭 detail kept the unavailable notice");
-   await click("#dd-close");
+   assert(await evaluate("!document.querySelector('#dd-close')&&!!document.querySelector('#dd-close-top')"), "non-search detail kept the redundant bottom Fermer action");
+   await click("#dd-close-top");
+
+   const westTrace = await evaluate(`(async()=>{
+      const previousView=activeView;
+      const found=await findDictionaryEntryByHanzi('西');
+      const studied=await dictionaryCharacterStudyEntry('西');
+      activeView='learn';
+      await openCompositionCharacter('西');
+      window.__westPreviousView=previousView;
+      return {
+         found:{id:found?.id,preview:!!found?.__preview,fr:found?.definitionsFr||[]},
+         studied:{id:studied?.id,preview:!!studied?.__preview,fr:studied?.definitionsFr||[],sources:studied?.sources||[]}
+      };
+   })()`);
+   await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('ouest')&&document.querySelector('#dd-french-definitions')?.textContent.includes('occidental')"), "西 component detail did not resolve its complete verified French definition");
+   assert(westTrace.found.preview&&westTrace.found.id===westTrace.studied.id&&!westTrace.studied.preview&&westTrace.studied.fr.includes('ouest')&&westTrace.studied.fr.includes('occidental')&&westTrace.studied.sources.includes('CFDICT'), `西 normal lookup pipeline is incomplete: ${JSON.stringify(westTrace)}`);
+   assert(await evaluate("!document.querySelector('#dd-close')&&!!document.querySelector('#dd-close-top')"), "component detail unexpectedly gained a bottom Fermer action");
+   await click("#dd-close-top");
+   await evaluate("activeView=window.__westPreviousView;delete window.__westPreviousView");
 
    await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('吃饭')))()`);
    await waitFor(() => evaluate("!!document.querySelector('#dd-picker [data-character=\"饭\"]')"), "吃饭 character picker missing");
    await click('#dd-picker [data-character="饭"]');
    await waitFor(() => evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭')?.querySelector('.dd-character-detail-translation').textContent.includes('riz cuit')"), "吃饭 → 饭 character detail did not reuse French");
    assert(!(await evaluate("[...document.querySelectorAll('.dd-character-detail-row')].find((row)=>row.querySelector('.dd-character-detail-hanzi')?.textContent==='饭').textContent.includes('Traduction française indisponible')")), "吃饭 → 饭 character detail kept the fallback");
-   await click("#dd-close");
+   await click("#dd-close-top");
 
    await evaluate(`(async()=>openDictDetail(await findDictionaryEntryByHanzi('你好')))()`);
    await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.length > 0 && !!document.querySelector('#dd-target svg') && document.querySelector('#dd-character-study-card')?.getAttribute('aria-busy')==='false'"), "你好 compact detail did not finish loading");
@@ -265,14 +289,49 @@ async function main() {
    await writeFile(visualProofs.helloFirstScreen, Buffer.from(helloScreenshot.data, "base64"));
    await evaluate("document.querySelector('#toast').style.visibility=''");
    assert(await evaluate("[...document.querySelector('#dd-character-interaction').children].indexOf(document.querySelector('#dd-character-study-card')) > [...document.querySelector('#dd-character-interaction').children].indexOf(document.querySelector('#dd-character-stage'))"), "compact character row is still above stroke order");
-   await click("#dd-close");
+   await click("#dd-close-top");
 
    await evaluate("openSequence(Array.from('吃饭'),{fromHistory:true,index:1})");
    await waitFor(() => evaluate("document.querySelector('#seq-flash .fr')?.textContent.includes('riz cuit')"), "饭 sequence reader did not reuse French");
    await waitFor(() => evaluate("document.querySelector('#seq-stage .stroke-tab-panel:not([hidden]) .character-composition')?.dataset.character===ddChar"), "sequence reader composition did not load in the shared stroke workspace");
    assert(!(await evaluate("document.querySelector('#seq-flash .fr').textContent.includes('Traduction française indisponible')")), "饭 sequence reader kept the fallback");
-   const sequenceFirstScreen = await evaluate(`(() => {const selectors=['#seq-flash > .hanzi','#seq-flash > .pinyin','#seq-flash > .fr','#stroke-panel-animation .mizi'];const rects=selectors.map((selector)=>document.querySelector(selector)?.getBoundingClientRect());return {visible:rects.every((rect)=>rect&&rect.top>=0&&rect.bottom<=innerHeight),metaAfterStage:[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('.seq-meta'))>[...document.querySelector('#seq-flash').children].indexOf(document.querySelector('#seq-stage')),rects:rects.map((rect)=>rect&&({top:rect.top,bottom:rect.bottom,width:rect.width}))};})()`);
+   const sequenceFirstScreen = await evaluate(`(() => {const selectors=['#seq-flash .seq-card-primary > .hanzi','#seq-flash .seq-card-primary > .pinyin','#seq-flash .seq-card-primary > .fr','#stroke-panel-animation .mizi'];const rects=selectors.map((selector)=>document.querySelector(selector)?.getBoundingClientRect());const stage=document.querySelector('#seq-stage'),meta=document.querySelector('.seq-meta');return {visible:rects.every((rect)=>rect&&rect.top>=0&&rect.bottom<=innerHeight),metaAfterStage:!!(stage.compareDocumentPosition(meta)&Node.DOCUMENT_POSITION_FOLLOWING),rects:rects.map((rect)=>rect&&({top:rect.top,bottom:rect.bottom,width:rect.width}))};})()`);
    assert(sequenceFirstScreen.visible && sequenceFirstScreen.metaAfterStage, `sequence first screen/order failed: ${JSON.stringify(sequenceFirstScreen)}`);
+   for (const [width, height] of [[320,568],[375,667],[390,844],[430,932]]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor:1, mobile:true });
+      const mobileSequence = await evaluate(`(async()=>{
+         const scroller=document.querySelector('#seq-card-body');
+         scroller.scrollTop=0;
+         await new Promise((resolve)=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+         const box=(selector)=>document.querySelector(selector)?.getBoundingClientRect();
+         const session=box('.sess'),header=box('.s-top'),strip=box('#seq-character-strip'),body=box('#seq-card-body');
+         const fixed=[header.top,box('.s-bar').top,strip.top];
+         const maximum=Math.max(0,scroller.scrollHeight-scroller.clientHeight);
+         scroller.scrollTop=scroller.scrollHeight;
+         await new Promise((resolve)=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+         const lastAction=[...document.querySelectorAll('.seq-card-actions button')].at(-1)?.getBoundingClientRect();
+         return {shell:session.height,documentMaximum:Math.max(0,document.scrollingElement.scrollHeight-innerHeight),documentTop:document.scrollingElement.scrollTop,fixed:fixed.every((top,index)=>Math.abs(top-[box('.s-top').top,box('.s-bar').top,box('#seq-character-strip').top][index])<0.5),headerVisible:header.top>=0&&strip.bottom<=innerHeight,maximum,scrolled:scroller.scrollTop,actionVisible:lastAction&&lastAction.bottom<=body.bottom+0.5,safeGap:lastAction?body.bottom-lastAction.bottom:-1,horizontal:document.documentElement.scrollWidth<=innerWidth&&scroller.scrollWidth<=scroller.clientWidth,touchTargets:[...document.querySelectorAll('#seq-character-strip .hzchip')].every((button)=>{const rect=button.getBoundingClientRect();return rect.width>=44&&rect.height>=44}),overflow:getComputedStyle(scroller).overflowY,overscroll:getComputedStyle(scroller).overscrollBehaviorY};
+      })()`);
+      assert(Math.abs(mobileSequence.shell-height)<=1&&mobileSequence.documentMaximum<=1&&mobileSequence.documentTop===0&&mobileSequence.fixed&&mobileSequence.headerVisible&&mobileSequence.actionVisible&&mobileSequence.safeGap>=15&&mobileSequence.horizontal&&mobileSequence.touchTargets&&mobileSequence.overflow==='auto'&&mobileSequence.overscroll==='contain'&&(height>568||mobileSequence.maximum>0&&mobileSequence.scrolled>0), `sequence mobile shell failed at ${width}x${height}: ${JSON.stringify(mobileSequence)}`);
+      await evaluate("document.querySelector('#seq-card-body').scrollTop=0");
+      const sequenceShellScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
+      await writeFile(visualProofs[`sequenceShell${width}`], Buffer.from(sequenceShellScreenshot.data, "base64"));
+   }
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:320, height:568, deviceScaleFactor:1, mobile:true });
+   const sequenceScrollLifecycle = await evaluate(`(async()=>{
+      const before=document.querySelector('#seq-card-body');
+      before.scrollTop=Math.min(120,before.scrollHeight-before.clientHeight);
+      const expected=before.scrollTop;
+      await renderSequence();
+      await new Promise((resolve)=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      const preserved=document.querySelector('#seq-card-body').scrollTop;
+      moveSequence(-1);
+      return {expected,preserved};
+   })()`);
+   await waitFor(() => evaluate("seq?.index===0&&ddChar==='吃'"), "sequence character change did not complete after internal-scroll test");
+   assert(sequenceScrollLifecycle.expected>0&&Math.abs(sequenceScrollLifecycle.preserved-sequenceScrollLifecycle.expected)<=1&&await evaluate("document.querySelector('#seq-card-body').scrollTop===0&&window.scrollY===0"), `sequence internal-scroll lifecycle failed: ${JSON.stringify(sequenceScrollLifecycle)}`);
+   pass("sequence 100dvh shell and internal scroller at 320x568, 375x667, 390x844, and 430x932");
+   await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
    await evaluate("closeSequence({fromHistory:true})");
 
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
@@ -292,17 +351,17 @@ async function main() {
    const decompositionDesktopScreenshot = await cdp.send("Page.captureScreenshot", {format:"png",fromSurface:true,captureBeyondViewport:false});
    await writeFile(visualProofs.decomposition1024, Buffer.from(decompositionDesktopScreenshot.data, "base64"));
    await cdp.send("Emulation.setDeviceMetricsOverride", { width:390, height:844, deviceScaleFactor:1, mobile:true });
-   await click('#dd-close');
+   await click('#dd-close-top');
    await evaluate("(async()=>{openDictDetail(await findDictionaryEntryByHanzi('什么'))})()");
    await waitFor(() => evaluate("document.querySelectorAll('.dd-character-detail-row').length===2 && document.querySelector('#dd-character-details')?.getAttribute('aria-busy')==='false'"), "什么 character detail did not render");
    assert(await evaluate("[...document.querySelectorAll('.dd-character-detail-row')].map((row)=>row.querySelector('.dd-character-detail-hanzi').textContent).join('')==='什么' && [...document.querySelectorAll('.dd-character-detail-translation')].every((node)=>node.textContent.trim()&&!node.textContent.includes('…'))"), "什么 character detail is incomplete");
-   await click('#dd-close');
+   await click('#dd-close-top');
    await evaluate("(async()=>{openDictDetail(await findDictionaryEntryByHanzi('企业管理'))})()");
    await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===4"), "four-character decomposition did not render");
-   await click('#dd-close');
+   await click('#dd-close-top');
    await evaluate("openDictDetail(normalizeDetailEntry({hz:'你㐀',py:'ni',fr:'test'}))");
    await waitFor(() => evaluate("document.querySelectorAll('#dd-picker .dd-character-chip').length===2 && document.querySelector('#dd-picker [data-character=\"㐀\"] [data-character-definition]').hidden"), "missing character completion was not kept compact");
-   await click('#dd-close');
+   await click('#dd-close-top');
    pass(`décomposition par caractère, 2/3/4 caractères et entrée absente · captures ${visualProofs.decomposition390} · ${visualProofs.decomposition1024}`);
 
    const genuineFallback = await evaluate(`(async()=>{
@@ -314,8 +373,9 @@ async function main() {
    assert(!genuineFallback.fr.length && genuineFallback.en.length, `並 should remain an English fallback: ${JSON.stringify(genuineFallback)}`);
    await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('Traduction française indisponible')"), "genuine French fallback disappeared");
    assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Sens anglais de référence"), "genuine English reference disappeared");
-   await click("#dd-close");
-   pass(`饭 : résultat ${listedRice.id}, fiche char-饭 enrichie par ${riceTrace.resolved.sibling}, carte de caractère et séquence corrigées ; vrai repli anglais conservé`);
+   assert(await evaluate("!document.querySelector('#dd-close')"), "genuine non-search fallback kept a bottom Fermer action");
+   await click("#dd-close-top");
+   pass(`饭 : résultat ${listedRice.id}, fiche char-饭 enrichie par ${riceTrace.resolved.sibling} ; 西 : ouest / occidental via CFDICT ; vrai repli anglais conservé`);
 
    const face = await search("面");
    assert(face.results[0].id === "word-453e719c9edd4078aac555e3", `wrong 面 primary: ${JSON.stringify(face.results.slice(0,4))}`);
@@ -480,7 +540,7 @@ async function main() {
    await click('#dd-character-prev');
    await waitFor(() => evaluate("ddChar==='你' && ddWriterTarget?.id==='dd-practice-target'"), "practice chevron did not remain available");
    assert(await evaluate("document.querySelectorAll('#dd-target svg,#dd-practice-target svg').length===1"), "rapid paging left an obsolete writer instance");
-   await click('#dd-close');
+   await click('#dd-close-top');
    assert(!(await evaluate("sheetOpen()")), "long detail did not close");
    pass("fiche longue mesurée sur cinq largeurs, chevrons autour de la grille et Pointer Events touch/pen/mouse validés");
 
@@ -516,7 +576,7 @@ async function main() {
             tab,
             visualProofs[`dictionaryStroke${tab === "animation" ? "" : tab[0].toUpperCase() + tab.slice(1)}${width}`],
          );
-   await click('#dd-close');
+   await click('#dd-close-top');
 
    await evaluate("ddStrokeTab='animation';openSequence(Array.from('\u9762\u5305'))");
    await waitFor(() => evaluate("seq?.chars.join('')==='\u9762\u5305' && ddChar==='\u9762' && !!document.querySelector('#dd-target svg')"), "mianbao sequence did not load");
@@ -554,7 +614,7 @@ async function main() {
    assert(await evaluate("document.querySelectorAll('[data-writing-practice-character]').length===0&&document.querySelector('#review-writing-model').textContent.trim()==='面'&&sheetOpen()&&document.querySelector('#sheet').inert"), "single-character writing practice showed a character picker or lost its detail");
    await click(".writing-practice-close");
    assert(await evaluate("sheetOpen()&&!document.querySelector('#sheet').inert&&ddChar==='面'"), "single-character detail was not restored");
-   await click('#dd-close');
+   await click('#dd-close-top');
    pass("stroke navigation in all tabs at 390/1024 px, dictionary, mianbao sequence, and single character");
 
    assert(!cdp.errors.length, "runtime errors: " + cdp.errors.join(" | "));

@@ -260,7 +260,7 @@ function renderLessonStepComponent() {
    );
    wireLessonNav();
    wireStrokeWorkspace();
-   loadDDChar(unit.component, [unit.component]);
+   loadDDChar(unit.component, [unit.component], { workspace: $("lesson-cmp-stage") });
 }
 
 /* ================= étape 2/4 — la famille en un coup d'œil ================= */

@@ -64,11 +64,13 @@ function dictionaryDetailDisplayHanzi(entry) {
 
 async function dictionaryCharacterStudyEntry(character, completion) {
    const personal = db.cards.find((card) => card.hz === character);
-   const found = completion && completion.entry
+   let found = completion && completion.entry
       ? completion.entry
       : (personal
          ? personalCardAsDictionaryEntry(personal)
          : (await findDictionaryEntryByHanzi(character)) || normalizeDetailEntry({ hz: character }));
+   if (found && found.__preview && found.id && typeof loadDictionaryEntryById === "function")
+      found = (await loadDictionaryEntryById(found.id)) || found;
    return attachHskMetadata(await dictionaryEntryWithFrenchSibling(found));
 }
 
@@ -807,13 +809,15 @@ function openDictDetail(rawEntry, options) {
          dictionarySourcesHtml(entry) +
          confusablePairsShellHtml() +
          '<div class="dd-related" id="dd-related"><span class="muted">Chargement des mots liés…</span></div>' +
-         '<div class="sh-btns"><button class="btn ghost wide" id="dd-close">' +
-         (settings.fromSearch ? "← Retour aux résultats" : "Fermer") +
-         "</button></div></article>",
+          (settings.fromSearch
+             ? '<div class="sh-btns"><button class="btn ghost wide" id="dd-close">← Retour aux résultats</button></div>'
+             : "") +
+          "</article>",
    );
    wireDictDetail(entry, characters, card, token, {
       ...settings,
       characterCompletionState,
+      strokeWorkspace: $("dd-character-stage"),
    });
    if (characters.length > 1)
       loadDictionaryCharacterCompletions(
@@ -959,6 +963,7 @@ function wireDictDetail(entry, characters, card, token, options) {
          ? options.sequenceIndex
          : nextIndex;
       loadDDChar(character, workspaceCharacters, {
+         workspace: options && options.strokeWorkspace,
          selectionKey,
          selectionIndex: workspaceIndex,
          stripSelectionIndex:

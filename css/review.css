@@ -6,7 +6,29 @@
             display: none;
          }
          body.in-seq {
-            padding-bottom: 28px;
+            min-height: 0;
+            height: 100dvh;
+            padding-bottom: 0;
+            overflow: hidden;
+            overscroll-behavior: none;
+         }
+         html:has(body.in-seq) {
+            height: 100%;
+            overflow: hidden;
+            overscroll-behavior: none;
+         }
+         body.in-seq #view {
+            width: 100%;
+            max-width: none;
+            height: 100dvh;
+            min-height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+         }
+         body.in-seq .sess {
+            min-height: 0;
+            overflow: hidden;
          }
          /* En séance la barre de navigation et l'en-tête sont masqués : toute la
             hauteur du viewport revient à la colonne de séance, qui gère elle-même

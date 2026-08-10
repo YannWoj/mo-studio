@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(testDirectory, "..");
 const serverUrl = "http://127.0.0.1:8000/";
+const canonicalViewport =
+   "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover";
 const browserPath =
    process.env.MO_BROWSER_PATH ||
    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
@@ -442,6 +444,7 @@ async function main() {
          [...button.querySelectorAll('span')].map((span) => span.textContent.trim()).join(' '),
       ),
       view: activeView,
+      viewport: document.querySelector('meta[name="viewport"]')?.content || '',
       emptyReview: !!document.querySelector('.review-empty-message') && document.querySelector('#btn-continue')?.disabled,
       storageKeys: [DB_KEY, SESSION_KEY, BACKUP_KEY, COURSE_PROGRESS_KEY],
       courseProgress,
@@ -456,6 +459,7 @@ async function main() {
       loadMs: performance.getEntriesByType('navigation')[0]?.loadEventEnd || null
    })`);
    assert(startup.title.includes("Mò Studio"), "Unexpected page title");
+   assert(startup.viewport === canonicalViewport, `index.html viewport metadata is not canonical: ${startup.viewport}`);
    assert(startup.nav === 5 && startup.view === "learn", "Home navigation failed");
    assert(startup.emptyReview, "Empty review state missing");
    const reviewHubSelection = await evaluate(`({
@@ -1818,8 +1822,9 @@ async function main() {
    }
    const sourceAbsentComposition = await evaluate(`(async () => {
       const values=await loadCharacterCompositions(['\u9da5']);
-      setCharacterCompositionLoading('\u9da5');
-      renderCharacterComposition(values.get('\u9da5')||null);
+      const workspace=document.querySelector('.stroke-workspace');
+      setCharacterCompositionLoading('\u9da5', workspace);
+      renderCharacterComposition(values.get('\u9da5')||null, workspace);
       return {loaded:values.has('\u9da5'),value:values.get('\u9da5'),hidden:[...document.querySelectorAll('.character-composition')].every((block)=>block.hidden)};
    })()`);
    assert(
@@ -1854,8 +1859,8 @@ async function main() {
    await click("#dd-close");
    await waitFor(() => evaluate("!sheetOpen()"), "你 detail did not close", 20_000);
    await cdp.send("Emulation.setDeviceMetricsOverride", {
-      width: 360,
-      height: 900,
+      width: 320,
+      height: 568,
       deviceScaleFactor: 1,
       mobile: true,
    });
@@ -2271,7 +2276,7 @@ async function main() {
       "你好吗 reverse navigation did not return to the first character",
       20_000,
    );
-   await click("#dd-close");
+   await click("#dd-close-top");
    await waitFor(() => evaluate("!sheetOpen()"), "你好吗 detail did not close", 20_000);
    await evaluate("ddStrokeTab = 'animation'; openDictDetail(normalizeDetailEntry({ hz: '人', py: 'rén', fr: 'personne' }))");
    await waitFor(
@@ -2291,7 +2296,7 @@ async function main() {
          singleCharacterNavigation.pickerCount === 0,
       `Single-character navigation is wrong: ${JSON.stringify(singleCharacterNavigation)}`,
    );
-   await click("#dd-close");
+   await click("#dd-close-top");
    await waitFor(() => evaluate("!sheetOpen()"), "Single-character detail did not close", 20_000);
 
    await evaluate("openDictDetail(normalizeDetailEntry({ hz: '看看', fr: 'regarder un peu' }))");
@@ -2306,7 +2311,7 @@ async function main() {
       "Repeated-character navigation did not advance by position",
       20_000,
    );
-   await click("#dd-close");
+   await click("#dd-close-top");
    await waitFor(() => evaluate("!sheetOpen()"), "Repeated-character detail did not close", 20_000);
 
    await evaluate("openDictDetail(normalizeDetailEntry({ hz: '红绿蓝黑白灰棕', fr: 'séquence de couleurs' }))");
@@ -2344,7 +2349,7 @@ async function main() {
       "Seven-character keyboard navigation failed",
       20_000,
    );
-   await click("#dd-close");
+   await click("#dd-close-top");
    await waitFor(() => evaluate("!sheetOpen()"), "Seven-character detail did not close", 20_000);
    record(
       "dictionary word character navigation",
@@ -2628,6 +2633,91 @@ async function main() {
          await waitFor(() => evaluate("!seq"), `Sequence did not close at ${width}px`, 20_000);
       }
    }
+   const sequenceMobileViewports = [
+      [320, 568],
+      [375, 667],
+      [390, 844],
+      [430, 932],
+   ];
+   for (const [width, height] of sequenceMobileViewports) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", {
+         width,
+         height,
+         deviceScaleFactor: 1,
+         mobile: true,
+      });
+      const layout = await evaluate(`(async () => {
+         const scroller = document.querySelector('#seq-card-body');
+         scroller.scrollTop = 0;
+         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+         const rect = (selector) => document.querySelector(selector)?.getBoundingClientRect();
+         const session = rect('.sess');
+         const top = rect('.s-top');
+         const bar = rect('.s-bar');
+         const strip = rect('#seq-character-strip');
+         const card = rect('#seq-flash');
+         const body = rect('#seq-card-body');
+         const identity = ['.seq-card-primary .hanzi', '.seq-card-primary .pinyin', '.seq-card-primary .fr']
+            .map(rect).filter(Boolean);
+         const tabs = rect('.seq-card .stroke-tabs');
+         const grid = rect('.seq-card .mizi');
+         const stableTop = [top.top, bar.top, strip.top];
+         const scrollMaximum = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+         scroller.scrollTop = scroller.scrollHeight;
+         await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+         const footer = rect('.seq-card-actions');
+         const footerButtons = [...document.querySelectorAll('.seq-card-actions button')];
+         const lastAction = footerButtons.at(-1)?.getBoundingClientRect();
+         const stableAfter = [rect('.s-top').top, rect('.s-bar').top, rect('#seq-character-strip').top];
+         const probes = document.createElement('div');
+         probes.innerHTML = '<input type="text"><textarea></textarea><select><option>Test</option></select>';
+         document.body.append(probes);
+         const formFontSizes = [...probes.children].map((node) => parseFloat(getComputedStyle(node).fontSize));
+         probes.remove();
+         const scrollerStyle = getComputedStyle(scroller);
+         return {
+            shellHeight: session.height,
+            documentScrollTop: document.scrollingElement.scrollTop,
+            documentScrollMaximum: Math.max(0, document.scrollingElement.scrollHeight - innerHeight),
+            fixedVisible: [top, bar, strip, card].every((box) => box && box.top >= -0.5 && box.bottom <= innerHeight + 0.5),
+            fixedStable: stableTop.every((value, index) => Math.abs(value - stableAfter[index]) < 0.5),
+            identityVisible: identity.length >= 2 && identity.every((box) => box.top >= body.top && box.bottom <= body.bottom),
+            learningSurfaceVisible: tabs && grid && tabs.top >= body.top && tabs.top < body.bottom && grid.top < body.bottom,
+            internalScroll: scrollMaximum,
+            internalScrollTop: scroller.scrollTop,
+            scrollerContract: scrollerStyle.overflowY === 'auto' && scrollerStyle.touchAction === 'pan-y' && scrollerStyle.overscrollBehaviorY === 'contain',
+            actionReachable: footer && lastAction && footer.top < body.bottom && lastAction.bottom <= body.bottom + 0.5,
+            actionSafeGap: lastAction ? body.bottom - lastAction.bottom : -1,
+            touchTargets: [...document.querySelectorAll('#seq-character-strip .hzchip')].map((button) => {
+               const box = button.getBoundingClientRect(); return [box.width, box.height];
+            }),
+            noHorizontalOverflow: document.documentElement.scrollWidth <= innerWidth && scroller.scrollWidth <= scroller.clientWidth,
+            bodyOverflow: getComputedStyle(document.body).overflow,
+            formFontSizes,
+         };
+      })()`);
+      assert(
+         Math.abs(layout.shellHeight - height) <= 1 && layout.documentScrollTop === 0 &&
+            layout.documentScrollMaximum <= 1 && layout.fixedVisible && layout.fixedStable &&
+            layout.identityVisible && layout.learningSurfaceVisible && layout.scrollerContract &&
+            layout.actionReachable && layout.actionSafeGap >= 15 && layout.noHorizontalOverflow &&
+            layout.bodyOverflow === "hidden" && layout.formFontSizes.every((size) => size >= 16) &&
+            layout.touchTargets.every(([targetWidth, targetHeight]) => targetWidth >= 44 && targetHeight >= 44) &&
+            (height > 568 || layout.internalScroll > 0 && layout.internalScrollTop > 0),
+         `Sequence viewport shell failed at ${width}x${height}: ${JSON.stringify(layout)}`,
+      );
+      record(
+         `sequence viewport ${width}x${height}`,
+         "100dvh shell, fixed header/strip, internal card scroller, safe action region, 44px targets, and 16px controls passed",
+      );
+   }
+   await cdp.send("Emulation.setDeviceMetricsOverride", {
+      width: 1024,
+      height: 900,
+      deviceScaleFactor: 1,
+      mobile: false,
+   });
+   await evaluate("document.querySelector('#seq-card-body').scrollTop = 0");
    await click('[data-stroke-tab="steps"]');
    await click("#seq-next");
    await waitFor(
@@ -2685,12 +2775,35 @@ async function main() {
          sequenceTouchLeft.selection === "" && (await evaluate("seq.index === 4 && ddChar === '白' && window.getSelection().toString() === '' && getComputedStyle(document.querySelector('#seq-flash')).touchAction === 'pan-y'")),
       "Sequence gestures selected text, changed on a vertical move, or blocked pan-y",
    );
-   const mobileSequenceScroll = await touchScroll("#seq-flash", 190);
+   const mobileSequenceScroll = await touchScrollContainer(
+      "#seq-card-body",
+      "#seq-card-body",
+      190,
+   );
    assert(
-      (mobileSequenceScroll.maximum <= 20 || mobileSequenceScroll.scrollY > 20) &&
-         (await evaluate("seq.index === 4 && ddChar === '白'")),
+      mobileSequenceScroll > 20 &&
+         (await evaluate("seq.index === 4 && ddChar === '白' && window.scrollY === 0")),
       `Vertical mobile scrolling failed through the sequence swipe zone: ${JSON.stringify(mobileSequenceScroll)}`,
    );
+   const harmlessSequenceRerender = await evaluate(`(async () => {
+      const before = document.querySelector('#seq-card-body');
+      const expected = before.scrollTop;
+      await renderSequence();
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const after = document.querySelector('#seq-card-body');
+      return { replaced: before !== after, expected, actual: after.scrollTop, index: seq.index };
+   })()`);
+   assert(
+      harmlessSequenceRerender.replaced && harmlessSequenceRerender.expected > 20 &&
+         Math.abs(harmlessSequenceRerender.actual - harmlessSequenceRerender.expected) <= 1 &&
+         harmlessSequenceRerender.index === 4,
+      `Harmless sequence rerender lost internal scroll: ${JSON.stringify(harmlessSequenceRerender)}`,
+   );
+   await evaluate("moveSequence(-1)");
+   await waitFor(() => evaluate("seq.index === 3 && ddChar === '黑'"), "Sequence character change did not complete for scroll reset", 20_000);
+   assert(await evaluate("document.querySelector('#seq-card-body').scrollTop === 0 && window.scrollY === 0"), "Sequence character change did not reset only the internal card scroll");
+   await evaluate("moveSequence(1)");
+   await waitFor(() => evaluate("seq.index === 4 && ddChar === '白'"), "Sequence did not restore 白 after scroll reset check", 20_000);
    await cdp.send("Emulation.setDeviceMetricsOverride", {
       width: 1024,
       height: 900,
@@ -3904,11 +4017,19 @@ async function main() {
    await cdp.send("Emulation.clearDeviceMetricsOverride");
    await navigate("mo-studio.html");
    assert(await evaluate("activeView === 'learn' && db.cards.length === 150"), "Compatibility entry failed");
-   record("mo-studio.html compatibility entry", "multi-file application initialized");
+   assert(
+      (await evaluate("document.querySelector('meta[name=viewport]').content")) === canonicalViewport,
+      "mo-studio.html viewport metadata is not canonical",
+   );
+   record("mo-studio.html compatibility entry", "multi-file application initialized with canonical fixed-scale viewport");
 
    await navigate("dist/mo-studio-portable.html");
    assert(await evaluate("activeView === 'learn' && db.cards.length === 150"), "Portable build failed");
-   record("portable build", "embedded CSS/JavaScript build initialized with existing storage");
+   assert(
+      (await evaluate("document.querySelector('meta[name=viewport]').content")) === canonicalViewport,
+      "Portable viewport metadata is not canonical",
+   );
+   record("portable build", "embedded CSS/JavaScript build initialized with existing storage and canonical viewport");
 
    const relevantErrors = runtimeErrors.filter(
       (error) =>

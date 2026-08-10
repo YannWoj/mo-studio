@@ -113,8 +113,17 @@ function characterCompositionHtml(record) {
    );
 }
 
-function setCharacterCompositionLoading(character, selector) {
-   document.querySelectorAll(selector || ".character-composition").forEach((target) => {
+function characterCompositionTargets(scope) {
+   if (!scope) return [];
+   if (typeof scope === "string") return Array.from(document.querySelectorAll(scope));
+   if (scope.matches && scope.matches(".character-composition")) return [scope];
+   return scope.querySelectorAll
+      ? Array.from(scope.querySelectorAll(".character-composition"))
+      : [];
+}
+
+function setCharacterCompositionLoading(character, scope) {
+   characterCompositionTargets(scope).forEach((target) => {
       target.hidden = false;
       target.classList.add("is-loading");
       target.classList.remove("is-hint-only");
@@ -124,8 +133,8 @@ function setCharacterCompositionLoading(character, selector) {
    });
 }
 
-function renderCharacterComposition(record, selector) {
-   document.querySelectorAll(selector || ".character-composition").forEach((target) => {
+function renderCharacterComposition(record, scope) {
+   characterCompositionTargets(scope).forEach((target) => {
       target.classList.remove("is-loading");
       target.setAttribute("aria-busy", "false");
       if (!record) {
@@ -152,7 +161,9 @@ async function openCompositionCharacter(character) {
    if (!character || !/^\p{Script=Han}$/u.test(character)) return;
    let entry = null;
    try {
-      if (typeof findDictionaryEntryByHanzi === "function")
+      if (typeof dictionaryCharacterStudyEntry === "function")
+         entry = await dictionaryCharacterStudyEntry(character);
+      else if (typeof findDictionaryEntryByHanzi === "function")
          entry = await findDictionaryEntryByHanzi(character);
    } catch (error) {
       entry = null;

@@ -24,6 +24,12 @@ const cardCreationScreenshots = {
    mobile: path.join(os.tmpdir(), "mo-card-dictionary-search-390.png"),
    desktop: path.join(os.tmpdir(), "mo-card-dictionary-selection-1024.png"),
 };
+const virtualLibraryScreenshots = {
+   320: path.join(os.tmpdir(), "mo-library-virtual-sections-320.png"),
+   375: path.join(os.tmpdir(), "mo-library-virtual-sections-375.png"),
+   390: path.join(os.tmpdir(), "mo-library-virtual-sections-390.png"),
+   430: path.join(os.tmpdir(), "mo-library-virtual-sections-430.png"),
+};
 let server, browser, cdp;
 
 function assert(value, message) { if (!value) throw new Error(message); }
@@ -65,6 +71,12 @@ async function navigate() {
 
 async function click(selector) {
    return evaluate(`(() => { const node = document.querySelector(${JSON.stringify(selector)}); if (!node) throw new Error('missing ${selector}'); node.click(); return true; })()`);
+}
+
+async function pressFocusedKey(key, code, keyCode) {
+   const text = key === "Enter" ? "\r" : key;
+   await cdp.send("Input.dispatchKeyEvent", { type:"keyDown", key, code, text, unmodifiedText:text, windowsVirtualKeyCode:keyCode, nativeVirtualKeyCode:keyCode });
+   await cdp.send("Input.dispatchKeyEvent", { type:"keyUp", key, code, windowsVirtualKeyCode:keyCode, nativeVirtualKeyCode:keyCode });
 }
 
 async function main() {
@@ -494,11 +506,204 @@ async function main() {
    assert(JSON.stringify(restore.before) === JSON.stringify(restore.after) && restore.level === 5 && restore.history === 1 && restore.orphan, "full restore lost data");
    pass("export d’un pack, export complet et réimport sans perte");
 
+   const virtualExpected = {
+      favorites: ["virtual-fav-due", "virtual-fav-future"],
+      due: ["virtual-fav-due", "virtual-due-exact"],
+      scheduled: ["virtual-fav-due", "virtual-due-exact", "virtual-fav-future", "virtual-future-hours"],
+      failed: ["virtual-fav-future", "virtual-no-due-again"],
+      hard: ["virtual-hard"],
+   };
+   await evaluate(`(() => {
+      window.__virtualOriginalDb=structuredClone(db);
+      const base=Date.now();
+      window.__virtualBase=base;
+      const make=(value)=>normalizeCard(Object.assign({
+         py:'test',fr:'carte de test',created:base,updated:base,lvl:2,reviewHistory:[]
+      },value),true);
+      db=Object.assign({},db,{
+         cards:[
+            make({id:'virtual-fav-due',hz:'\u7532',fav:true,due:base-60000,created:base+90,reviewHistory:[{at:base-3000,grade:'good'}]}),
+            make({id:'virtual-fav-future',hz:'\u4e59',fav:true,acquired:true,due:base+600000,created:base+80,reviewHistory:[{at:base-2000,grade:'again'}]}),
+            make({id:'virtual-due-exact',hz:'\u4e19',due:base,created:base+70}),
+            make({id:'virtual-future-hours',hz:'\u4e01',due:base+7200000,created:base+60}),
+            make({id:'virtual-no-due-again',hz:'\u620a',due:null,created:base+50,reviewHistory:[{at:base-4000,grade:'again'}]}),
+            make({id:'virtual-old-again-good',hz:'\u5df1',due:null,created:base+40,reviewHistory:[{at:base-1000,grade:'good'},{at:base-9000,grade:'again'}]}),
+            make({id:'virtual-hard',hz:'\u5e9a',due:null,created:base+30,reviewHistory:[{at:base-500,grade:'hard'}]}),
+            make({id:'virtual-manual-difficult',hz:'\u8f9b',due:null,difficult:true,created:base+20,reviewHistory:[{at:base-600,grade:'good'}]}),
+            make({id:'virtual-invalid-due',hz:'\u58ec',due:null,created:base+10}),
+            make({id:'virtual-plain',hz:'\u7678',due:null,created:base})
+         ],
+         packs:[
+            {id:'virtual-pack-alpha',name:'Alpha',description:'Premier',created:base,updated:base,cardIds:[]},
+            {id:'virtual-pack-beta',name:'Beta',description:'Second',created:base+1,updated:base+1,cardIds:[]}
+         ],
+         categories:[
+            {id:'virtual-cat-alpha',packId:'virtual-pack-alpha',name:'Groupe Alpha',created:base,updated:base},
+            {id:'virtual-cat-beta',packId:'virtual-pack-beta',name:'Groupe Beta',created:base+1,updated:base+1}
+         ],
+         memberships:[
+            {id:'m1',categoryId:'virtual-cat-alpha',cardId:'virtual-fav-due'},
+            {id:'m2',categoryId:'virtual-cat-beta',cardId:'virtual-fav-due'},
+            {id:'m3',categoryId:'virtual-cat-alpha',cardId:'virtual-due-exact'},
+            {id:'m4',categoryId:'virtual-cat-beta',cardId:'virtual-future-hours'}
+         ]
+      });
+      db.cards.find((card)=>card.id==='virtual-invalid-due').due='invalid';
+      ensurePersonalLibraryShape();
+      syncLegacyPackCardIds();
+      save();
+      libraryVirtualSections={favorites:false,review:false};
+      lib={level:'packs',packId:'',categoryId:'',q:'',flt:'all',selected:new Set()};
+      reviewMode='cards';
+      clearSavedSession();
+      setView('lib',{fromHistory:true});
+      renderLib();
+      window.__virtualIntegrityBefore={
+         due:db.cards.map((card)=>[card.id,card.due]),
+         history:db.cards.map((card)=>[card.id,structuredClone(card.reviewHistory)]),
+         memberships:structuredClone(db.memberships),
+         packOrder:db.packs.map((pack)=>pack.id),
+         exportedPackOrder:buildLibraryExport().packs.map((pack)=>pack.id)
+      };
+   })()`);
+
+   const initialVirtualSections = await evaluate(`(() => {
+      const sections=[...document.querySelectorAll('[data-virtual-section]')];
+      const packGrid=document.querySelector('.pack-grid');
+      return {
+         kinds:sections.map((section)=>section.dataset.virtualSection),
+         beforePacks:sections.every((section)=>!!(section.compareDocumentPosition(packGrid)&Node.DOCUMENT_POSITION_FOLLOWING)),
+         packOrder:[...document.querySelectorAll('[data-pack-open]')].map((button)=>button.dataset.packOpen),
+         collapsed:sections.every((section)=>section.querySelector('[data-virtual-toggle]').getAttribute('aria-expanded')==='false'&&section.querySelector('.library-virtual-content').hidden),
+         counts:[
+            Number(document.querySelector('[data-virtual-favorite-count]').textContent),
+            Number(document.querySelector('[data-smart-due-count]').textContent),
+            Number(document.querySelector('[data-smart-future-count]').textContent)
+         ],
+         nearest:document.querySelector('[data-smart-nearest]')?.textContent.trim(),
+         overflow:document.documentElement.scrollWidth>innerWidth+1
+      };
+   })()`);
+   assert(JSON.stringify(initialVirtualSections.kinds)===JSON.stringify(['favorites','review'])&&initialVirtualSections.beforePacks, `virtual section order failed: ${JSON.stringify(initialVirtualSections)}`);
+   assert(JSON.stringify(initialVirtualSections.packOrder)===JSON.stringify(['virtual-pack-alpha','virtual-pack-beta'])&&initialVirtualSections.collapsed, `pack order or collapsed state failed: ${JSON.stringify(initialVirtualSections)}`);
+   assert(JSON.stringify(initialVirtualSections.counts)===JSON.stringify([2,2,2])&&initialVirtualSections.nearest==='dans 10 min'&&!initialVirtualSections.overflow, `virtual summaries failed: ${JSON.stringify(initialVirtualSections)}`);
+   pass("virtual sections ordered, collapsed, counted, and placed before stable packs");
+
+   await evaluate("document.querySelector('[data-virtual-toggle=favorites]').focus()");
+   await pressFocusedKey("Enter","Enter",13);
+   await waitFor(()=>evaluate("document.querySelector('[data-virtual-toggle=favorites]').getAttribute('aria-expanded')==='true'&&!document.querySelector('#library-virtual-favorites-content').hidden"),"Favorites did not expand from Enter");
+   await evaluate("document.querySelector('[data-virtual-toggle=review]').focus()");
+   await pressFocusedKey(" ","Space",32);
+   await waitFor(()=>evaluate("document.querySelector('[data-virtual-toggle=review]').getAttribute('aria-expanded')==='true'&&!document.querySelector('#library-virtual-review-content').hidden"),"Review did not expand from Space");
+   const expandedVirtualSections = await evaluate(`(() => ({
+      groups:Object.fromEntries([...document.querySelectorAll('[data-smart-group]')].map((group)=>[group.dataset.smartGroup,[...group.querySelectorAll('[data-virtual-card]')].map((card)=>card.dataset.virtualCard)])),
+      relative:[...document.querySelectorAll('[data-smart-group=scheduled] time span')].map((node)=>node.textContent.trim()),
+      exact:[...document.querySelectorAll('[data-smart-group] time')].every((node)=>node.dateTime&&node.title&&node.querySelector('small')?.textContent),
+      chevrons:[...document.querySelectorAll('[data-virtual-toggle]')].map((button)=>getComputedStyle(button.querySelector('.library-virtual-chevron')).transform)
+   }))()`);
+   assert(JSON.stringify(expandedVirtualSections.groups.due)===JSON.stringify(virtualExpected.due)&&JSON.stringify(expandedVirtualSections.groups.scheduled)===JSON.stringify(['virtual-fav-future','virtual-future-hours']),`due/future classification failed: ${JSON.stringify(expandedVirtualSections.groups)}`);
+   assert(JSON.stringify(expandedVirtualSections.groups.failed)===JSON.stringify(virtualExpected.failed)&&JSON.stringify(expandedVirtualSections.groups.hard)===JSON.stringify(virtualExpected.hard),`latest-grade classification failed: ${JSON.stringify(expandedVirtualSections.groups)}`);
+   assert(expandedVirtualSections.relative[0]==='dans 10 min'&&expandedVirtualSections.relative[1]==='dans 2 h'&&expandedVirtualSections.exact&&expandedVirtualSections.chevrons.every((value)=>value!=='none'),`timing or chevron state failed: ${JSON.stringify(expandedVirtualSections)}`);
+   pass("smart due/history classification, French relative timing, and keyboard expansion");
+
+   await click('[data-virtual-card-group="favorites"]');
+   await waitFor(()=>evaluate("!!document.querySelector('#card-favorite')"),"favorite preview did not open card detail");
+   await click('#card-favorite');
+   await waitFor(()=>evaluate("document.querySelector('[data-virtual-favorite-count]')?.textContent==='1'"),"unfavorite did not refresh virtual summary");
+   assert(await evaluate("libraryVirtualSections.favorites&&document.querySelector('[data-virtual-toggle=favorites]').getAttribute('aria-expanded')==='true'"),"favorite refresh lost expansion state");
+   await click('#card-favorite');
+   await waitFor(()=>evaluate("document.querySelector('[data-virtual-favorite-count]')?.textContent==='2'"),"favorite restore did not refresh virtual summary");
+   await click('#card-close-top');
+   await evaluate(`(() => {db.cards.filter((card)=>card.id==='virtual-fav-due'||card.id==='virtual-fav-future').forEach((card)=>card.fav=false);save();renderPackLibrary();})()`);
+   assert(await evaluate("document.querySelector('[data-virtual-favorite-count]').textContent==='0'&&!!document.querySelector('#library-virtual-favorites-content .library-virtual-empty')&&document.querySelector('[data-virtual-review=favorites]').disabled"),"Favorites empty state failed");
+   await evaluate(`(() => {db.cards.filter((card)=>card.id==='virtual-fav-due'||card.id==='virtual-fav-future').forEach((card)=>card.fav=true);save();renderPackLibrary();})()`);
+   pass("live favorite refresh, preserved expansion state, and safe empty state");
+
+   await click('[data-virtual-list="favorites"]');
+   const favoritesList = await evaluate(`({level:lib.level,filter:lib.flt,ids:[...document.querySelectorAll('[data-word-open]')].map((node)=>node.dataset.wordOpen)})`);
+   assert(favoritesList.level==='all'&&favoritesList.filter==='fav'&&favoritesList.ids.length===2&&favoritesList.ids.every((id)=>virtualExpected.favorites.includes(id)),`Favorites list filter failed: ${JSON.stringify(favoritesList)}`);
+   await evaluate("lib.level='packs';lib.flt='all';renderLib()");
+   await click('[data-virtual-list="due"]');
+   const dueList = await evaluate(`({level:lib.level,filter:lib.flt,ids:[...document.querySelectorAll('[data-word-open]')].map((node)=>node.dataset.wordOpen)})`);
+   assert(dueList.level==='all'&&dueList.filter==='due'&&dueList.ids.length===2&&dueList.ids.every((id)=>virtualExpected.due.includes(id)),`Due list filter failed: ${JSON.stringify(dueList)}`);
+   pass("Favorites and due list shortcuts reuse all-card filters");
+
+   const assertVirtualReviewSession = async (kind, expected) => {
+      await evaluate(`(() => {session={active:false};clearSavedSession();document.body.classList.remove('in-session');reviewMode='cards';lib.level='packs';lib.flt='all';libraryVirtualSections={favorites:true,review:true};setView('lib',{fromHistory:true});renderLib();})()`);
+      await click(`[data-virtual-review="${kind}"]`);
+      const configured = await evaluate(`({mode:reviewSelectionMode,ids:[...manualReviewIds],selected:reviewSelectedCards().map((card)=>card.id),filters:reviewExtraFilters,label:reviewScopeLabel})`);
+      assert(configured.mode==='manual'&&configured.filters.includeLearned&&!configured.filters.newOnly&&!configured.filters.favoritesOnly&&!configured.filters.difficultOnly,`${kind} did not use an exact manual Review selection: ${JSON.stringify(configured)}`);
+      assert(configured.selected.length===expected.length&&configured.selected.every((id)=>expected.includes(id)),`${kind} configured wrong cards: ${JSON.stringify(configured)}`);
+      await click('#btn-continue');
+      await waitFor(()=>evaluate("session.active&&!!document.querySelector('#s-exit')"),`${kind} session did not start`);
+      const launched = await evaluate(`session.cards.map((card)=>card.id)`);
+      assert(launched.length===expected.length&&new Set(launched).size===expected.length&&launched.every((id)=>expected.includes(id)),`${kind} launched wrong or duplicate cards: ${JSON.stringify(launched)}`);
+      await click('#s-exit');
+      await waitFor(()=>evaluate("!session.active&&!document.body.classList.contains('in-session')"),`${kind} session did not exit cleanly`);
+   };
+   for (const [kind,expected] of Object.entries(virtualExpected)) await assertVirtualReviewSession(kind,expected);
+   pass("exact deduplicated manual sessions for favorites, due, scheduled, failed, and hard");
+
+   await evaluate("lib.level='packs';setView('lib',{fromHistory:true});renderLib()");
+   await click('[data-pack-open="virtual-pack-alpha"]');
+   assert(await evaluate("lib.level==='pack'&&document.querySelector('.pack-detail-title h3')?.textContent==='Alpha'&&!!document.querySelector('[data-lib-go=packs]')"),"normal pack open action regressed");
+   await click('[data-lib-go="packs"]');
+   assert(await evaluate("[...document.querySelectorAll('[data-pack-open]')].map((node)=>node.dataset.packOpen).join(',')==='virtual-pack-alpha,virtual-pack-beta'"),"normal pack order changed after opening a pack");
+
+   const integrityAfterVirtualActions = await evaluate(`(() => ({
+      due:db.cards.map((card)=>[card.id,card.due]),
+      history:db.cards.map((card)=>[card.id,structuredClone(card.reviewHistory)]),
+      memberships:structuredClone(db.memberships),
+      packOrder:db.packs.map((pack)=>pack.id),
+      exportedPackOrder:buildLibraryExport().packs.map((pack)=>pack.id),
+      duplicateIds:db.cards.length-new Set(db.cards.map((card)=>card.id)).size,
+      before:window.__virtualIntegrityBefore
+   }))()`);
+   assert(JSON.stringify(integrityAfterVirtualActions.due)===JSON.stringify(integrityAfterVirtualActions.before.due)&&JSON.stringify(integrityAfterVirtualActions.history)===JSON.stringify(integrityAfterVirtualActions.before.history),"viewing/starting virtual sessions mutated scheduling or history");
+   assert(JSON.stringify(integrityAfterVirtualActions.memberships)===JSON.stringify(integrityAfterVirtualActions.before.memberships)&&JSON.stringify(integrityAfterVirtualActions.packOrder)===JSON.stringify(integrityAfterVirtualActions.before.packOrder)&&JSON.stringify(integrityAfterVirtualActions.exportedPackOrder)===JSON.stringify(integrityAfterVirtualActions.before.exportedPackOrder)&&integrityAfterVirtualActions.duplicateIds===0,"virtual sections changed memberships, exports, pack order, or card identity");
+   pass("virtual actions preserve schedules, histories, memberships, exports, order, and IDs");
+
+   for (const width of [320,375,390,430]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride",{width,height:1000,deviceScaleFactor:1,mobile:true});
+      await evaluate("lib.level='packs';libraryVirtualSections={favorites:true,review:true};setView('lib',{fromHistory:true});renderLib()");
+      const layout=await evaluate(`(() => {
+         const visibleButtons=[...document.querySelectorAll('.library-page button')].filter((button)=>!button.closest('[hidden]')&&getComputedStyle(button).display!=='none');
+         const sections=[...document.querySelectorAll('[data-virtual-section]')];
+         return {
+            overflow:document.documentElement.scrollWidth>innerWidth+1,
+            short:visibleButtons.map((button)=>({text:button.textContent.trim().slice(0,28),height:button.getBoundingClientRect().height})).filter((item)=>item.height<43.5),
+            outside:sections.map((section)=>{const rect=section.getBoundingClientRect();return {left:rect.left,right:rect.right};}).filter((rect)=>rect.left<-.5||rect.right>innerWidth+.5),
+            order:[...document.querySelectorAll('[data-virtual-section],.pack-grid')].map((node)=>node.dataset.virtualSection||'packs')
+         };
+      })()`);
+      assert(!layout.overflow&&!layout.short.length&&!layout.outside.length&&layout.order.join(',')==='favorites,review,packs',`expanded virtual layout failed at ${width}px: ${JSON.stringify(layout)}`);
+      const screenshot=await cdp.send("Page.captureScreenshot",{format:"png",fromSurface:true});
+      await writeFile(virtualLibraryScreenshots[width],Buffer.from(screenshot.data,"base64"));
+   }
+   pass(`virtual sections usable at 320, 375, 390, and 430 px; screenshots ${Object.values(virtualLibraryScreenshots).join(' | ')}`);
+
+   await evaluate(`(async () => {
+      db=structuredClone(window.__virtualOriginalDb);
+      delete window.__virtualOriginalDb;
+      delete window.__virtualIntegrityBefore;
+      delete window.__virtualBase;
+      ensurePersonalLibraryShape();
+      save();
+      await flushPersonalLibrary();
+      session={active:false};
+      clearSavedSession();
+      document.body.classList.remove('in-session');
+      libraryVirtualSections={favorites:false,review:false};
+      lib.level='packs';lib.packId='';lib.categoryId='';lib.q='';lib.flt='all';lib.selected.clear();
+      setView('lib',{fromHistory:true});
+      renderLib();
+   })()`);
+
    for (const width of [360, 430, 1024]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: width <= 430 });
       for (const view of ["lib", "learn"]) {
          await evaluate(`setView('${view}', {fromHistory:true})`);
-         const layout = await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth+1, scrollWidth:document.documentElement.scrollWidth, innerWidth, short:[...document.querySelectorAll('#view button:not(.lib-crumb)')].filter(b=>getComputedStyle(b).display!=='none'&&!b.closest('.review-compat')).map(b=>({text:b.textContent.trim().slice(0,30),height:b.getBoundingClientRect().height})).filter(x=>x.height<43)})`);
+         const layout = await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth+1, scrollWidth:document.documentElement.scrollWidth, innerWidth, short:[...document.querySelectorAll('#view button:not(.lib-crumb)')].filter(b=>getComputedStyle(b).display!=='none'&&!b.closest('.review-compat')&&!b.closest('[hidden]')).map(b=>({text:b.textContent.trim().slice(0,30),height:b.getBoundingClientRect().height})).filter(x=>x.height<43)})`);
          assert(!layout.overflow && !layout.short.length, `${view} layout failed at ${width}px: ${JSON.stringify(layout)}`);
       }
    }

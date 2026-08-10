@@ -294,14 +294,16 @@ function setupSwipe(element, onLeft, onRight, options) {
 
 async function renderSequence() {
    if (!seq) return;
-   const preserveScroll = !!$("seq-flash");
-   const previousScrollY = window.scrollY;
-   destroyStrokeWorkspace();
    const current = seq;
    const token = ++current.renderToken;
    const index = current.index;
    const character = current.chars[index];
-   if (!preserveScroll)
+   const previousCard = $("seq-flash");
+   const previousCardBody = $("seq-card-body");
+   const preserveCardScroll = previousCard?.dataset.sequenceCharacter === character;
+   const previousCardScrollTop = preserveCardScroll ? previousCardBody?.scrollTop || 0 : 0;
+   destroyStrokeWorkspace();
+   if (!previousCard)
       $("view").innerHTML =
          '<section class="sess"><div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de ' +
          esc(character) + "…</b></div></section>";
@@ -320,23 +322,27 @@ async function renderSequence() {
          '" aria-current="' + String(index === current.index) + '" aria-label="Afficher ' + esc(item) +
          ', position ' + (index + 1) + " sur " + current.chars.length + '">' + esc(item) + "</button>",
       ).join("") + "</nav>" +
-      '<div class="flash card seq-card character-swipe-zone" id="seq-flash"><button class="seal fl-seal" data-say="' +
-      esc(character) + '" aria-label="Écouter ' + esc(character) + '">听</button><div class="hanzi ink-in" data-say="' + esc(character) + '">' +
+      '<div class="flash card seq-card character-swipe-zone" id="seq-flash" data-sequence-character="' + esc(character) + '">' +
+      '<div class="seq-card-body" id="seq-card-body" role="region" aria-label="Détails du caractère ' + esc(character) + '" tabindex="0">' +
+      '<header class="seq-card-primary"><div class="hanzi ink-in" data-say="' + esc(character) + '">' +
       esc(character) + "</div>" +
       (pinyin ? '<div class="pinyin">' + colorPinyin(pinyin) + "</div>" : "") +
       '<div class="fr">' +
       (definition.english ? '<small class="search-fallback">Traduction française indisponible</small>' : "") +
-      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div>" +
-       '<div class="eyebrow">Ordre des traits</div>' + strokeCharacterStageHtml("seq", character, index, current.chars.length) +
-       '<div class="seq-meta">' + verifiedHskBadges(entry) + "</div>" +
+      (definition.englishText ? '<span>Sens anglais de référence · ' + esc(definition.englishText) + "</span>" : esc(definition.text)) + "</div></header>" +
+       '<section class="seq-stroke-content" aria-labelledby="seq-stroke-heading"><div class="eyebrow seq-stroke-heading" id="seq-stroke-heading">Ordre des traits</div>' +
+       strokeCharacterStageHtml("seq", character, index, current.chars.length) +
+       '<div class="seq-meta">' + verifiedHskBadges(entry) + "</div></section>" +
+       '<footer class="seq-card-actions">' +
        (card
           ? cardActionsHtml(card)
           : '<div class="sh-btns"><button class="btn primary wide" id="dd-addcard">+ Ajouter à Mes mots</button></div>') +
-      "</div></section>";
+      "</footer></div></div></section>";
    wireDictDetail(entry, [character], card, ++dictionaryDetailToken, {
       strokeSelectionKey: () => `sequence:${index}:${character}`,
       sequenceIndex: index,
       workspaceCharacters: current.chars,
+      strokeWorkspace: $("seq-stage"),
       onCardStateChange: () => renderSequence(),
    });
    $("seq-exit").onclick = () => closeSequence();
@@ -361,11 +367,17 @@ async function renderSequence() {
             : current.index > 0,
       },
    );
-   if (preserveScroll)
+   const cardBody = $("seq-card-body");
+   if (cardBody) {
+      cardBody.scrollTop = previousCardScrollTop;
       requestAnimationFrame(() => {
-         const maximum = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-         window.scrollTo(0, Math.min(previousScrollY, maximum));
+         if ($("seq-card-body") === cardBody)
+            cardBody.scrollTop = Math.min(
+               previousCardScrollTop,
+               Math.max(0, cardBody.scrollHeight - cardBody.clientHeight),
+            );
       });
+   }
    const nextCharacter = current.chars[index + 1];
    if (nextCharacter) {
       preloadStrokeCharacterData(nextCharacter);

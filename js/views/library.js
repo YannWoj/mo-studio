@@ -10,8 +10,206 @@ let lib = {
    selected: new Set(),
 };
 
-function dueCount(cards) {
+let libraryVirtualSections = {
+   favorites: false,
+   review: false,
+};
+
+const LIBRARY_REVIEW_GRADES = new Set(["again", "hard", "good", "easy"]);
+
+function dueCount(cards, referenceNow) {
+   if (Number.isFinite(referenceNow))
+      return cards.filter((card) => Number.isFinite(card.due) && card.due <= referenceNow).length;
    return cards.filter(isDue).length;
+}
+
+function uniqueLibraryCards(cards) {
+   const ids = new Set();
+   return (cards || []).filter((card) => {
+      const id = card && String(card.id || "");
+      if (!id || ids.has(id)) return false;
+      ids.add(id);
+      return true;
+   });
+}
+
+function latestLibraryReviewEvent(card) {
+   return (Array.isArray(card && card.reviewHistory) ? card.reviewHistory : [])
+      .filter((event) =>
+         event && Number.isFinite(event.at) && LIBRARY_REVIEW_GRADES.has(event.grade),
+      )
+      .sort((left, right) => right.at - left.at)[0] || null;
+}
+
+function libraryVirtualData(cards, renderedAt) {
+   const values = uniqueLibraryCards(cards);
+   const eventById = new Map(values.map((card) => [card.id, latestLibraryReviewEvent(card)]));
+   const dueNow = values
+      .filter((card) => Number.isFinite(card.due) && card.due <= renderedAt)
+      .sort((left, right) => left.due - right.due);
+   const future = values
+      .filter((card) => Number.isFinite(card.due) && card.due > renderedAt)
+      .sort((left, right) => left.due - right.due);
+   const byLatestEvent = (grade) => values
+      .filter((card) => eventById.get(card.id)?.grade === grade)
+      .sort((left, right) => eventById.get(right.id).at - eventById.get(left.id).at);
+   return {
+      renderedAt,
+      favorites: values.filter((card) => card.fav).sort((left, right) => right.created - left.created),
+      dueNow,
+      future,
+      scheduled: uniqueLibraryCards([...dueNow, ...future]),
+      failed: byLatestEvent("again"),
+      hard: byLatestEvent("hard"),
+      eventById,
+   };
+}
+
+function libraryRelativeDue(due, renderedAt) {
+   if (!Number.isFinite(due)) return "";
+   const delta = due - renderedAt;
+   if (delta <= 0) return "maintenant";
+   if (delta < 60 * 60e3)
+      return "dans " + Math.max(1, Math.ceil(delta / 60e3)) + " min";
+   if (delta < 48 * 60 * 60e3)
+      return "dans " + Math.max(1, Math.ceil(delta / (60 * 60e3))) + " h";
+   return "dans " + Math.max(1, Math.ceil(delta / (24 * 60 * 60e3))) + " j";
+}
+
+function libraryLocalDateTime(value) {
+   if (!Number.isFinite(value)) return "";
+   try {
+      return new Intl.DateTimeFormat("fr-FR", {
+         dateStyle: "medium",
+         timeStyle: "short",
+      }).format(new Date(value));
+   } catch (error) {
+      return "";
+   }
+}
+
+function libraryVirtualCardHtml(card, group, timing) {
+   const detail = timing && Number.isFinite(timing.at)
+      ? '<time datetime="' + new Date(timing.at).toISOString() + '" title="' +
+        esc(timing.exact || "") + '"><span>' + esc(timing.label) + "</span>" +
+        (timing.exact ? "<small>" + esc(timing.exact) + "</small>" : "") + "</time>"
+      : "";
+   return '<button type="button" class="library-virtual-card" data-virtual-card="' +
+      esc(card.id) + '" data-virtual-card-group="' + esc(group) + '"><span class="row-hz">' +
+      esc(card.hz) + '</span><span class="library-virtual-card-copy"><strong>' +
+      (card.fr ? esc(card.fr) : "Traduction manquante") + '</strong><span>' +
+      (card.py ? colorPinyin(card.py) : "Pinyin manquant") + "</span></span>" + detail + "</button>";
+}
+
+function libraryVirtualPreviewHtml(cards, group, timingForCard, emptyText) {
+   if (!cards.length)
+      return '<p class="library-virtual-empty">' + esc(emptyText) + "</p>";
+   const shown = cards.slice(0, 4);
+   return '<div class="library-virtual-list">' + shown.map((card) =>
+      libraryVirtualCardHtml(card, group, timingForCard ? timingForCard(card) : null),
+   ).join("") + "</div>" + (cards.length > shown.length
+      ? '<p class="library-virtual-more">+' + (cards.length - shown.length) + " autre" +
+        (cards.length - shown.length > 1 ? "s" : "") + "</p>"
+      : "");
+}
+
+function libraryVirtualSectionShell(kind, icon, title, summary, content) {
+   const open = !!libraryVirtualSections[kind];
+   const panelId = "library-virtual-" + kind + "-content";
+   return '<article class="library-virtual-section library-virtual-' + kind +
+      (open ? " is-open" : "") + '" data-virtual-section="' + kind + '">' +
+      '<button type="button" class="library-virtual-toggle" data-virtual-toggle="' + kind +
+      '" aria-expanded="' + String(open) + '" aria-controls="' + panelId + '">' +
+      '<span class="library-virtual-icon" aria-hidden="true">' + icon + "</span>" +
+      '<span class="library-virtual-heading"><strong>' + title + "</strong><span>" + summary +
+      '</span></span><span class="library-virtual-chevron" aria-hidden="true">⌄</span></button>' +
+      '<div class="library-virtual-content" id="' + panelId + '"' + (open ? "" : " hidden") +
+      ">" + content + "</div></article>";
+}
+
+function libraryFavoritesSectionHtml(data) {
+   const count = data.favorites.length;
+   const summary = count
+      ? '<b data-virtual-favorite-count>' + count + "</b> favori" + (count > 1 ? "s" : "")
+      : '<b data-virtual-favorite-count>0</b> favori · ajoute une étoile à tes mots clés';
+   const preview = libraryVirtualPreviewHtml(
+      data.favorites,
+      "favorites",
+      null,
+      "Aucun favori pour le moment.",
+   );
+   const content = preview + '<div class="library-virtual-actions"><button class="btn" type="button" data-virtual-list="favorites">Voir les favoris</button>' +
+      '<button class="btn primary" type="button" data-virtual-review="favorites"' +
+      (count ? "" : " disabled") + ">Réviser les favoris</button></div>";
+   return libraryVirtualSectionShell("favorites", "★", "Favoris", summary, content);
+}
+
+function librarySmartGroupHtml(key, title, cards, data, options) {
+   const settings = options || {};
+   const timingForCard = settings.timing === "due"
+      ? (card) => ({
+           at: card.due,
+           label: libraryRelativeDue(card.due, data.renderedAt),
+           exact: libraryLocalDateTime(card.due),
+        })
+      : settings.timing === "history"
+        ? (card) => {
+             const event = data.eventById.get(card.id);
+             return {
+                at: event.at,
+                label: event.grade === "again" ? "Dernière note · raté" : "Dernière note · difficile",
+                exact: libraryLocalDateTime(event.at),
+             };
+          }
+        : null;
+   return '<section class="library-smart-group" data-smart-group="' + key + '"><header><div><h4>' +
+      title + '</h4><span>' + cards.length + " carte" + (cards.length > 1 ? "s" : "") +
+      "</span></div></header>" + libraryVirtualPreviewHtml(
+         cards,
+         key,
+         timingForCard,
+         settings.empty,
+      ) + '<div class="library-smart-actions"><button class="btn sm primary" type="button" data-virtual-review="' +
+      key + '"' + (cards.length ? "" : " disabled") + ">" + settings.action + "</button>" +
+      (settings.list ? '<button class="btn sm ghost" type="button" data-virtual-list="' + settings.list.key +
+         '">' + settings.list.label + "</button>" : "") + "</div></section>";
+}
+
+function libraryReviewSectionHtml(data) {
+   const nearest = data.future[0];
+   const summary = '<b data-smart-due-count>' + data.dueNow.length + "</b> maintenant · <b data-smart-future-count>" +
+      data.future.length + "</b> plus tard" + (nearest
+         ? ' · <span data-smart-nearest title="' + esc(libraryLocalDateTime(nearest.due)) + '">' +
+           esc(libraryRelativeDue(nearest.due, data.renderedAt)) + "</span>"
+         : "");
+   const content = '<div class="library-smart-grid">' +
+      librarySmartGroupHtml("due", "À revoir maintenant", data.dueNow, data, {
+         timing: "due",
+         empty: "Aucune carte arrivée à échéance.",
+         action: "Réviser maintenant",
+         list: { key: "due", label: "Voir les cartes dues" },
+      }) +
+      librarySmartGroupHtml("scheduled", "Plus tard", data.future, data, {
+         timing: "due",
+         empty: "Aucune révision programmée plus tard.",
+         action: "Réviser tout, même en avance",
+      }) +
+      librarySmartGroupHtml("failed", "Ratés", data.failed, data, {
+         timing: "history",
+         empty: "Aucune dernière note « raté ».",
+         action: "Réviser les ratés",
+      }) +
+      librarySmartGroupHtml("hard", "Difficiles", data.hard, data, {
+         timing: "history",
+         empty: "Aucune dernière note « difficile ».",
+         action: "Réviser les difficiles",
+      }) + "</div>";
+   return libraryVirtualSectionShell("review", "复", "À revoir", summary, content);
+}
+
+function libraryVirtualSectionsHtml(data) {
+   return '<div class="library-virtual-stack" aria-label="Vues intelligentes de Mes mots">' +
+      libraryFavoritesSectionHtml(data) + libraryReviewSectionHtml(data) + "</div>";
 }
 
 function libraryScopeCards() {
@@ -57,19 +255,23 @@ function libraryHeaderHtml() {
       (lib.level !== "packs" ? '<nav class="lib-breadcrumb" aria-label="Fil d’Ariane">' + libraryBreadcrumb() + "</nav>" : "");
 }
 
-function packTileHtml(pack) {
+function packTileHtml(pack, renderedAt) {
    const categories = categoriesForPack(pack.id);
    const cards = cardsForPack(pack.id);
-   return '<article class="pack-tile"><button class="pack-open" data-pack-open="' + esc(pack.id) + '"><span class="pack-mark">册</span><span class="pack-copy"><strong>' + esc(pack.name) + '</strong><span>' + categories.length + ' sous-catégorie' + (categories.length > 1 ? "s" : "") + ' · ' + cards.length + ' mot' + (cards.length > 1 ? "s" : "") + '</span></span><span class="due-pill">' + dueCount(cards) + ' à revoir</span></button><div class="tile-actions"><button class="btn sm ghost" data-pack-review="' + esc(pack.id) + '">Réviser</button><button class="btn sm ghost" data-pack-export="' + esc(pack.id) + '">Exporter</button><button class="btn sm ghost" data-pack-rename="' + esc(pack.id) + '">Renommer</button><button class="btn sm danger" data-pack-delete="' + esc(pack.id) + '">Supprimer</button></div></article>';
+   return '<article class="pack-tile"><button class="pack-open" data-pack-open="' + esc(pack.id) + '"><span class="pack-mark">册</span><span class="pack-copy"><strong>' + esc(pack.name) + '</strong><span>' + categories.length + ' sous-catégorie' + (categories.length > 1 ? "s" : "") + ' · ' + cards.length + ' mot' + (cards.length > 1 ? "s" : "") + '</span></span><span class="due-pill">' + dueCount(cards, renderedAt) + ' à revoir</span></button><div class="tile-actions"><button class="btn sm ghost" data-pack-review="' + esc(pack.id) + '">Réviser</button><button class="btn sm ghost" data-pack-export="' + esc(pack.id) + '">Exporter</button><button class="btn sm ghost" data-pack-rename="' + esc(pack.id) + '">Renommer</button><button class="btn sm danger" data-pack-delete="' + esc(pack.id) + '">Supprimer</button></div></article>';
 }
 
 function renderPackLibrary() {
    const root = $("view");
+   const renderedAt = Date.now();
+   const virtualData = libraryVirtualData(db.cards, renderedAt);
    root.innerHTML = '<section class="library-page">' + libraryHeaderHtml() +
       '<div class="library-toolbar"><button class="btn" id="lib-create-pack">Créer un pack</button><button class="btn ghost" id="lib-show-all">Voir tous les mots (' + db.cards.length + ')</button><button class="btn ghost" id="lib-export">Exporter</button></div>' +
-      (db.packs.length ? '<div class="pack-grid">' + db.packs.map(packTileHtml).join("") + "</div>" : '<div class="lib-empty card"><div class="pack-mark large">册</div><h3>Aucun pack</h3><p>Crée un pack ou importe directement un JSON. Tes anciennes cartes restent accessibles dans « Tous les mots ».</p></div>') +
+      libraryVirtualSectionsHtml(virtualData) +
+      (db.packs.length ? '<div class="pack-grid">' + db.packs.map((pack) => packTileHtml(pack, renderedAt)).join("") + "</div>" : '<div class="lib-empty card"><div class="pack-mark large">册</div><h3>Aucun pack</h3><p>Crée un pack ou importe directement un JSON. Tes anciennes cartes restent accessibles dans « Tous les mots ».</p></div>') +
       "</section>";
    wireLibraryCommon();
+   wireLibraryVirtualSections(root, virtualData);
    $("lib-create-pack").onclick = () => {
       const name = prompt("Nom du nouveau pack :");
       const pack = createPersonalPack(name);
@@ -94,6 +296,60 @@ function renderPackLibrary() {
       const pack = db.packs.find((item) => item.id === button.dataset.packDelete);
       if (!confirm("Supprimer le pack « " + pack.name + " » et sa structure ? Les cartes resteront dans Mes mots.")) return;
       deletePersonalPack(pack.id); renderLib();
+   });
+}
+
+function wireLibraryVirtualSections(root, data) {
+   const groups = {
+      favorites: data.favorites,
+      due: data.dueNow,
+      scheduled: data.scheduled,
+      failed: data.failed,
+      hard: data.hard,
+   };
+   root.querySelectorAll("[data-virtual-toggle]").forEach((button) => {
+      button.onclick = () => {
+         const kind = button.dataset.virtualToggle;
+         const open = !libraryVirtualSections[kind];
+         libraryVirtualSections[kind] = open;
+         button.setAttribute("aria-expanded", String(open));
+         const section = button.closest("[data-virtual-section]");
+         section.classList.toggle("is-open", open);
+         const content = $(button.getAttribute("aria-controls"));
+         if (content) content.hidden = !open;
+      };
+   });
+   root.querySelectorAll("[data-virtual-card]").forEach((button) => {
+      button.onclick = () => {
+         const cards = groups[button.dataset.virtualCardGroup] || [];
+         openCardDetail(button.dataset.virtualCard, {
+            cardIds: uniqueLibraryCards(cards).map((card) => card.id),
+         });
+      };
+   });
+   root.querySelectorAll("[data-virtual-review]").forEach((button) => {
+      button.onclick = () => {
+         const kind = button.dataset.virtualReview;
+         const labels = {
+            favorites: "Favoris",
+            due: "À revoir maintenant",
+            scheduled: "Toutes les cartes programmées",
+            failed: "Derniers ratés",
+            hard: "Dernières difficiles",
+         };
+         reviewLibraryCards(groups[kind] || [], labels[kind]);
+      };
+   });
+   root.querySelectorAll("[data-virtual-list]").forEach((button) => {
+      button.onclick = () => {
+         lib.level = "all";
+         lib.packId = "";
+         lib.categoryId = "";
+         lib.q = "";
+         lib.flt = button.dataset.virtualList === "favorites" ? "fav" : "due";
+         lib.selected.clear();
+         renderLib();
+      };
    });
 }
 
@@ -209,8 +465,16 @@ function renderLib() {
 }
 
 function reviewLibraryCards(cards, label) {
-   if (!cards.length) { toast("Aucune carte dans cette sélection."); return; }
-   openReviewForManualCards(cards, label);
+   const requestedIds = new Set(uniqueLibraryCards(cards).map((card) => card.id));
+   const selectedCards = db.cards.filter((card) => requestedIds.has(card.id));
+   if (!selectedCards.length) { toast("Aucune carte dans cette sélection."); return; }
+   reviewExtraFilters = {
+      newOnly: false,
+      favoritesOnly: false,
+      difficultOnly: false,
+      includeLearned: true,
+   };
+   openReviewForManualCards(selectedCards, label);
 }
 
 function openMoveSelectedSheet() {
@@ -265,6 +529,7 @@ function wireCardStrokeWorkspace(card, characters, context, initialCharacterInde
          $("card-next").disabled =
             selectedIndex === characters.length - 1 && listIndex === context.cardIds.length - 1;
       loadDDChar(character, characters, {
+         workspace: $("card-stage"),
          selectionKey: `card:${card.id}:${selectedIndex}:${character}`,
          selectionIndex: selectedIndex,
       });
@@ -328,7 +593,13 @@ function openCardDetail(id, options) {
       '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div></article>',
    );
    wireCardStrokeWorkspace(card, characters, context, initialCharacterIndex);
-   $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id, context); };
+   $("card-favorite").onclick = () => {
+      card.fav = !card.fav;
+      card.updated = Date.now();
+      save();
+      if (activeView === "lib" && lib.level === "packs") renderPackLibrary();
+      openCardDetail(id, context);
+   };
    $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id, context); };
    $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id, context); };
    document.querySelectorAll("[data-card-category]").forEach((input) => input.onchange = () => {

@@ -156,6 +156,57 @@ async function main() {
    await waitFor(() => evaluate("document.querySelector('.review-character-composition')?.dataset.character==='\u4f60'&&!document.querySelector('.review-character-composition').hidden"), "review composition did not load inside the expanded stroke block");
    assert(await evaluate("document.querySelector('#review-strokes .review-stroke-content > .review-character-composition')!==null&&document.querySelectorAll('.review-character-composition .composition-role').length===0"), "review composition escaped the collapsible stroke content or invented roles");
    assert(await evaluate("document.querySelectorAll('[data-review-stroke-character]').length===3&&document.querySelector('#review-stroke-count').textContent.trim()==='1 / 3'"), "multi-character stroke selector failed");
+   const reviewCompositionBeforeDetail = await evaluate(`(() => {
+      const composition=document.querySelector('.review-character-composition');
+      const opener=composition.querySelector('.composition-radical-character');
+      window.__reviewCompositionNode=composition;
+      return {
+         html:composition.innerHTML,
+         character:composition.dataset.character,
+         formula:composition.querySelector('.composition-formula')?.textContent.trim(),
+         origin:composition.querySelector('.composition-origin-text')?.textContent.trim()||'',
+         keyCharacter:opener?.dataset.compositionCharacter,
+         keyText:opener?.textContent.trim(),
+         componentCount:composition.querySelectorAll('[data-composition-character]').length,
+         sessionIndex:session.index,
+         revealed:getState(session.index).revealed,
+         strokeTab:reviewStrokeTab,
+         expanded:reviewStrokeExpanded&&document.querySelector('#review-strokes').open,
+      };
+   })()`);
+   assert(reviewCompositionBeforeDetail.keyCharacter && reviewCompositionBeforeDetail.componentCount > 0, `review composition key missing: ${JSON.stringify(reviewCompositionBeforeDetail)}`);
+   await evaluate(`(() => {const opener=document.querySelector('.review-character-composition .composition-radical-character');opener.focus({preventScroll:true});opener.click();})()`);
+   await waitFor(() => evaluate(`sheetOpen()&&document.querySelector('.dd-entry .cd-hz')?.textContent.trim()===${JSON.stringify(reviewCompositionBeforeDetail.keyCharacter)}`), "review composition key detail did not open");
+   assert(await evaluate("!document.querySelector('#dd-close')&&document.querySelector('#dd-close-top')?.getAttribute('aria-label')==='Fermer la fiche'"), "non-search dictionary detail kept the redundant bottom close or lost its accessible top close");
+   await waitFor(() => evaluate("!!document.querySelector('#sheet .stroke-workspace .character-composition:not(.is-loading)')"), "component detail composition did not finish loading");
+   const reviewCompositionWhileOpen = await evaluate(`(() => {const composition=document.querySelector('.review-character-composition');return {sameNode:composition===window.__reviewCompositionNode,html:composition.innerHTML,character:composition.dataset.character};})()`);
+   assert(reviewCompositionWhileOpen.sameNode&&reviewCompositionWhileOpen.html===reviewCompositionBeforeDetail.html&&reviewCompositionWhileOpen.character===reviewCompositionBeforeDetail.character, "dictionary workspace rewrote the mounted Review composition");
+   await click("#dd-close-top");
+   await waitFor(() => evaluate("!sheetOpen()"), "component detail did not close from its top close");
+   await new Promise((resolve) => setTimeout(resolve, 180));
+   const reviewCompositionAfterDetail = await evaluate(`(() => {
+      const composition=document.querySelector('.review-character-composition');
+      const opener=composition.querySelector('.composition-radical-character');
+      return {
+         sameNode:composition===window.__reviewCompositionNode,
+         html:composition.innerHTML,
+         character:composition.dataset.character,
+         formula:composition.querySelector('.composition-formula')?.textContent.trim(),
+         origin:composition.querySelector('.composition-origin-text')?.textContent.trim()||'',
+         keyCharacter:opener?.dataset.compositionCharacter,
+         keyText:opener?.textContent.trim(),
+         componentCount:composition.querySelectorAll('[data-composition-character]').length,
+         sessionIndex:session.index,
+         revealed:getState(session.index).revealed,
+         strokeTab:reviewStrokeTab,
+         expanded:reviewStrokeExpanded&&document.querySelector('#review-strokes').open,
+         focusRestored:document.activeElement===opener,
+      };
+   })()`);
+   for (const key of ['html','character','formula','origin','keyCharacter','keyText','componentCount','sessionIndex','revealed','strokeTab','expanded'])
+      assert(reviewCompositionAfterDetail[key]===reviewCompositionBeforeDetail[key], `review state changed after component detail (${key}): ${JSON.stringify({before:reviewCompositionBeforeDetail,after:reviewCompositionAfterDetail})}`);
+   assert(reviewCompositionAfterDetail.sameNode&&reviewCompositionAfterDetail.focusRestored, "component detail replaced the Review composition node or lost focus restoration");
+   pass("fiche d’un composant : composition et état de la flashcard isolés, fermeture haute et focus restauré");
    assert(await evaluate("document.querySelector('#s-prev').disabled&&document.querySelector('#s-next').textContent.includes('Suivant')"), "first card navigation failed");
    await evaluate("window.__previousReviewWriter=reviewStrokeWriter;true"); await click("#review-stroke-replay"); assert(await evaluate("!!reviewStrokeWriter&&reviewStrokeWriter!==window.__previousReviewWriter"), "replay did not recreate animation"); pass("ordre des traits · Animation et Rejouer");
    await click('[data-review-stroke-tab="steps"]'); await waitFor(() => evaluate("document.querySelectorAll('.review-stroke-step').length===reviewStrokeData?.strokeCount"), "stroke steps missing"); pass("ordre des traits · Étapes");
