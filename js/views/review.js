@@ -562,6 +562,7 @@ function wireReviewStrokeBlock(c, st) {
          }
 
          function renderSession() {
+            cancelSessionSwipe();
             destroyReviewStrokeWorkspace();
             const c = currentCard();
             if (!c) {
@@ -639,7 +640,8 @@ function wireReviewStrokeBlock(c, st) {
                written: "Écrit",
                discover: "Découverte",
             }[session.mode];
-            const showSwipeHint = session.index === 0 && !sessionSwipeHintSeen;
+            const showSwipeHint =
+               session.mode === "cards" && session.index === 0 && !sessionSwipeHintSeen;
             if (showSwipeHint) markSwipeHintSeen();
             // le verso garde son propre accès dans « Écriture du caractère »
             const showPracticeButton =
@@ -700,80 +702,362 @@ function wireReviewStrokeBlock(c, st) {
             session.index--;
             renderSession();
          }
-         // seuils calés sur un pouce : assez haut pour ne pas s'amorcer sur un appui
-         // tremblotant, assez bas pour qu'un mouvement franc mais court suffise.
-         const SESSION_SWIPE_START = 16;
-         const SESSION_SWIPE_COMMIT = 44;
-         function wireSessionSwipe(zone, card) {
-            // le geste porte sur toute la zone de séance (hors contrôles
-            // interactifs), mais le retour visuel reste localisé à la carte :
-            // glisser ne note jamais rien, seuls les quatre boutons de
-            // notation le font.
-            if (!zone || !card || !("PointerEvent" in window)) return;
-            // Pas de setPointerCapture : la capture ne sert qu'à continuer de recevoir
-            // les événements hors de la zone, et des écouteurs document le font aussi
-            // bien — sans son effet de bord. La capture redirige en effet le clic qui
-            // suit vers l'élément capturant, mais pour la souris seulement : au doigt
-            // le clic natif atteint sa vraie cible. Toute compensation de ce clic
-            // redirigé faisait donc double emploi au tactile (carte retournée deux
-            // fois, audio joué deux fois). Sans capture, un appui produit un seul clic,
-            // à la bonne cible, pour les deux types de pointeur.
-            let gesture = null;
-            const release = () => {
-               if (gesture) gesture.listeners.abort();
-               gesture = null;
+         const SESSION_SWIPE_LOCK_SLOP = 6;
+         const SESSION_SWIPE_HORIZONTAL_RATIO = 1.18;
+         const SESSION_SWIPE_DISTANCE_RATIO = 0.28;
+         const SESSION_SWIPE_MIN_FLICK_DISTANCE = 28;
+         const SESSION_SWIPE_FLICK_VELOCITY = 0.55;
+         const SESSION_SWIPE_VELOCITY_WINDOW = 110;
+         const SESSION_SWIPE_SETTLE_DURATION = 180;
+         const SESSION_SWIPE_COMMIT_DURATION = 190;
+         const SESSION_SWIPE_BOUNDARY_RESISTANCE = 0.28;
+         const SESSION_SWIPE_ANIMATION_FALLBACK = 80;
+         let sessionSwipeCleanup = null;
+
+         function cancelSessionSwipe() {
+            const cleanup = sessionSwipeCleanup;
+            sessionSwipeCleanup = null;
+            if (cleanup) cleanup();
+         }
+
+         function wireSessionSwipe(card) {
+            // Une seule machine de geste vit sur la carte recréée par renderSession().
+            // La capture n'arrive qu'après le verrou horizontal : un appui ordinaire ne
+            // change donc jamais la cible du clic natif.
+            if (!card || session.mode !== "cards" || !("PointerEvent" in window)) return;
+            const listeners = new AbortController();
+            const state = {
+               pointerId: null,
+               axis: "idle",
+               dragging: false,
+               animation: null,
+               suppressNextClick: false,
+               startX: 0,
+               startY: 0,
+               latestX: 0,
+               latestY: 0,
+               startTime: 0,
+               latestTime: 0,
+               velocityX: 0,
+               samples: [],
+               cardWidth: 1,
+               cardIndex: -1,
+               sessionCard: null,
+               token: 0,
+               timer: null,
+               transitionHandler: null,
             };
-            const finish = (event, cancelled) => {
-               if (!gesture || event.pointerId !== gesture.pointerId) return;
-               const current = gesture;
-               release();
-               card.classList.remove("is-session-dragging", "is-session-drag-left", "is-session-drag-right");
-               card.style.removeProperty("--session-drag-x");
-               if (cancelled) {
-                  card._suppressSessionClickUntil = Date.now() + 500;
+            let disposed = false;
+
+            const eventTime = (event) =>
+               Number.isFinite(event.timeStamp) ? event.timeStamp : performance.now();
+            const reducedMotion = () =>
+               typeof matchMedia === "function" &&
+               matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const clearSelection = () => {
+               const selection = typeof getSelection === "function" ? getSelection() : null;
+               if (selection && typeof selection.removeAllRanges === "function")
+                  selection.removeAllRanges();
+            };
+            const clearAnimationWatch = () => {
+               if (state.timer !== null) clearTimeout(state.timer);
+               state.timer = null;
+               if (state.transitionHandler) {
+                  card.removeEventListener("transitionend", state.transitionHandler);
+                  state.transitionHandler = null;
+               }
+            };
+            const clearVisual = () => {
+               card.classList.remove(
+                  "is-session-dragging",
+                  "is-session-drag-left",
+                  "is-session-drag-right",
+                  "is-session-settling",
+                  "is-session-committing",
+               );
+               card.style.removeProperty("transform");
+               card.style.removeProperty("transition");
+               card.style.removeProperty("will-change");
+            };
+            const releaseCapture = (pointerId) => {
+               if (pointerId == null || !card.hasPointerCapture) return;
+               try {
+                  if (card.hasPointerCapture(pointerId)) card.releasePointerCapture(pointerId);
+               } catch (error) {}
+            };
+            const resetPointer = () => {
+               const pointerId = state.pointerId;
+               state.pointerId = null;
+               state.axis = "idle";
+               state.dragging = false;
+               state.samples = [];
+               releaseCapture(pointerId);
+            };
+            const cleanup = () => {
+               if (disposed) return;
+               disposed = true;
+               state.token++;
+               clearAnimationWatch();
+               resetPointer();
+               state.animation = null;
+               state.suppressNextClick = false;
+               clearVisual();
+               listeners.abort();
+               if (sessionSwipeCleanup === cleanup) sessionSwipeCleanup = null;
+            };
+            sessionSwipeCleanup = cleanup;
+
+            const samplePointer = (event) => {
+               const time = eventTime(event);
+               state.latestX = event.clientX;
+               state.latestY = event.clientY;
+               state.latestTime = time;
+               state.samples.push({ x: event.clientX, time });
+               const cutoff = time - SESSION_SWIPE_VELOCITY_WINDOW;
+               while (state.samples.length > 1 && state.samples[1].time <= cutoff)
+                  state.samples.shift();
+               const oldest = state.samples[0];
+               const elapsed = time - oldest.time;
+               state.velocityX = elapsed >= 8 ? (event.clientX - oldest.x) / elapsed : 0;
+            };
+            const transformFor = (x) => {
+               const width = state.cardWidth;
+               const rotation = Math.max(-2.5, Math.min(2.5, (x / width) * 2.5));
+               return `translate3d(${x}px, 0, 0) rotate(${rotation}deg)`;
+            };
+            const stillCurrent = (index, sessionCard) =>
+               !disposed &&
+               session.active &&
+               session.mode === "cards" &&
+               session.index === index &&
+               currentCard() === sessionCard &&
+               card.isConnected &&
+               $("flash") === card;
+
+            const animate = (kind, target, duration, complete) => {
+               clearAnimationWatch();
+               const token = ++state.token;
+               const actualDuration = reducedMotion() ? 0 : duration;
+               state.animation = kind;
+               state.dragging = false;
+               state.axis = "idle";
+               card.classList.remove("is-session-dragging");
+               card.classList.add(`is-session-${kind}`);
+               card.style.willChange = "transform";
+               // Fige le transform courant avant d'installer la transition de retour
+               // ou de sortie. Ce read n'arrive qu'à la fin du geste, jamais au move.
+               card.getBoundingClientRect();
+               card.style.transition = actualDuration
+                  ? `transform ${actualDuration}ms cubic-bezier(.22,.72,.2,1), box-shadow ${actualDuration}ms ease`
+                  : "none";
+               card.style.transform = target;
+
+               const finish = () => {
+                  if (disposed || state.token !== token || state.animation !== kind) return;
+                  clearAnimationWatch();
+                  complete();
+               };
+               state.transitionHandler = (event) => {
+                  if (
+                     event.target === card &&
+                     event.propertyName === "transform" &&
+                     state.token === token
+                  )
+                     finish();
+               };
+               card.addEventListener("transitionend", state.transitionHandler);
+               state.timer = setTimeout(
+                  finish,
+                  actualDuration ? actualDuration + SESSION_SWIPE_ANIMATION_FALLBACK : 0,
+               );
+            };
+            const settle = () => {
+               animate(
+                  "settling",
+                  "translate3d(0, 0, 0) rotate(0deg)",
+                  SESSION_SWIPE_SETTLE_DURATION,
+                  () => {
+                     state.animation = null;
+                     clearVisual();
+                  },
+               );
+            };
+            const commit = (direction, index, sessionCard) => {
+               const width = state.cardWidth;
+               const distance =
+                  direction * (Math.max(window.innerWidth, width) + width);
+               animate(
+                  "committing",
+                  transformFor(distance),
+                  SESSION_SWIPE_COMMIT_DURATION,
+                  () => {
+                     if (!stillCurrent(index, sessionCard)) {
+                        cleanup();
+                        return;
+                     }
+                     // Le changement de vue rappellera cancelSessionSwipe() avant de
+                     // détruire cette carte. L'état navigating rend aussi le fallback
+                     // et un transitionend tardif inertes.
+                     state.animation = "navigating";
+                     if (direction < 0) advance();
+                     else previousCard();
+                  },
+               );
+            };
+            const finishPointer = (event, cancelled) => {
+               if (state.pointerId == null || event.pointerId !== state.pointerId) return;
+               const horizontal = state.axis === "horizontal";
+               if (!cancelled) samplePointer(event);
+               const dx = state.latestX - state.startX;
+               const dy = state.latestY - state.startY;
+               const index = state.cardIndex;
+               const sessionCard = state.sessionCard;
+               const pointerId = state.pointerId;
+               state.pointerId = null;
+               state.dragging = false;
+               releaseCapture(pointerId);
+
+               // Un appui ou une intention verticale conserve entièrement son chemin
+               // natif (clic, audio ou scroll interne).
+               if (!horizontal) {
+                  state.axis = "idle";
+                  state.samples = [];
                   return;
                }
-               // appui simple : le clic natif suit et fait le reste (retournement, audio)
-               if (!current.horizontal) return;
-               const dx = event.clientX - current.x;
-               const dy = event.clientY - current.y;
-               if (Math.abs(dx) < SESSION_SWIPE_COMMIT || Math.abs(dx) <= Math.abs(dy) * 1.1) return;
-               const selection = typeof getSelection === "function" ? getSelection() : null;
-               if (selection && typeof selection.removeAllRanges === "function") selection.removeAllRanges();
-               if (dx < 0) advance();
-               else previousCard();
-            };
-            const move = (event) => {
-               if (!gesture || event.pointerId !== gesture.pointerId) return;
-               const dx = event.clientX - gesture.x;
-               const dy = event.clientY - gesture.y;
-               if (!gesture.horizontal) {
-                  if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) {
-                     finish(event, true);
-                     return;
-                  }
-                  if (Math.abs(dx) < SESSION_SWIPE_START || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
-                  gesture.horizontal = true;
-                  card.classList.add("is-session-dragging");
+               state.axis = "idle";
+               state.samples = [];
+               state.suppressNextClick = true;
+               clearSelection();
+               if (cancelled) {
+                  settle();
+                  return;
                }
+
+               const direction = dx < 0 ? -1 : 1;
+               const available = direction < 0 || index > 0;
+               const horizontalEnough =
+                  Math.abs(dx) > Math.abs(dy) * SESSION_SWIPE_HORIZONTAL_RATIO;
+               const distanceComplete =
+                  Math.abs(dx) >=
+                  state.cardWidth * SESSION_SWIPE_DISTANCE_RATIO;
+               const velocityComplete =
+                  Math.abs(dx) >= SESSION_SWIPE_MIN_FLICK_DISTANCE &&
+                  Math.abs(state.velocityX) >= SESSION_SWIPE_FLICK_VELOCITY &&
+                  Math.sign(state.velocityX) === direction;
+               if (
+                  available &&
+                  horizontalEnough &&
+                  (distanceComplete || velocityComplete)
+               )
+                  commit(direction, index, sessionCard);
+               else settle();
+            };
+            const movePointer = (event) => {
+               if (
+                  state.pointerId == null ||
+                  event.pointerId !== state.pointerId ||
+                  state.animation
+               )
+                  return;
+               samplePointer(event);
+               const dx = state.latestX - state.startX;
+               const dy = state.latestY - state.startY;
+               const absX = Math.abs(dx);
+               const absY = Math.abs(dy);
+               if (state.axis === "vertical") return;
+               if (state.axis === "undecided") {
+                  if (Math.max(absX, absY) < SESSION_SWIPE_LOCK_SLOP) return;
+                  if (absX > absY * SESSION_SWIPE_HORIZONTAL_RATIO) {
+                     state.axis = "horizontal";
+                     state.dragging = true;
+                     state.suppressNextClick = true;
+                     card.classList.add("is-session-dragging");
+                     card.style.willChange = "transform";
+                     card.style.transition = "none";
+                     clearSelection();
+                     try { card.setPointerCapture(event.pointerId); } catch (error) {}
+                  } else if (absY > absX * SESSION_SWIPE_HORIZONTAL_RATIO) {
+                     state.axis = "vertical";
+                     return;
+                  } else return;
+               }
+               if (state.axis !== "horizontal") return;
                if (event.cancelable) event.preventDefault();
-               const clamped = Math.max(-64, Math.min(64, dx));
-               card.style.setProperty("--session-drag-x", String(clamped));
-               card.classList.toggle("is-session-drag-left", clamped < -4);
-               card.classList.toggle("is-session-drag-right", clamped > 4);
+               // Toujours depuis pointerdown : aucun seuil n'est soustrait et la carte
+               // rejoint le doigt dès que l'axe est décidé.
+               const visualX =
+                  state.cardIndex === 0 && dx > 0
+                     ? dx * SESSION_SWIPE_BOUNDARY_RESISTANCE
+                     : dx;
+               card.style.transform = transformFor(visualX);
+               card.classList.toggle("is-session-drag-left", visualX < -2);
+               card.classList.toggle("is-session-drag-right", visualX > 2);
             };
-            zone.onpointerdown = (event) => {
-               if (event.button !== 0 || event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR)) return;
-               release(); // un geste resté ouvert (pointerup perdu) ne survit jamais au suivant
-               const listeners = new AbortController();
-               gesture = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, horizontal: false, listeners };
-               // écouteurs posés pour la durée du geste et retirés par abort() : ils ne
-               // s'accumulent pas d'un rendu à l'autre.
-               const options = { signal: listeners.signal, passive: false };
-               document.addEventListener("pointermove", move, options);
-               document.addEventListener("pointerup", (up) => finish(up, false), options);
-               document.addEventListener("pointercancel", (up) => finish(up, true), options);
-            };
+
+            card.addEventListener(
+               "click",
+               (event) => {
+                  if (!state.suppressNextClick) return;
+                  state.suppressNextClick = false;
+                  event.preventDefault();
+                  event.stopImmediatePropagation();
+               },
+               { capture: true, signal: listeners.signal },
+            );
+            card.addEventListener(
+               "pointerdown",
+               (event) => {
+                  if (
+                     disposed ||
+                     state.pointerId != null ||
+                     state.animation ||
+                     event.isPrimary === false ||
+                     (event.pointerType === "mouse" && event.button !== 0)
+                  )
+                     return;
+                  // Une nouvelle intention explicite ne doit jamais être bloquée par
+                  // l'absence éventuelle du clic synthétique du geste précédent.
+                  state.suppressNextClick = false;
+                  if (event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR)) return;
+                  state.pointerId = event.pointerId;
+                  state.axis = "undecided";
+                  state.dragging = false;
+                  state.animation = null;
+                  state.startX = state.latestX = event.clientX;
+                  state.startY = state.latestY = event.clientY;
+                  state.startTime = state.latestTime = eventTime(event);
+                  state.velocityX = 0;
+                  state.samples = [{ x: event.clientX, time: state.startTime }];
+                  state.cardWidth = Math.max(1, card.getBoundingClientRect().width);
+                  state.cardIndex = session.index;
+                  state.sessionCard = currentCard();
+               },
+               { signal: listeners.signal },
+            );
+            card.addEventListener("pointermove", movePointer, {
+               passive: false,
+               signal: listeners.signal,
+            });
+            card.addEventListener(
+               "pointerup",
+               (event) => finishPointer(event, false),
+               { signal: listeners.signal },
+            );
+            card.addEventListener(
+               "pointercancel",
+               (event) => finishPointer(event, true),
+               { signal: listeners.signal },
+            );
+            card.addEventListener(
+               "lostpointercapture",
+               (event) => {
+                  // Le transfert de la capture tactile implicite d'un enfant vers la
+                  // carte émet aussi un lostpointercapture qui remonte : seule la perte
+                  // de la capture détenue par la carte annule le geste.
+                  if (event.target === card) finishPointer(event, true);
+               },
+               { signal: listeners.signal },
+            );
          }
          function wireSession(c, st) {
             $("s-exit").onclick = endSession;
@@ -788,16 +1072,14 @@ function wireReviewStrokeBlock(c, st) {
             };
             if ($("s-flip")) $("s-flip").onclick = flip;
             const fl = $("flash");
-            // toute la surface de la carte retourne, hors contrôles interactifs :
-            // même règle que le clic soit natif ou relayé par le gestionnaire de geste.
+            // Toute la surface non interactive retourne la carte sur son clic natif.
             const tapCard = (target) => {
                if (session.mode !== "cards") return;
-               if (Date.now() < (fl._suppressSessionClickUntil || 0)) return;
                if (!target || !fl.contains(target) || target.closest(SESSION_INTERACTIVE_SELECTOR)) return;
                flip();
             };
-            wireSessionSwipe($("sess"), fl);
             if (session.mode === "cards") {
+               wireSessionSwipe(fl);
                fl.style.cursor = "pointer";
                fl.onclick = (e) => tapCard(e.target);
             }
@@ -1083,6 +1365,7 @@ function wireReviewStrokeBlock(c, st) {
 
          /* -------- fin de séance -------- */
          function endSession() {
+            cancelSessionSwipe();
             destroyReviewStrokeWorkspace();
             const sts = session.states.filter(Boolean);
             const seen = sts.filter(

@@ -122,9 +122,7 @@
             text-align: center;
             max-width: 100%;
             touch-action: pan-y;
-            transform: translateX(0);
-            transition: transform 140ms ease, box-shadow 140ms ease;
-            will-change: transform;
+            transform: none;
          }
          .fl-tools {
             display: flex;
@@ -161,11 +159,15 @@
             align-items: center;
             margin-block: auto;
          }
-         .flash.is-session-dragging {
-            cursor: grabbing !important;
+         .flash.is-session-dragging,
+         .flash.is-session-settling,
+         .flash.is-session-committing {
+            will-change: transform;
             user-select: none;
             -webkit-user-select: none;
-            transform: translateX(calc(var(--session-drag-x, 0) * 1px)) rotate(calc(var(--session-drag-x, 0) * 0.025deg));
+         }
+         .flash.is-session-dragging {
+            cursor: grabbing !important;
             transition: none;
             box-shadow: 0 14px 32px rgba(23, 20, 15, 0.16);
          }
