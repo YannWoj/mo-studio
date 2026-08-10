@@ -1,13 +1,20 @@
 {
   "format": "mo-studio-character-radicals",
   "schemaVersion": 1,
-  "builderVersion": "1.0.0",
-  "buildId": "b77072378af768cdc74a89e616babc68df7a72646645d124f3a4bb4c790242e8",
+  "builderVersion": "1.1.0",
+  "buildId": "952adb1ed76e96af6ca15afeb966ef0a829c3478df2627834509b308d47fe9cd",
   "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/",
   "derivedFrom": {
-    "characterCompositionBuildId": "d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a",
+    "characterCompositionBuildId": "7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567",
     "dictionaryBuildId": "f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea",
     "hanziWriterVersion": "2.0.1"
+  },
+  "componentLabelsFr": {
+    "file": "data/source/character-components-fr.json",
+    "sha256": "056c091f0362217a726bd032283e70392bae57a8d3a94ab85741d0f3c99a6375",
+    "entryCount": 183,
+    "provenance": "Original Mò Studio project content; manually written, not machine-translated",
+    "upstreamLicenseApplies": false
   },
   "chunkPathTemplate": "chunks/{radical}.json",
   "counts": {
@@ -66,7 +73,7 @@
     {
       "radical": "乚",
       "strokeCount": 1,
-      "sens": null,
+      "sens": "secret, caché",
       "memberCount": 8,
       "path": "chunks/乚.json",
       "bytes": 291,
@@ -93,7 +100,7 @@
     {
       "radical": "⺀",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "glace (forme liée de 冫)",
       "memberCount": 1,
       "path": "chunks/⺀.json",
       "bytes": 65,
@@ -102,7 +109,7 @@
     {
       "radical": "⺊",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "divination (fissure d’os oraculaire, comparer 卜)",
       "memberCount": 4,
       "path": "chunks/⺊.json",
       "bytes": 161,
@@ -111,7 +118,7 @@
     {
       "radical": "㔾",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "sceau",
       "memberCount": 5,
       "path": "chunks/㔾.json",
       "bytes": 193,
@@ -120,7 +127,7 @@
     {
       "radical": "丷",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "forme liée de 八",
       "memberCount": 8,
       "path": "chunks/丷.json",
       "bytes": 292,
@@ -165,7 +172,7 @@
     {
       "radical": "儿",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "fils (clé : jambes d’un personnage)",
       "memberCount": 23,
       "path": "chunks/儿.json",
       "bytes": 773,
@@ -246,7 +253,7 @@
     {
       "radical": "刂",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "couteau (forme liée de 刀)",
       "memberCount": 71,
       "path": "chunks/刂.json",
       "bytes": 2333,
@@ -327,7 +334,7 @@
     {
       "radical": "厂",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "falaise",
       "memberCount": 27,
       "path": "chunks/厂.json",
       "bytes": 911,
@@ -363,7 +370,7 @@
     {
       "radical": "讠",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "parole (forme liée de 言)",
       "memberCount": 143,
       "path": "chunks/讠.json",
       "bytes": 4671,
@@ -372,7 +379,7 @@
     {
       "radical": "阝",
       "strokeCount": 2,
-      "sens": null,
+      "sens": "lieu (colline 阜 à gauche, ville 邑 à droite)",
       "memberCount": 158,
       "path": "chunks/阝.json",
       "bytes": 5156,
@@ -381,7 +388,7 @@
     {
       "radical": "⺌",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "petit (forme liée de 小)",
       "memberCount": 4,
       "path": "chunks/⺌.json",
       "bytes": 162,
@@ -390,7 +397,7 @@
     {
       "radical": "丬",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "moitié gauche d’un tronc d’arbre",
       "memberCount": 2,
       "path": "chunks/丬.json",
       "bytes": 97,
@@ -534,7 +541,7 @@
     {
       "radical": "尸",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "corps, dépouille",
       "memberCount": 38,
       "path": "chunks/尸.json",
       "bytes": 1265,
@@ -561,7 +568,7 @@
     {
       "radical": "巛",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "cours d’eau",
       "memberCount": 5,
       "path": "chunks/巛.json",
       "bytes": 195,
@@ -633,7 +640,7 @@
     {
       "radical": "广",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "vaste (clé de l’abri à toit)",
       "memberCount": 59,
       "path": "chunks/广.json",
       "bytes": 1955,
@@ -678,7 +685,7 @@
     {
       "radical": "彑",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "groin",
       "memberCount": 6,
       "path": "chunks/彑.json",
       "bytes": 228,
@@ -705,7 +712,7 @@
     {
       "radical": "忄",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "cœur (forme liée de 心, à gauche)",
       "memberCount": 167,
       "path": "chunks/忄.json",
       "bytes": 5484,
@@ -714,7 +721,7 @@
     {
       "radical": "扌",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "main (forme liée de 手)",
       "memberCount": 341,
       "path": "chunks/扌.json",
       "bytes": 11169,
@@ -732,7 +739,7 @@
     {
       "radical": "犭",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "chien, animal (forme liée de 犬)",
       "memberCount": 87,
       "path": "chunks/犭.json",
       "bytes": 2873,
@@ -741,7 +748,7 @@
     {
       "radical": "纟",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "fil, soie (forme liée simplifiée de 糸)",
       "memberCount": 141,
       "path": "chunks/纟.json",
       "bytes": 4625,
@@ -759,7 +766,7 @@
     {
       "radical": "辶",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "marcher, avancer",
       "memberCount": 130,
       "path": "chunks/辶.json",
       "bytes": 4273,
@@ -768,7 +775,7 @@
     {
       "radical": "门",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "porte",
       "memberCount": 47,
       "path": "chunks/门.json",
       "bytes": 1559,
@@ -777,7 +784,7 @@
     {
       "radical": "飞",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "voler",
       "memberCount": 1,
       "path": "chunks/飞.json",
       "bytes": 65,
@@ -786,7 +793,7 @@
     {
       "radical": "饣",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "nourriture (forme liée simplifiée de 食)",
       "memberCount": 43,
       "path": "chunks/饣.json",
       "bytes": 1429,
@@ -795,7 +802,7 @@
     {
       "radical": "马",
       "strokeCount": 3,
-      "sens": null,
+      "sens": "cheval",
       "memberCount": 54,
       "path": "chunks/马.json",
       "bytes": 1788,
@@ -804,7 +811,7 @@
     {
       "radical": "⺗",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "cœur (forme liée de 心, en bas)",
       "memberCount": 3,
       "path": "chunks/⺗.json",
       "bytes": 131,
@@ -813,7 +820,7 @@
     {
       "radical": "⺳",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "filet (forme liée de 网)",
       "memberCount": 2,
       "path": "chunks/⺳.json",
       "bytes": 97,
@@ -822,7 +829,7 @@
     {
       "radical": "⺼",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "viande, chair (radical de la chair, de 肉)",
       "memberCount": 175,
       "path": "chunks/⺼.json",
       "bytes": 5748,
@@ -849,7 +856,7 @@
     {
       "radical": "户",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "porte à un battant",
       "memberCount": 15,
       "path": "chunks/户.json",
       "bytes": 517,
@@ -930,7 +937,7 @@
     {
       "radical": "无",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "sans, ne pas avoir",
       "memberCount": 1,
       "path": "chunks/无.json",
       "bytes": 65,
@@ -939,7 +946,7 @@
     {
       "radical": "旡",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "s’étrangler",
       "memberCount": 1,
       "path": "chunks/旡.json",
       "bytes": 65,
@@ -966,7 +973,7 @@
     {
       "radical": "月",
       "strokeCount": 4,
-      "sens": "Lune",
+      "sens": "lune, mois",
       "memberCount": 14,
       "path": "chunks/月.json",
       "bytes": 489,
@@ -1056,7 +1063,7 @@
     {
       "radical": "气",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "air, souffle",
       "memberCount": 24,
       "path": "chunks/气.json",
       "bytes": 814,
@@ -1101,7 +1108,7 @@
     {
       "radical": "爫",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "griffes (forme liée de 爪)",
       "memberCount": 7,
       "path": "chunks/爫.json",
       "bytes": 259,
@@ -1128,7 +1135,7 @@
     {
       "radical": "爿",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "moitié gauche d’un tronc d’arbre",
       "memberCount": 2,
       "path": "chunks/爿.json",
       "bytes": 98,
@@ -1191,7 +1198,7 @@
     {
       "radical": "礻",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "esprit, autel (forme liée de 示)",
       "memberCount": 42,
       "path": "chunks/礻.json",
       "bytes": 1399,
@@ -1200,7 +1207,7 @@
     {
       "radical": "罓",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "filet (forme liée de 网)",
       "memberCount": 1,
       "path": "chunks/罓.json",
       "bytes": 65,
@@ -1209,7 +1216,7 @@
     {
       "radical": "耂",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "vieillesse (forme liée de 老)",
       "memberCount": 2,
       "path": "chunks/耂.json",
       "bytes": 97,
@@ -1218,7 +1225,7 @@
     {
       "radical": "肀",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "pinceau (forme liée de 聿)",
       "memberCount": 3,
       "path": "chunks/肀.json",
       "bytes": 130,
@@ -1227,7 +1234,7 @@
     {
       "radical": "见",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "voir",
       "memberCount": 14,
       "path": "chunks/见.json",
       "bytes": 488,
@@ -1236,7 +1243,7 @@
     {
       "radical": "贝",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "coquillage",
       "memberCount": 63,
       "path": "chunks/贝.json",
       "bytes": 2085,
@@ -1245,7 +1252,7 @@
     {
       "radical": "车",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "char, véhicule",
       "memberCount": 50,
       "path": "chunks/车.json",
       "bytes": 1660,
@@ -1254,7 +1261,7 @@
     {
       "radical": "长",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "long, grandir",
       "memberCount": 1,
       "path": "chunks/长.json",
       "bytes": 65,
@@ -1263,7 +1270,7 @@
     {
       "radical": "韦",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "cuir tanné",
       "memberCount": 6,
       "path": "chunks/韦.json",
       "bytes": 229,
@@ -1272,7 +1279,7 @@
     {
       "radical": "风",
       "strokeCount": 4,
-      "sens": null,
+      "sens": "vent",
       "memberCount": 10,
       "path": "chunks/风.json",
       "bytes": 359,
@@ -1281,7 +1288,7 @@
     {
       "radical": "歺",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "mauvais (forme liée de 歹)",
       "memberCount": 1,
       "path": "chunks/歺.json",
       "bytes": 65,
@@ -1308,7 +1315,7 @@
     {
       "radical": "氺",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "eau (forme liée de 水, en bas)",
       "memberCount": 4,
       "path": "chunks/氺.json",
       "bytes": 163,
@@ -1515,7 +1522,7 @@
     {
       "radical": "罒",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "filet (forme liée de 网, couché)",
       "memberCount": 24,
       "path": "chunks/罒.json",
       "bytes": 821,
@@ -1524,7 +1531,7 @@
     {
       "radical": "衤",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "vêtement (forme liée de 衣)",
       "memberCount": 71,
       "path": "chunks/衤.json",
       "bytes": 2366,
@@ -1533,7 +1540,7 @@
     {
       "radical": "钅",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "métal, or (forme liée simplifiée de 金)",
       "memberCount": 219,
       "path": "chunks/钅.json",
       "bytes": 7221,
@@ -1542,7 +1549,7 @@
     {
       "radical": "鸟",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "oiseau",
       "memberCount": 72,
       "path": "chunks/鸟.json",
       "bytes": 2400,
@@ -1551,7 +1558,7 @@
     {
       "radical": "龙",
       "strokeCount": 5,
-      "sens": null,
+      "sens": "dragon",
       "memberCount": 6,
       "path": "chunks/龙.json",
       "bytes": 229,
@@ -1560,7 +1567,7 @@
     {
       "radical": "⺮",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "bambou (forme liée de 竹)",
       "memberCount": 148,
       "path": "chunks/⺮.json",
       "bytes": 4912,
@@ -1596,7 +1603,7 @@
     {
       "radical": "糹",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "fil, soie (forme liée de 糸)",
       "memberCount": 125,
       "path": "chunks/糹.json",
       "bytes": 4147,
@@ -1614,7 +1621,7 @@
     {
       "radical": "网",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "filet",
       "memberCount": 1,
       "path": "chunks/网.json",
       "bytes": 65,
@@ -1794,7 +1801,7 @@
     {
       "radical": "虫",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "insecte",
       "memberCount": 197,
       "path": "chunks/虫.json",
       "bytes": 6519,
@@ -1839,7 +1846,7 @@
     {
       "radical": "覀",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "ouest (forme liée de 西)",
       "memberCount": 4,
       "path": "chunks/覀.json",
       "bytes": 164,
@@ -1848,7 +1855,7 @@
     {
       "radical": "页",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "page (clé : la tête)",
       "memberCount": 39,
       "path": "chunks/页.json",
       "bytes": 1315,
@@ -1857,7 +1864,7 @@
     {
       "radical": "齐",
       "strokeCount": 6,
-      "sens": null,
+      "sens": "égal, aligné",
       "memberCount": 2,
       "path": "chunks/齐.json",
       "bytes": 98,
@@ -1866,7 +1873,7 @@
     {
       "radical": "卤",
       "strokeCount": 7,
-      "sens": null,
+      "sens": "sel, saumure",
       "memberCount": 2,
       "path": "chunks/卤.json",
       "bytes": 98,
@@ -1902,7 +1909,7 @@
     {
       "radical": "訁",
       "strokeCount": 7,
-      "sens": null,
+      "sens": "parole (forme liée de 言)",
       "memberCount": 1,
       "path": "chunks/訁.json",
       "bytes": 65,
@@ -2064,7 +2071,7 @@
     {
       "radical": "镸",
       "strokeCount": 7,
-      "sens": null,
+      "sens": "long",
       "memberCount": 1,
       "path": "chunks/镸.json",
       "bytes": 65,
@@ -2073,7 +2080,7 @@
     {
       "radical": "麦",
       "strokeCount": 7,
-      "sens": null,
+      "sens": "blé",
       "memberCount": 3,
       "path": "chunks/麦.json",
       "bytes": 131,
@@ -2082,7 +2089,7 @@
     {
       "radical": "龟",
       "strokeCount": 7,
-      "sens": null,
+      "sens": "tortue",
       "memberCount": 2,
       "path": "chunks/龟.json",
       "bytes": 98,
@@ -2100,7 +2107,7 @@
     {
       "radical": "羋",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "bêlement",
       "memberCount": 1,
       "path": "chunks/羋.json",
       "bytes": 65,
@@ -2127,7 +2134,7 @@
     {
       "radical": "釒",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "métal, or (forme liée de 金)",
       "memberCount": 133,
       "path": "chunks/釒.json",
       "bytes": 4422,
@@ -2163,7 +2170,7 @@
     {
       "radical": "隶",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "asservi",
       "memberCount": 2,
       "path": "chunks/隶.json",
       "bytes": 98,
@@ -2190,7 +2197,7 @@
     {
       "radical": "靑",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "bleu-vert (forme traditionnelle de 青)",
       "memberCount": 1,
       "path": "chunks/靑.json",
       "bytes": 65,
@@ -2217,7 +2224,7 @@
     {
       "radical": "飠",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "nourriture (forme liée de 食)",
       "memberCount": 44,
       "path": "chunks/飠.json",
       "bytes": 1484,
@@ -2226,7 +2233,7 @@
     {
       "radical": "鱼",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "poisson",
       "memberCount": 77,
       "path": "chunks/鱼.json",
       "bytes": 2573,
@@ -2235,7 +2242,7 @@
     {
       "radical": "黾",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "grenouille",
       "memberCount": 2,
       "path": "chunks/黾.json",
       "bytes": 98,
@@ -2244,7 +2251,7 @@
     {
       "radical": "齿",
       "strokeCount": 8,
-      "sens": null,
+      "sens": "dents",
       "memberCount": 12,
       "path": "chunks/齿.json",
       "bytes": 428,
@@ -2253,7 +2260,7 @@
     {
       "radical": "面",
       "strokeCount": 9,
-      "sens": null,
+      "sens": "visage",
       "memberCount": 2,
       "path": "chunks/面.json",
       "bytes": 98,
@@ -2280,7 +2287,7 @@
     {
       "radical": "韭",
       "strokeCount": 9,
-      "sens": null,
+      "sens": "ciboule",
       "memberCount": 2,
       "path": "chunks/韭.json",
       "bytes": 98,
@@ -2397,7 +2404,7 @@
     {
       "radical": "鬥",
       "strokeCount": 10,
-      "sens": null,
+      "sens": "se battre",
       "memberCount": 6,
       "path": "chunks/鬥.json",
       "bytes": 231,
@@ -2478,7 +2485,7 @@
     {
       "radical": "黄",
       "strokeCount": 11,
-      "sens": null,
+      "sens": "jaune",
       "memberCount": 2,
       "path": "chunks/黄.json",
       "bytes": 99,

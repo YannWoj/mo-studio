@@ -3,11 +3,12 @@ import { readFileSync } from "node:fs";
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { loadComponentLabelsFr } from "./component-labels-fr.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
 
-export const RADICALS_BUILDER_VERSION = "1.0.0";
+export const RADICALS_BUILDER_VERSION = "1.1.0";
 export const HANZI_WRITER_VERSION = "2.0.1";
 
 const defaultCompositionDirectory = path.join(
@@ -68,6 +69,8 @@ export async function buildCharacterRadicals(options = {}) {
    );
    const outputDirectory = path.resolve(options.outputDirectory || defaultOutputDirectory);
 
+   const componentLabelsFr = await loadComponentLabelsFr(options.componentLabelsFrPath);
+
    const compositionManifest = JSON.parse(
       await readFile(path.join(compositionDirectory, "manifest.json"), "utf8"),
    );
@@ -100,7 +103,12 @@ export async function buildCharacterRadicals(options = {}) {
    }
    const radicalsInSourceCount = radicalToCharacters.size;
 
+   // Le nom français écrit à la main prime : beaucoup de clés sont des formes
+   // liées absentes du dictionnaire français (辶, 讠, 钅…), qui s'affichaient donc
+   // sans aucun sens dans le tableau des clés.
    function glossFor(radicalCharacter) {
+      const manual = componentLabelsFr.labels[radicalCharacter];
+      if (manual) return manual;
       const indexed = characterIndex[radicalCharacter];
       if (!indexed) return null;
       const preview = searchPreviews.entries[indexed.entryRef];
@@ -189,6 +197,13 @@ export async function buildCharacterRadicals(options = {}) {
          dictionaryBuildId: dictionaryManifest.buildId,
          hanziWriterVersion: HANZI_WRITER_VERSION,
       },
+      componentLabelsFr: {
+         file: componentLabelsFr.path,
+         sha256: componentLabelsFr.sha256,
+         entryCount: componentLabelsFr.entryCount,
+         provenance: componentLabelsFr.provenance,
+         upstreamLicenseApplies: componentLabelsFr.upstreamLicenseApplies,
+      },
       coverage: {
          ...counts,
          radicalsExcludedZeroMembers: excludedRadicals.length,
@@ -197,6 +212,8 @@ export async function buildCharacterRadicals(options = {}) {
          missingStrokeRadicals,
          radicalsWithGloss: chunkDescriptors.filter((row) => row.sens).length,
          radicalsWithoutGloss: chunkDescriptors.filter((row) => !row.sens).length,
+         radicalsWithManualFrenchName: chunkDescriptors.filter((row) => componentLabelsFr.labels[row.radical]).length,
+         radicalsStillWithoutGloss: chunkDescriptors.filter((row) => !row.sens).map((row) => row.radical),
          oneOrTwoMemberRadicals: chunkDescriptors.filter((row) => row.memberCount <= 2).length,
       },
       testCases,
@@ -218,7 +235,8 @@ export async function buildCharacterRadicals(options = {}) {
 | Dictionary characters without a known radical | ${counts.dictionaryCharactersWithoutRadical} |
 | Radicals with only 1-2 dictionary members | ${report.coverage.oneOrTwoMemberRadicals} |
 | Radicals with a short French gloss | ${report.coverage.radicalsWithGloss} |
-| Radicals without a gloss | ${report.coverage.radicalsWithoutGloss} |
+| … of which named by \`${componentLabelsFr.path}\` | ${report.coverage.radicalsWithManualFrenchName} |
+| Radicals without a gloss | ${report.coverage.radicalsWithoutGloss} (${report.coverage.radicalsStillWithoutGloss.join(", ") || "—"}) |
 | Radicals missing hanzi-writer stroke data | ${missingStrokeRadicals.length} (${missingStrokeRadicals.join(", ") || "—"}) |
 
 Generated chunks are a re-derivation of already-generated, already-licensed data (\`character-composition\`, \`dictionary\`, \`hanzi-writer\`); no new upstream text is introduced.
@@ -227,6 +245,7 @@ Generated chunks are a re-derivation of already-generated, already-licensed data
 
    const manifestSeed = JSON.stringify({
       builderVersion: RADICALS_BUILDER_VERSION,
+      componentLabelsFrHash: componentLabelsFr.sha256,
       chunkDescriptors,
       compositionBuildId: compositionManifest.buildId,
       dictionaryBuildId: dictionaryManifest.buildId,
@@ -242,6 +261,7 @@ Generated chunks are a re-derivation of already-generated, already-licensed data
          dictionaryBuildId: dictionaryManifest.buildId,
          hanziWriterVersion: HANZI_WRITER_VERSION,
       },
+      componentLabelsFr: report.componentLabelsFr,
       chunkPathTemplate: "chunks/{radical}.json",
       counts,
       radicals: chunkDescriptors,

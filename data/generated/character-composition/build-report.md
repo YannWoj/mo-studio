@@ -6,7 +6,21 @@
 - License: GNU Lesser General Public License v3 or later
 - French hint overrides: `data/source/character-hints-fr.json`
 - French override SHA-256: `e8c76381b30607ef20933a7da05a347af63a628feed1b5a78cb226890c18017a`
-- French overrides are original, manually written Mò Studio content; the upstream license does not apply to them.
+- French component names: `data/source/character-components-fr.json` (183 entries)
+- French component names SHA-256: `056c091f0362217a726bd032283e70392bae57a8d3a94ab85741d0f3c99a6375`
+- Both French files are original, manually written Mò Studio content; the upstream license does not apply to them.
+
+## Component names shown on a character sheet
+
+| Measurement | Value |
+| --- | ---: |
+| Distinct components reachable from a dictionary character sheet | 1815 |
+| … named by the hand-written French file | 183 |
+| … named by the project's French dictionary | 1535 |
+| … falling back to the English Make Me a Hanzi definition | 66 |
+| … with no name in any source | 31 |
+
+Components with no name in any source (left blank rather than invented): 侌, 倠, 兓, 冡, 匛, 厽, 吂, 嘼, 圤, 夃, 媷, 屚, 巸, 惢, 斦, 汒, 牚, 犾, 狊, 猒, 竘, 羍, 耴, 臱, 豙, 閵, 隡, 韰, 鬳, 魝, 龶
 
 | Measurement | Value |
 | --- | ---: |

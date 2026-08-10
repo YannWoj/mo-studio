@@ -417,13 +417,19 @@
    font-size: 24px;
    line-height: 1;
 }
+/* Beaucoup de clés sont des formes liées dont le nom précise la forme d'origine
+   (« couteau (forme liée de 刀) ») : deux lignes plutôt qu'une troncature à un mot. */
 .radical-chip span {
+   display: -webkit-box;
    overflow: hidden;
    max-width: 100%;
    color: var(--ink-soft);
    font-size: 12px;
-   text-overflow: ellipsis;
-   white-space: nowrap;
+   line-height: 1.25;
+   overflow-wrap: anywhere;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 2;
+   line-clamp: 2;
 }
 .radical-chip small {
    color: var(--ink-faint);

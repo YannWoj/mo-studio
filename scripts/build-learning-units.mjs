@@ -2,11 +2,12 @@ import { createHash } from "node:crypto";
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { loadComponentLabelsFr } from "./component-labels-fr.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
 
-export const LEARNING_UNITS_BUILDER_VERSION = "1.0.0";
+export const LEARNING_UNITS_BUILDER_VERSION = "1.1.0";
 export const UNIT_MAX_SIZE = 8;
 export const UNIT_MIN_MEMBERS_TO_RETAIN_GROUP = 2;
 export const EXAMPLE_WORDS_PER_MEMBER = 3;
@@ -160,20 +161,20 @@ function dictionaryLookup(dictionary, character) {
    return { pinyin, gloss };
 }
 
-function componentMeta(dictionary, glossary, character) {
+// glossSource décrit d'où vient le SENS, et rien d'autre. L'ancienne version
+// sortait sur la première branche dès qu'un pinyin existait : 77 composants
+// (辶, 讠, 刂, 扌, 忄, 衤…) repartaient donc étiquetés « dictionary » avec un sens
+// vide, sans jamais consulter le repli qui, lui, les documente.
+function componentMeta(dictionary, glossary, componentLabelsFr, character) {
    const fromDictionary = dictionaryLookup(dictionary, character);
-   if (fromDictionary && (fromDictionary.pinyin || fromDictionary.gloss)) {
-      return { pinyin: fromDictionary.pinyin, gloss: fromDictionary.gloss, glossSource: "dictionary" };
-   }
    const fromGlossary = glossary.get(character);
-   if (fromGlossary) {
-      return {
-         pinyin: fromGlossary.pinyin?.[0] || null,
-         gloss: fromGlossary.definition || null,
-         glossSource: fromGlossary.definition ? "composition-en" : null,
-      };
-   }
-   return { pinyin: null, gloss: null, glossSource: null };
+   const pinyin = fromDictionary?.pinyin || fromGlossary?.pinyin?.[0] || null;
+   const manual = componentLabelsFr[character] || null;
+   if (manual) return { pinyin, gloss: manual, glossSource: "components-fr" };
+   if (fromDictionary?.gloss) return { pinyin, gloss: fromDictionary.gloss, glossSource: "dictionary" };
+   if (fromGlossary?.definition)
+      return { pinyin, gloss: fromGlossary.definition, glossSource: "composition-en" };
+   return { pinyin, gloss: null, glossSource: null };
 }
 
 function wordCountOf(dictionary, character) {
@@ -334,7 +335,7 @@ function detectCyclesAndSelfReferences(adjacency, nodes) {
 
 /* ================= familles phonétiques (partie 1) ================= */
 
-function buildPhoneticFamilies(recordsByCharacter, dictionaryCharacters, dictionary, glossary) {
+function buildPhoneticFamilies(recordsByCharacter, dictionaryCharacters, dictionary, glossary, componentLabelsFr) {
    const rawFamilies = new Map();
    for (const character of [...recordsByCharacter.keys()].sort(compareCharacters)) {
       const phonetic = recordsByCharacter.get(character).etymology?.phonetic;
@@ -353,7 +354,7 @@ function buildPhoneticFamilies(recordsByCharacter, dictionaryCharacters, diction
          .filter((character) => dictionaryCharacters.has(character))
          .sort(compareCharacters);
       if (dictionaryMembers.length < UNIT_MIN_MEMBERS_TO_RETAIN_GROUP) continue;
-      const meta = componentMeta(dictionary, glossary, component);
+      const meta = componentMeta(dictionary, glossary, componentLabelsFr, component);
       families.push({
          component,
          componentPinyin: meta.pinyin,
@@ -414,8 +415,8 @@ function buildMemberRow(dictionary, recordsByCharacter, utilityIndex, character)
 }
 
 function buildUnitsFromGroup(type, component, dictionaryMembers, context) {
-   const { dictionary, recordsByCharacter, utilityIndex, glossary, prerequisites } = context;
-   const meta = componentMeta(dictionary, glossary, component);
+   const { dictionary, recordsByCharacter, utilityIndex, glossary, prerequisites, componentLabelsFr } = context;
+   const meta = componentMeta(dictionary, glossary, componentLabelsFr, component);
    const sortedMembers = [...dictionaryMembers].sort((left, right) => {
       const leftScore = utilityIndex.get(left)?.score || 0;
       const rightScore = utilityIndex.get(right)?.score || 0;
@@ -514,6 +515,7 @@ export async function buildLearningUnitsIndex(options = {}) {
    const recordsByCharacter = await loadCompositionRecords(compositionDirectory);
    const dictionaryCharacters = new Set(Object.keys(dictionary.characterIndex));
    const glossary = buildComponentGlossary(recordsByCharacter);
+   const componentLabels = await loadComponentLabelsFr(options.componentLabelsFrPath);
 
    const { index: utilityIndex, formula } = buildUtilityIndex(
       dictionaryCharacters,
@@ -524,13 +526,14 @@ export async function buildLearningUnitsIndex(options = {}) {
 
    const graph = buildDependencyGraph(recordsByCharacter, dictionaryCharacters);
 
-   const phoneticFamilies = buildPhoneticFamilies(recordsByCharacter, dictionaryCharacters, dictionary, glossary);
+   const phoneticFamilies = buildPhoneticFamilies(recordsByCharacter, dictionaryCharacters, dictionary, glossary, componentLabels.labels);
 
    const context = {
       dictionary,
       recordsByCharacter,
       utilityIndex,
       glossary,
+      componentLabelsFr: componentLabels.labels,
       prerequisites: graph.prerequisites,
       dictionaryCharacters,
    };
@@ -600,8 +603,28 @@ export async function buildLearningUnitsIndex(options = {}) {
       partCount: unit.partCount,
    }));
 
+   // Couverture des noms de composants : mesurée sur les composants DISTINCTS
+   // enseignés, et sur la présence d'un texte de sens — pas sur l'étiquette de
+   // source, qui ne dit pas si le texte existe.
+   const distinctComponents = new Map();
+   for (const unit of units) if (!distinctComponents.has(unit.component)) distinctComponents.set(unit.component, unit);
+   const componentsBySource = {};
+   for (const unit of distinctComponents.values()) {
+      const key = unit.componentGlossSource || "none";
+      componentsBySource[key] = (componentsBySource[key] || 0) + 1;
+   }
+   const componentsWithoutGloss = [...distinctComponents.values()]
+      .filter((unit) => !unit.componentGloss)
+      .map((unit) => unit.component)
+      .sort(compareCharacters);
+
    const counts = {
       dictionaryCharacterCount: dictionaryCharacters.size,
+      distinctTaughtComponentCount: distinctComponents.size,
+      taughtComponentsByGlossSource: componentsBySource,
+      taughtComponentsWithoutGlossCount: componentsWithoutGloss.length,
+      taughtComponentsWithoutGloss: componentsWithoutGloss,
+      unitRowsWithoutGlossCount: units.filter((unit) => !unit.componentGloss).length,
       compositionRecordCount: recordsByCharacter.size,
       distinctPhoneticComponentsWithAnyDictionaryMember: phoneticFamilies.distinctPhoneticComponentsWithAnyDictionaryMember,
       retainedPhoneticFamilyCount: phoneticFamilies.retainedFamilyCount,
@@ -635,6 +658,13 @@ export async function buildLearningUnitsIndex(options = {}) {
    const report = {
       format: "mo-studio-learning-units-build-report",
       builderVersion: LEARNING_UNITS_BUILDER_VERSION,
+      componentLabelsFr: {
+         file: componentLabels.path,
+         sha256: componentLabels.sha256,
+         entryCount: componentLabels.entryCount,
+         provenance: componentLabels.provenance,
+         upstreamLicenseApplies: componentLabels.upstreamLicenseApplies,
+      },
       derivedFrom: {
          characterCompositionBuildId: compositionManifest.buildId,
          characterRadicalsBuildId: radicalsData.manifest.buildId,
@@ -666,6 +696,7 @@ export async function buildLearningUnitsIndex(options = {}) {
 
    const manifestSeed = JSON.stringify({
       builderVersion: LEARNING_UNITS_BUILDER_VERSION,
+      componentLabelsFrSha256: componentLabels.sha256,
       compositionBuildId: compositionManifest.buildId,
       radicalsBuildId: radicalsData.manifest.buildId,
       dictionaryBuildId: dictionary.manifest.buildId,
@@ -685,6 +716,7 @@ export async function buildLearningUnitsIndex(options = {}) {
          "and word glosses/pinyin derived from CC-CEDICT (CC BY-SA 4.0) and CFDICT (CC BY-SA 3.0) via " +
          "data/generated/dictionary/",
       derivedFrom: report.derivedFrom,
+      componentLabelsFr: report.componentLabelsFr,
       utilityFormula: formula,
       counts,
       files: {
@@ -795,6 +827,23 @@ au nombre de mots maximal observé, ${report.utilityFormula.maxWordCountObserved
 | 3 | Dans mes cartes/packs personnels | ${c.personalLibraryFound ? c.personalLibraryCharacterCount : "0 (aucun export trouvé)"} |
 | 2 | Dans hsk1.json | ${c.hsk1RootCharacterCount} |
 | 1 / 0 | Fréquence lexicale dans mon dictionnaire | ${c.dictionaryCharacterCount} caractères notés |
+
+## 3 bis. Noms des composants enseignés
+
+| Mesure | Valeur |
+| --- | ---: |
+| Composants distincts enseignés | ${c.distinctTaughtComponentCount} |
+| … nommés par \`${report.componentLabelsFr.file}\` (écrit à la main) | ${c.taughtComponentsByGlossSource["components-fr"] || 0} |
+| … nommés par le dictionnaire français | ${c.taughtComponentsByGlossSource.dictionary || 0} |
+| … repli sur la définition anglaise de Make Me a Hanzi | ${c.taughtComponentsByGlossSource["composition-en"] || 0} |
+| … sans aucun nom dans les sources | ${c.taughtComponentsWithoutGlossCount} |
+
+\`componentGlossSource\` décrit désormais l'origine du **texte** affiché, et rien d'autre : un composant
+n'est étiqueté \`dictionary\` que si le dictionnaire fournit réellement un sens. ${
+      c.taughtComponentsWithoutGloss.length
+         ? `Composants encore sans nom, laissés vides plutôt qu'inventés : ${c.taughtComponentsWithoutGloss.join(", ")}.`
+         : "Tous les composants enseignés portent un nom."
+   }
 
 ## 4. Unités d'apprentissage
 

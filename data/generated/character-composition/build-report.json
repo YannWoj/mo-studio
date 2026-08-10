@@ -1,6 +1,6 @@
 {
   "format": "mo-studio-character-composition-build-report",
-  "builderVersion": "1.2.0",
+  "builderVersion": "1.3.0",
   "source": {
     "project": "Make Me a Hanzi",
     "file": "data/source/makemeahanzi/dictionary.txt",
@@ -15,6 +15,54 @@
     "entryCount": 8,
     "provenance": "Original Mò Studio project content; manually written, not machine-translated",
     "upstreamLicenseApplies": false
+  },
+  "componentLabelsFr": {
+    "file": "data/source/character-components-fr.json",
+    "sha256": "056c091f0362217a726bd032283e70392bae57a8d3a94ab85741d0f3c99a6375",
+    "entryCount": 183,
+    "provenance": "Original Mò Studio project content; manually written, not machine-translated",
+    "upstreamLicenseApplies": false
+  },
+  "componentLabels": {
+    "displayedComponentCount": 1815,
+    "namedByHandWrittenFileCount": 183,
+    "namedByFrenchDictionaryCount": 1535,
+    "withEnglishSourceDefinitionOnlyCount": 66,
+    "withoutAnyLabelCount": 31,
+    "withoutAnyLabel": [
+      "侌",
+      "倠",
+      "兓",
+      "冡",
+      "匛",
+      "厽",
+      "吂",
+      "嘼",
+      "圤",
+      "夃",
+      "媷",
+      "屚",
+      "巸",
+      "惢",
+      "斦",
+      "汒",
+      "牚",
+      "犾",
+      "狊",
+      "猒",
+      "竘",
+      "羍",
+      "耴",
+      "臱",
+      "豙",
+      "閵",
+      "隡",
+      "韰",
+      "鬳",
+      "魝",
+      "龶"
+    ],
+    "frenchLabelledComponentUsages": 19126
   },
   "coverage": {
     "sourceCharacterCompositionBlockCount": 9543,

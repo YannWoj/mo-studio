@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { loadComponentLabelsFr } from "./component-labels-fr.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
@@ -9,7 +10,7 @@ const projectRoot = path.resolve(scriptDirectory, "..");
 export const MAKE_ME_A_HANZI_REVISION = "bddc96d41bef78427ed0e034e9f7e31d71fd1b92";
 export const MAKE_ME_A_HANZI_DICTIONARY_SHA256 =
    "744bb05d5b0742e9ee35c37791f94d56a173349b3367569e7ca11e510364d203";
-export const COMPOSITION_BUILDER_VERSION = "1.2.0";
+export const COMPOSITION_BUILDER_VERSION = "1.3.0";
 export const COMPOSITION_CHUNK_MODULO = 64;
 
 const defaultSourceDirectory = path.join(projectRoot, "data", "source", "makemeahanzi");
@@ -19,13 +20,9 @@ const defaultOutputDirectory = path.join(
    "generated",
    "character-composition",
 );
-const dictionaryCharacterIndexPath = path.join(
-   projectRoot,
-   "data",
-   "generated",
-   "dictionary",
-   "character-index.json",
-);
+const dictionaryDirectory = path.join(projectRoot, "data", "generated", "dictionary");
+const dictionaryCharacterIndexPath = path.join(dictionaryDirectory, "character-index.json");
+const dictionarySearchPreviewsPath = path.join(dictionaryDirectory, "search-previews.json");
 const defaultHintTranslationsPath = path.join(
    projectRoot,
    "data",
@@ -289,11 +286,43 @@ export async function buildCharacterComposition(options = {}) {
       hintTranslations[character] = translation;
    }
 
+   const componentLabelsFr = await loadComponentLabelsFr(options.componentLabelsFrPath);
+
    const dictionaryCharacterIndex = JSON.parse(
       await readFile(dictionaryCharacterIndexPath, "utf8"),
    );
    const dictionaryCharacters = new Set(Object.keys(dictionaryCharacterIndex));
+   const dictionaryPreviews = JSON.parse(
+      await readFile(dictionarySearchPreviewsPath, "utf8"),
+   ).entries;
+
+   // Le sens français déjà produit par le dictionnaire du projet (CFDICT/CC-CEDICT)
+   // nomme la plupart des composants courants (氵, 口, 木…). Sans lui, la ligne
+   // « Composition » affichait la définition anglaise de Make Me a Hanzi même quand
+   // une traduction française existait déjà dans le dépôt.
+   const frenchGlossCache = new Map();
+   function frenchDictionaryGloss(character) {
+      if (frenchGlossCache.has(character)) return frenchGlossCache.get(character);
+      const indexed = dictionaryCharacterIndex[character];
+      let gloss = null;
+      if (indexed) {
+         gloss = cleanText(dictionaryPreviews[indexed.entryRef]?.[5]);
+         if (!gloss) {
+            const sameTextWordRef = (indexed.wordRefs || []).find(
+               (ref) => dictionaryPreviews[ref]?.[1] === character,
+            );
+            if (sameTextWordRef != null) gloss = cleanText(dictionaryPreviews[sameTextWordRef]?.[5]);
+         }
+      }
+      frenchGlossCache.set(character, gloss);
+      return gloss;
+   }
+   // priorité : nom écrit à la main > sens du dictionnaire français > (repli anglais côté affichage)
+   function frenchLabel(character) {
+      return componentLabelsFr.labels[character] || frenchDictionaryGloss(character) || null;
+   }
    const records = [];
+   let frenchLabelledComponentUsages = 0;
    let unknownCompositionCount = 0;
    let partiallyKnownCompositionCount = 0;
    let pictophoneticSourceCount = 0;
@@ -315,18 +344,27 @@ export async function buildCharacterComposition(options = {}) {
       const components = {};
       for (const character of componentCharacters.sort(compareCharacters)) {
          const component = sourceByCharacter.get(character);
+         const definitionFr = frenchLabel(character);
+         if (definitionFr) frenchLabelledComponentUsages++;
          components[character] = {
             definition: shortDefinition(component?.definition),
+            // nom français écrit à la main ; absent quand aucune entrée ne le couvre
+            ...(definitionFr ? { definitionFr } : {}),
             pinyin: Array.isArray(component?.pinyin)
                ? component.pinyin.map(cleanText).filter(Boolean)
                : [],
          };
       }
+      const radical = cleanText(entry.radical);
+      // la clé est affichée à part de l'arbre de composition et n'en est pas
+      // toujours une feuille : elle porte donc son propre nom français.
+      const radicalFr = radical ? frenchLabel(radical) : null;
       records.push({
          character: entry.character,
          decomposition: cleanText(entry.decomposition),
          tree: hasUsableComposition ? compactIdsTree(tree) : null,
-         radical: cleanText(entry.radical),
+         radical,
+         ...(radicalFr ? { radicalFr } : {}),
          components,
          etymology,
          sourceLine: entry.sourceLine,
@@ -358,6 +396,33 @@ export async function buildCharacterComposition(options = {}) {
    const dictionaryWithFrenchOriginHint = dictionaryWithOriginHint.filter(
       (character) => recordByCharacter.get(character).etymology?.hintFr,
    );
+   // Couverture des noms de composants réellement affichés : on ne compte que les
+   // composants atteignables depuis une fiche du dictionnaire, seuls visibles.
+   const displayedComponents = new Set();
+   for (const character of dictionaryWithBlock) {
+      const record = recordByCharacter.get(character);
+      for (const component of Object.keys(record.components)) displayedComponents.add(component);
+      if (record.radical) displayedComponents.add(record.radical);
+   }
+   const componentsNamedByHand = [...displayedComponents].filter(
+      (component) => componentLabelsFr.labels[component],
+   );
+   const componentsNamedByDictionary = [...displayedComponents].filter(
+      (component) => !componentLabelsFr.labels[component] && frenchDictionaryGloss(component),
+   );
+   const componentsWithEnglishOnly = [...displayedComponents]
+      .filter(
+         (component) =>
+            !frenchLabel(component) && shortDefinition(sourceByCharacter.get(component)?.definition),
+      )
+      .sort(compareCharacters);
+   const componentsWithoutAnyLabel = [...displayedComponents]
+      .filter(
+         (component) =>
+            !frenchLabel(component) && !shortDefinition(sourceByCharacter.get(component)?.definition),
+      )
+      .sort(compareCharacters);
+
    const partialSourceEntries = sourceEntries.filter(
       (entry) => cleanText(entry.decomposition)?.includes("？") && cleanText(entry.decomposition) !== "？",
    );
@@ -424,6 +489,22 @@ export async function buildCharacterComposition(options = {}) {
          provenance: "Original Mò Studio project content; manually written, not machine-translated",
          upstreamLicenseApplies: false,
       },
+      componentLabelsFr: {
+         file: componentLabelsFr.path,
+         sha256: componentLabelsFr.sha256,
+         entryCount: componentLabelsFr.entryCount,
+         provenance: componentLabelsFr.provenance,
+         upstreamLicenseApplies: componentLabelsFr.upstreamLicenseApplies,
+      },
+      componentLabels: {
+         displayedComponentCount: displayedComponents.size,
+         namedByHandWrittenFileCount: componentsNamedByHand.length,
+         namedByFrenchDictionaryCount: componentsNamedByDictionary.length,
+         withEnglishSourceDefinitionOnlyCount: componentsWithEnglishOnly.length,
+         withoutAnyLabelCount: componentsWithoutAnyLabel.length,
+         withoutAnyLabel: componentsWithoutAnyLabel,
+         frenchLabelledComponentUsages,
+      },
       coverage: {
          sourceCharacterCompositionBlockCount: records.length,
          sourceUsableCompositionCount: recordsWithUsableComposition.length,
@@ -459,7 +540,25 @@ export async function buildCharacterComposition(options = {}) {
 - License: GNU Lesser General Public License v3 or later
 - French hint overrides: \`data/source/character-hints-fr.json\`
 - French override SHA-256: \`${hintTranslationsHash}\`
-- French overrides are original, manually written Mò Studio content; the upstream license does not apply to them.
+- French component names: \`${componentLabelsFr.path}\` (${componentLabelsFr.entryCount} entries)
+- French component names SHA-256: \`${componentLabelsFr.sha256}\`
+- Both French files are original, manually written Mò Studio content; the upstream license does not apply to them.
+
+## Component names shown on a character sheet
+
+| Measurement | Value |
+| --- | ---: |
+| Distinct components reachable from a dictionary character sheet | ${displayedComponents.size} |
+| … named by the hand-written French file | ${componentsNamedByHand.length} |
+| … named by the project's French dictionary | ${componentsNamedByDictionary.length} |
+| … falling back to the English Make Me a Hanzi definition | ${componentsWithEnglishOnly.length} |
+| … with no name in any source | ${componentsWithoutAnyLabel.length} |
+
+${
+   componentsWithoutAnyLabel.length
+      ? `Components with no name in any source (left blank rather than invented): ${componentsWithoutAnyLabel.join(", ")}`
+      : "Every displayed component has a name."
+}
 
 | Measurement | Value |
 | --- | ---: |
@@ -492,6 +591,7 @@ Generated indexes and chunks are transformations of \`dictionary.txt\` and remai
    const manifestSeed = JSON.stringify({
       sourceHash,
       hintTranslationsHash,
+      componentLabelsFrHash: componentLabelsFr.sha256,
       builderVersion: COMPOSITION_BUILDER_VERSION,
       chunkMetadata,
       indexHash: sha256(indexBuffer),
@@ -506,6 +606,8 @@ Generated indexes and chunks are transformations of \`dictionary.txt\` and remai
       sourceSha256: sourceHash,
       license: "GNU Lesser General Public License v3 or later",
       hintTranslations: report.hintTranslations,
+      componentLabelsFr: report.componentLabelsFr,
+      componentLabels: report.componentLabels,
       chunkModulo: COMPOSITION_CHUNK_MODULO,
       chunkPathTemplate: "chunks/{chunk}.json",
       characterIndex: {

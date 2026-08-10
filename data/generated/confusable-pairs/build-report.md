@@ -2,7 +2,7 @@
 
 ## Provenance
 
-- Composition des caractères : `data/generated/character-composition/` (buildId `d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a`)
+- Composition des caractères : `data/generated/character-composition/` (buildId `7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567`)
 - Traits (SVG + médianes) : `data/generated/hanzi-writer/2.0.1/`
 - Dictionnaire : `data/generated/dictionary/` (buildId `f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea`) — utilisé uniquement pour filtrer
   l'univers comparable et détecter les couples simplifié/traditionnel ; aucun texte CC-CEDICT/CFDICT n'est copié dans cette sortie.

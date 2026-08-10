@@ -78,6 +78,21 @@ and is not subject to the Make Me a Hanzi upstream license. The composition
 build records its hash and merges only its explicitly present entries beside
 the unchanged English source hints.
 
+French names for character components follow the same contract in
+`data/source/character-components-fr.json`. It names the bound radical forms
+(辶, 讠, 钅, ⺼, 礻, 衤…) and the rarer components that the project's French
+dictionary does not cover, and it disambiguates the pairs modern fonts draw
+almost identically (⺼ "viande, chair" vs 月 "lune, mois"; 衤 "vêtement" vs
+礻 "esprit, autel"). It is original Mò Studio project content, hand-written,
+never machine-translated, and not subject to the Make Me a Hanzi upstream
+license. `scripts/component-labels-fr.mjs` loads and validates it once for the
+three builds that display component names (`build-character-composition`,
+`build-character-radicals`, `build-learning-units`), each of which records its
+hash. Precedence is: hand-written French name, then the French gloss already
+produced by `data/generated/dictionary/`, then the English Make Me a Hanzi
+definition. Components that no source names are left blank, and are counted and
+listed in the build reports rather than invented.
+
 ## Learning-units index (phonetic families, dependency graph, utility scores)
 
 - Inputs: `data/generated/character-composition/`, `data/generated/character-radicals/`,

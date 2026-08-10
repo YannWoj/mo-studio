@@ -2,8 +2,8 @@
 
 ## Provenance
 
-- Composition des caractères : `data/generated/character-composition/` (buildId `d07861bdd40c2fe1cadccc8ea15bf7997f9e7a26073953e4f1bf3c9d19f4651a`)
-- Clés/radicaux : `data/generated/character-radicals/` (buildId `b77072378af768cdc74a89e616babc68df7a72646645d124f3a4bb4c790242e8`)
+- Composition des caractères : `data/generated/character-composition/` (buildId `7e305dc322ab7d424cdfedcef07640996c5be26bcc7bde6d7bdb8d699bb30567`)
+- Clés/radicaux : `data/generated/character-radicals/` (buildId `952adb1ed76e96af6ca15afeb966ef0a829c3478df2627834509b308d47fe9cd`)
 - Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `f65f8feea8923b6e0273028ec655ada04718239ff7e329eae68f68cae72740ea`)
 - HSK 1 (pack personnel) : `hsk1.json` (racine du dépôt), SHA-256 `80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419`
 - Bibliothèque personnelle (`db.cards`/packs) : **absente** — aucun fichier à `data/personal/library-export.json`. Ce signal vaut honnêtement zéro pour tous les caractères plutôt que d'être deviné. Pour l'inclure : Réglages → Données → Exporter dans l'application, puis enregistrer le fichier téléchargé à ce chemin et relancer le build.
@@ -76,6 +76,19 @@ au nombre de mots maximal observé, 2295).
 | 3 | Dans mes cartes/packs personnels | 0 (aucun export trouvé) |
 | 2 | Dans hsk1.json | 174 |
 | 1 / 0 | Fréquence lexicale dans mon dictionnaire | 14426 caractères notés |
+
+## 3 bis. Noms des composants enseignés
+
+| Mesure | Valeur |
+| --- | ---: |
+| Composants distincts enseignés | 1113 |
+| … nommés par `data/source/character-components-fr.json` (écrit à la main) | 142 |
+| … nommés par le dictionnaire français | 967 |
+| … repli sur la définition anglaise de Make Me a Hanzi | 1 |
+| … sans aucun nom dans les sources | 3 |
+
+`componentGlossSource` décrit désormais l'origine du **texte** affiché, et rien d'autre : un composant
+n'est étiqueté `dictionary` que si le dictionnaire fournit réellement un sens. Composants encore sans nom, laissés vides plutôt qu'inventés : 狊, 耴, 臱.
 
 ## 4. Unités d'apprentissage
 

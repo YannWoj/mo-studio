@@ -168,7 +168,48 @@ const { pathToFileURL } = require("node:url");
    assert.equal(Object.keys(frenchHints).length, 8);
    assert.equal(frenchHints["人"], "Les jambes d’un être humain");
 
-   console.log("PASS 72 character composition assertions");
+   // Noms français des composants : même contrat que les origines traduites —
+   // contenu original écrit à la main, prioritaire sur l'anglais de la source.
+   const frenchComponents = JSON.parse(
+      fs.readFileSync(path.resolve(__dirname, "../data/source/character-components-fr.json"), "utf8"),
+   );
+   assert.equal(report.componentLabelsFr.entryCount, Object.keys(frenchComponents).length);
+   assert.equal(report.componentLabelsFr.upstreamLicenseApplies, false);
+   assert.equal(report.componentLabelsFr.file, "data/source/character-components-fr.json");
+   for (const [component, label] of Object.entries(frenchComponents)) {
+      assert.equal(Array.from(component).length, 1, `clé non atomique : ${component}`);
+      assert.ok(/^\p{Script=Han}$/u.test(component), `clé hors écriture Han : ${component}`);
+      assert.ok(label.trim().length > 0, `libellé vide pour ${component}`);
+      assert.equal(label, label.trim().replace(/\s+/gu, " "), `espaces à normaliser pour ${component}`);
+   }
+
+   // Les deux radicaux visuellement jumeaux portent des noms distincts et explicites,
+   // et restent deux points de code différents — jamais fusionnés.
+   assert.notEqual("⺼".codePointAt(0), "月".codePointAt(0));
+   assert.notEqual("衤".codePointAt(0), "礻".codePointAt(0));
+   assert.match(frenchComponents["⺼"], /chair/);
+   assert.match(frenchComponents["月"], /lune/);
+   assert.match(frenchComponents["衤"], /衣/);
+   assert.match(frenchComponents["礻"], /示/);
+
+   // Les formes liées les plus fréquentes portent un nom français dans les chunks
+   // générés, quelle qu'en soit la source (fichier écrit à la main ou dictionnaire).
+   for (const [host, component] of [
+      ["神", "礻"], ["你", "亻"], ["河", "氵"], ["花", "艹"], ["说", "讠"],
+      ["到", "刂"], ["打", "扌"], ["快", "忄"], ["爱", "爫"], ["袖", "衤"],
+      ["这", "辶"], ["钱", "钅"], ["脸", "⺼"],
+   ]) {
+      const record = generated(host);
+      assert.ok(record, `fiche de composition absente : ${host}`);
+      const entry = record.components[component];
+      assert.ok(entry, `${component} n'est pas un composant de ${host}`);
+      assert.ok(entry.definitionFr, `composant fréquent sans nom français : ${component} (dans ${host})`);
+   }
+   // ⺼ et 月 se ressemblent mais ne disent pas la même chose à l'écran.
+   assert.match(generated("脸").components["⺼"].definitionFr, /chair/);
+   assert.match(generated("朋").components["月"].definitionFr, /lune/);
+
+   console.log("PASS 96 character composition assertions");
 })().catch((error) => {
    console.error(error);
    process.exitCode = 1;

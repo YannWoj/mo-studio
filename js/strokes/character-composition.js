@@ -2,10 +2,21 @@
 
 const CHARACTER_COMPOSITION_REVISION = "bddc96d41bef78427ed0e034e9f7e31d71fd1b92";
 
+// Le nom français écrit à la main (data/source/character-components-fr.json,
+// fusionné au build) prime sur la définition anglaise de Make Me a Hanzi. La clé
+// n'est pas toujours une feuille de l'arbre : elle porte son propre nom.
+function compositionComponentFr(character, record) {
+   return (
+      record.components?.[character]?.definitionFr ||
+      (record.radical === character ? record.radicalFr : "") ||
+      ""
+   );
+}
+
 function compositionComponentHtml(character, record, extraClass, definitionOverride) {
    const component = record.components?.[character] || {};
    const definition = definitionOverride === undefined
-      ? component.definition || ""
+      ? compositionComponentFr(character, record) || component.definition || ""
       : definitionOverride || "";
    const pinyin = Array.isArray(component.pinyin) ? component.pinyin.filter(Boolean).join(", ") : "";
    const title = [character, pinyin, definition].filter(Boolean).join(" · ");
@@ -36,7 +47,7 @@ function compositionTreeHtml(node, record, nested) {
 function compositionRoleHtml(character, role, record, useDefinition) {
    if (!character || character === "？") return "";
    const roleDefinition = useDefinition
-      ? record.components?.[character]?.definition || ""
+      ? compositionComponentFr(character, record) || record.components?.[character]?.definition || ""
       : "";
    const value = Array.from(character).length === 1 && /^\p{Script=Han}$/u.test(character)
       ? compositionComponentHtml(

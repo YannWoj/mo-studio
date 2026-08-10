@@ -1752,7 +1752,9 @@ async function main() {
       { character: "\u68ee", leaves: "\u6728\u6728\u6728", roles: [], sourceLine: 3405, groups: 1 },
       { character: "\u73ed", leaves: "\u738b\u5202\u738b", roles: [], sourceLine: 4571 },
       { character: "\u4eac", leaves: "\u4ea0\u53e3\u5c0f", roles: [], sourceLine: 161 },
-      { character: "\u5b66", leaves: "\u2e8d\u5196\u5b50", roles: [], sourceLine: 1762, unglossed: "\u2e8d", groups: 1 },
+      // \u2e8d n'a pas de d\u00e9finition dans Make Me a Hanzi, mais porte d\u00e9sormais un nom
+      // fran\u00e7ais \u00e9crit \u00e0 la main : plus aucune feuille de \u5b66 ne s'affiche sans libell\u00e9.
+      { character: "\u5b66", leaves: "\u2e8d\u5196\u5b50", roles: [], sourceLine: 1762, glossed: "\u2e8d", groups: 1 },
       { character: "\u6709", leaves: "\u6708", roles: ["\u6708:son"], sourceLine: 3185, unknowns: 1 },
       { character: "\u96e8", leaves: "\u5e00", roles: [], sourceLine: 8670, unknowns: 1, origin: "Des gouttes de pluie tombant d’un nuage 帀", originLang: "fr", english: false },
       { character: "\u5317", leaves: "\u5315", roles: [], sourceLine: 738, unknowns: 1 },
@@ -1788,7 +1790,7 @@ async function main() {
       })()`);
       const originMatches=!Object.hasOwn(sample,'origin')||(rendered.origin===sample.origin&&rendered.originLang===sample.originLang&&rendered.english===sample.english&&(!sample.origin||(rendered.originTitle===sample.origin&&rendered.lineClamp==='2')));
       assert(
-         rendered.leaves===sample.leaves&&JSON.stringify(rendered.roles)===JSON.stringify(sample.roles)&&rendered.groups===(sample.groups||0)&&rendered.unknowns===(sample.unknowns||0)&&rendered.unknownGlosses===0&&!rendered.rawUnknown&&!rendered.rawIds&&rendered.source.includes('ligne '+sample.sourceLine)&&rendered.lines===2&&originMatches&&(!sample.unglossed||rendered.unglossed.includes(sample.unglossed)),
+         rendered.leaves===sample.leaves&&JSON.stringify(rendered.roles)===JSON.stringify(sample.roles)&&rendered.groups===(sample.groups||0)&&rendered.unknowns===(sample.unknowns||0)&&rendered.unknownGlosses===0&&!rendered.rawUnknown&&!rendered.rawIds&&rendered.source.includes('ligne '+sample.sourceLine)&&rendered.lines===2&&originMatches&&(!sample.unglossed||rendered.unglossed.includes(sample.unglossed))&&(!sample.glossed||!rendered.unglossed.includes(sample.glossed)),
          `Composition case failed for ${sample.character}: ${JSON.stringify(rendered)}`,
       );
    }
