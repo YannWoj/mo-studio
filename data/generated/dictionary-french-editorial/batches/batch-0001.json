@@ -1,1856 +1,8 @@
 {
-  "batchId": "fr-batch-cb8092f426ea180b505a32bf",
+  "batchId": "fr-batch-c85b92b00994a109eb762c21",
   "count": 40,
-  "dictionaryBuildId": "3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27",
+  "dictionaryBuildId": "84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9",
   "entries": [
-    {
-      "candidateId": "fr-candidate-4460f5cb4a679599e8d9273b",
-      "definitionsEn": [
-        "on top of",
-        "above-mentioned",
-        "also pr. [shang4 mian5]"
-      ],
-      "dictionaryEntryId": "word-e4160552411e38e26196e5cf",
-      "forms": {
-        "simplified": "上面",
-        "traditional": "上面"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-e4160552411e38e26196e5cf"
-          ],
-          "chinese": "上面",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:126",
-          "hskLevel": 2,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "shàngmiàn",
-          "selectedPinyinNumbered": "shang4 mian4",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 126
-            }
-          ],
-          "sourceTranslation": "above, top"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "shang4 mian4",
-        "simplified": "上面",
-        "traditional": "上面"
-      },
-      "pinyin": {
-        "marked": "shàng miàn",
-        "numbered": "shang4 mian4",
-        "plain": "shang mian"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:126"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            1863
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-c738572978e9f1558929f082",
-      "definitionsEn": [
-        "below",
-        "under",
-        "next",
-        "the following",
-        "also pr. [xia4 mian5]"
-      ],
-      "dictionaryEntryId": "word-f2e85930991abd0bcbe25cdd",
-      "forms": {
-        "simplified": "下面",
-        "traditional": "下面"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-f2e85930991abd0bcbe25cdd",
-            "word-95662ba0b19be7f40488e1a5"
-          ],
-          "chinese": "下面",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:159",
-          "hskLevel": 2,
-          "linkReason": "unique-source-translation-match",
-          "pinyin": "xiàmiàn",
-          "selectedPinyinNumbered": "xia4 mian4",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 159
-            }
-          ],
-          "sourceTranslation": "below, under"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "xia4 mian4",
-        "simplified": "下面",
-        "traditional": "下面"
-      },
-      "pinyin": {
-        "marked": "xià miàn",
-        "numbered": "xia4 mian4",
-        "plain": "xia mian"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:159"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            2089
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-5538947d3ff4fc189e043372",
-      "definitionsEn": [
-        "to go out; to come out",
-        "to arise; to occur",
-        "to produce; to yield",
-        "to go beyond; to exceed",
-        "(used after a verb to indicate an outward direction or a positive result)",
-        "classifier for dramas, plays, operas etc"
-      ],
-      "dictionaryEntryId": "word-27acd0e606adff51489a2fd0",
-      "forms": {
-        "simplified": "出",
-        "traditional": "出"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-出",
-            "word-aac8991ca4b1b370c232d9d0",
-            "word-27acd0e606adff51489a2fd0"
-          ],
-          "chinese": "出",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:16",
-          "hskLevel": 2,
-          "linkReason": "unique-non-variant-semantic-entry",
-          "pinyin": "chū",
-          "selectedPinyinNumbered": "chu1",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 16
-            }
-          ],
-          "sourceTranslation": "to go out, to leave"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "chu1",
-        "simplified": "出",
-        "traditional": "出"
-      },
-      "pinyin": {
-        "marked": "chū",
-        "numbered": "chu1",
-        "plain": "chu"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:16"
-          ],
-          "levels": [
-            2
-          ]
-        },
-        {
-          "characters": [
-            "出"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "出"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            13046
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-247fa5d61943376943ea08fb",
-      "definitionsEn": [
-        "to come out",
-        "to appear",
-        "to arise"
-      ],
-      "dictionaryEntryId": "word-3c09bd1af98d6a957722950b",
-      "forms": {
-        "simplified": "出来",
-        "traditional": "出來"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-3c09bd1af98d6a957722950b"
-          ],
-          "chinese": "出来",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:18",
-          "hskLevel": 2,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "chūlái",
-          "selectedPinyinNumbered": "chu1 lai2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 18
-            }
-          ],
-          "sourceTranslation": "to come out"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "chu1 lai2",
-        "simplified": "出来",
-        "traditional": "出來"
-      },
-      "pinyin": {
-        "marked": "chū lái",
-        "numbered": "chu1 lai2",
-        "plain": "chu lai"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:18"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            13067
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-07708194438f824156547ff5",
-      "definitionsEn": [
-        "outside (also pr. [wai4 mian5] for this sense)",
-        "surface",
-        "exterior",
-        "external appearance"
-      ],
-      "dictionaryEntryId": "word-f92ade87a9fbda32d26ba860",
-      "forms": {
-        "simplified": "外面",
-        "traditional": "外面"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-f92ade87a9fbda32d26ba860"
-          ],
-          "chinese": "外面",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:147",
-          "hskLevel": 2,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "wàimiàn",
-          "selectedPinyinNumbered": "wai4 mian4",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 147
-            }
-          ],
-          "sourceTranslation": "outside"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "wai4 mian4",
-        "simplified": "外面",
-        "traditional": "外面"
-      },
-      "pinyin": {
-        "marked": "wài miàn",
-        "numbered": "wai4 mian4",
-        "plain": "wai mian"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:147"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            27185
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-a039aa273eed5ff282f7da0b",
-      "definitionsEn": [
-        "bed; couch (furniture that one can lie down on) (CL:張|张[zhang1])",
-        "bed; bottom (of rivers, oceans, gardens etc)",
-        "frame; chassis",
-        "classifier for blankets, quilts etc"
-      ],
-      "dictionaryEntryId": "word-a0e92b77ee4044cda2ef4e36",
-      "forms": {
-        "simplified": "床",
-        "traditional": "床"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-床",
-            "word-06bcc83c6f56b86f8b7cf42d",
-            "word-a0e92b77ee4044cda2ef4e36"
-          ],
-          "chinese": "床",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:21",
-          "hskLevel": 2,
-          "linkReason": "unique-non-variant-semantic-entry",
-          "pinyin": "chuáng",
-          "selectedPinyinNumbered": "chuang2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 21
-            }
-          ],
-          "sourceTranslation": "bed"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "chuang2",
-        "simplified": "床",
-        "traditional": "床"
-      },
-      "pinyin": {
-        "marked": "chuáng",
-        "numbered": "chuang2",
-        "plain": "chuang"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:21"
-          ],
-          "levels": [
-            2
-          ]
-        },
-        {
-          "characters": [
-            "床"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "床"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            38109
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-ba8e445c308b928d02130903",
-      "definitionsEn": [
-        "surname You",
-        "to swim",
-        "variant of 遊|游[you2]"
-      ],
-      "dictionaryEntryId": "word-3f325b78b4069cae63755b67",
-      "forms": {
-        "simplified": "游",
-        "traditional": "游"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-游",
-            "word-05c5ae3f7b9c18650c623e1a",
-            "word-3f325b78b4069cae63755b67"
-          ],
-          "chinese": "游",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:177",
-          "hskLevel": 2,
-          "linkReason": "unique-source-translation-match",
-          "pinyin": "yóu",
-          "selectedPinyinNumbered": "you2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 177
-            }
-          ],
-          "sourceTranslation": "to swim"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "you2",
-        "simplified": "游",
-        "traditional": "游"
-      },
-      "pinyin": {
-        "marked": "yóu",
-        "numbered": "you2",
-        "plain": "you"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:177"
-          ],
-          "levels": [
-            2
-          ]
-        },
-        {
-          "characters": [
-            "游"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "游"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            66591,
-            66592
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": [
-        "variant of 遊|游[you2]"
-      ]
-    },
-    {
-      "candidateId": "fr-candidate-4de0890a6bc561ba077ef785",
-      "definitionsEn": [
-        "to stand up; to get up",
-        "also pr. [qi3lai2]"
-      ],
-      "dictionaryEntryId": "word-c49219e1df24da7bc1948981",
-      "forms": {
-        "simplified": "起来",
-        "traditional": "起來"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "normalized-pinyin",
-          "candidateDictionaryEntryIds": [
-            "word-3eddc30d8aeb67f18b0c69dd",
-            "word-c49219e1df24da7bc1948981"
-          ],
-          "chinese": "起来",
-          "dictionaryLinkStatus": "normalized-pinyin",
-          "hskEntryId": "hsk:2:118",
-          "hskLevel": 2,
-          "linkReason": "only-neutral-tone-written-or-omitted",
-          "pinyin": "qǐlái",
-          "selectedPinyinNumbered": "qi3 lai5",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 118
-            }
-          ],
-          "sourceTranslation": "to get up, to stand up; used after verbs to indicate upward movement or beginning"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "qi3 lai5",
-        "simplified": "起来",
-        "traditional": "起來"
-      },
-      "pinyin": {
-        "marked": "qǐ lai",
-        "numbered": "qi3 lai5",
-        "plain": "qi lai"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:118"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            104060
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-68fac644e788b8ab415a70b0",
-      "definitionsEn": [
-        "to come over",
-        "to manage",
-        "to handle",
-        "to be able to take care of"
-      ],
-      "dictionaryEntryId": "word-c7295b0f03739a28f1514458",
-      "forms": {
-        "simplified": "过来",
-        "traditional": "過來"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-c7295b0f03739a28f1514458"
-          ],
-          "chinese": "过来",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:48",
-          "hskLevel": 2,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "guòlái",
-          "selectedPinyinNumbered": "guo4 lai2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 48
-            }
-          ],
-          "sourceTranslation": "to come over"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "guo4 lai2",
-        "simplified": "过来",
-        "traditional": "過來"
-      },
-      "pinyin": {
-        "marked": "guò lái",
-        "numbered": "guo4 lai2",
-        "plain": "guo lai"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:48"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            108156
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-204d385455e983ec301beb8e",
-      "definitionsEn": [
-        "surname Yin",
-        "overcast (weather)",
-        "cloudy",
-        "shady",
-        "Yin (the negative principle of Yin and Yang)",
-        "negative (electric.)",
-        "feminine",
-        "moon",
-        "implicit",
-        "hidden",
-        "genitalia"
-      ],
-      "dictionaryEntryId": "word-83dc9de3ef4a706bf98d007c",
-      "forms": {
-        "simplified": "阴",
-        "traditional": "陰"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-阴",
-            "word-22bfa4c21cb8f5b538c3e693",
-            "word-83dc9de3ef4a706bf98d007c"
-          ],
-          "chinese": "阴",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:175",
-          "hskLevel": 2,
-          "linkReason": "unique-non-variant-semantic-entry",
-          "pinyin": "yīn",
-          "selectedPinyinNumbered": "yin1",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 175
-            }
-          ],
-          "sourceTranslation": "cloudy"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "yin1",
-        "simplified": "阴",
-        "traditional": "陰"
-      },
-      "pinyin": {
-        "marked": "yīn",
-        "numbered": "yin1",
-        "plain": "yin"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:175"
-          ],
-          "levels": [
-            2
-          ]
-        },
-        {
-          "characters": [
-            "阴",
-            "陰"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "阴",
-            "陰"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            114628,
-            114629
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-bd3fc48232da999fdbadb87e",
-      "definitionsEn": [
-        "senior high school (abbr. for 高級中學|高级中学[gao1 ji2 zhong1 xue2])"
-      ],
-      "dictionaryEntryId": "word-9e9322ba1e0a240864a79cac",
-      "forms": {
-        "simplified": "高中",
-        "traditional": "高中"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-9e9322ba1e0a240864a79cac"
-          ],
-          "chinese": "高中",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:2:42",
-          "hskLevel": 2,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "gāozhōng",
-          "selectedPinyinNumbered": "gao1 zhong1",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk2.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
-            "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
-            "title": "New HSK 2 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 2,
-              "sourceNumber": 42
-            }
-          ],
-          "sourceTranslation": "high school"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "gao1 zhong1",
-        "simplified": "高中",
-        "traditional": "高中"
-      },
-      "pinyin": {
-        "marked": "gāo zhōng",
-        "numbered": "gao1 zhong1",
-        "plain": "gao zhong"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:2:42"
-          ],
-          "levels": [
-            2
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            121233
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": [
-        "senior high school (abbr. for 高級中學|高级中学[gao1 ji2 zhong1 xue2])"
-      ]
-    },
-    {
-      "candidateId": "fr-candidate-37bc7d89dcb322437fbae174",
-      "definitionsEn": [
-        "to borrow",
-        "(used in combination with 給|给[gei3] or 出[chu1] etc) to lend",
-        "to make use of; to avail oneself of",
-        "(sometimes followed by 著|着[zhe5]) by; with"
-      ],
-      "dictionaryEntryId": "word-d8a717d1084daade67e7809f",
-      "forms": {
-        "simplified": "借",
-        "traditional": "借"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-借",
-            "word-833c1adc2c3591a220e06160",
-            "word-d8a717d1084daade67e7809f"
-          ],
-          "chinese": "借",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:215",
-          "hskLevel": 3,
-          "linkReason": "unique-non-variant-semantic-entry",
-          "pinyin": "jiè",
-          "selectedPinyinNumbered": "jie4",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 215
-            }
-          ],
-          "sourceTranslation": "to borrow"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "jie4",
-        "simplified": "借",
-        "traditional": "借"
-      },
-      "pinyin": {
-        "marked": "jiè",
-        "numbered": "jie4",
-        "plain": "jie"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:215"
-          ],
-          "levels": [
-            3
-          ]
-        },
-        {
-          "characters": [
-            "借"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "借"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            8770
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-23d8a577559faa1911f8a3c5",
-      "definitionsEn": [
-        "relation",
-        "relationship",
-        "to concern",
-        "to affect",
-        "to have to do with",
-        "guanxi",
-        "CL:個|个[ge4]"
-      ],
-      "dictionaryEntryId": "word-d84644a8b7405bf2a0c9c016",
-      "forms": {
-        "simplified": "关系",
-        "traditional": "關係"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "normalized-pinyin",
-          "candidateDictionaryEntryIds": [
-            "word-04d86556e1e0748e18992d5c",
-            "word-d84644a8b7405bf2a0c9c016"
-          ],
-          "chinese": "关系",
-          "dictionaryLinkStatus": "normalized-pinyin",
-          "hskEntryId": "hsk:3:154",
-          "hskLevel": 3,
-          "linkReason": "only-neutral-tone-written-or-omitted",
-          "pinyin": "guānxì",
-          "selectedPinyinNumbered": "guan1 xi5",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 154
-            }
-          ],
-          "sourceTranslation": "relationship; (to relate)"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "guan1 xi5",
-        "simplified": "关系",
-        "traditional": "關係"
-      },
-      "pinyin": {
-        "marked": "guān xi",
-        "numbered": "guan1 xi5",
-        "plain": "guan xi"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:154"
-          ],
-          "levels": [
-            3
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            113691
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-e032cd1421ceb34d886a1322",
-      "definitionsEn": [
-        "to scrape",
-        "to blow",
-        "to shave",
-        "to plunder",
-        "to extort"
-      ],
-      "dictionaryEntryId": "word-282b0f6c5f532241a23c6178",
-      "forms": {
-        "simplified": "刮",
-        "traditional": "刮"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-刮",
-            "word-71c8c0db45465565ae7a9219",
-            "word-282b0f6c5f532241a23c6178"
-          ],
-          "chinese": "刮",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:151",
-          "hskLevel": 3,
-          "linkReason": "unique-source-translation-match",
-          "pinyin": "guā",
-          "selectedPinyinNumbered": "gua1",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 151
-            }
-          ],
-          "sourceTranslation": "to scrape, to blow"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "gua1",
-        "simplified": "刮",
-        "traditional": "刮"
-      },
-      "pinyin": {
-        "marked": "guā",
-        "numbered": "gua1",
-        "plain": "gua"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:151"
-          ],
-          "levels": [
-            3
-          ]
-        },
-        {
-          "characters": [
-            "刮"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "刮"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            14099
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-e7fb1cd74518835c243a4739",
-      "definitionsEn": [
-        "to review",
-        "revision",
-        "CL:次[ci4]"
-      ],
-      "dictionaryEntryId": "word-6ad05364b011cdc4faca0363",
-      "forms": {
-        "simplified": "复习",
-        "traditional": "復習"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-87280fe40e8ec909e7b5af7e",
-            "word-6ad05364b011cdc4faca0363"
-          ],
-          "chinese": "复习",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:134",
-          "hskLevel": 3,
-          "linkReason": "unique-non-variant-semantic-entry",
-          "pinyin": "fùxí",
-          "selectedPinyinNumbered": "fu4 xi2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 134
-            }
-          ],
-          "sourceTranslation": "to review"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "fu4 xi2",
-        "simplified": "复习",
-        "traditional": "復習"
-      },
-      "pinyin": {
-        "marked": "fù xí",
-        "numbered": "fu4 xi2",
-        "plain": "fu xi"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:134"
-          ],
-          "levels": [
-            3
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            40323
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-4ded3d54cfe36b554b27dd26",
-      "definitionsEn": [
-        "woman"
-      ],
-      "dictionaryEntryId": "word-e2c10dc461d150ffa5058d10",
-      "forms": {
-        "simplified": "女人",
-        "traditional": "女人"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-e2c10dc461d150ffa5058d10"
-          ],
-          "chinese": "女人",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:287",
-          "hskLevel": 3,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "nǚrén",
-          "selectedPinyinNumbered": "nü3 ren2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 287
-            }
-          ],
-          "sourceTranslation": "woman"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "nü3 ren2",
-        "simplified": "女人",
-        "traditional": "女人"
-      },
-      "pinyin": {
-        "marked": "nǚ rén",
-        "numbered": "nü3 ren2",
-        "plain": "nu ren"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:287"
-          ],
-          "levels": [
-            3
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            29761
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-3bcfefd636c4b0c96d5c8d9f",
-      "definitionsEn": [
-        "to inspect a ticket",
-        "to examine a ballot"
-      ],
-      "dictionaryEntryId": "word-955e0f70c869278ac209bff7",
-      "forms": {
-        "simplified": "检票",
-        "traditional": "檢票"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-955e0f70c869278ac209bff7"
-          ],
-          "chinese": "检票",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:200",
-          "hskLevel": 3,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "jiǎnpiào",
-          "selectedPinyinNumbered": "jian3 piao4",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 200
-            }
-          ],
-          "sourceTranslation": "ticket checking"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "jian3 piao4",
-        "simplified": "检票",
-        "traditional": "檢票"
-      },
-      "pinyin": {
-        "marked": "jiǎn piào",
-        "numbered": "jian3 piao4",
-        "plain": "jian piao"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:200"
-          ],
-          "levels": [
-            3
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            59598
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-cc0de56cb95767150d7fff60",
-      "definitionsEn": [
-        "electronic book",
-        "e-book",
-        "e-book reader"
-      ],
-      "dictionaryEntryId": "word-924e910f48b396b47d9496bd",
-      "forms": {
-        "simplified": "电子书",
-        "traditional": "電子書"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-924e910f48b396b47d9496bd"
-          ],
-          "chinese": "电子书",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:95",
-          "hskLevel": 3,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "diànzǐshū",
-          "selectedPinyinNumbered": "dian4 zi3 shu1",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 95
-            }
-          ],
-          "sourceTranslation": "e-book"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "dian4 zi3 shu1",
-        "simplified": "电子书",
-        "traditional": "電子書"
-      },
-      "pinyin": {
-        "marked": "diàn zǐ shū",
-        "numbered": "dian4 zi3 shu1",
-        "plain": "dian zi shu"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:95"
-          ],
-          "levels": [
-            3
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            116590
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-80c7d38305ce1a5b67e8bf51",
-      "definitionsEn": [
-        "sugar",
-        "sweets",
-        "candy",
-        "CL:顆|颗[ke1],塊|块[kuai4]"
-      ],
-      "dictionaryEntryId": "word-adf07341840f47ab64f51863",
-      "forms": {
-        "simplified": "糖",
-        "traditional": "糖"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "char-糖",
-            "word-48ba9fe83254c89b79c07291",
-            "word-adf07341840f47ab64f51863"
-          ],
-          "chinese": "糖",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:350",
-          "hskLevel": 3,
-          "linkReason": "unique-non-variant-semantic-entry",
-          "pinyin": "táng",
-          "selectedPinyinNumbered": "tang2",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 350
-            }
-          ],
-          "sourceTranslation": "candy, sugar"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "tang2",
-        "simplified": "糖",
-        "traditional": "糖"
-      },
-      "pinyin": {
-        "marked": "táng",
-        "numbered": "tang2",
-        "plain": "tang"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:350"
-          ],
-          "levels": [
-            3
-          ]
-        },
-        {
-          "characters": [
-            "糖"
-          ],
-          "code": "radical-navigation-character"
-        },
-        {
-          "characters": [
-            "糖"
-          ],
-          "code": "learning-unit-character"
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            83988
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": []
-    },
-    {
-      "candidateId": "fr-candidate-9926288a8c8652ed780be899",
-      "definitionsEn": [
-        "erhua variant of 聊天[liao2 tian1]"
-      ],
-      "dictionaryEntryId": "word-2c4f7efeafaeacaee511c5b2",
-      "forms": {
-        "simplified": "聊天儿",
-        "traditional": "聊天兒"
-      },
-      "hskEvidence": [
-        {
-          "baseDictionaryLinkStatus": "exact",
-          "candidateDictionaryEntryIds": [
-            "word-2c4f7efeafaeacaee511c5b2"
-          ],
-          "chinese": "聊天儿",
-          "dictionaryLinkStatus": "exact",
-          "hskEntryId": "hsk:3:256",
-          "hskLevel": 3,
-          "linkReason": "single-word-entry-candidate",
-          "pinyin": "liáotiānr",
-          "selectedPinyinNumbered": "liao2 tian1 r5",
-          "senseId": null,
-          "sourceDocument": {
-            "license": "NOASSERTION",
-            "path": "data/source/hsk/new_hsk3.pdf",
-            "publisher": "Mandarin Zest",
-            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
-            "reuseStatus": "reference-only-not-french",
-            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
-            "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
-            "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
-            "title": "New HSK 3 Vocab List",
-            "translationLanguage": "en"
-          },
-          "sourceNumbers": [
-            {
-              "hskLevel": 3,
-              "sourceNumber": 256
-            }
-          ],
-          "sourceTranslation": "to chat"
-        }
-      ],
-      "lexicalIdentity": {
-        "pinyinNumbered": "liao2 tian1 r5",
-        "simplified": "聊天儿",
-        "traditional": "聊天兒"
-      },
-      "pinyin": {
-        "marked": "liáo tiān r",
-        "numbered": "liao2 tian1 r5",
-        "plain": "liao tian r"
-      },
-      "priority": {
-        "category": "hsk-word",
-        "rank": 1
-      },
-      "priorityReasons": [
-        {
-          "code": "hsk-word",
-          "hskEntryIds": [
-            "hsk:3:256"
-          ],
-          "levels": [
-            3
-          ]
-        }
-      ],
-      "sourceRefs": [
-        {
-          "lines": [
-            88844
-          ],
-          "source": "CC-CEDICT"
-        }
-      ],
-      "sources": [
-        "CC-CEDICT"
-      ],
-      "state": "candidate",
-      "variantsOrReferences": [
-        "erhua variant of 聊天[liao2 tian1]"
-      ]
-    },
     {
       "candidateId": "fr-candidate-e9edc2262854f05fd9724829",
       "definitionsEn": [
@@ -3803,9 +1955,1863 @@
       ],
       "state": "candidate",
       "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-6d0d0c6513b67c0129a76dc5",
+      "definitionsEn": [
+        "joke; jest",
+        "to laugh at; to mock",
+        "ridiculous; absurd"
+      ],
+      "dictionaryEntryId": "word-02e6f3463ef2937190e55b96",
+      "forms": {
+        "simplified": "笑话",
+        "traditional": "笑話"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-02e6f3463ef2937190e55b96"
+          ],
+          "chinese": "笑话",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:817",
+          "hskLevel": 4,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "xiàohua",
+          "selectedPinyinNumbered": "xiao4 hua5",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 817
+            }
+          ],
+          "sourceTranslation": "joke, laughter; to joke, to laugh at"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "xiao4 hua5",
+        "simplified": "笑话",
+        "traditional": "笑話"
+      },
+      "pinyin": {
+        "marked": "xiào hua",
+        "numbered": "xiao4 hua5",
+        "plain": "xiao hua"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:817"
+          ],
+          "levels": [
+            4
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            82570
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-398614dec891b355c0ef3be6",
+      "definitionsEn": [
+        "(of sth long) wide; thick",
+        "(of sth granular) coarse",
+        "(of a voice) gruff",
+        "(of sb's manner etc) rough; crude; careless; rude"
+      ],
+      "dictionaryEntryId": "word-94912d87e500a7a7dbd9e693",
+      "forms": {
+        "simplified": "粗",
+        "traditional": "粗"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-粗",
+            "word-3bb9dae840c04dce082964e3",
+            "word-94912d87e500a7a7dbd9e693",
+            "word-9f834964bc3d93b7bfdf6c65"
+          ],
+          "chinese": "粗",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:105",
+          "hskLevel": 4,
+          "linkReason": "unique-source-translation-match",
+          "pinyin": "cū",
+          "selectedPinyinNumbered": "cu1",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 105
+            }
+          ],
+          "sourceTranslation": "coarse, rough, thick"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "cu1",
+        "simplified": "粗",
+        "traditional": "粗"
+      },
+      "pinyin": {
+        "marked": "cū",
+        "numbered": "cu1",
+        "plain": "cu"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:105"
+          ],
+          "levels": [
+            4
+          ]
+        },
+        {
+          "characters": [
+            "粗"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "粗"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            83690
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-8a9aed0c9264291c06f7ae02",
+      "definitionsEn": [
+        "offline",
+        "below the line"
+      ],
+      "dictionaryEntryId": "word-6ef0be5e6adbd2289102b6e6",
+      "forms": {
+        "simplified": "线下",
+        "traditional": "線下"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-6ef0be5e6adbd2289102b6e6"
+          ],
+          "chinese": "线下",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:800",
+          "hskLevel": 4,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "xiànxià",
+          "selectedPinyinNumbered": "xian4 xia4",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 800
+            }
+          ],
+          "sourceTranslation": "offline"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "xian4 xia4",
+        "simplified": "线下",
+        "traditional": "線下"
+      },
+      "pinyin": {
+        "marked": "xiàn xià",
+        "numbered": "xian4 xia4",
+        "plain": "xian xia"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:800"
+          ],
+          "levels": [
+            4
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            86278
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-50437e1e480fd87d50a823f3",
+      "definitionsEn": [
+        "online friend",
+        "netizen; Internet user"
+      ],
+      "dictionaryEntryId": "word-d310467074952e403cbb9af7",
+      "forms": {
+        "simplified": "网友",
+        "traditional": "網友"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-d310467074952e403cbb9af7"
+          ],
+          "chinese": "网友",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:768",
+          "hskLevel": 4,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "wǎngyǒu",
+          "selectedPinyinNumbered": "wang3 you3",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 768
+            }
+          ],
+          "sourceTranslation": "netizen, internet user"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "wang3 you3",
+        "simplified": "网友",
+        "traditional": "網友"
+      },
+      "pinyin": {
+        "marked": "wǎng yǒu",
+        "numbered": "wang3 you3",
+        "plain": "wang you"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:768"
+          ],
+          "levels": [
+            4
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            85999
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-59b35ccf6d7e5ebbabe08a28",
+      "definitionsEn": [
+        "Internet shopping",
+        "to purchase online"
+      ],
+      "dictionaryEntryId": "word-0615c4769ee516055d2c63d9",
+      "forms": {
+        "simplified": "网购",
+        "traditional": "網購"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-0615c4769ee516055d2c63d9"
+          ],
+          "chinese": "网购",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:765",
+          "hskLevel": 4,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "wǎnggòu",
+          "selectedPinyinNumbered": "wang3 gou4",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 765
+            }
+          ],
+          "sourceTranslation": "to shop online"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "wang3 gou4",
+        "simplified": "网购",
+        "traditional": "網購"
+      },
+      "pinyin": {
+        "marked": "wǎng gòu",
+        "numbered": "wang3 gou4",
+        "plain": "wang gou"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:765"
+          ],
+          "levels": [
+            4
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            86094
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-b2828823d6924c8981c7bab6",
+      "definitionsEn": [
+        "exterior surface",
+        "family relationship via females",
+        "to show (one's opinion)",
+        "a model",
+        "a table (listing information)",
+        "a form",
+        "a meter (measuring sth)"
+      ],
+      "dictionaryEntryId": "word-376326bfe28ebd684aba57ca",
+      "forms": {
+        "simplified": "表",
+        "traditional": "表"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-表",
+            "word-7d79b284191bf3f59f8d539e",
+            "word-376326bfe28ebd684aba57ca"
+          ],
+          "chinese": "表",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:33",
+          "hskLevel": 4,
+          "linkReason": "unique-source-translation-match",
+          "pinyin": "biǎo",
+          "selectedPinyinNumbered": "biao3",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 33
+            }
+          ],
+          "sourceTranslation": "watch, meter, table, form; (to express)"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "biao3",
+        "simplified": "表",
+        "traditional": "表"
+      },
+      "pinyin": {
+        "marked": "biǎo",
+        "numbered": "biao3",
+        "plain": "biao"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:33"
+          ],
+          "levels": [
+            4
+          ]
+        },
+        {
+          "characters": [
+            "表"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "表"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            98080
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-9311137aed916cd90cdc9f4d",
+      "definitionsEn": [
+        "to expound Buddhist teachings"
+      ],
+      "dictionaryEntryId": "word-67641acdb39289e5483d9a49",
+      "forms": {
+        "simplified": "说法",
+        "traditional": "說法"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-67641acdb39289e5483d9a49"
+          ],
+          "chinese": "说法",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:699",
+          "hskLevel": 4,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "shuōfǎ",
+          "selectedPinyinNumbered": "shuo1 fa3",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 699
+            }
+          ],
+          "sourceTranslation": "way of saying something, version, statement"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "shuo1 fa3",
+        "simplified": "说法",
+        "traditional": "說法"
+      },
+      "pinyin": {
+        "marked": "shuō fǎ",
+        "numbered": "shuo1 fa3",
+        "plain": "shuo fa"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:699"
+          ],
+          "levels": [
+            4
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            101066
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-de26096e2e0d5293720d6cbc",
+      "definitionsEn": [
+        "(in an expression of the form 起到[qi3 dao4] + … + 作用[zuo4 yong4]) to have (a (motivating etc) effect); to play (a (stabilizing etc) role)"
+      ],
+      "dictionaryEntryId": "word-172d3174f5660c4077d8bf18",
+      "forms": {
+        "simplified": "起到",
+        "traditional": "起到"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-172d3174f5660c4077d8bf18"
+          ],
+          "chinese": "起到",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:569",
+          "hskLevel": 4,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "qǐdào",
+          "selectedPinyinNumbered": "qi3 dao4",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 569
+            }
+          ],
+          "sourceTranslation": "to play the role of, to function as, to act as"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "qi3 dao4",
+        "simplified": "起到",
+        "traditional": "起到"
+      },
+      "pinyin": {
+        "marked": "qǐ dào",
+        "numbered": "qi3 dao4",
+        "plain": "qi dao"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:569"
+          ],
+          "levels": [
+            4
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            104065
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-1d94643f3d2e9c84c8d1390e",
+      "definitionsEn": [
+        "fresh",
+        "bright (in color)",
+        "delicious",
+        "tasty",
+        "delicacy",
+        "aquatic foods"
+      ],
+      "dictionaryEntryId": "word-bc047e5a70b3f02006725730",
+      "forms": {
+        "simplified": "鲜",
+        "traditional": "鮮"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-鲜",
+            "word-98e5a89dfdbda21261330072",
+            "word-bc047e5a70b3f02006725730"
+          ],
+          "chinese": "鲜",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:4:794",
+          "hskLevel": 4,
+          "linkReason": "unique-source-translation-match",
+          "pinyin": "xiān",
+          "selectedPinyinNumbered": "xian1",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk4.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+            "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+            "title": "New HSK 4 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 4,
+              "sourceNumber": 794
+            }
+          ],
+          "sourceTranslation": "fresh"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "xian1",
+        "simplified": "鲜",
+        "traditional": "鮮"
+      },
+      "pinyin": {
+        "marked": "xiān",
+        "numbered": "xian1",
+        "plain": "xian"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:4:794"
+          ],
+          "levels": [
+            4
+          ]
+        },
+        {
+          "characters": [
+            "鮮",
+            "鲜"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "鮮",
+            "鲜"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            122220
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-7d10308fba469fb42eeb493a",
+      "definitionsEn": [
+        "to rise",
+        "to go up",
+        "to ascend"
+      ],
+      "dictionaryEntryId": "word-650a0774de73c0bb0f367528",
+      "forms": {
+        "simplified": "上升",
+        "traditional": "上升"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-3df8bf80a156c572457f86ce",
+            "word-650a0774de73c0bb0f367528"
+          ],
+          "chinese": "上升",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:964",
+          "hskLevel": 5,
+          "linkReason": "unique-source-translation-match",
+          "pinyin": "shàngshēng",
+          "selectedPinyinNumbered": "shang4 sheng1",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 964
+            }
+          ],
+          "sourceTranslation": "to rise, to go up"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "shang4 sheng1",
+        "simplified": "上升",
+        "traditional": "上升"
+      },
+      "pinyin": {
+        "marked": "shàng shēng",
+        "numbered": "shang4 sheng1",
+        "plain": "shang sheng"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:964"
+          ],
+          "levels": [
+            5
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            1607
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-3c0d4d3de2819fd9ea17727c",
+      "definitionsEn": [
+        "purchase and sale; transaction",
+        "shop; store"
+      ],
+      "dictionaryEntryId": "word-d42f7bbf3a768c8f96f0456d",
+      "forms": {
+        "simplified": "买卖",
+        "traditional": "買賣"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-d42f7bbf3a768c8f96f0456d"
+          ],
+          "chinese": "买卖",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:749",
+          "hskLevel": 5,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "mǎimai",
+          "selectedPinyinNumbered": "mai3 mai5",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 749
+            }
+          ],
+          "sourceTranslation": "business, buying and selling"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "mai3 mai5",
+        "simplified": "买卖",
+        "traditional": "買賣"
+      },
+      "pinyin": {
+        "marked": "mǎi mai",
+        "numbered": "mai3 mai5",
+        "plain": "mai mai"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:749"
+          ],
+          "levels": [
+            5
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            103077
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-0d824d2f73a57a98865bba98",
+      "definitionsEn": [
+        "companion; pal",
+        "partner; business associate"
+      ],
+      "dictionaryEntryId": "word-0c64a15d02d560d1eed2fc85",
+      "forms": {
+        "simplified": "伙伴",
+        "traditional": "夥伴"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-23a224d04156a90565393334",
+            "word-0c64a15d02d560d1eed2fc85"
+          ],
+          "chinese": "伙伴",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:515",
+          "hskLevel": 5,
+          "linkReason": "unique-non-variant-semantic-entry",
+          "pinyin": "huǒbàn",
+          "selectedPinyinNumbered": "huo3 ban4",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 515
+            }
+          ],
+          "sourceTranslation": "companion, partner"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "huo3 ban4",
+        "simplified": "伙伴",
+        "traditional": "夥伴"
+      },
+      "pinyin": {
+        "marked": "huǒ bàn",
+        "numbered": "huo3 ban4",
+        "plain": "huo ban"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:515"
+          ],
+          "levels": [
+            5
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            27568
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-c6717d5739f830576cdc1c58",
+      "definitionsEn": [
+        "to announce; to make public; to publish"
+      ],
+      "dictionaryEntryId": "word-6288e3803aad3479ec4490f7",
+      "forms": {
+        "simplified": "公布",
+        "traditional": "公布"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-3ee1fb4200f066857061d41d",
+            "word-6288e3803aad3479ec4490f7"
+          ],
+          "chinese": "公布",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:407",
+          "hskLevel": 5,
+          "linkReason": "unique-non-variant-semantic-entry",
+          "pinyin": "gōngbù",
+          "selectedPinyinNumbered": "gong1 bu4",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 407
+            }
+          ],
+          "sourceTranslation": "to announce, to make public"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "gong1 bu4",
+        "simplified": "公布",
+        "traditional": "公布"
+      },
+      "pinyin": {
+        "marked": "gōng bù",
+        "numbered": "gong1 bu4",
+        "plain": "gong bu"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:407"
+          ],
+          "levels": [
+            5
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            11813
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-f54949bfe1b1006515e1212e",
+      "definitionsEn": [
+        "(bound form) matching; comparable to",
+        "(bound form) alone; single; one of a pair",
+        "classifier for horses, mules etc (Taiwan pr. [pi1])",
+        "classifier for cloth: bolt",
+        "horsepower"
+      ],
+      "dictionaryEntryId": "word-ae07db4c4e6fd787e70edc81",
+      "forms": {
+        "simplified": "匹",
+        "traditional": "匹"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-匹",
+            "word-d37e522728bbace21dbaed40",
+            "word-ae07db4c4e6fd787e70edc81"
+          ],
+          "chinese": "匹",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:828",
+          "hskLevel": 5,
+          "linkReason": "manual-source-sense-disambiguation",
+          "pinyin": "pǐ",
+          "selectedPinyinNumbered": "pi3",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 828
+            }
+          ],
+          "sourceTranslation": "measure word for horses, cloth"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "pi3",
+        "simplified": "匹",
+        "traditional": "匹"
+      },
+      "pinyin": {
+        "marked": "pǐ",
+        "numbered": "pi3",
+        "plain": "pi"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:828"
+          ],
+          "levels": [
+            5
+          ]
+        },
+        {
+          "characters": [
+            "匹"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "匹"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            16436
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-217365f678f998abb51abd59",
+      "definitionsEn": [
+        "repeatedly",
+        "over and over",
+        "to upend",
+        "unstable",
+        "to come and go",
+        "(of an illness) to return"
+      ],
+      "dictionaryEntryId": "word-6e98732becd04aeb0c664b81",
+      "forms": {
+        "simplified": "反复",
+        "traditional": "反覆"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-c96b2d07fa4c1acb525b5dba",
+            "word-6e98732becd04aeb0c664b81"
+          ],
+          "chinese": "反复",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:332",
+          "hskLevel": 5,
+          "linkReason": "unique-non-variant-semantic-entry",
+          "pinyin": "fǎnfù",
+          "selectedPinyinNumbered": "fan3 fu4",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 332
+            }
+          ],
+          "sourceTranslation": "repeatedly; to repeat; repetition"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "fan3 fu4",
+        "simplified": "反复",
+        "traditional": "反覆"
+      },
+      "pinyin": {
+        "marked": "fǎn fù",
+        "numbered": "fan3 fu4",
+        "plain": "fan fu"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:332"
+          ],
+          "levels": [
+            5
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            18404
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-8e07b60fc78a020046940d28",
+      "definitionsEn": [
+        "to close",
+        "to join",
+        "to fit",
+        "to be equal to",
+        "whole",
+        "together",
+        "round (in battle)",
+        "conjunction (astronomy)",
+        "1st note of pentatonic scale",
+        "old variant of 盒[he2]"
+      ],
+      "dictionaryEntryId": "word-c23c166c34c5051056dd6083",
+      "forms": {
+        "simplified": "合",
+        "traditional": "合"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-合",
+            "word-80f1661821cce4385407cf0b",
+            "word-c23c166c34c5051056dd6083"
+          ],
+          "chinese": "合",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:474",
+          "hskLevel": 5,
+          "linkReason": "unique-non-variant-semantic-entry",
+          "pinyin": "hé",
+          "selectedPinyinNumbered": "he2",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 474
+            }
+          ],
+          "sourceTranslation": "to close, to fit; to join"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "he2",
+        "simplified": "合",
+        "traditional": "合"
+      },
+      "pinyin": {
+        "marked": "hé",
+        "numbered": "he2",
+        "plain": "he"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:474"
+          ],
+          "levels": [
+            5
+          ]
+        },
+        {
+          "characters": [
+            "合"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "合"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            19648
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": [
+        "old variant of 盒[he2]"
+      ]
+    },
+    {
+      "candidateId": "fr-candidate-0731adab58cbb0e5a1cf8e12",
+      "definitionsEn": [
+        "ah (used to express surprise)",
+        "(onom.) creaking"
+      ],
+      "dictionaryEntryId": "word-6af1aea36ee07cd019f0f71b",
+      "forms": {
+        "simplified": "呀",
+        "traditional": "呀"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-呀",
+            "word-6af1aea36ee07cd019f0f71b"
+          ],
+          "chinese": "呀",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:1320",
+          "hskLevel": 5,
+          "linkReason": "single-word-entry-candidate",
+          "pinyin": "yā",
+          "selectedPinyinNumbered": "ya1",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 1320
+            }
+          ],
+          "sourceTranslation": "ah, oh"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "ya1",
+        "simplified": "呀",
+        "traditional": "呀"
+      },
+      "pinyin": {
+        "marked": "yā",
+        "numbered": "ya1",
+        "plain": "ya"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:1320"
+          ],
+          "levels": [
+            5
+          ]
+        },
+        {
+          "characters": [
+            "呀"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "呀"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            20743
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-e94a9d696756b4d87486fbb9",
+      "definitionsEn": [
+        "to inquire; to consult; to seek advice from"
+      ],
+      "dictionaryEntryId": "word-4bbc05f2a5225c05f21a3b19",
+      "forms": {
+        "simplified": "咨询",
+        "traditional": "諮詢"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "word-bab579b3683b4438e3080cbe",
+            "word-4bbc05f2a5225c05f21a3b19"
+          ],
+          "chinese": "咨询",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:1570",
+          "hskLevel": 5,
+          "linkReason": "unique-non-variant-semantic-entry",
+          "pinyin": "zīxún",
+          "selectedPinyinNumbered": "zi1 xun2",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 1570
+            }
+          ],
+          "sourceTranslation": "to consult, to seek advice"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "zi1 xun2",
+        "simplified": "咨询",
+        "traditional": "諮詢"
+      },
+      "pinyin": {
+        "marked": "zī xún",
+        "numbered": "zi1 xun2",
+        "plain": "zi xun"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:1570"
+          ],
+          "levels": [
+            5
+          ]
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            101434
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-9980a544663a2d509e294877",
+      "definitionsEn": [
+        "to bite",
+        "to nip"
+      ],
+      "dictionaryEntryId": "word-df58e39cee75a1500e0530d9",
+      "forms": {
+        "simplified": "咬",
+        "traditional": "咬"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-咬",
+            "word-b96bb218a025075e93d3811f",
+            "word-df58e39cee75a1500e0530d9"
+          ],
+          "chinese": "咬",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:1337",
+          "hskLevel": 5,
+          "linkReason": "unique-non-variant-semantic-entry",
+          "pinyin": "yǎo",
+          "selectedPinyinNumbered": "yao3",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 1337
+            }
+          ],
+          "sourceTranslation": "to bite"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "yao3",
+        "simplified": "咬",
+        "traditional": "咬"
+      },
+      "pinyin": {
+        "marked": "yǎo",
+        "numbered": "yao3",
+        "plain": "yao"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:1337"
+          ],
+          "levels": [
+            5
+          ]
+        },
+        {
+          "characters": [
+            "咬"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "咬"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            21328
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
+    },
+    {
+      "candidateId": "fr-candidate-395c2bb19218650a0356f600",
+      "definitionsEn": [
+        "round",
+        "lump",
+        "ball",
+        "to roll into a ball",
+        "to gather",
+        "regiment",
+        "group",
+        "society",
+        "classifier for a lump or a soft mass: wad (of paper), ball (of wool), cloud (of smoke)"
+      ],
+      "dictionaryEntryId": "word-39bdd43d6f42ac603e8930c1",
+      "forms": {
+        "simplified": "团",
+        "traditional": "團"
+      },
+      "hskEvidence": [
+        {
+          "baseDictionaryLinkStatus": "exact",
+          "candidateDictionaryEntryIds": [
+            "char-团",
+            "word-2c3bb5bd0b3ba6c1d9e0e147",
+            "word-39bdd43d6f42ac603e8930c1"
+          ],
+          "chinese": "团",
+          "dictionaryLinkStatus": "exact",
+          "hskEntryId": "hsk:5:1156",
+          "hskLevel": 5,
+          "linkReason": "unique-source-translation-match",
+          "pinyin": "tuán",
+          "selectedPinyinNumbered": "tuan2",
+          "senseId": null,
+          "sourceDocument": {
+            "license": "NOASSERTION",
+            "path": "data/source/hsk/new_hsk5.pdf",
+            "publisher": "Mandarin Zest",
+            "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+            "reuseStatus": "reference-only-not-french",
+            "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+            "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+            "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+            "title": "New HSK 5 Vocab List",
+            "translationLanguage": "en"
+          },
+          "sourceNumbers": [
+            {
+              "hskLevel": 5,
+              "sourceNumber": 1156
+            }
+          ],
+          "sourceTranslation": "to unite; group; measure word for round objects"
+        }
+      ],
+      "lexicalIdentity": {
+        "pinyinNumbered": "tuan2",
+        "simplified": "团",
+        "traditional": "團"
+      },
+      "pinyin": {
+        "marked": "tuán",
+        "numbered": "tuan2",
+        "plain": "tuan"
+      },
+      "priority": {
+        "category": "hsk-word",
+        "rank": 1
+      },
+      "priorityReasons": [
+        {
+          "code": "hsk-word",
+          "hskEntryIds": [
+            "hsk:5:1156"
+          ],
+          "levels": [
+            5
+          ]
+        },
+        {
+          "characters": [
+            "团",
+            "團"
+          ],
+          "code": "radical-navigation-character"
+        },
+        {
+          "characters": [
+            "团",
+            "團"
+          ],
+          "code": "learning-unit-character"
+        }
+      ],
+      "sourceRefs": [
+        {
+          "lines": [
+            24670
+          ],
+          "source": "CC-CEDICT"
+        }
+      ],
+      "sources": [
+        "CC-CEDICT"
+      ],
+      "state": "candidate",
+      "variantsOrReferences": []
     }
   ],
-  "inventoryBuildId": "f339d958307342a6c82284b16125ff5d942542b6edc6834c9dcce8dc2c644f75",
+  "inventoryBuildId": "08ed5fd4fd6abcbccd2d2f5387b6569661b8b6d458513b842563684b4fd4b00d",
   "maxEntries": 40,
   "requestedSize": 40,
   "schemaVersion": 1

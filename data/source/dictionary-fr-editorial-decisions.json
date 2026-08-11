@@ -149,6 +149,605 @@
         }
       ],
       "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "上面",
+      "simplified": "上面",
+      "pinyinNumbered": "shang4 mian4",
+      "state": "verified",
+      "definitionsFr": [
+        "au-dessus ; en haut",
+        "sur ; à la surface de",
+        "ci-dessus ; susmentionné",
+        "échelon supérieur ; supérieur hiérarchique",
+        "aspect ; domaine"
+      ],
+      "reason": "Nom locatif et relationnel, lecture shàngmiàn. Le sens HSK « au-dessus, en haut » concorde avec CC-CEDICT et Hàn Diǎn ; les sens secondaires restent ceux de cette même identité. La lecture neutralisée shàngmian, seulement signalée par les sources, n’est pas traitée ici.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 7, no 126 : 上面 shàngmiàn, nom, « above, top »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 1863 : 上面 上面 [shang4 mian4]"
+        },
+        {
+          "title": "Hàn Diǎn — 上面",
+          "url": "https://www.zdic.net/hans/%E4%B8%8A%E9%9D%A2",
+          "locator": "上面 shàng miàn : 位置較高處；表面；前文；上級；方面"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "下面",
+      "simplified": "下面",
+      "pinyinNumbered": "xia4 mian4",
+      "state": "verified",
+      "definitionsFr": [
+        "en dessous ; sous",
+        "partie suivante ; ce qui suit",
+        "échelon inférieur ; subordonnés"
+      ],
+      "reason": "Nom locatif et relationnel, lecture xiàmiàn. Les trois sources concordent sur la position inférieure et la partie suivante ; Hàn Diǎn atteste en outre l’emploi collectif pour les subordonnés. La lecture neutralisée xiàmian n’est pas transférée à cette décision.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 9, no 159 : 下面 xiàmiàn, nom, « below, under »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 2089 : 下面 下面 [xia4 mian4]"
+        },
+        {
+          "title": "Hàn Diǎn — 下面",
+          "url": "https://www.zdic.net/hans/%E4%B8%8B%E9%9D%A2",
+          "locator": "下面 xià miàn : 位置較低處；次序靠後部分；下級"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "出",
+      "simplified": "出",
+      "pinyinNumbered": "chu1",
+      "state": "verified",
+      "definitionsFr": [
+        "sortir ; quitter",
+        "apparaître ; se produire",
+        "produire ; donner",
+        "dépasser",
+        "après un verbe : mouvement vers l’extérieur ou obtention d’un résultat",
+        "classificateur pour les pièces de théâtre et les opéras"
+      ],
+      "reason": "Verbe, complément directionnel ou résultatif et classificateur, lecture unique chū pour cette décision. Le sens HSK principal et les sens secondaires sont explicitement concordants dans CC-CEDICT et Hàn Diǎn ; aucun sens d’une autre lecture ou d’un homographe n’est repris.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 1, no 16 : 出 chū, verbe, « to go out, to leave »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 13046 : 出 出 [chu1]"
+        },
+        {
+          "title": "Hàn Diǎn — 出",
+          "url": "https://www.zdic.net/hans/%E5%87%BA",
+          "locator": "出 chū : 由內而外；發生；產生；超過；動詞後表趨向或結果；量詞"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "出來",
+      "simplified": "出来",
+      "pinyinNumbered": "chu1 lai2",
+      "state": "verified",
+      "definitionsFr": [
+        "sortir ; venir dehors",
+        "apparaître ; se manifester",
+        "après un verbe : mouvement vers le locuteur, apparition ou résultat"
+      ],
+      "reason": "Verbe et complément directionnel ou résultatif, lecture chūlái. HSK, CC-CEDICT et Hàn Diǎn concordent sur la sortie et l’apparition ; l’emploi postverbal est conservé comme sens grammatical distinct de cette même lecture.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 1, no 18 : 出来 chūlái, verbe, « come out »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 13067 : 出來 出来 [chu1 lai2]"
+        },
+        {
+          "title": "Hàn Diǎn — 出来",
+          "url": "https://www.zdic.net/hans/%E5%87%BA%E6%9D%A5",
+          "locator": "出來 chū lái : 由裡面到外面；出現；動詞後表向外或完成"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "外面",
+      "simplified": "外面",
+      "pinyinNumbered": "wai4 mian4",
+      "state": "verified",
+      "definitionsFr": [
+        "dehors ; à l’extérieur",
+        "surface ; extérieur",
+        "apparence extérieure"
+      ],
+      "reason": "Nom locatif, lecture wàimiàn. Le sens HSK principal est confirmé par CC-CEDICT et Hàn Diǎn, qui concordent aussi sur la surface et l’apparence extérieure. La lecture neutralisée wàimian n’est pas transférée.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 8, no 147 : 外面 wàimiàn, nom, « outside »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 27185 : 外面 外面 [wai4 mian4]"
+        },
+        {
+          "title": "Hàn Diǎn — 外面",
+          "url": "https://www.zdic.net/hans/%E5%A4%96%E9%9D%A2",
+          "locator": "外面 wài miàn : 外邊；外表"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "床",
+      "simplified": "床",
+      "pinyinNumbered": "chuang2",
+      "state": "verified",
+      "definitionsFr": [
+        "lit ; couche",
+        "fond ; lit d’un cours d’eau ou de la mer",
+        "bâti ; châssis",
+        "classificateur pour les couvertures et les couettes"
+      ],
+      "reason": "Nom et classificateur, lecture chuáng. HSK confirme le sens usuel « lit » ; CC-CEDICT et Hàn Diǎn concordent sur les extensions « fond », « bâti » et sur l’emploi de classificateur. Le classificateur usuel du nom lit, 張/张, est une information de combinaison et non une définition supplémentaire.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 2, no 21 : 床 chuáng, nom, « bed »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 38109 : 床 床 [chuang2]"
+        },
+        {
+          "title": "Hàn Diǎn — 床",
+          "url": "https://www.zdic.net/hans/%E5%BA%8A",
+          "locator": "床 chuáng : 臥具；像床的器具或地面；量詞"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "游",
+      "simplified": "游",
+      "pinyinNumbered": "you2",
+      "state": "verified",
+      "definitionsFr": [
+        "nager",
+        "nom de famille You",
+        "variante graphique de 遊/游 pour certains emplois"
+      ],
+      "reason": "Verbe, nom propre et renvoi graphique, lecture yóu. HSK et les lignes exactes de CC-CEDICT concordent sur « nager » ; CC-CEDICT et Hàn Diǎn attestent séparément le nom de famille You et la relation graphique avec 遊. Les sens autonomes de l’entrée traditionnelle 遊/游 ne sont pas transférés.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 10, no 177 : 游 yóu, verbe, « swim »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 66591-66592 : 游 游 [You2]/[you2]"
+        },
+        {
+          "title": "Hàn Diǎn — 游",
+          "url": "https://www.zdic.net/hans/%E6%B8%B8",
+          "locator": "游 yóu : 人或動物在水裡行動；姓；同遊"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "起來",
+      "simplified": "起来",
+      "pinyinNumbered": "qi3 lai5",
+      "state": "verified",
+      "definitionsFr": [
+        "se lever ; se mettre debout",
+        "après un verbe : mouvement vers le haut ou début d’une action"
+      ],
+      "reason": "Verbe et complément directionnel ou inchoatif, lecture neutralisée qǐlai. CC-CEDICT atteste expressément qǐ lai5, et Hàn Diǎn donne cette réalisation à côté de qǐlái ; les sens sont donc rattachés à cette lecture sans transfert automatique depuis qǐ lai2.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 7, no 118 : 起来 qǐlái, verbe ou complément, « get up; upward; beginning »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 104060 : 起來 起来 [qi3 lai5] ; autre prononciation qi3lai2 signalée"
+        },
+        {
+          "title": "Hàn Diǎn — 起来",
+          "url": "https://www.zdic.net/hans/%E8%B5%B7%E6%9D%A5",
+          "locator": "起來 qǐ lái, aussi qǐ lai : 起床或起立；動詞後表向上或開始"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "過來",
+      "simplified": "过来",
+      "pinyinNumbered": "guo4 lai2",
+      "state": "verified",
+      "definitionsFr": [
+        "venir ici ; venir vers le locuteur",
+        "reprendre connaissance ; revenir à un état normal",
+        "après un verbe : mouvement vers le locuteur ou retour à l’état normal",
+        "pouvoir gérer ; arriver à faire face"
+      ],
+      "reason": "Verbe et complément directionnel ou résultatif, lecture guòlái. HSK, CC-CEDICT et Hàn Diǎn concordent sur le mouvement vers le locuteur ; CC-CEDICT et Hàn Diǎn attestent les emplois de capacité et de retour à l’état normal. Aucun emploi de guòqu n’est repris.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 3, no 48 : 过来 guòlái, verbe, « come over »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 108156 : 過來 过来 [guo4 lai2]"
+        },
+        {
+          "title": "Hàn Diǎn — 过来",
+          "url": "https://www.zdic.net/hans/%E8%BF%87%E6%9D%A5",
+          "locator": "過來 guò lái : 從別處到說話人處；恢復正常；動詞後表趨向或承受能力"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "陰",
+      "simplified": "阴",
+      "pinyinNumbered": "yin1",
+      "state": "verified",
+      "definitionsFr": [
+        "couvert ; nuageux",
+        "à l’ombre ; ombragé",
+        "yin — principe négatif du yin et du yang",
+        "négatif en électricité",
+        "féminin",
+        "lune",
+        "caché ; implicite",
+        "organes génitaux",
+        "nom de famille Yin"
+      ],
+      "reason": "Adjectif, nom et nom propre, lecture yīn. Le sens HSK météorologique est confirmé par CC-CEDICT et Hàn Diǎn ; les sens secondaires et le nom de famille sont attestés séparément pour la même forme et la même lecture. Aucun sens d’une autre lecture n’est ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 9, no 175 : 阴 yīn, adjectif, « cloudy »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 114628-114629 : 陰 阴 [Yin1]/[yin1]"
+        },
+        {
+          "title": "Hàn Diǎn — 陰",
+          "url": "https://www.zdic.net/hans/%E9%99%B0",
+          "locator": "陰 yīn : 雲遮住日光；背陽；陰陽之一；月亮；隱藏；姓"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "高中",
+      "simplified": "高中",
+      "pinyinNumbered": "gao1 zhong1",
+      "state": "verified",
+      "definitionsFr": [
+        "lycée ; abréviation de 高級中學/高级中学"
+      ],
+      "reason": "Nom commun et abréviation, lecture gāozhōng. HSK, CC-CEDICT et Hàn Diǎn concordent sur l’établissement secondaire supérieur. La lecture distincte gāozhòng, « réussir à un examen », n’est pas concernée.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 2 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk2.pdf, p. 3, no 42 : 高中 gāozhōng, nom, « high school »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 121233 : 高中 高中 [gao1 zhong1]"
+        },
+        {
+          "title": "Hàn Diǎn — 高中",
+          "url": "https://www.zdic.net/hans/%E9%AB%98%E4%B8%AD",
+          "locator": "高中 gāo zhōng : 高級中學的簡稱；另有 gāo zhòng，義不同"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "借",
+      "simplified": "借",
+      "pinyinNumbered": "jie4",
+      "state": "verified",
+      "definitionsFr": [
+        "emprunter",
+        "prêter, notamment avec 給/给 ou 出",
+        "se servir de ; recourir à",
+        "au moyen de ; grâce à"
+      ],
+      "reason": "Verbe et préposition, lecture jiè. HSK retient le sens principal « emprunter » ; CC-CEDICT et Hàn Diǎn concordent sur les emplois « prêter », « se servir de » et « au moyen de ». La construction nécessaire au sens « prêter » est explicitée pour éviter l’ambiguïté pédagogique.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 11, no 215 : 借 jiè, verbe, « borrow »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 8770 : 借 借 [jie4]"
+        },
+        {
+          "title": "Hàn Diǎn — 借",
+          "url": "https://www.zdic.net/hans/%E5%80%9F",
+          "locator": "借 jiè : 暫時使用別人的；把自己的給別人使用；利用；憑藉"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "關係",
+      "simplified": "关系",
+      "pinyinNumbered": "guan1 xi5",
+      "state": "verified",
+      "definitionsFr": [
+        "relation ; rapport",
+        "être lié à ; concerner",
+        "influer sur ; affecter",
+        "guanxi — réseau de relations personnelles et d’obligations sociales"
+      ],
+      "reason": "Nom et verbe, lecture neutralisée guānxi ; classificateur 個/个. CC-CEDICT et YellowBridge attestent cette lecture ainsi que les sens nominaux et verbaux, tandis que la liste HSK fournit la forme pédagogique avec xì. La normalisation du pipeline relie ce seul écart de ton neutre ; aucun homographe n’est transféré.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 8, no 154 : 关系 guānxì, nom ou verbe, « relationship; relate »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 113691 : 關係 关系 [guan1 xi5]"
+        },
+        {
+          "title": "YellowBridge — 关系",
+          "url": "https://www.yellowbridge.com/chinese/dictionary.php?cache=103389&word=%E5%85%B3%E7%B3%BB",
+          "locator": "关系 guānxi, aussi guānxì : nom et verbe ; classificateur 个"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "刮",
+      "simplified": "刮",
+      "pinyinNumbered": "gua1",
+      "state": "verified",
+      "definitionsFr": [
+        "gratter ; racler",
+        "raser",
+        "piller ; extorquer"
+      ],
+      "reason": "Verbe, lecture guā. HSK et CC-CEDICT mêlent « gratter » et « souffler », car la simplification fait converger 刮 et 颳 vers 刮. Hàn Diǎn et l’entrée CC-CEDICT distincte 颳/刮 montrent que « souffler (vent) » appartient à l’identité traditionnelle 颳/刮 : ce sens est donc exclu de la présente identité exacte 刮/刮. Les sens conservés concordent entre CC-CEDICT et Hàn Diǎn.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 8, no 151 : 刮 guā, verbe, « scrape; blow »"
+        },
+        {
+          "title": "CC-CEDICT — identités graphiques distinctes",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 14099 : 刮/刮 ; l. 119169 : 颳/刮, « to blow (of the wind) »"
+        },
+        {
+          "title": "Hàn Diǎn — 刮 et 颳",
+          "url": "https://www.zdic.net/hans/%E5%88%AE",
+          "locator": "刮 guā : 用刀刮去；掠奪；另見 颳（風吹）"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "復習",
+      "simplified": "复习",
+      "pinyinNumbered": "fu4 xi2",
+      "state": "verified",
+      "definitionsFr": [
+        "réviser ; revoir ce que l’on a appris",
+        "variante graphique de 複習/复习"
+      ],
+      "reason": "Verbe et renvoi graphique, lecture fùxí. HSK et CC-CEDICT attestent le sens « réviser » sur l’identité 復習/复习 ; le Ministère de l’Éducation confirme explicitement que 復習 est une variante de 複習. La relation de variante est signalée sans fusionner les identités traditionnelles.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 7, no 134 : 复习 fùxí, verbe, « review »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 40323 : 復習 复习 [fu4 xi2] ; l. 98740 : 複習/复习 variante"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 複習",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=39084&la=1&powerMode=0",
+          "locator": "複習 fù xí : 溫習已學習的課程；也作「復習」"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "女人",
+      "simplified": "女人",
+      "pinyinNumbered": "nü3 ren2",
+      "state": "verified",
+      "definitionsFr": [
+        "femme"
+      ],
+      "reason": "Nom commun, lecture nǚrén. La forme, la lecture, la nature nominale et le sens unique concordent entre la liste HSK, CC-CEDICT et Hàn Diǎn. Aucun sens de 女 ou 人 pris isolément n’est ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 15, no 287 : 女人 nǚrén, nom, « woman »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 29761 : 女人 女人 [nu:3 ren2]"
+        },
+        {
+          "title": "Hàn Diǎn — 女人",
+          "url": "https://www.zdic.net/hans/%E5%A5%B3%E4%BA%BA",
+          "locator": "女人 nǚ rén : 成年女子"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "檢票",
+      "simplified": "检票",
+      "pinyinNumbered": "jian3 piao4",
+      "state": "verified",
+      "definitionsFr": [
+        "contrôler les billets",
+        "vérifier les bulletins de vote"
+      ],
+      "reason": "Verbe, lecture jiǎnpiào. La liste HSK et CC-CEDICT concordent sur le contrôle des billets ; CC-CEDICT atteste aussi l’emploi électoral, confirmé par l’usage dictionnairique de 檢查選票. Les deux sens appartiennent à la même identité et à la même lecture.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 10, no 200 : 检票 jiǎnpiào, verbe, « ticket checking »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 59598 : 檢票 检票 [jian3 piao4]"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "電子書",
+      "simplified": "电子书",
+      "pinyinNumbered": "dian4 zi3 shu1",
+      "state": "verified",
+      "definitionsFr": [
+        "livre électronique ; livre numérique",
+        "liseuse électronique"
+      ],
+      "reason": "Nom commun, lecture diànzǐshū. HSK, CC-CEDICT et Hàn Diǎn concordent sur le livre numérique ; CC-CEDICT et Hàn Diǎn attestent aussi l’appareil de lecture. L’entrée française CFDICT porte la lecture distincte diànzishū (zi5) : sa traduction n’est donc pas transférée à cette décision zi3.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 5, no 95 : 电子书 diànzǐshū, nom, « e-book »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 116590 : 電子書 电子书 [dian4 zi3 shu1]"
+        },
+        {
+          "title": "Hàn Diǎn — 电子书",
+          "url": "https://www.zdic.net/hans/%E7%94%B5%E5%AD%90%E4%B9%A6",
+          "locator": "電子書 diàn zǐ shū : 數字化出版物；可閱讀電子書的便攜裝置"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "糖",
+      "simplified": "糖",
+      "pinyinNumbered": "tang2",
+      "state": "verified",
+      "definitionsFr": [
+        "sucre",
+        "bonbon ; confiserie"
+      ],
+      "reason": "Nom commun, lecture táng. HSK, CC-CEDICT et Hàn Diǎn concordent sur le sucre et, par extension, les confiseries. Les classificateurs 顆/颗 et 塊/块 sont attestés mais restent des informations de combinaison, non des sens autonomes.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 18, no 350 : 糖 táng, nom, « candy, sugar »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 83988 : 糖 糖 [tang2]"
+        },
+        {
+          "title": "Hàn Diǎn — 糖",
+          "url": "https://www.zdic.net/hans/%E7%B3%96",
+          "locator": "糖 táng : 有甜味的物質；糖果"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "聊天兒",
+      "simplified": "聊天儿",
+      "pinyinNumbered": "liao2 tian1 r5",
+      "state": "verified",
+      "definitionsFr": [
+        "variante avec erhua de 聊天 : bavarder ; discuter"
+      ],
+      "reason": "Verbe et renvoi de variante phonographique, lecture liáotiānr. HSK atteste cette forme avec erhua et CC-CEDICT la relie explicitement à 聊天 ; Hàn Diǎn confirme le sens verbal de la base. La définition signale le renvoi au lieu de présenter 聊天兒 comme une identité indépendante non marquée.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 13, no 256 : 聊天儿 liáotiānr, verbe, « chat »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 88844 : 聊天兒 聊天儿 [liao2 tian1 r5], variante erhua de 聊天"
+        },
+        {
+          "title": "Hàn Diǎn — 聊天",
+          "url": "https://www.zdic.net/hans/%E8%81%8A%E5%A4%A9",
+          "locator": "聊天 liáo tiān : 閒談"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
     }
   ]
 }

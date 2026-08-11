@@ -1,6 +1,6 @@
 # Character radicals build report
 
-- Derived from: `character-composition` (buildId `86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3`) and `dictionary` (buildId `3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27`)
+- Derived from: `character-composition` (buildId `8a7748b6ca140a3051cc0986a81a81feb05885c92b005e588e17c22de170f575`) and `dictionary` (buildId `84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9`)
 - Stroke counts from: `hanzi-writer` 2.0.1
 
 | Measurement | Value |
@@ -11,10 +11,10 @@
 | Dictionary characters covered by a known radical | 9409 |
 | Dictionary characters total | 14426 |
 | Dictionary characters without a known radical | 5017 |
-| Navigation characters with French before explicit form attachment | 6047 |
-| Navigation characters recovered by explicit simplified/traditional attachment | 2430 |
-| Navigation characters with French after attachment | 8477 |
-| Navigation characters remaining without French | 932 |
+| Navigation characters with French before explicit form attachment | 6054 |
+| Navigation characters recovered by explicit simplified/traditional attachment | 2424 |
+| Navigation characters with French after attachment | 8478 |
+| Navigation characters remaining without French | 931 |
 | Navigation many-to-one collision characters | 347 |
 | Radicals with only 1-2 dictionary members | 52 |
 | Radicals with a short French gloss | 286 |

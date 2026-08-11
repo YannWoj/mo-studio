@@ -16,8 +16,8 @@
 | --- | ---: |
 | Distinct components reachable from a dictionary character sheet | 1815 |
 | … named by the hand-written French file | 183 |
-| … named by the project's French dictionary | 1534 |
-| … falling back to the English Make Me a Hanzi definition | 67 |
+| … named by the project's French dictionary | 1535 |
+| … falling back to the English Make Me a Hanzi definition | 66 |
 | … with no name in any source | 31 |
 
 Components with no name in any source (left blank rather than invented): 侌, 倠, 兓, 冡, 匛, 厽, 吂, 嘼, 圤, 夃, 媷, 屚, 巸, 惢, 斦, 汒, 牚, 犾, 狊, 猒, 竘, 羍, 耴, 臱, 豙, 閵, 隡, 韰, 鬳, 魝, 龶

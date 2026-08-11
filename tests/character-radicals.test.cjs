@@ -27,23 +27,23 @@ const { pathToFileURL } = require("node:url");
    assert.equal(manifest.radicals.length, 288);
    assert.deepEqual(report.frenchAttachment.allDictionaryCharacters, {
       total: 14426,
-      withFrenchBefore: 8371,
-      withoutFrenchBefore: 6055,
-      recoveredByExplicitSimplifiedTraditionalAttachment: 2503,
-      withFrenchAfter: 10874,
-      remainingWithoutFrench: 3552,
+      withFrenchBefore: 8378,
+      withoutFrenchBefore: 6048,
+      recoveredByExplicitSimplifiedTraditionalAttachment: 2497,
+      withFrenchAfter: 10875,
+      remainingWithoutFrench: 3551,
       manyToOneCollisionCharacters: 351,
    });
    assert.deepEqual(report.frenchAttachment.radicalNavigationCharacters, {
       total: 9409,
-      withFrenchBefore: 6047,
-      withoutFrenchBefore: 3362,
-      recoveredByExplicitSimplifiedTraditionalAttachment: 2430,
-      withFrenchAfter: 8477,
-      remainingWithoutFrench: 932,
+      withFrenchBefore: 6054,
+      withoutFrenchBefore: 3355,
+      recoveredByExplicitSimplifiedTraditionalAttachment: 2424,
+      withFrenchAfter: 8478,
+      remainingWithoutFrench: 931,
       manyToOneCollisionCharacters: 347,
    });
-   assert.equal(report.frenchAttachment.recoveredCharacters.length, 2430);
+   assert.equal(report.frenchAttachment.recoveredCharacters.length, 2424);
    assert(report.frenchAttachment.recoveredCharacters.includes("习"));
    assert(report.frenchAttachment.manyToOneCollisions.some(
       (mapping) => mapping.simplified === "发" &&

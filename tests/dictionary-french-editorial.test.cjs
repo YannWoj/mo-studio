@@ -51,8 +51,8 @@ assert.deepEqual(audit.hskFrenchReuse.pendingReviewByStatus, {
 });
 assert.equal(conflicts.count, 186);
 assert.equal(dictionaryAudit.hskFrenchReuse.automaticImportCount, 10);
-assert.equal(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidateCount, 161);
-assert.equal(new Set(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidates.map((item) => item.dictionaryEntryId)).size, 156);
+assert.equal(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidateCount, 141);
+assert.equal(new Set(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidates.map((item) => item.dictionaryEntryId)).size, 136);
 
 assert(batch.count <= 40);
 assert.equal(batch.maxEntries, 40);

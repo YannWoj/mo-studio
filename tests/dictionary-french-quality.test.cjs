@@ -32,7 +32,7 @@ const decisions = readJson(decisionsPath);
 assert.equal(manifest.schemaVersion, 5);
 assert.equal(manifest.frenchEditorialPolicy.entryCount, 36);
 assert.equal(manifest.frenchEditorialPolicy.sha256, sha256(fs.readFileSync(overridesPath)));
-assert.equal(manifest.frenchEditorialDecisions.entryCount, 6);
+assert.equal(manifest.frenchEditorialDecisions.entryCount, 26);
 assert.equal(manifest.frenchEditorialDecisions.schemaVersion, 2);
 assert.equal(manifest.frenchEditorialDecisions.sha256, sha256(fs.readFileSync(decisionsPath)));
 assert.equal(audit.status, "PASS");
@@ -47,19 +47,19 @@ assert.deepEqual(audit.potentialAnomalies.countsByType, {
 });
 assert.equal(audit.englishWithoutVerifiedFrench.count, audit.englishWithoutVerifiedFrench.items.length);
 assert.equal(audit.coverage.overallWordsBeforePolicy.covered, 60424);
-assert.equal(audit.coverage.overallWordsAfterPolicy.covered, 60441);
+assert.equal(audit.coverage.overallWordsAfterPolicy.covered, 60461);
 assert.deepEqual(audit.characterFrenchAttachment.allCharacters, {
    total: 14426,
-   withFrenchBefore: 8371,
-   withoutFrenchBefore: 6055,
-   recoveredByExplicitSimplifiedTraditionalAttachment: 2503,
-   withFrenchAfter: 10874,
-   remainingWithoutFrench: 3552,
+   withFrenchBefore: 8378,
+   withoutFrenchBefore: 6048,
+   recoveredByExplicitSimplifiedTraditionalAttachment: 2497,
+   withFrenchAfter: 10875,
+   remainingWithoutFrench: 3551,
 });
-assert.equal(audit.frenchEditorialDecisions.appliedCount, 6);
+assert.equal(audit.frenchEditorialDecisions.appliedCount, 26);
 assert.equal(audit.frenchEditorialDecisions.conflictCount, 0);
 assert.equal(audit.characterFrenchAttachment.manyToOneCollisions.characterCount, 351);
-assert.equal(audit.characterFrenchAttachment.recoveredCharacters.length, 2503);
+assert.equal(audit.characterFrenchAttachment.recoveredCharacters.length, 2497);
 assert.equal(audit.hskFrenchReuse.automaticImportCount, 10);
 assert.equal(audit.hskFrenchReuse.automaticImports.length, 10);
 assert.equal(audit.hskFrenchReuse.reviewQueueCount, 210);
@@ -232,6 +232,35 @@ const exactIce = word("冰", "冰", "bing1");
 assert.deepEqual(exactIce.definitionsFr, ["glace"]);
 assert.equal(exactIce.frenchStatus, "verified");
 assert(exactIce.frenchProvenance.some((item) => item.verifiedAt === "2026-08-11"));
+
+for (const decision of decisions.entries) {
+   const entry = word(decision.traditional, decision.simplified, decision.pinyinNumbered);
+   assert(entry, `${decision.traditional}/${decision.simplified}/${decision.pinyinNumbered}: editorial entry missing`);
+   assert.deepEqual(entry.definitionsFr, decision.definitionsFr);
+   assert.equal(entry.frenchStatus, "verified");
+   assert(entry.sources.includes("MÒ-FR-EDITORIAL"));
+   assert(entry.frenchProvenance.some((item) =>
+      item.lexicalIdentity.traditional === decision.traditional &&
+      item.lexicalIdentity.simplified === decision.simplified &&
+      item.lexicalIdentity.pinyinNumbered === decision.pinyinNumbered &&
+      item.verifiedAt === decision.verifiedAt
+   ));
+}
+
+const scrapeGua = word("刮", "刮", "gua1");
+const windGua = word("颳", "刮", "gua1");
+assert(!scrapeGua.definitionsFr.some((definition) => /souffl/iu.test(definition)));
+assert(windGua.definitionsFr.some((definition) => /souffl/iu.test(definition)));
+assert.deepEqual(word("復習", "复习", "fu4 xi2").definitionsFr, [
+   "réviser ; revoir ce que l’on a appris",
+   "variante graphique de 複習/复习",
+]);
+assert.deepEqual(word("複習", "复习", "fu4 xi2").definitionsFr, ["réviser", "répéter"]);
+assert.deepEqual(word("電子書", "电子书", "dian4 zi3 shu1").definitionsFr, [
+   "livre électronique ; livre numérique",
+   "liseuse électronique",
+]);
+assert(!word("電子書", "电子书", "dian4 zi5 shu1").sources.includes("MÒ-FR-EDITORIAL"));
 
 const waterChong = word("沖", "冲", "chong1");
 const movementChong = word("衝", "冲", "chong1");

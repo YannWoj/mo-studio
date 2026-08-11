@@ -4,17 +4,17 @@
   "englishCoveragePercent": 94.502512,
   "englishDefinitionWordCount": 123597,
   "exactDuplicateCount": 15,
-  "frenchCoveragePercent": 46.213309,
-  "frenchDefinitionWordCount": 60441,
+  "frenchCoveragePercent": 46.228601,
+  "frenchDefinitionWordCount": 60461,
   "frenchEditorialDecisions": {
-    "entryCount": 6,
+    "entryCount": 26,
     "filename": "data/source/dictionary-fr-editorial-decisions.json",
     "policyId": "mo-dictionary-fr-editorial-v2",
     "schemaVersion": 2,
-    "sha256": "609b48ea9a5edc7ce857001db4eb322dfe966ab2b17adf0b4a06f71d89585548",
+    "sha256": "099cd55eb434f920ec700669228bbe7a8a38a2063142dca3eecc756274cca599",
     "sourceId": "MÒ-FR-EDITORIAL",
     "stateCounts": {
-      "verified": 6
+      "verified": 26
     }
   },
   "frenchEditorialPolicy": {
@@ -34,18 +34,18 @@
     "changedEntryCount": 36,
     "characterAttachment": {
       "allCharacters": {
-        "recoveredByExplicitSimplifiedTraditionalAttachment": 2503,
-        "remainingWithoutFrench": 3552,
+        "recoveredByExplicitSimplifiedTraditionalAttachment": 2497,
+        "remainingWithoutFrench": 3551,
         "total": 14426,
-        "withFrenchAfter": 10874,
-        "withFrenchBefore": 8371,
-        "withoutFrenchBefore": 6055
+        "withFrenchAfter": 10875,
+        "withFrenchBefore": 8378,
+        "withoutFrenchBefore": 6048
       },
       "eligibleSingleCharacterLexicalEntryCount": 13473,
       "exclusions": {
         "countsByReason": {
           "compound-or-multi-character-headword": 117289,
-          "no-french-definition-in-source-or-policy": 4354,
+          "no-french-definition-in-source-or-policy": 4347,
           "non-han-single-codepoint-headword": 25,
           "quarantined-by-editorial-policy": 1
         },
@@ -5337,7 +5337,6 @@
         "俭",
         "俯",
         "倏",
-        "借",
         "倦",
         "债",
         "倾",
@@ -5388,7 +5387,6 @@
         "凭",
         "凯",
         "凳",
-        "出",
         "击",
         "函",
         "凿",
@@ -5403,7 +5401,6 @@
         "别",
         "刬",
         "刭",
-        "刮",
         "制",
         "券",
         "刹",
@@ -5731,7 +5728,6 @@
         "广",
         "庄",
         "庆",
-        "床",
         "庐",
         "库",
         "应",
@@ -6129,7 +6125,6 @@
         "渔",
         "渗",
         "温",
-        "游",
         "湾",
         "湿",
         "溃",
@@ -6417,7 +6412,6 @@
         "粽",
         "糇",
         "糕",
-        "糖",
         "紧",
         "絷",
         "纠",
@@ -7741,7 +7735,7 @@
         "嗀"
       ]
     },
-    "englishWithoutVerifiedFrenchCount": 70345,
+    "englishWithoutVerifiedFrenchCount": 70325,
     "potentialAnomalyCount": 36,
     "quarantinedEntryCount": 1,
     "rawFrenchDefinitionWordCount": 60424,
@@ -7771,21 +7765,21 @@
         "importedFromHsk": 0,
         "linkedRows": 191,
         "linkedUniqueWords": 190,
-        "remainingWithoutFrench": 16,
+        "remainingWithoutFrench": 5,
         "totalRows": 200,
         "unresolvedRows": 9,
-        "withFrenchAfter": 175,
-        "withFrenchBefore": 175
+        "withFrenchAfter": 186,
+        "withFrenchBefore": 186
       },
       "3": {
         "importedFromHsk": 0,
         "linkedRows": 484,
         "linkedUniqueWords": 484,
-        "remainingWithoutFrench": 15,
+        "remainingWithoutFrench": 6,
         "totalRows": 499,
         "unresolvedRows": 15,
-        "withFrenchAfter": 469,
-        "withFrenchBefore": 469
+        "withFrenchAfter": 478,
+        "withFrenchBefore": 478
       },
       "4": {
         "importedFromHsk": 0,
@@ -7830,7 +7824,7 @@
       "exact": 5132,
       "normalized-pinyin": 57
     },
-    "nonFrenchSourceCandidateCount": 161,
+    "nonFrenchSourceCandidateCount": 141,
     "reviewQueueCount": 210,
     "sourceAttribution": {
       "metadataPath": "data/source/hsk/source-metadata.json",

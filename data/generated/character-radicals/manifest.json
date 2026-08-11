@@ -2,11 +2,11 @@
   "format": "mo-studio-character-radicals",
   "schemaVersion": 2,
   "builderVersion": "1.3.0",
-  "buildId": "4db239b3cbd701cbacf7698f80f87d8ac376aa730485e9153284e0e4d5005f6d",
+  "buildId": "f6ee257546275a4d7e7386c6994fe26a11d9d46ead1aa6f8fd99549fd59ec413",
   "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/",
   "derivedFrom": {
-    "characterCompositionBuildId": "86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3",
-    "dictionaryBuildId": "3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27",
+    "characterCompositionBuildId": "8a7748b6ca140a3051cc0986a81a81feb05885c92b005e588e17c22de170f575",
+    "dictionaryBuildId": "84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9",
     "hanziWriterVersion": "2.0.1"
   },
   "componentLabelsFr": {
