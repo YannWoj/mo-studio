@@ -26,8 +26,8 @@
   "componentLabels": {
     "displayedComponentCount": 1815,
     "namedByHandWrittenFileCount": 183,
-    "namedByFrenchDictionaryCount": 1535,
-    "withEnglishSourceDefinitionOnlyCount": 66,
+    "namedByFrenchDictionaryCount": 1536,
+    "withEnglishSourceDefinitionOnlyCount": 65,
     "withoutAnyLabelCount": 31,
     "withoutAnyLabel": [
       "侌",
@@ -62,7 +62,7 @@
       "魝",
       "龶"
     ],
-    "frenchLabelledComponentUsages": 19118
+    "frenchLabelledComponentUsages": 19119
   },
   "coverage": {
     "sourceCharacterCompositionBlockCount": 9543,

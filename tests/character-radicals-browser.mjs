@@ -95,8 +95,8 @@ async function main() {
    assert(manifest.counts.charactersCovered === 9409, `expected 9409 covered characters, got ${manifest.counts.charactersCovered}`);
    assert(manifest.counts.dictionaryCharactersTotal === 14426, `expected 14426 total dictionary characters, got ${manifest.counts.dictionaryCharactersTotal}`);
    assert(manifest.counts.dictionaryCharactersWithoutRadical === 5017, `expected 5017 dictionary characters without a known radical, got ${manifest.counts.dictionaryCharactersWithoutRadical}`);
-   assert(buildReport.frenchAttachment.radicalNavigationCharacters.recoveredByExplicitSimplifiedTraditionalAttachment === 2430, "unexpected recovered French count in radical navigation");
-   assert(buildReport.frenchAttachment.radicalNavigationCharacters.remainingWithoutFrench === 932, "unexpected remaining French gap in radical navigation");
+   assert(buildReport.frenchAttachment.radicalNavigationCharacters.recoveredByExplicitSimplifiedTraditionalAttachment === 2417, "unexpected recovered French count in radical navigation");
+   assert(buildReport.frenchAttachment.radicalNavigationCharacters.remainingWithoutFrench === 927, "unexpected remaining French gap in radical navigation");
    pass(`chiffres mesurés (source manifest) : ${manifest.counts.radicalsWithDictionaryMembers} clés, ${manifest.counts.charactersCovered} caractères couverts, ${manifest.counts.dictionaryCharactersWithoutRadical} sans clé connue`);
 
    const staleCacheFixture = await evaluate(`(async () => {

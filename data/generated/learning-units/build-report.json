@@ -9,9 +9,9 @@
     "upstreamLicenseApplies": false
   },
   "derivedFrom": {
-    "characterCompositionBuildId": "8a7748b6ca140a3051cc0986a81a81feb05885c92b005e588e17c22de170f575",
-    "characterRadicalsBuildId": "f6ee257546275a4d7e7386c6994fe26a11d9d46ead1aa6f8fd99549fd59ec413",
-    "dictionaryBuildId": "84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9",
+    "characterCompositionBuildId": "67c9380c5e85ad92a9d2891e70ebb3f001f70667657394d45976da0d719e9781",
+    "characterRadicalsBuildId": "39b9e70c663c674cdf0982a5343dd6a0a46beeae1fa11724c0ab3f7b477ad2de",
+    "dictionaryBuildId": "fb1c389c75c219089aaca1c5a992606f16a9b89ce25916ebf72019eac5ed4ce4",
     "hsk1RootSha256": "80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419",
     "personalLibrary": {
       "found": false,

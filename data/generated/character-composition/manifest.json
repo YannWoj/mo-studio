@@ -2,7 +2,7 @@
   "format": "mo-studio-character-composition",
   "schemaVersion": 1,
   "builderVersion": "1.3.0",
-  "buildId": "8a7748b6ca140a3051cc0986a81a81feb05885c92b005e588e17c22de170f575",
+  "buildId": "67c9380c5e85ad92a9d2891e70ebb3f001f70667657394d45976da0d719e9781",
   "sourceProject": "Make Me a Hanzi",
   "sourceRevision": "bddc96d41bef78427ed0e034e9f7e31d71fd1b92",
   "sourceSha256": "744bb05d5b0742e9ee35c37791f94d56a173349b3367569e7ca11e510364d203",
@@ -24,8 +24,8 @@
   "componentLabels": {
     "displayedComponentCount": 1815,
     "namedByHandWrittenFileCount": 183,
-    "namedByFrenchDictionaryCount": 1535,
-    "withEnglishSourceDefinitionOnlyCount": 66,
+    "namedByFrenchDictionaryCount": 1536,
+    "withEnglishSourceDefinitionOnlyCount": 65,
     "withoutAnyLabelCount": 31,
     "withoutAnyLabel": [
       "侌",
@@ -60,7 +60,7 @@
       "魝",
       "龶"
     ],
-    "frenchLabelledComponentUsages": 19118
+    "frenchLabelledComponentUsages": 19119
   },
   "chunkModulo": 64,
   "chunkPathTemplate": "chunks/{chunk}.json",
@@ -145,8 +145,8 @@
       "key": "0a",
       "path": "chunks/0a.json",
       "count": 164,
-      "bytes": 70421,
-      "sha256": "af599b1de547debd8a0284b790debae4d7b9b74b244a09dc17be308ff2b9dac2"
+      "bytes": 70438,
+      "sha256": "487bcd119314de16b28c6245b0048f9c6df802c103e1d3cda94980799a81625c"
     },
     {
       "key": "0b",
@@ -257,8 +257,8 @@
       "key": "1a",
       "path": "chunks/1a.json",
       "count": 154,
-      "bytes": 66776,
-      "sha256": "5806b4245b96c8580a518162d210df1ebbeb5ea085d684068fd11f168b32dd04"
+      "bytes": 66802,
+      "sha256": "d3ff4a556e40d5b267fb8760303143d81a2ef1859e83482e104ec7eef16a138d"
     },
     {
       "key": "1b",
@@ -411,15 +411,15 @@
       "key": "30",
       "path": "chunks/30.json",
       "count": 141,
-      "bytes": 61517,
-      "sha256": "af4fa1cc66d12c46d55a7a931d9bc210732f8bdf0dff35597efb2e11623d4f7c"
+      "bytes": 61552,
+      "sha256": "3bc47cbd80a833912304d79590ae04f54332f89b69fdb29c38848fd9c39fa7b9"
     },
     {
       "key": "31",
       "path": "chunks/31.json",
       "count": 157,
-      "bytes": 69239,
-      "sha256": "06cc1e8f5bf3fa2499a7dad134cd2845a6a20f33cb7e3c7e2ed302e3b21fa386"
+      "bytes": 69256,
+      "sha256": "f0cb71badc9d6a94ed747896f6899218c9104271d93a75cba883b3b0fc957fd3"
     },
     {
       "key": "32",
@@ -453,8 +453,8 @@
       "key": "36",
       "path": "chunks/36.json",
       "count": 131,
-      "bytes": 57088,
-      "sha256": "ae191dd29e40da8eb5746f3370b3d719438c3e135318fd97288098c2e4f5751a"
+      "bytes": 57105,
+      "sha256": "7b8ca66d6fda01ef0d88250f8d53f473f63667aa7d067d8da11aa29033f98bc0"
     },
     {
       "key": "37",

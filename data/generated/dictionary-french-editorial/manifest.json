@@ -1,13 +1,13 @@
 {
-  "buildId": "08ed5fd4fd6abcbccd2d2f5387b6569661b8b6d458513b842563684b4fd4b00d",
+  "buildId": "49d0b7e05d652c9b39128933b6e595a612977b7e99b7c677e0f5eed62a59ef97",
   "builderVersion": "1.1.0",
   "counts": {
     "batchEntries": 40,
-    "candidates": 70326,
+    "candidates": 70286,
     "reviewItems": 210,
     "sourceConflicts": 186
   },
-  "dictionaryBuildId": "84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9",
+  "dictionaryBuildId": "fb1c389c75c219089aaca1c5a992606f16a9b89ce25916ebf72019eac5ed4ce4",
   "files": {
     "audit": "audit-report.json",
     "conflicts": "conflicts.json",
@@ -17,28 +17,28 @@
   },
   "format": "mo-studio-french-editorial-inventory",
   "inputs": {
-    "characterRadicalsBuildId": "f6ee257546275a4d7e7386c6994fe26a11d9d46ead1aa6f8fd99549fd59ec413",
+    "characterRadicalsBuildId": "39b9e70c663c674cdf0982a5343dd6a0a46beeae1fa11724c0ab3f7b477ad2de",
     "dictionaryManifest": "data/generated/dictionary/manifest.json",
     "editorialDecisions": {
-      "entryCount": 26,
+      "entryCount": 66,
       "filename": "data/source/dictionary-fr-editorial-decisions.json",
       "policyId": "mo-dictionary-fr-editorial-v2",
       "schemaVersion": 2,
-      "sha256": "099cd55eb434f920ec700669228bbe7a8a38a2063142dca3eecc756274cca599",
+      "sha256": "dca5b8b1242ba29461f280d5c190abbd243b09ca4ebb7a36b6a73d35a82e35eb",
       "sourceId": "MÒ-FR-EDITORIAL",
       "stateCounts": {
-        "verified": 26
+        "verified": 66
       }
     },
     "hsk": {
       "cleanPath": "data/generated/hsk/hsk-clean.json",
       "cleanSha256": "aa2bd607410b4cbdcda18b365edd39e9bac87167b78b664286d11df8368d2762",
-      "dictionaryBuildId": "84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9",
+      "dictionaryBuildId": "fb1c389c75c219089aaca1c5a992606f16a9b89ce25916ebf72019eac5ed4ce4",
       "linksPath": "data/generated/hsk/hsk-dictionary-links.json",
       "sourceMetadataPath": "data/source/hsk/source-metadata.json",
       "sourceMetadataSha256": "6047428fe8cfc33379842d32c94cb27554e1da5b59b6693709666fe90f0fe01b"
     },
-    "learningUnitsBuildId": "dfc451a88e592ddc4a781d7ce394fbe6cbd0d01401812c61283387bc28fb99d3",
+    "learningUnitsBuildId": "8980d3f6b3483d637327005e8a44c542254e92410bbe3808bf9c098d7a5514cb",
     "personalLibrary": {
       "cardCount": 0,
       "found": false,

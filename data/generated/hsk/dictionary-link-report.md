@@ -6,7 +6,7 @@ La recherche part exclusivement du mot chinois exact présent dans les fichiers 
 
 Le pinyin est comparé après normalisation Unicode, casse, espaces, apostrophes, tirets et représentation des tons. Une liaison exacte exige le même pinyin avec les mêmes tons. Une différence mineure est retenue uniquement lorsque la forme sans tons est strictement identique ; aucun candidat n’est choisi si cette condition échoue.
 
-Dictionnaire analysé : build `84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9`, 145213 entrées.
+Dictionnaire analysé : build `fb1c389c75c219089aaca1c5a992606f16a9b89ce25916ebf72019eac5ed4ce4`, 145213 entrées.
 
 ## Résumé
 

@@ -17,6 +17,7 @@
             strokeGallery: {
                showFuture: true,
                showGrid: true,
+               highlightRadical: false,
             },
             writingBoard: {
                color: "#17140f",
@@ -121,6 +122,10 @@
                         typeof storedStrokeGallery.showGrid === "boolean"
                            ? storedStrokeGallery.showGrid
                            : true,
+                     highlightRadical:
+                        typeof storedStrokeGallery.highlightRadical === "boolean"
+                           ? storedStrokeGallery.highlightRadical
+                           : false,
                   };
                   s.writingBoard = Object.assign(
                      {

@@ -4,17 +4,17 @@
   "englishCoveragePercent": 94.502512,
   "englishDefinitionWordCount": 123597,
   "exactDuplicateCount": 15,
-  "frenchCoveragePercent": 46.228601,
-  "frenchDefinitionWordCount": 60461,
+  "frenchCoveragePercent": 46.259185,
+  "frenchDefinitionWordCount": 60501,
   "frenchEditorialDecisions": {
-    "entryCount": 26,
+    "entryCount": 66,
     "filename": "data/source/dictionary-fr-editorial-decisions.json",
     "policyId": "mo-dictionary-fr-editorial-v2",
     "schemaVersion": 2,
-    "sha256": "099cd55eb434f920ec700669228bbe7a8a38a2063142dca3eecc756274cca599",
+    "sha256": "dca5b8b1242ba29461f280d5c190abbd243b09ca4ebb7a36b6a73d35a82e35eb",
     "sourceId": "MÒ-FR-EDITORIAL",
     "stateCounts": {
-      "verified": 26
+      "verified": 66
     }
   },
   "frenchEditorialPolicy": {
@@ -34,18 +34,18 @@
     "changedEntryCount": 36,
     "characterAttachment": {
       "allCharacters": {
-        "recoveredByExplicitSimplifiedTraditionalAttachment": 2497,
-        "remainingWithoutFrench": 3551,
+        "recoveredByExplicitSimplifiedTraditionalAttachment": 2486,
+        "remainingWithoutFrench": 3545,
         "total": 14426,
-        "withFrenchAfter": 10875,
-        "withFrenchBefore": 8378,
-        "withoutFrenchBefore": 6048
+        "withFrenchAfter": 10881,
+        "withFrenchBefore": 8395,
+        "withoutFrenchBefore": 6031
       },
       "eligibleSingleCharacterLexicalEntryCount": 13473,
       "exclusions": {
         "countsByReason": {
           "compound-or-multi-character-headword": 117289,
-          "no-french-definition-in-source-or-policy": 4347,
+          "no-french-definition-in-source-or-policy": 4326,
           "non-han-single-codepoint-headword": 25,
           "quarantined-by-editorial-policy": 1
         },
@@ -5349,7 +5349,6 @@
         "傩",
         "僵",
         "儿",
-        "克",
         "兑",
         "兖",
         "党",
@@ -5476,7 +5475,6 @@
         "号",
         "叹",
         "叽",
-        "合",
         "吊",
         "后",
         "吓",
@@ -5504,7 +5502,6 @@
         "咛",
         "咝",
         "咩",
-        "咬",
         "咱",
         "咸",
         "响",
@@ -5945,7 +5942,6 @@
         "杀",
         "杂",
         "权",
-        "村",
         "条",
         "来",
         "杨",
@@ -6232,7 +6228,6 @@
         "琉",
         "琏",
         "琐",
-        "琴",
         "琼",
         "瑰",
         "瑶",
@@ -6245,7 +6240,6 @@
         "电",
         "画",
         "畅",
-        "留",
         "略",
         "畲",
         "畴",
@@ -6361,7 +6355,6 @@
         "窍",
         "窎",
         "窑",
-        "窗",
         "窜",
         "窝",
         "窥",
@@ -6403,7 +6396,6 @@
         "籁",
         "籴",
         "类",
-        "粗",
         "粜",
         "粝",
         "粤",
@@ -6608,7 +6600,6 @@
         "腼",
         "腽",
         "腾",
-        "腿",
         "膑",
         "膘",
         "膳",
@@ -6744,7 +6735,6 @@
         "衅",
         "衔",
         "补",
-        "表",
         "衬",
         "衮",
         "衽",
@@ -7402,7 +7392,6 @@
         "面",
         "靥",
         "靴",
-        "鞋",
         "鞑",
         "鞯",
         "韦",
@@ -7735,7 +7724,7 @@
         "嗀"
       ]
     },
-    "englishWithoutVerifiedFrenchCount": 70325,
+    "englishWithoutVerifiedFrenchCount": 70285,
     "potentialAnomalyCount": 36,
     "quarantinedEntryCount": 1,
     "rawFrenchDefinitionWordCount": 60424,
@@ -7775,31 +7764,31 @@
         "importedFromHsk": 0,
         "linkedRows": 484,
         "linkedUniqueWords": 484,
-        "remainingWithoutFrench": 6,
+        "remainingWithoutFrench": 3,
         "totalRows": 499,
         "unresolvedRows": 15,
-        "withFrenchAfter": 478,
-        "withFrenchBefore": 478
+        "withFrenchAfter": 481,
+        "withFrenchBefore": 481
       },
       "4": {
         "importedFromHsk": 0,
         "linkedRows": 987,
         "linkedUniqueWords": 986,
-        "remainingWithoutFrench": 28,
+        "remainingWithoutFrench": 2,
         "totalRows": 1000,
         "unresolvedRows": 13,
-        "withFrenchAfter": 959,
-        "withFrenchBefore": 959
+        "withFrenchAfter": 985,
+        "withFrenchBefore": 985
       },
       "5": {
         "importedFromHsk": 0,
         "linkedRows": 1583,
         "linkedUniqueWords": 1581,
-        "remainingWithoutFrench": 40,
+        "remainingWithoutFrench": 29,
         "totalRows": 1600,
         "unresolvedRows": 17,
-        "withFrenchAfter": 1543,
-        "withFrenchBefore": 1543
+        "withFrenchAfter": 1554,
+        "withFrenchBefore": 1554
       },
       "6": {
         "importedFromHsk": 0,
@@ -7824,7 +7813,7 @@
       "exact": 5132,
       "normalized-pinyin": 57
     },
-    "nonFrenchSourceCandidateCount": 141,
+    "nonFrenchSourceCandidateCount": 101,
     "reviewQueueCount": 210,
     "sourceAttribution": {
       "metadataPath": "data/source/hsk/source-metadata.json",

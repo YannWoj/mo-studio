@@ -22,6 +22,7 @@
     "build:portable": "node scripts/build-portable.mjs",
     "test:data": "node tests/search-normalization.test.cjs && python tests/dictionary_french_policy_test.py && python tests/dictionary_french_editorial_test.py && node tests/dictionary-french-quality.test.cjs && node tests/dictionary-french-editorial.test.cjs && node tests/hsk-runtime.test.cjs && node tests/runtime-data-coherence.test.cjs && node tests/character-composition.test.cjs && node scripts/validate-character-composition.mjs && node tests/character-radicals.test.cjs && node scripts/validate-character-radicals.mjs && node tests/learning-units.test.cjs && node scripts/validate-learning-units.mjs && node tests/confusable-pairs.test.cjs && node scripts/validate-confusable-pairs.mjs",
     "test:browser": "node tests/browser-regression.mjs",
+    "test:storage": "node tests/storage-settings.test.cjs",
     "test:character-radicals": "node tests/character-radicals-browser.mjs",
     "test:packs-review": "node tests/packs-review-browser.mjs",
     "test:dictionary-placement": "node tests/dictionary-library-placement-browser.mjs",

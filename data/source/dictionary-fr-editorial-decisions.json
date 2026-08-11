@@ -748,6 +748,1182 @@
         }
       ],
       "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "腿",
+      "simplified": "腿",
+      "pinyinNumbered": "tui3",
+      "state": "verified",
+      "definitionsFr": [
+        "jambe"
+      ],
+      "reason": "Nom commun, lecture tuǐ ; classificateur usuel 條/条. La liste HSK et la ligne CC-CEDICT exacte concordent sur le sens anatomique « jambe ». Aucun sens d’un composé ni d’une autre identité n’est ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 19, no 364 : 腿 tuǐ, nom, « leg »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 90804 : 腿 腿 [tui3] /leg/CL:條|条[tiao2]/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "鍛鍊",
+      "simplified": "锻炼",
+      "pinyinNumbered": "duan4 lian4",
+      "state": "verified",
+      "definitionsFr": [
+        "faire de l’exercice ; s’entraîner",
+        "forger ; tremper un métal",
+        "endurcir ; aguerrir",
+        "développer ses compétences"
+      ],
+      "reason": "Verbe, lecture duànliàn. HSK et CC-CEDICT concordent sur l’exercice et l’entraînement ; le Ministère de l’Éducation de Taïwan confirme sur la graphie exacte 鍛鍊 les sens de travail du métal et de perfectionnement par la pratique, ainsi que la variante 鍛煉. Le sens judiciaire historique, non confirmé par les deux références pédagogiques et peu utile ici, n’est pas ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 6, no 108 : 锻炼 duànliàn, verbe, « to exercise »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 111959 : 鍛鍊 锻炼 [duan4 lian4]"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 鍛鍊",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=48393&la=0&powerMode=0",
+          "locator": "鍛鍊 duàn liàn : marteler le métal ; progresser par une pratique répétée ; aussi 鍛煉"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "鞋",
+      "simplified": "鞋",
+      "pinyinNumbered": "xie2",
+      "state": "verified",
+      "definitionsFr": [
+        "chaussure"
+      ],
+      "reason": "Nom commun, lecture xié ; classificateurs usuels 雙/双 et 隻/只. La forme, la lecture et le sens unique concordent entre HSK et CC-CEDICT.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 3 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk3.pdf, p. 20, no 401 : 鞋 xié, nom, « shoe »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 117765 : 鞋 鞋 [xie2] /shoe/CL:雙|双[shuang1],隻|只[zhi1]/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "低於",
+      "simplified": "低于",
+      "pinyinNumbered": "di1 yu2",
+      "state": "verified",
+      "definitionsFr": [
+        "être inférieur à ; être en dessous de"
+      ],
+      "reason": "Verbe comparatif, lecture dīyú. HSK et CC-CEDICT concordent exactement. L’entrée CFDICT 低于/低于 porte une autre forme traditionnelle ; sa traduction n’est pas transférée à 低於/低于.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 8, no 152 : 低于 dīyú, verbe, « to be lower than »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 7150 : 低於 低于 [di1 yu2] /to be lower than/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "假",
+      "simplified": "假",
+      "pinyinNumbered": "jia3",
+      "state": "verified",
+      "definitionsFr": [
+        "faux ; factice ; artificiel",
+        "emprunter ; se servir de",
+        "si ; à supposer que"
+      ],
+      "reason": "Adjectif, verbe et conjonction, lecture jiǎ. HSK confirme le sens adjectival principal ; CC-CEDICT et le Ministère de l’Éducation de Taïwan concordent sur les sens « emprunter » et hypothétique. La lecture jià, « congé ; vacances », reste strictement exclue.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 18, no 345 : 假 jiǎ, adjectif, « false, fake »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 8920 : 假 假 [jia3]"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 假, jiǎ",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=5541&la=0&powerMode=0",
+          "locator": "假 jiǎ : non réel ou artificiel ; emprunter ; conjonction hypothétique"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "克",
+      "simplified": "克",
+      "pinyinNumbered": "ke4",
+      "state": "verified",
+      "definitionsFr": [
+        "gramme",
+        "vaincre ; surmonter",
+        "maîtriser ; réprimer",
+        "pouvoir ; être capable de (littéraire)",
+        "abréviation de 克羅地亞/克罗地亚 ou 克羅埃西亞/克罗埃西亚 : Croatie",
+        "ancienne unité tibétaine de superficie, environ six ares"
+      ],
+      "reason": "Nom d’unité, classificateur, verbe et abréviation de nom propre, lecture kè. HSK donne le sens pédagogique « gramme » ; les deux lignes CC-CEDICT et Hàn Diǎn concordent sur les sens verbaux et l’ancienne unité de superficie. L’abréviation de Croatie est explicitement marquée comme telle et n’est pas confondue avec un nom commun.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 24, no 430 : 克 kè, classificateur, « gram »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 10724-10725 : 克 克 [Ke4]/[ke4]"
+        },
+        {
+          "title": "Hàn Diǎn — 克",
+          "url": "https://www.zdic.net/hans/%E5%85%8B",
+          "locator": "克 kè : pouvoir ; vaincre ; maîtriser ; gramme ; ancienne mesure tibétaine"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "動車",
+      "simplified": "动车",
+      "pinyinNumbered": "dong4 che1",
+      "state": "verified",
+      "definitionsFr": [
+        "train à grande vitesse de catégorie D ou C en Chine",
+        "voiture motrice d’une rame",
+        "abréviation de 動車組/动车组 : rame automotrice"
+      ],
+      "reason": "Nom ferroviaire et abréviation, lecture dòngchē. HSK et CC-CEDICT concordent sur le train chinois à grande vitesse ; CC-CEDICT distingue également le véhicule moteur et le renvoi à 動車組/动车组. La définition technique de la rame automotrice est cohérente avec la terminologie de l’autorité ferroviaire chinoise.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 9, no 166 : 动车 dòngchē, nom, « high-speed train »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 15629 : 動車 动车 [dong4 che1]"
+        },
+        {
+          "title": "Administration nationale des chemins de fer de Chine — matériel roulant ferroviaire",
+          "url": "https://www.nra.gov.cn/jglz/sbjg/xksb/xknr/202104/t20210428_199211.shtml",
+          "locator": "Les équipements mobiles ferroviaires distinguent notamment les 動車組, locomotives, voitures et wagons."
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "臺",
+      "simplified": "台",
+      "pinyinNumbered": "tai2",
+      "state": "verified",
+      "definitionsFr": [
+        "plate-forme ; estrade ; scène",
+        "socle ; support",
+        "station ; observatoire ; station de radio ou de télévision",
+        "classificateur pour les machines, appareils et véhicules",
+        "abréviation de 臺灣/台湾 : Taïwan"
+      ],
+      "reason": "Nom, classificateur et abréviation de nom propre, lecture tái. HSK, les deux lignes CC-CEDICT et le Ministère de l’Éducation de Taïwan concordent sur ces emplois de 臺/台. Les sens autonomes de 台/台 — notamment le pronom classique et le nom de famille — ne sont pas transférés malgré la convergence simplifiée vers 台.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 39, no 714 : 台 tái, nom et classificateur"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 91851-91852 : 臺 台 [Tai2]/[tai2]"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 臺",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=2479&la=0&powerMode=0",
+          "locator": "臺 tái : plate-forme, scène, support, station, classificateur d’appareils, abréviation de Taïwan"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "鹹",
+      "simplified": "咸",
+      "pinyinNumbered": "xian2",
+      "state": "verified",
+      "definitionsFr": [
+        "salé",
+        "avare ; pingre"
+      ],
+      "reason": "Adjectif, lecture xián. HSK et CC-CEDICT concordent sur le goût salé ; CC-CEDICT et Hàn Diǎn attestent aussi l’emploi figuré « avare ». Les sens « tous » et le nom de famille de l’identité 咸/咸 ne sont pas transférés à 鹹/咸.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 43, no 796 : 咸 xián, adjectif, « salty »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 122927 : 鹹 咸 [xian2] /salted/salty/stingy/miserly/"
+        },
+        {
+          "title": "Hàn Diǎn — 鹹",
+          "url": "https://www.zdic.net/hans/%E9%B9%B9",
+          "locator": "鹹 xián : contenant du sel ou ayant un goût salé ; avare, mesquin"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "場",
+      "simplified": "场",
+      "pinyinNumbered": "chang3",
+      "state": "verified",
+      "definitionsFr": [
+        "lieu ; espace affecté à une activité",
+        "scène",
+        "classificateur pour les événements, spectacles, activités sportives et examens"
+      ],
+      "reason": "Nom et classificateur, lecture continentale chǎng. La liste HSK et CC-CEDICT attribuent explicitement cette lecture aux sens retenus. Le dictionnaire du Ministère de l’Éducation de Taïwan décrit chǎng comme prononciation orale de plusieurs sens mais conserve cháng pour le classificateur : cette divergence régionale est consignée et résolue en faveur de la norme HSK continentale ciblée par l’application. Les sens de la ligne CC-CEDICT cháng ne sont pas importés.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 4, no 73 : 场 chǎng, classificateur d’événements et de spectacles"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 26124 : 場 场 [chang3]"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 場",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8483&la=0&powerMode=0",
+          "locator": "場 cháng/chǎng : lieu, scène et classificateur ; variation régionale de lecture explicitée"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "大賽",
+      "simplified": "大赛",
+      "pinyinNumbered": "da4 sai4",
+      "state": "verified",
+      "definitionsFr": [
+        "grande compétition ; concours majeur"
+      ],
+      "reason": "Nom commun, lecture dàsài. HSK et CC-CEDICT concordent sur une compétition ou un concours d’importance ; aucun sens des caractères isolés n’est ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 7, no 127 : 大赛 dàsài, nom, « major competition, grand contest »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 28365 : 大賽 大赛 [da4 sai4] /grand contest/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "小夥子",
+      "simplified": "小伙子",
+      "pinyinNumbered": "xiao3 huo3 zi5",
+      "state": "verified",
+      "definitionsFr": [
+        "jeune homme ; gars (familier)"
+      ],
+      "reason": "Nom familier, lecture xiǎohuǒzi avec ton neutre final. HSK et CC-CEDICT concordent. L’entrée CFDICT 小伙子/小伙子 possède une autre forme traditionnelle ; sa traduction n’est pas transférée à 小夥子/小伙子.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 44, no 813 : 小伙子 xiǎohuǒzi, nom, « young man, lad »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 34349 : 小夥子 小伙子 [xiao3 huo3 zi5]"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "並",
+      "simplified": "并",
+      "pinyinNumbered": "bing4",
+      "state": "verified",
+      "definitionsFr": [
+        "et ; de plus ; également",
+        "ensemble ; simultanément",
+        "devant une négation : pas du tout ; en réalité",
+        "combiner ; réunir",
+        "mettre côte à côte"
+      ],
+      "reason": "Conjonction, adverbe et verbe, lecture bìng. HSK, CC-CEDICT, le Ministère de l’Éducation de Taïwan et Hàn Diǎn concordent sur les emplois coordonnants, simultanés, négatifs et verbaux. La simplification fait aussi converger 併 vers 并, mais les sources attribuent indépendamment les sens « réunir » à 並 : ils ne résultent donc pas d’un transfert automatique depuis 併/并. La lecture bàng est exclue.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 3, no 39 : 并 bìng, verbe, adverbe et conjonction"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 3192 : 並 并 [bing4]"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 並",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=284&la=0&powerMode=0",
+          "locator": "並 bìng : réunir, mettre côte à côte, simultanément, devant une négation, et/de plus"
+        },
+        {
+          "title": "Hàn Diǎn — 並",
+          "url": "https://www.zdic.net/hans/%E4%B8%A6",
+          "locator": "並 bìng : aligner, fusionner, ensemble, totalité, renforcement négatif, coordination"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "強",
+      "simplified": "强",
+      "pinyinNumbered": "qiang2",
+      "state": "verified",
+      "definitionsFr": [
+        "fort ; puissant",
+        "vigoureux ; robuste",
+        "supérieur ; meilleur",
+        "un peu plus de",
+        "violent ; intense",
+        "renforcer ; fortifier",
+        "nom de famille Qiang"
+      ],
+      "reason": "Adjectif, verbe et nom propre, lecture qiáng. HSK confirme le sens principal ; les lignes CC-CEDICT, le Ministère de l’Éducation de Taïwan et Hàn Diǎn concordent sur les sens secondaires et le nom de famille. Les lectures qiǎng « forcer » et jiàng « obstiné » restent exclues.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 32, no 579 : 强 qiáng, adjectif, « strong, powerful »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 39248 et 39250 : 強 强 [Qiang2]/[qiang2]"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 強, qiáng",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=5926&la=0&powerMode=0",
+          "locator": "強 qiáng : fort, ferme, supérieur, légèrement plus, nom de famille, renforcer"
+        },
+        {
+          "title": "Hàn Diǎn — 強, qiáng",
+          "url": "https://www.zdic.net/hans/%E5%BC%B7",
+          "locator": "強 qiáng : fort, degré élevé, supérieur, légèrement plus, violent, renforcer, nom de famille"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "掃碼",
+      "simplified": "扫码",
+      "pinyinNumbered": "sao3 ma3",
+      "state": "verified",
+      "definitionsFr": [
+        "scanner un code QR ou un code-barres"
+      ],
+      "reason": "Verbe, lecture sǎomǎ. La liste HSK et CC-CEDICT concordent sur le balayage optique d’un code ; la ligne exacte précise les codes QR et les codes-barres.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 34, no 627 : 扫码 sǎomǎ, verbe, « to scan a code »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 47288 : 掃碼 扫码 [sao3 ma3] /to scan a QR code or barcode/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "村",
+      "simplified": "村",
+      "pinyinNumbered": "cun1",
+      "state": "verified",
+      "definitionsFr": [
+        "village",
+        "rustique ; fruste",
+        "offenser ; rabrouer par des paroles grossières"
+      ],
+      "reason": "Nom, adjectif et verbe d’emploi marqué, lecture cūn. HSK et CC-CEDICT concordent sur le nom principal ; CC-CEDICT et Hàn Diǎn confirment les emplois « rustique, grossier » et l’emploi verbal consistant à offenser par des paroles. La marque d’usage évite de présenter ces sens secondaires comme neutres.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 6, no 107 : 村 cūn, nom, « village »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 55902 : 村 村 [cun1] /village/(dialect) to scold/rustic; boorish/"
+        },
+        {
+          "title": "Hàn Diǎn — 村",
+          "url": "https://www.zdic.net/hans/%E6%9D%91",
+          "locator": "村 cūn : village ; rustique ou grossier ; offenser quelqu’un par des paroles"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "琴",
+      "simplified": "琴",
+      "pinyinNumbered": "qin2",
+      "state": "verified",
+      "definitionsFr": [
+        "qin — instrument à cordes, notamment le guqin",
+        "instrument de musique (dans les composés)",
+        "jouer du qin (littéraire)",
+        "nom de famille Qin"
+      ],
+      "reason": "Nom commun, verbe littéraire et nom propre, lecture qín. HSK et CC-CEDICT confirment l’instrument ; le Ministère de l’Éducation de Taïwan et Hàn Diǎn attestent l’extension générique, le verbe et le nom de famille. « Piano » n’est pas présenté comme sens autonome : il apparaît dans des composés tels que 鋼琴/钢琴.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 32, no 585 : 琴 qín, nom, « musical instrument, piano, etc. »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 73392 : 琴 琴 [qin2] /guqin/musical instrument in general/"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 琴",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=6530&la=0&powerMode=0",
+          "locator": "琴 qín : guqin puis catégorie d’instruments ; nom de famille ; jouer du qin"
+        },
+        {
+          "title": "Hàn Diǎn — 琴",
+          "url": "https://www.zdic.net/hans/%E7%90%B4",
+          "locator": "琴 qín : instruments chinois et occidentaux ; nom de famille ; jouer du qin"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "用於",
+      "simplified": "用于",
+      "pinyinNumbered": "yong4 yu2",
+      "state": "verified",
+      "definitionsFr": [
+        "être utilisé pour ; servir à",
+        "être appliqué à"
+      ],
+      "reason": "Verbe, lecture yòngyú. HSK et CC-CEDICT concordent sur l’emploi et l’application à un usage. L’entrée CFDICT 用于/用于 possède une autre forme traditionnelle ; sa traduction n’est pas transférée à 用於/用于.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 48, no 880 : 用于 yòngyú, verbe, « to be used for, to be applied to »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 74439 : 用於 用于 [yong4 yu2] /to use in; to use on; to use for/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "留",
+      "simplified": "留",
+      "pinyinNumbered": "liu2",
+      "state": "verified",
+      "definitionsFr": [
+        "rester ; demeurer",
+        "garder ; conserver",
+        "laisser ; déposer"
+      ],
+      "reason": "Verbe, lecture liú. HSK, CC-CEDICT et Hàn Diǎn concordent sur le fait de rester, de retenir ou conserver et de laisser quelque chose, notamment un message ou une trace. Les emplois archaïques signalés par Hàn Diǎn ne sont pas ajoutés.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 27, no 482 : 留 liú, verbe, « to stay, to remain, to keep »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 74819 : 留 留 [liu2]"
+        },
+        {
+          "title": "Hàn Diǎn — 留",
+          "url": "https://www.zdic.net/hans/%E7%95%99",
+          "locator": "留 liú : rester ; empêcher de partir ; conserver ; laisser"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "窗",
+      "simplified": "窗",
+      "pinyinNumbered": "chuang1",
+      "state": "verified",
+      "definitionsFr": [
+        "fenêtre"
+      ],
+      "reason": "Nom commun, lecture chuāng ; classificateur usuel 扇. HSK et CC-CEDICT concordent sur l’ouverture destinée à laisser passer l’air et la lumière. Aucun sens d’un composé n’est ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, p. 6, no 95 : 窗 chuāng, nom, « window »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 82008 : 窗 窗 [chuang1] /window/CL:扇[shan4]/"
+        },
+        {
+          "title": "Hàn Diǎn — 窗",
+          "url": "https://www.zdic.net/hans/%E7%AA%97",
+          "locator": "窗 chuāng : ouverture d’un bâtiment ou d’un véhicule laissant passer l’air et la lumière"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "笑話",
+      "simplified": "笑话",
+      "pinyinNumbered": "xiao4 hua5",
+      "state": "verified",
+      "definitionsFr": [
+        "blague ; plaisanterie",
+        "se moquer de ; ridiculiser",
+        "ridicule ; absurde"
+      ],
+      "reason": "Nom, verbe et adjectif, avec seconde syllabe atone dans l’identité retenue. Le HSK et CC-CEDICT concordent sur la plaisanterie, la moquerie et l’emploi qualificatif « ridicule ». Hàn Diǎn confirme les deux sens principaux sans justifier l’ajout de sens étrangers à cette entrée.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 817 : 笑话 xiàohua, « joke, laughter; to joke, to laugh at »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 82570 : 笑話 笑话 [xiao4 hua5] /joke; jest/to laugh at; to mock/ridiculous; absurd/"
+        },
+        {
+          "title": "Hàn Diǎn — 笑話",
+          "url": "https://www.zdic.net/hant/%E7%AC%91%E8%A9%B1",
+          "locator": "笑話 xiào hua : propos ou fait qui fait rire ; se moquer de quelqu’un"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "粗",
+      "simplified": "粗",
+      "pinyinNumbered": "cu1",
+      "state": "verified",
+      "definitionsFr": [
+        "épais ; gros (diamètre)",
+        "grossier ; rugueux",
+        "à gros grains",
+        "rauque ; rude (voix)",
+        "fruste ; brutal ; négligent"
+      ],
+      "reason": "Adjectif polysémique, lecture cū. Les sources distinguent l’épaisseur d’un objet allongé, la texture ou granularité grossière, la voix rauque et le comportement fruste ou négligent. Les emplois adverbiaux rares ne sont pas ajoutés à ce lot HSK.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 105 : 粗 cū, « coarse, rough, thick »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 83690 : 粗 粗 [cu1]"
+        },
+        {
+          "title": "Hàn Diǎn — 粗",
+          "url": "https://www.zdic.net/hans/%E7%B2%97",
+          "locator": "粗 cū : négligent ; non raffiné ; épais ; à gros grains ; voix basse et forte ; comportement rude"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "線下",
+      "simplified": "线下",
+      "pinyinNumbered": "xian4 xia4",
+      "state": "verified",
+      "definitionsFr": [
+        "hors ligne ; en dehors d’Internet",
+        "en présentiel (par opposition à en ligne)",
+        "sous la ligne"
+      ],
+      "reason": "Adjectif ou locatif. Le sens HSK moderne est l’opposition à 線上/线上 : activité hors ligne ou en présence physique. Le sens compositionnel « sous la ligne », également donné par CC-CEDICT, reste séparé.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 800 : 线下 xiànxià, « offline »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 86278 : 線下 线下 [xian4 xia4] /offline/below the line/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "網友",
+      "simplified": "网友",
+      "pinyinNumbered": "wang3 you3",
+      "state": "verified",
+      "definitionsFr": [
+        "internaute ; utilisateur d’Internet",
+        "ami rencontré en ligne"
+      ],
+      "reason": "Nom. HSK et CC-CEDICT concordent sur l’internaute et l’ami connu par Internet. Les deux acceptions sont conservées sans les confondre avec un ami réel contacté ensuite en ligne.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 768 : 网友 wǎngyǒu, « netizen, internet user »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 85999 : 網友 网友 [wang3 you3] /online friend/netizen; Internet user/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "網購",
+      "simplified": "网购",
+      "pinyinNumbered": "wang3 gou4",
+      "state": "verified",
+      "definitionsFr": [
+        "achat en ligne ; commerce en ligne",
+        "acheter en ligne"
+      ],
+      "reason": "Nom ou verbe, abréviation de 網上購物/网上购物. Les sources concordent sur l’achat de biens ou services auprès d’un vendeur au moyen d’Internet.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 765 : 网购 wǎnggòu, « to shop online »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 86094 : 網購 网购 [wang3 gou4] /Internet shopping/to purchase online/"
+        },
+        {
+          "title": "Hàn Diǎn — 网购",
+          "url": "https://www.zdic.net/hant/%E7%BD%91%E8%B4%AD",
+          "locator": "網購 wǎng gòu : forme de commerce électronique consistant à acheter directement en ligne"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "表",
+      "simplified": "表",
+      "pinyinNumbered": "biao3",
+      "state": "verified",
+      "definitionsFr": [
+        "surface extérieure ; extérieur",
+        "parenté par les femmes",
+        "exprimer ; manifester (une opinion)",
+        "modèle ; exemple",
+        "tableau ; formulaire",
+        "compteur ; instrument de mesure"
+      ],
+      "reason": "Nom et verbe, identité exacte 表/表. HSK regroupe plusieurs sens du simplifié 表, mais le sens « montre » appartient à l’identité traditionnelle distincte 錶/表, déjà française dans CFDICT, et n’est donc pas fusionné ici. Les sens retenus correspondent exclusivement à 表/表 dans CC-CEDICT et Hàn Diǎn.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 33 : 表 biǎo, « watch, meter, table, form; to express » ; la valeur watch est exclue de 表/表"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 98080 : 表 表 [biao3] ; comparer l. 111910 : 錶 表 [biao3] /watch (timepiece)/"
+        },
+        {
+          "title": "Hàn Diǎn — 表",
+          "url": "https://www.zdic.net/hans/%E8%A1%A8",
+          "locator": "表 biǎo : extérieur, exprimer, tableau ou formulaire, instrument de mesure, modèle et relation de parenté ; 錶 est signalé comme forme traditionnelle du sens horloger"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "說法",
+      "simplified": "说法",
+      "pinyinNumbered": "shuo1 fa3",
+      "state": "verified",
+      "definitionsFr": [
+        "formulation ; manière de dire",
+        "version des faits ; déclaration",
+        "point de vue ; opinion",
+        "théorie ; hypothèse ; interprétation",
+        "exposer la doctrine bouddhique"
+      ],
+      "reason": "Nom et verbe, lecture shuōfǎ du HSK. CC-CEDICT sépare le sens bouddhique sous fa3 et les sens courants sous une seconde syllabe neutre, tandis que le HSK et Hàn Diǎn donnent shuōfǎ aux sens courants. La décision documente cette divergence et réunit uniquement les sens attestés sur l’identité HSK exacte, sans transférer une autre graphie.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 699 : 说法 shuōfǎ, « way of saying something, version, statement »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 101066-101067 : 說法 说法 [shuo1 fa3] et [shuo1 fa5]"
+        },
+        {
+          "title": "Hàn Diǎn — 说法",
+          "url": "https://www.zdic.net/hans/%E8%AF%B4%E6%B3%95",
+          "locator": "说法 shuō fǎ : formulation, point de vue, manière de dire et exposition de la doctrine bouddhique"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "起到",
+      "simplified": "起到",
+      "pinyinNumbered": "qi3 dao4",
+      "state": "verified",
+      "definitionsFr": [
+        "avoir un effet ; produire un effet",
+        "jouer un rôle"
+      ],
+      "reason": "Verbe employé notamment dans 起到…作用. HSK et CC-CEDICT concordent sur l’exercice d’un rôle ou d’un effet, par exemple stabilisateur ou moteur.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 569 : 起到 qǐdào, « to play the role of, to function as, to act as »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 104065 : 起到 起到 [qi3 dao4] + 作用, to have an effect; to play a role"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "鮮",
+      "simplified": "鲜",
+      "pinyinNumbered": "xian1",
+      "state": "verified",
+      "definitionsFr": [
+        "frais ; nouveau",
+        "vif ; éclatant (couleur)",
+        "savoureux ; délicieux",
+        "mets frais ; produit aquatique"
+      ],
+      "reason": "Adjectif et nom, lecture xiān. Les sens de fraîcheur, couleur vive, saveur agréable et aliments frais ou aquatiques concordent. La lecture xiǎn « rare ; peu nombreux » reste une identité séparée et n’est pas agrégée.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 4 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk4.pdf, entrée HSK 4 no 794 : 鲜 xiān, « fresh »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 122220-122221 : 鮮 鲜 [xian1] et identité distincte [xian3]"
+        },
+        {
+          "title": "Hàn Diǎn — 鮮",
+          "url": "https://www.zdic.net/hans/%E9%AE%AE",
+          "locator": "鮮 xiān : aliments frais, fraîcheur, saveur agréable, couleur vive ; xiǎn : peu nombreux"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "上升",
+      "simplified": "上升",
+      "pinyinNumbered": "shang4 sheng1",
+      "state": "verified",
+      "definitionsFr": [
+        "monter ; s’élever",
+        "augmenter ; progresser"
+      ],
+      "reason": "Verbe, identité exacte 上升/上升. Les sources concordent sur un mouvement vers le haut et, par extension, une augmentation de niveau, de degré ou de valeur. La graphie traditionnelle distincte 上昇/上升 n’est pas utilisée comme identité de cette décision.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 964 : 上升 shàngshēng, « to rise, to go up »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 1607 : 上升 上升 [shang4 sheng1] /to rise/to go up/to ascend/"
+        },
+        {
+          "title": "Hàn Diǎn — 上昇",
+          "url": "https://www.zdic.net/hant/%E4%B8%8A%E6%98%87",
+          "locator": "上昇 shàng shēng : renvoi vers 上升, « monter ; s’élever »"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "買賣",
+      "simplified": "买卖",
+      "pinyinNumbered": "mai3 mai5",
+      "state": "verified",
+      "definitionsFr": [
+        "commerce ; affaires",
+        "achat et vente ; transaction",
+        "magasin ; boutique (régional)"
+      ],
+      "reason": "Nom avec seconde syllabe atone dans l’identité HSK. Il désigne l’activité commerciale, une transaction et régionalement un commerce. Le verbe mǎi mài « acheter et vendre » possède une identité numérotée distincte et n’est pas fusionné.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 749 : 买卖 mǎimai, « business, buying and selling »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 103076-103077 : 買賣 买卖 [mai3 mai4] verbe et [mai3 mai5] nom"
+        },
+        {
+          "title": "Hàn Diǎn — 买卖",
+          "url": "https://www.zdic.net/hans/%E4%B9%B0%E5%8D%96",
+          "locator": "买卖 : activité d’achat et de vente ; affaires ou commerce ; régionalement magasin"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "夥伴",
+      "simplified": "伙伴",
+      "pinyinNumbered": "huo3 ban4",
+      "state": "verified",
+      "definitionsFr": [
+        "compagnon ; camarade",
+        "partenaire ; associé"
+      ],
+      "reason": "Nom. HSK, CC-CEDICT et Hàn Diǎn concordent sur une personne qui participe à la même activité ainsi que sur le partenaire ou associé. La variante 伙伴/伙伴 reste une entrée de renvoi séparée.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 515 : 伙伴 huǒbàn, « companion, partner »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 27568 : 夥伴 伙伴 [huo3 ban4] /companion; pal/partner; business associate/"
+        },
+        {
+          "title": "Hàn Diǎn — 伙伴",
+          "url": "https://www.zdic.net/hans/%E4%BC%99%E4%BC%B4",
+          "locator": "伙伴 huǒ bàn : compagnon, camarade ou partenaire participant à une même activité"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "公布",
+      "simplified": "公布",
+      "pinyinNumbered": "gong1 bu4",
+      "state": "verified",
+      "definitionsFr": [
+        "annoncer ; rendre public",
+        "publier ; promulguer"
+      ],
+      "reason": "Verbe, identité exacte 公布/公布. Les sources concordent sur l’annonce publique, la publication ou la promulgation. 公佈/公布 demeure une variante traditionnelle distincte et n’est pas utilisée pour transférer automatiquement son français.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 407 : 公布 gōngbù, « to announce, to make public »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 11813 : 公布 公布 [gong1 bu4] /to announce; to make public; to publish/"
+        },
+        {
+          "title": "Hàn Diǎn — 公布",
+          "url": "https://www.zdic.net/hans/%E5%85%AC%E5%B8%83",
+          "locator": "公布 gōng bù : annoncer publiquement, publier ou porter à la connaissance du public"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "匹",
+      "simplified": "匹",
+      "pinyinNumbered": "pi3",
+      "state": "verified",
+      "definitionsFr": [
+        "égal ; comparable ; de même force",
+        "seul ; individuel ; l’un d’une paire",
+        "classificateur pour chevaux, mulets et autres équidés",
+        "pièce ; rouleau de tissu",
+        "cheval-vapeur"
+      ],
+      "reason": "Nom, adjectif et classificateur, lecture continentale pǐ. HSK, CC-CEDICT et Hàn Diǎn concordent sur le classificateur des équidés et des pièces de tissu, ainsi que sur les valeurs de correspondance et d’unité. La prononciation taïwanaise pī du classificateur animal est documentée mais ne remplace pas l’identité pǐ.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 828 : 匹 pǐ, « measure word for horses, cloth »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 16436 : 匹 匹 [pi3] ; Taiwan pr. [pi1] pour le classificateur animal"
+        },
+        {
+          "title": "Hàn Diǎn — 匹",
+          "url": "https://www.zdic.net/hans/%E5%8C%B9",
+          "locator": "匹 pǐ : classificateur des tissus et des chevaux ; seul ; égal ou comparable"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "反覆",
+      "simplified": "反复",
+      "pinyinNumbered": "fan3 fu4",
+      "state": "verified",
+      "definitionsFr": [
+        "à plusieurs reprises ; de façon répétée",
+        "répéter ; recommencer",
+        "instable ; changeant",
+        "aller et venir",
+        "rechuter ; récidiver (maladie)",
+        "renverser ; retourner"
+      ],
+      "reason": "Adverbe, verbe et adjectif. Le sens HSK central est la répétition. CC-CEDICT et Hàn Diǎn attestent aussi l’instabilité, l’aller-retour, la rechute et le renversement. La variante 反復/反复 reste une identité distincte.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 332 : 反复 fǎnfù, « repeatedly; to repeat; repetition »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 18404 : 反覆 反复 [fan3 fu4]"
+        },
+        {
+          "title": "Hàn Diǎn — 反复",
+          "url": "https://www.zdic.net/hans/%E5%8F%8D%E5%A4%8D",
+          "locator": "反复 fǎn fù : à plusieurs reprises ; changeant ; aller et venir ; renverser ; rechuter"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "合",
+      "simplified": "合",
+      "pinyinNumbered": "he2",
+      "state": "verified",
+      "definitionsFr": [
+        "fermer ; joindre",
+        "réunir ; unir",
+        "convenir ; correspondre ; être conforme",
+        "équivaloir à",
+        "entier ; tout ; ensemble",
+        "tour ; manche de combat",
+        "conjonction astronomique",
+        "première note de la gamme pentatonique traditionnelle",
+        "ancienne variante de 盒"
+      ],
+      "reason": "Verbe, adjectif, adverbe et nom, lecture hé. Les sens retenus correspondent à l’identité hé. La mesure de capacité gě est une lecture séparée et n’est pas agrégée. Hàn Diǎn confirme notamment fermer, réunir, être conforme et ensemble ; CC-CEDICT atteste les emplois spécialisés supplémentaires.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 474 : 合 hé, « to close, to fit; to join »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 19647-19648 : identités distinctes 合 [ge3] et 合 [he2]"
+        },
+        {
+          "title": "Hàn Diǎn — 合",
+          "url": "https://www.zdic.net/hans/%E5%90%88",
+          "locator": "合 hé : fermer, réunir, unir, correspondre, entier et ensemble ; gě : unité de capacité distincte"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "呀",
+      "simplified": "呀",
+      "pinyinNumbered": "ya1",
+      "state": "verified",
+      "definitionsFr": [
+        "ah ! ; oh ! (surprise)",
+        "grincement ; craquement (onomatopée)"
+      ],
+      "reason": "Interjection et onomatopée, lecture yā. Les sources concordent sur la surprise et le bruit de frottement ou d’ouverture. La particule atone ya, équivalente à 啊 après certaines voyelles, reste une identité distincte.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 1320 : 呀 yā, « ah, oh »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 20743-20744 : 呀 [ya1] interjection/onomatopée et [ya5] particule"
+        },
+        {
+          "title": "Hàn Diǎn — 呀",
+          "url": "https://www.zdic.net/hans/%E5%91%80",
+          "locator": "呀 yā : interjection de surprise et onomatopée d’un grincement ; ya : particule distincte"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "諮詢",
+      "simplified": "咨询",
+      "pinyinNumbered": "zi1 xun2",
+      "state": "verified",
+      "definitionsFr": [
+        "consulter ; demander conseil",
+        "se renseigner ; demander des informations"
+      ],
+      "reason": "Verbe. HSK, CC-CEDICT et Hàn Diǎn concordent sur le fait de solliciter un avis ou de demander des renseignements. 諮詢/谘询 est une identité simplifiée distincte et n’est pas fusionnée automatiquement.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 1570 : 咨询 zīxún, « to consult, to seek advice »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 101434-101435 : 諮詢 咨询 et 諮詢 谘询 [zi1 xun2]"
+        },
+        {
+          "title": "Hàn Diǎn — 咨询",
+          "url": "https://www.zdic.net/hans/%E5%92%A8%E8%AF%A2",
+          "locator": "咨询 zī xún : solliciter un avis ; consulter ou demander"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "咬",
+      "simplified": "咬",
+      "pinyinNumbered": "yao3",
+      "state": "verified",
+      "definitionsFr": [
+        "mordre ; mordiller",
+        "pincer avec les dents"
+      ],
+      "reason": "Verbe, lecture yǎo. HSK et CC-CEDICT concordent sur l’action de saisir ou presser avec les dents. Aucun sens figuré issu de composés n’est ajouté.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 1337 : 咬 yǎo, « to bite »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 21328 : 咬 咬 [yao3] /to bite/to nip/"
+        },
+        {
+          "title": "Hàn Diǎn — 咬",
+          "url": "https://www.zdic.net/hans/%E5%92%AC",
+          "locator": "咬 yǎo : serrer ou couper avec les dents"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "團",
+      "simplified": "团",
+      "pinyinNumbered": "tuan2",
+      "state": "verified",
+      "definitionsFr": [
+        "rond ; circulaire",
+        "boule ; masse compacte",
+        "rouler ou pétrir en boule",
+        "rassembler ; réunir",
+        "groupe ; association ; organisation",
+        "régiment",
+        "classificateur pour une masse ou un objet aggloméré"
+      ],
+      "reason": "Adjectif, nom, verbe et classificateur, identité traditionnelle 團/团. Les sources concordent sur la forme ronde, l’action de former une boule ou de rassembler, le groupe organisé, l’unité militaire et le classificateur. Le sens alimentaire relevant spécifiquement de 糰/团 n’est pas ajouté à cette identité.",
+      "references": [
+        {
+          "title": "Mandarin Zest — New HSK 5 Vocab List (référence sémantique anglaise)",
+          "url": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+          "locator": "data/source/hsk/new_hsk5.pdf, entrée HSK 5 no 1156 : 团 tuán, « to unite; group; measure word for round objects »"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "data/source/cc-cedict.u8, l. 24670 : 團 团 [tuan2]"
+        },
+        {
+          "title": "Hàn Diǎn — 團",
+          "url": "https://www.zdic.net/hans/%E5%9C%98",
+          "locator": "團 tuán : objet rond, groupe organisé, unité militaire, pétrir ou rouler en boule et classificateur d’une masse"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
     }
   ]
 }

@@ -51,14 +51,14 @@ assert.deepEqual(audit.hskFrenchReuse.pendingReviewByStatus, {
 });
 assert.equal(conflicts.count, 186);
 assert.equal(dictionaryAudit.hskFrenchReuse.automaticImportCount, 10);
-assert.equal(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidateCount, 141);
-assert.equal(new Set(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidates.map((item) => item.dictionaryEntryId)).size, 136);
+assert.equal(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidateCount, 101);
+assert.equal(new Set(dictionaryAudit.hskFrenchReuse.nonFrenchSourceCandidates.map((item) => item.dictionaryEntryId)).size, 96);
 
 assert(batch.count <= 40);
-assert.equal(batch.maxEntries, 40);
+assert(batch.maxEntries > 0 && batch.maxEntries <= 40);
 assert.deepEqual(
    batch.entries.map((entry) => entry.candidateId),
-   inventory.candidates.filter((entry) => entry.state === "candidate").slice(0, 40).map((entry) => entry.candidateId),
+   inventory.candidates.filter((entry) => entry.state === "candidate").slice(0, batch.count).map((entry) => entry.candidateId),
 );
 assert(batch.entries.every((entry) => entry.state === "candidate"));
 assert(inventory.candidates.every((entry) => {
@@ -89,11 +89,11 @@ const sortedOrdering = [...ordering].sort((left, right) => {
 });
 assert.deepEqual(ordering, sortedOrdering);
 
-runBuilder(["--check"]);
+runBuilder(["--batch-size", String(batch.count), "--check"]);
 
-const testRoot = path.join(root, "tmp", "dictionary-fr-editorial-decision-test");
-const decisionsPath = path.join(root, "tmp", "dictionary-fr-editorial-decisions-test.json");
-fs.rmSync(testRoot, { recursive: true, force: true });
+const fixtureRoot = fs.mkdtempSync(path.join(root, ".tmp-dictionary-fr-editorial-test-"));
+const testRoot = path.join(fixtureRoot, "generated");
+const decisionsPath = path.join(fixtureRoot, "decisions.json");
 const selected = inventory.candidates.filter((entry) => entry.state === "candidate").slice(0, 3);
 assert.equal(selected.length, 3);
 const stateByOffset = ["verified", "rejected", "reviewing"];
@@ -140,8 +140,7 @@ try {
    );
    assert.deepEqual(secondHashes, firstHashes, "rebuilding an unchanged batch must be byte-for-byte idempotent");
 } finally {
-   fs.rmSync(testRoot, { recursive: true, force: true });
-   fs.rmSync(decisionsPath, { force: true });
+   fs.rmSync(fixtureRoot, { recursive: true, force: true });
 }
 
 console.log("dictionary French editorial workflow data tests: PASS");

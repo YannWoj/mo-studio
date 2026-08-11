@@ -16,8 +16,8 @@
   "dictionary": {
     "path": "data/generated/dictionary",
     "manifest_path": "data/generated/dictionary/manifest.json",
-    "manifest_sha256": "f8488395ddc9ff63d9cb5ff6494a4fa84e11559e7b83aa45ed329f396726e8ea",
-    "build_id": "84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9",
+    "manifest_sha256": "5827aadb5540bc5016c5c3dda95424bbdb4690a3a0fd0c05fbecb4c72345110d",
+    "build_id": "fb1c389c75c219089aaca1c5a992606f16a9b89ce25916ebf72019eac5ed4ce4",
     "builder_version": "2.4.0",
     "schema_version": 5,
     "entry_count": 145213,

@@ -1,6 +1,6 @@
 # Rapport de nettoyage HSK 1–6
 
-Dictionnaire contrôlé en lecture seule : build `84daf179e2c3e12b2d3710c2eac86bc3b3afd6ccc0875b918dd5777bf98ae6e9`.
+Dictionnaire contrôlé en lecture seule : build `fb1c389c75c219089aaca1c5a992606f16a9b89ce25916ebf72019eac5ed4ce4`.
 
 ## Validation
 

@@ -32,7 +32,7 @@ const decisions = readJson(decisionsPath);
 assert.equal(manifest.schemaVersion, 5);
 assert.equal(manifest.frenchEditorialPolicy.entryCount, 36);
 assert.equal(manifest.frenchEditorialPolicy.sha256, sha256(fs.readFileSync(overridesPath)));
-assert.equal(manifest.frenchEditorialDecisions.entryCount, 26);
+assert.equal(manifest.frenchEditorialDecisions.entryCount, 66);
 assert.equal(manifest.frenchEditorialDecisions.schemaVersion, 2);
 assert.equal(manifest.frenchEditorialDecisions.sha256, sha256(fs.readFileSync(decisionsPath)));
 assert.equal(audit.status, "PASS");
@@ -47,19 +47,19 @@ assert.deepEqual(audit.potentialAnomalies.countsByType, {
 });
 assert.equal(audit.englishWithoutVerifiedFrench.count, audit.englishWithoutVerifiedFrench.items.length);
 assert.equal(audit.coverage.overallWordsBeforePolicy.covered, 60424);
-assert.equal(audit.coverage.overallWordsAfterPolicy.covered, 60461);
+assert.equal(audit.coverage.overallWordsAfterPolicy.covered, 60501);
 assert.deepEqual(audit.characterFrenchAttachment.allCharacters, {
    total: 14426,
-   withFrenchBefore: 8378,
-   withoutFrenchBefore: 6048,
-   recoveredByExplicitSimplifiedTraditionalAttachment: 2497,
-   withFrenchAfter: 10875,
-   remainingWithoutFrench: 3551,
+   withFrenchBefore: 8395,
+   withoutFrenchBefore: 6031,
+   recoveredByExplicitSimplifiedTraditionalAttachment: 2486,
+   withFrenchAfter: 10881,
+   remainingWithoutFrench: 3545,
 });
-assert.equal(audit.frenchEditorialDecisions.appliedCount, 26);
+assert.equal(audit.frenchEditorialDecisions.appliedCount, 66);
 assert.equal(audit.frenchEditorialDecisions.conflictCount, 0);
 assert.equal(audit.characterFrenchAttachment.manyToOneCollisions.characterCount, 351);
-assert.equal(audit.characterFrenchAttachment.recoveredCharacters.length, 2497);
+assert.equal(audit.characterFrenchAttachment.recoveredCharacters.length, 2486);
 assert.equal(audit.hskFrenchReuse.automaticImportCount, 10);
 assert.equal(audit.hskFrenchReuse.automaticImports.length, 10);
 assert.equal(audit.hskFrenchReuse.reviewQueueCount, 210);
@@ -261,6 +261,37 @@ assert.deepEqual(word("電子書", "电子书", "dian4 zi3 shu1").definitionsFr,
    "liseuse électronique",
 ]);
 assert(!word("電子書", "电子书", "dian4 zi5 shu1").sources.includes("MÒ-FR-EDITORIAL"));
+
+const exactBiao = word("表", "表", "biao3");
+const watchBiao = word("錶", "表", "biao3");
+assert(exactBiao.definitionsFr.some((definition) => definition.includes("formulaire")));
+assert(!exactBiao.definitionsFr.some((definition) => /montre-bracelet|montre de poche/iu.test(definition)));
+assert(!watchBiao.sources.includes("MÒ-FR-EDITORIAL"));
+assert(watchBiao.definitionsFr.some((definition) => /montre/iu.test(definition)));
+
+const exactShuofa = word("說法", "说法", "shuo1 fa3");
+const neutralShuofa = word("說法", "说法", "shuo1 fa5");
+assert(exactShuofa.sources.includes("MÒ-FR-EDITORIAL"));
+assert(!neutralShuofa.sources.includes("MÒ-FR-EDITORIAL"));
+
+const neutralMaimai = word("買賣", "买卖", "mai3 mai5");
+const fourthToneMaimai = word("買賣", "买卖", "mai3 mai4");
+assert(neutralMaimai.sources.includes("MÒ-FR-EDITORIAL"));
+assert(!fourthToneMaimai.sources.includes("MÒ-FR-EDITORIAL"));
+
+for (const [verifiedIdentity, neighboringIdentity] of [
+   [["鮮", "鲜", "xian1"], ["鮮", "鲜", "xian3"]],
+   [["呀", "呀", "ya1"], ["呀", "呀", "ya5"]],
+   [["合", "合", "he2"], ["合", "合", "ge3"]],
+   [["團", "团", "tuan2"], ["糰", "团", "tuan2"]],
+   [["公布", "公布", "gong1 bu4"], ["公佈", "公布", "gong1 bu4"]],
+   [["上升", "上升", "shang4 sheng1"], ["上昇", "上升", "shang4 sheng1"]],
+   [["反覆", "反复", "fan3 fu4"], ["反復", "反复", "fan3 fu4"]],
+   [["夥伴", "伙伴", "huo3 ban4"], ["伙伴", "伙伴", "huo3 ban4"]],
+]) {
+   assert(word(...verifiedIdentity).sources.includes("MÒ-FR-EDITORIAL"));
+   assert(!word(...neighboringIdentity).sources.includes("MÒ-FR-EDITORIAL"));
+}
 
 const waterChong = word("沖", "冲", "chong1");
 const movementChong = word("衝", "冲", "chong1");

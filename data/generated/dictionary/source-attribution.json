@@ -1,13 +1,13 @@
 {
   "frenchEditorialDecisions": {
-    "entryCount": 26,
+    "entryCount": 66,
     "filename": "data/source/dictionary-fr-editorial-decisions.json",
     "policyId": "mo-dictionary-fr-editorial-v2",
     "schemaVersion": 2,
-    "sha256": "099cd55eb434f920ec700669228bbe7a8a38a2063142dca3eecc756274cca599",
+    "sha256": "dca5b8b1242ba29461f280d5c190abbd243b09ca4ebb7a36b6a73d35a82e35eb",
     "sourceId": "MÒ-FR-EDITORIAL",
     "stateCounts": {
-      "verified": 26
+      "verified": 66
     }
   },
   "frenchEditorialPolicy": {
