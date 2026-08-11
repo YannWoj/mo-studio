@@ -12,6 +12,12 @@ let radicalBrowser = {
 };
 const radicalMembersCache = new Map();
 
+function clearRadicalBrowserCache() {
+   radicalMembersCache.clear();
+   radicalBrowser.catalog = null;
+   radicalBrowser.members = null;
+}
+
 function radicalHistoryPayload(radical) {
    return {
       moStudioSearch: true,
@@ -222,25 +228,34 @@ function renderRadicalTable() {
 }
 
 async function resolveRadicalMembers(radical) {
-   if (radicalMembersCache.has(radical)) return radicalMembersCache.get(radical);
-   const chunk = await loadRadicalCharacters(radical);
+   const dictionaryManifest = await loadDictionaryManifest(false);
+   const radicalsManifest = await loadRadicalsManifest(false, dictionaryManifest);
+   const cacheKey = dictionaryManifest.buildId + ":" + radicalsManifest.buildId + ":" + radical;
+   if (radicalMembersCache.has(cacheKey)) return radicalMembersCache.get(cacheKey);
+   const chunk = await loadRadicalCharacters(radical, {
+      dictionaryManifest,
+      manifest: radicalsManifest,
+   });
    const strokeByHanzi = new Map();
    const wanted = [];
    (chunk.characters || []).forEach((item) => {
       strokeByHanzi.set(item.hanzi, item.strokeCount == null ? null : item.strokeCount);
       wanted.push(item.hanzi);
    });
-   const characterIndex = await loadDictionaryIndex("characters");
+   const characterIndex = await loadDictionaryIndex("characters", false, dictionaryManifest);
    const references = [];
    wanted.forEach((hanzi) => {
       const indexed = characterIndex[hanzi];
       if (indexed) references.push(indexed.entryRef);
    });
-   const previews = await loadDictionaryPreviewsByReferences(references);
+   const previews = await loadDictionaryPreviewsByReferences(references, {
+      manifest: dictionaryManifest,
+   });
+   ensureDictionaryGeneration(dictionaryManifest);
    const entries = previews.map((entry) =>
       Object.assign({}, entry, { __strokeCount: strokeByHanzi.has(entry.simplified) ? strokeByHanzi.get(entry.simplified) : null }),
    );
-   radicalMembersCache.set(radical, entries);
+   radicalMembersCache.set(cacheKey, entries);
    return entries;
 }
 

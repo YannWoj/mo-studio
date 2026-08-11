@@ -589,7 +589,11 @@
 }
 .radical-members-empty,
 .radical-members-error {
-   min-height: 180px;
+  min-height: 180px;
+}
+
+.radical-members-error .btn {
+  min-height: 44px;
 }
 @media (max-width: 360px) {
    .search-hero-top {

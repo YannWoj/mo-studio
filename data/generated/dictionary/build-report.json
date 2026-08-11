@@ -1,5 +1,5 @@
 {
-  "builderVersion": "2.3.0",
+  "builderVersion": "2.4.0",
   "duplicateKeyCount": 1168,
   "englishCoveragePercent": 94.502512,
   "englishDefinitionWordCount": 123597,
@@ -21,17 +21,17 @@
     "actionCounts": {
       "add-verified": 3,
       "quarantine": 1,
-      "replace": 8
+      "replace": 32
     },
-    "entryCount": 12,
+    "entryCount": 36,
     "filename": "data/source/dictionary-fr-overrides.json",
     "policyId": "mo-studio-french-lexicography-2026-08",
     "schemaVersion": 1,
-    "sha256": "6cdfd574e5546899eb182548afaf384bd3d46d9d0fcc9a9ea7666eae44f19273",
+    "sha256": "5fa991df2f59b1ed0e1a2faadc160651d8c649ef9976c954edec8205d8a1583e",
     "sourceId": "MÒ-FR-OVERRIDES"
   },
   "frenchQuality": {
-    "changedEntryCount": 12,
+    "changedEntryCount": 36,
     "characterAttachment": {
       "allCharacters": {
         "recoveredByExplicitSimplifiedTraditionalAttachment": 2503,
@@ -7742,10 +7742,10 @@
       ]
     },
     "englishWithoutVerifiedFrenchCount": 70345,
-    "potentialAnomalyCount": 60,
+    "potentialAnomalyCount": 36,
     "quarantinedEntryCount": 1,
     "rawFrenchDefinitionWordCount": 60424,
-    "verifiedOverrideCount": 11
+    "verifiedOverrideCount": 35
   },
   "hskCompatibility": {
     "cardCount": 150,
@@ -7954,6 +7954,6 @@
   "mergedSourceRecordCount": 54402,
   "normalizedCharacterCount": 14426,
   "normalizedWordCount": 130787,
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "sourceRecordCount": 185189
 }

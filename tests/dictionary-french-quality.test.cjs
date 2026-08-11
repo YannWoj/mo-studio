@@ -29,17 +29,22 @@ const overrides = readJson(overridesPath);
 const decisionsPath = path.join(root, "data", "source", "dictionary-fr-editorial-decisions.json");
 const decisions = readJson(decisionsPath);
 
-assert.equal(manifest.schemaVersion, 4);
-assert.equal(manifest.frenchEditorialPolicy.entryCount, 12);
+assert.equal(manifest.schemaVersion, 5);
+assert.equal(manifest.frenchEditorialPolicy.entryCount, 36);
 assert.equal(manifest.frenchEditorialPolicy.sha256, sha256(fs.readFileSync(overridesPath)));
 assert.equal(manifest.frenchEditorialDecisions.entryCount, 6);
 assert.equal(manifest.frenchEditorialDecisions.schemaVersion, 2);
 assert.equal(manifest.frenchEditorialDecisions.sha256, sha256(fs.readFileSync(decisionsPath)));
 assert.equal(audit.status, "PASS");
 assert.deepEqual(audit.criticalIssues, []);
-assert.equal(audit.corrections.verifiedOverrideCount, 11);
-assert.equal(audit.corrections.changedEntryCount, 12);
+assert.equal(audit.corrections.verifiedOverrideCount, 35);
+assert.equal(audit.corrections.changedEntryCount, 36);
 assert.equal(audit.quarantine.entryCount, 1);
+assert.equal(audit.potentialAnomalies.count, 36);
+assert.deepEqual(audit.potentialAnomalies.countsByType, {
+   "english-fragment": 33,
+   "german-fragment": 3,
+});
 assert.equal(audit.englishWithoutVerifiedFrench.count, audit.englishWithoutVerifiedFrench.items.length);
 assert.equal(audit.coverage.overallWordsBeforePolicy.covered, 60424);
 assert.equal(audit.coverage.overallWordsAfterPolicy.covered, 60441);
@@ -93,6 +98,51 @@ for (const [traditional, simplified, numbered, definitionsFr] of importedHskWord
    assert.equal(hskSense.alignment.lexicalIdentity.pinyinNumbered, numbered);
    assert.equal(hskSense.frenchProvenance[0].sourceTranslation, definitionsFr.join(" \u2022 "));
    assert.equal(hskSense.frenchProvenance[0].sourceDocument.translationLanguage, "fr");
+}
+
+const auditedCorrections = [
+   ["親子", "亲子", "qin1 zi3", "parents et enfants", "parents et enfantsparent and child"],
+   ["離合悲歡", "离合悲欢", "li2 he2 bei1 huan1", "séparations et retrouvailles", "la vie est faite de joies et de peines (life is intermingled with joy and sorrow)"],
+   ["柳葉刀", "柳叶刀", "liu3 ye4 dao1", "lancette", "the lancet"],
+   ["車裂", "车裂", "che1 lie4", "supplice de l’écartèlement", "Hanged, drawn and quartered"],
+   ["不速之客", "不速之客", "bu4 su4 zhi1 ke4", "visiteur inattendu", "the visitor"],
+   ["乙狀結腸", "乙状结肠", "yi3 zhuang4 jie2 chang2", "côlon sigmoïde", "CÃ´lon sigmoÃ¯de"],
+   ["霙", "霙", "ying1", "flocon de neige", "Neige mouillÃ©e"],
+   ["晶片", "晶片", "jing1 pian4", "puce électronique", "Circuit intÃ©grÃ©"],
+   ["蜎", "蜎", "yuan1", "larve de moustique", "LÃ©mure"],
+   ["孔林", "孔林", "kong3 lin2", "cimetière de Confucius à Qufu", "CimetiÃ¨re de Confucius"],
+   ["瓊州海峽", "琼州海峡", "qiong2 zhou1 hai3 xia2", "détroit de Qiongzhou", "DÃ©troit de Qiongzhou"],
+   ["臺獨", "台独", "tai2 du2", "indépendance de Taïwan", "IndÃ©pendance de Taiwan"],
+   ["坐標", "坐标", "zuo4 biao1", "système de coordonnées", "SystÃ¨me de coordonnÃ©es"],
+   ["大亞灣", "大亚湾", "da4 ya4 wan1", "baie de Daya", "Baie de DÃ yÃ"],
+   ["異化", "异化", "yi4 hua4", "aliénation (philosophie)", "AliÃ©nation"],
+   ["展覽館", "展览馆", "zhan3 lan3 guan3", "hall d’exposition", "Palais des congrÃ¨s"],
+   ["內源", "内源", "nei4 yuan2", "origine interne", "EndogÃ¨ne"],
+   ["城鐵", "城铁", "cheng2 tie3", "réseau ferroviaire urbain", "MÃ©tro"],
+   ["斬殺", "斩杀", "zhan3 sha1", "décapiter", "DÃ©capitation"],
+   ["陶藝", "陶艺", "tao2 yi4", "art céramique", "CÃ©ramiste"],
+   ["推定", "推定", "tui1 ding4", "présomption", "PrÃ©somption"],
+   ["交通部", "交通部", "jiao1 tong1 bu4", "ministère des Transports", "MinistÃ¨re des Transports"],
+   ["癥", "癥", "zheng1", "masse abdominale pathologique", "SymptÃ´me"],
+   ["篲", "篲", "hui4", "comète", "ComÃ¨te"],
+];
+for (const [traditional, simplified, numbered, expectedFragment, quarantined] of auditedCorrections) {
+   const entry = word(traditional, simplified, numbered);
+   assert(entry, `${traditional}/${simplified}/${numbered}: corrected entry missing`);
+   assert(entry.definitionsFr.some((definition) => definition.includes(expectedFragment)), `${traditional}/${numbered}: verified correction missing`);
+   assert(entry.frenchProvenance.some((provenance) =>
+      (provenance.quarantinedDefinitionsFr || []).includes(quarantined)
+   ), `${traditional}/${numbered}: prior gloss was not quarantined`);
+   assert(!audit.potentialAnomalies.items.some((item) => item.entryId === entry.id), `${traditional}/${numbered}: corrected anomaly still reported`);
+}
+
+for (const [traditional, simplified, numbered] of [
+   ["骷髏會", "骷髅会", "ku1 lou2 hui4"],
+   ["艾維斯", "艾维斯", "ai4 wei2 si1"],
+   ["明鏡", "明镜", "ming2 jing4"],
+]) {
+   const entry = word(traditional, simplified, numbered);
+   assert(audit.potentialAnomalies.items.some((item) => item.entryId === entry.id), `${traditional}/${numbered}: reviewed proper-name false positive disappeared unexpectedly`);
 }
 
 const preservedLove = word("\u611b", "\u7231", "ai4");

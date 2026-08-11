@@ -99,6 +99,143 @@ async function main() {
    assert(buildReport.frenchAttachment.radicalNavigationCharacters.remainingWithoutFrench === 932, "unexpected remaining French gap in radical navigation");
    pass(`chiffres mesurés (source manifest) : ${manifest.counts.radicalsWithDictionaryMembers} clés, ${manifest.counts.charactersCovered} caractères couverts, ${manifest.counts.dictionaryCharactersWithoutRadical} sans clé connue`);
 
+   const staleCacheFixture = await evaluate(`(async () => {
+      const dictionaryManifest=await loadDictionaryManifest(false);
+      const radicalsManifest=await loadRadicalsManifest(false,dictionaryManifest);
+      const cache=await caches.open(DICTIONARY_CACHE_NAME);
+      const jsonResponse=(value)=>new Response(JSON.stringify(value),{headers:{'content-type':'application/json; charset=utf-8'}});
+      const networkJson=async (url)=>(await (await fetch(url,{cache:'reload'})).json());
+      const locations=await networkJson(dictionaryResourceUrl(dictionaryManifest.entryLocations,dictionaryManifest.buildId));
+      const reference=locations.findIndex(([id])=>id==='char-卩');
+      if(reference<0) throw new Error('char-卩 missing from locations');
+
+      const previews=await networkJson(dictionaryResourceUrl(dictionaryManifest.searchPreviews,dictionaryManifest.buildId));
+      previews.entries[reference][5]=null;
+      previews.entries[reference][11]=(previews.entries[reference][11]||[]).map((reading)=>[
+         reading[0],reading[1],reading[2],[],reading[4]||[],'unavailable',
+      ]);
+      await cache.put(dictionaryResourceUrl(dictionaryManifest.searchPreviews,dictionaryManifest.buildId),jsonResponse(previews));
+
+      const characterIndex=await networkJson(dictionaryResourceUrl(dictionaryManifest.indexes.characters,dictionaryManifest.buildId));
+      characterIndex['卩']={...characterIndex['㔾']};
+      await cache.put(dictionaryResourceUrl(dictionaryManifest.indexes.characters,dictionaryManifest.buildId),jsonResponse(characterIndex));
+
+      const entryChunkPath=locations[reference][1];
+      const fullChunkPath=dictionaryManifest.chunkPathTemplate.replace('{chunk}',entryChunkPath);
+      const entryChunk=await networkJson(dictionaryResourceUrl(fullChunkPath,dictionaryManifest.buildId));
+      const staleEntry=entryChunk.entries.find((entry)=>entry.id==='char-卩');
+      staleEntry.definitionsFr=[];
+      staleEntry.frenchStatus='unavailable';
+      staleEntry.readings=(staleEntry.readings||[]).map((reading)=>({...reading,definitionsFr:[],frenchStatus:'unavailable'}));
+      await cache.put(dictionaryResourceUrl(fullChunkPath,dictionaryManifest.buildId),jsonResponse(entryChunk));
+
+      const radicalRow=radicalsManifest.radicals.find((row)=>row.radical==='卩');
+      const radicalChunkUrl=characterRadicalsResourceUrl(radicalRow.path,radicalsManifest.buildId);
+      const radicalChunk=await networkJson(radicalChunkUrl);
+      radicalChunk.characters=radicalChunk.characters.slice(0,5);
+      await cache.put(radicalChunkUrl,jsonResponse(radicalChunk));
+
+      const staleDictionaryManifest={...dictionaryManifest,buildId:'b'.repeat(64)};
+      const staleRadicalsManifest={
+         ...radicalsManifest,
+         buildId:'a'.repeat(64),
+         derivedFrom:{...radicalsManifest.derivedFrom,dictionaryBuildId:'b'.repeat(64)},
+         radicals:radicalsManifest.radicals.map((row)=>row.radical==='卩'?{...row,memberCount:5}:row),
+      };
+      await cache.put(dictionaryResourceUrl('manifest.json'),jsonResponse(staleDictionaryManifest));
+      await cache.put(characterRadicalsResourceUrl('manifest.json'),jsonResponse(staleRadicalsManifest));
+      return {
+         dictionaryBuildId:dictionaryManifest.buildId,
+         radicalsBuildId:radicalsManifest.buildId,
+         entryChunkPath:fullChunkPath,
+         radicalChunkPath:radicalRow.path,
+         userData:JSON.stringify({
+            cards:db.cards,
+            packs:db.packs,
+            categories:db.categories,
+            memberships:db.memberships,
+            units:db.units,
+            settings:db.settings,
+         }),
+      };
+   })()`);
+
+   await navigate();
+   assert(
+      await evaluate(`JSON.stringify({
+         cards:db.cards,
+         packs:db.packs,
+         categories:db.categories,
+         memberships:db.memberships,
+         units:db.units,
+         settings:db.settings,
+      }) === ${JSON.stringify(staleCacheFixture.userData)}`),
+      "reloading after a stale data cache changed user packs, cards, SRS history or preferences",
+   );
+   const serviceWorkerState = await evaluate(`(async () => ({
+      controlled:!!navigator.serviceWorker?.controller,
+      registrations:navigator.serviceWorker ? (await navigator.serviceWorker.getRegistrations()).length : 0,
+   }))()`);
+   assert(!serviceWorkerState.controlled && serviceWorkerState.registrations === 0, `unexpected service worker state: ${JSON.stringify(serviceWorkerState)}`);
+   await evaluate("(() => { if (activeView !== 'search') setView('search'); })()");
+   await click("#search-mode-toggle");
+   await waitFor(() => evaluate("document.querySelectorAll('.radical-chip').length > 0"), "radical catalog did not recover after stale cache reload");
+   await click('[data-radical="卩"]');
+   await waitFor(() => evaluate("radicalBrowser.radical === '卩' && radicalBrowser.members?.length === 11"), "卩 did not recover its 11 members");
+   const sealList = await evaluate(`(() => {
+      const row=document.querySelector('#dradical-panel [data-entry-id="char-卩"]');
+      const context=document.querySelector('.radical-context-card');
+      return {
+         members:radicalBrowser.members.length,
+         rowText:row?.textContent.replace(/\\s+/g,' ').trim()||'',
+         contextText:context?.textContent.replace(/\\s+/g,' ').trim()||'',
+      };
+   })()`);
+   assert(sealList.members === 11, `卩 member count stayed stale: ${JSON.stringify(sealList)}`);
+   assert(sealList.rowText.includes("jié") && sealList.rowText.includes("sceau (radical)"), `卩 list translation stayed stale: ${JSON.stringify(sealList)}`);
+   assert(sealList.contextText.includes("11 caractères associés") && sealList.contextText.includes("sceau (radical)"), `卩 context stayed stale: ${JSON.stringify(sealList)}`);
+   await evaluate(`document.querySelector('#dradical-panel [data-entry-id="char-卩"] .dict-result-primary').click()`);
+   await waitFor(() => evaluate("sheetOpen() && document.querySelector('#dd-french-definitions')?.textContent.includes('sceau (radical)')"), "卩 detail did not recover its French translation");
+   const sealDetail = await evaluate("document.querySelector('#dd-french-definitions').textContent.replace(/\\s+/g,' ').trim()");
+   assert(sealDetail.includes("sceau (radical)"), `卩 detail stayed stale: ${sealDetail}`);
+
+   const repairedCache = await evaluate(`(async () => {
+      const dictionaryManifest=await loadDictionaryManifest(false);
+      const radicalsManifest=await loadRadicalsManifest(false,dictionaryManifest);
+      const dictionaryFiles=new Map(dictionaryManifest.files.map((row)=>[row.path,row]));
+      const radicalRow=radicalsManifest.radicals.find((row)=>row.radical==='卩');
+      const cache=await caches.open(DICTIONARY_CACHE_NAME);
+      const hash=async (url)=>{
+         const response=await cache.match(url);
+         return response ? dictionarySha256(await response.arrayBuffer()) : null;
+      };
+      const dictionaryPaths=[
+         dictionaryManifest.searchPreviews,
+         dictionaryManifest.indexes.characters,
+         ${JSON.stringify(staleCacheFixture.entryChunkPath)},
+      ];
+      const dictionaryHashes=Object.fromEntries(await Promise.all(dictionaryPaths.map(async (path)=>[
+         path,await hash(dictionaryResourceUrl(path,dictionaryManifest.buildId)),
+      ])));
+      return {
+         dictionaryBuildId:dictionaryManifest.buildId,
+         radicalsBuildId:radicalsManifest.buildId,
+         dictionaryHashes,
+         expectedDictionaryHashes:Object.fromEntries(dictionaryPaths.map((path)=>[path,dictionaryFiles.get(path).sha256])),
+         radicalHash:await hash(characterRadicalsResourceUrl(radicalRow.path,radicalsManifest.buildId)),
+         expectedRadicalHash:radicalRow.sha256,
+      };
+   })()`);
+   assert(repairedCache.dictionaryBuildId === staleCacheFixture.dictionaryBuildId, `dictionary manifest stayed stale: ${JSON.stringify(repairedCache)}`);
+   assert(repairedCache.radicalsBuildId === staleCacheFixture.radicalsBuildId, `radical manifest stayed stale: ${JSON.stringify(repairedCache)}`);
+   assert(JSON.stringify(repairedCache.dictionaryHashes) === JSON.stringify(repairedCache.expectedDictionaryHashes), `an old dictionary index, preview or chunk survived: ${JSON.stringify(repairedCache)}`);
+   assert(repairedCache.radicalHash === repairedCache.expectedRadicalHash, `an old radical chunk survived: ${JSON.stringify(repairedCache)}`);
+   await click("#dd-close");
+   pass("ancien cache simulé : 卩 revient à 11 membres, jié · sceau (radical) reste identique en liste/fiche, et tous les chunks sont révalidés par SHA-256 sans toucher aux données utilisateur");
+
+   await evaluate("history.replaceState(null, '', location.pathname); exitRadicalMode({fromHistory:true})");
+   await navigate();
+
    await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
    await evaluate("(() => { if (activeView !== 'search') setView('search'); })()");
    assert(await evaluate("!!document.querySelector('#search-mode-toggle') && document.querySelector('#search-mode-toggle').getAttribute('aria-pressed')==='false'"), "toggle button missing or already pressed");

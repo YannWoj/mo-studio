@@ -3,7 +3,7 @@ import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildCharacterRadicals } from "./build-character-radicals.mjs";
+import { buildCharacterRadicals, RADICALS_SCHEMA_VERSION } from "./build-character-radicals.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
@@ -29,7 +29,10 @@ async function filesBelow(directory, relative = "") {
 async function validateDeclaredHashes() {
    const manifest = JSON.parse(await readFile(path.join(generatedDirectory, "manifest.json"), "utf8"));
    const report = JSON.parse(await readFile(path.join(generatedDirectory, "build-report.json"), "utf8"));
-   if (manifest.format !== "mo-studio-character-radicals" || manifest.schemaVersion !== 1)
+   if (
+      manifest.format !== "mo-studio-character-radicals" ||
+      manifest.schemaVersion !== RADICALS_SCHEMA_VERSION
+   )
       throw new Error("Format ou version de schéma de manifeste invalide");
    if (!Array.isArray(manifest.radicals) || !manifest.radicals.length)
       throw new Error("Le manifeste ne contient aucune clé");

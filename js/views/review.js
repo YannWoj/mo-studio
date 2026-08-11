@@ -283,6 +283,10 @@ function wireReviewStrokeBlock(c, st) {
          const SESSION_SWIPE_BLOCKING_SELECTOR =
             "button, input, select, textarea, a, label, summary, canvas, .mizi, " +
             ".review-stroke-characters, .review-stroke-steps-list, .composition-formula, .composition-roles";
+         // Le crayon du recto est un contrôle hybride : son tap reste natif, mais un
+         // glissement horizontal doit pouvoir être repris par la carte. Tous les
+         // autres contrôles et surfaces exclusives restent bloquants dès le départ.
+         const SESSION_SWIPE_TAP_OR_DRAG_SELECTOR = "#s-practice";
          const SWIPE_HINT_KEY = "mo-studio-session-swipe-hint-seen-v1";
          let sessionSwipeHintSeen = (() => {
             try { return localStorage.getItem(SWIPE_HINT_KEY) === "1"; } catch (e) { return true; }
@@ -702,7 +706,12 @@ function wireReviewStrokeBlock(c, st) {
             session.index--;
             renderSession();
          }
-         const SESSION_SWIPE_LOCK_SLOP = 6;
+         const SESSION_SWIPE_HORIZONTAL_LOCK_SLOP = 6;
+         // Un pouce posé bas décrit souvent quelques pixels verticaux avant que son
+         // intention horizontale soit nette. Le verrou horizontal reste réactif, mais
+         // le verrou vertical attend une preuve plus franche ; le navigateur conserve
+         // entre-temps la main sur pan-y puisque aucun move n'est annulé.
+         const SESSION_SWIPE_VERTICAL_LOCK_SLOP = 18;
          const SESSION_SWIPE_HORIZONTAL_RATIO = 1.18;
          const SESSION_SWIPE_DISTANCE_RATIO = 0.28;
          const SESSION_SWIPE_MIN_FLICK_DISTANCE = 28;
@@ -966,8 +975,10 @@ function wireReviewStrokeBlock(c, st) {
                const absY = Math.abs(dy);
                if (state.axis === "vertical") return;
                if (state.axis === "undecided") {
-                  if (Math.max(absX, absY) < SESSION_SWIPE_LOCK_SLOP) return;
-                  if (absX > absY * SESSION_SWIPE_HORIZONTAL_RATIO) {
+                  if (
+                     absX >= SESSION_SWIPE_HORIZONTAL_LOCK_SLOP &&
+                     absX > absY * SESSION_SWIPE_HORIZONTAL_RATIO
+                  ) {
                      state.axis = "horizontal";
                      state.dragging = true;
                      state.suppressNextClick = true;
@@ -976,7 +987,10 @@ function wireReviewStrokeBlock(c, st) {
                      card.style.transition = "none";
                      clearSelection();
                      try { card.setPointerCapture(event.pointerId); } catch (error) {}
-                  } else if (absY > absX * SESSION_SWIPE_HORIZONTAL_RATIO) {
+                  } else if (
+                     absY >= SESSION_SWIPE_VERTICAL_LOCK_SLOP &&
+                     absY > absX * SESSION_SWIPE_HORIZONTAL_RATIO
+                  ) {
                      state.axis = "vertical";
                      return;
                   } else return;
@@ -1018,7 +1032,14 @@ function wireReviewStrokeBlock(c, st) {
                   // Une nouvelle intention explicite ne doit jamais être bloquée par
                   // l'absence éventuelle du clic synthétique du geste précédent.
                   state.suppressNextClick = false;
-                  if (event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR)) return;
+                  const blockingControl = event.target.closest(
+                     SESSION_SWIPE_BLOCKING_SELECTOR,
+                  );
+                  if (
+                     blockingControl &&
+                     !event.target.closest(SESSION_SWIPE_TAP_OR_DRAG_SELECTOR)
+                  )
+                     return;
                   state.pointerId = event.pointerId;
                   state.axis = "undecided";
                   state.dragging = false;

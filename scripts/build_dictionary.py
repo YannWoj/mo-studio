@@ -46,8 +46,8 @@ from dictionary_french_editorial import (
 )
 
 
-SCHEMA_VERSION = 4
-BUILDER_VERSION = "2.3.0"
+SCHEMA_VERSION = 5
+BUILDER_VERSION = "2.4.0"
 SOURCE_ORDER = {"CFDICT": 0, "CC-CEDICT": 1, OVERRIDE_SOURCE_ID: 2, EDITORIAL_SOURCE_ID: 4}
 DEFAULT_OUTPUT = Path("data/generated/dictionary")
 
@@ -793,7 +793,16 @@ def _french_audit_report(
         for quarantined in override.get("quarantinedDefinitionsFr", []):
             if quarantined in word["definitionsFr"]:
                 critical.append({"type": "quarantined-definition-visible", "entryId": word["id"], "text": quarantined})
-            indexed_tokens = search_tokens(quarantined)
+            visible_word_tokens = {
+                token
+                for definition in word["definitionsFr"]
+                for token in search_tokens(definition)
+            }
+            indexed_tokens = [
+                token
+                for token in search_tokens(quarantined)
+                if token not in visible_word_tokens
+            ]
             if any(reference in indexes["french-index.json"].get(token, []) for token in indexed_tokens):
                 critical.append({"type": "quarantined-definition-indexed", "entryId": word["id"], "text": quarantined})
             for affected in affected_entries:
@@ -810,9 +819,19 @@ def _french_audit_report(
                         "sourceWordId": word["id"],
                         "text": quarantined,
                     })
+                visible_affected_tokens = {
+                    token
+                    for definition in visible_definitions
+                    for token in search_tokens(definition)
+                }
+                affected_quarantined_tokens = [
+                    token
+                    for token in search_tokens(quarantined)
+                    if token not in visible_affected_tokens
+                ]
                 if any(
                     affected_reference in indexes["french-index.json"].get(token, [])
-                    for token in indexed_tokens
+                    for token in affected_quarantined_tokens
                 ):
                     critical.append({
                         "type": "quarantined-definition-propagated-to-index",

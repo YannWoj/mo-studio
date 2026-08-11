@@ -28,7 +28,7 @@ const headEnd = html.indexOf("</head>");
 if (headEnd < 0) throw new Error("Missing </head> in index.html");
 html = `${html.slice(0, headEnd)}   <style>\n${css}   </style>\n   ${html.slice(headEnd)}`;
 
-const scriptPattern = /^\s*<script data-mo-app src="([^"]+\.js)"><\/script>\s*$/gm;
+const scriptPattern = /^\s*<script data-mo-app src="([^"?]+\.js)(?:\?[^"]*)?"><\/script>\s*$/gm;
 const scriptMatches = [...html.matchAll(scriptPattern)];
 if (!scriptMatches.length) {
    throw new Error("No application scripts found in index.html");

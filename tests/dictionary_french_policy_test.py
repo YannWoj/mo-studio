@@ -36,7 +36,7 @@ def main() -> None:
     path = ROOT / "data" / "source" / "dictionary-fr-overrides.json"
     policy = load_french_override_policy(path)
     raw = json.loads(path.read_text(encoding="utf-8"))
-    assert len(policy.entries) == 12
+    assert len(policy.entries) == 36
 
     duplicate = deepcopy(raw)
     duplicate["entries"].append(deepcopy(duplicate["entries"][0]))

@@ -487,6 +487,39 @@ async function main() {
       await new Promise((resolve) => setTimeout(resolve, 320));
       return during;
    }
+   let reviewTouchPointerId = 20;
+   async function touchCardPath({ x=.5, y=.5, selector="#flash", moves=[], settle=80 } = {}) {
+      const point = await evaluate(`(() => {const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:Math.round(r.left+r.width*${x}),y:Math.round(r.top+r.height*${y})};})()`);
+      await evaluate(`(() => {
+         if (!window.__reviewTouchTraceInstalled) {
+            window.__reviewTouchTraceInstalled=true;
+            const describe=(node)=>node?.nodeType===1?node.tagName.toLowerCase()+(node.id?'#'+node.id:'')+(node.classList?.length?'.'+[...node.classList].join('.'):'' ):node===document?'document':node===window?'window':node?.nodeName||'';
+            document.addEventListener('pointerdown',(event)=>{
+               const trace=window.__reviewTouchTrace;if(!trace)return;
+               trace.down={target:describe(event.target),path:event.composedPath().map(describe).filter(Boolean),blocked:!!event.target.closest(SESSION_SWIPE_BLOCKING_SELECTOR),practice:!!event.target.closest(SESSION_SWIPE_TAP_OR_DRAG_SELECTOR),x:event.clientX,y:event.clientY};
+            },true);
+            document.addEventListener('pointercancel',(event)=>{if(window.__reviewTouchTrace)window.__reviewTouchTrace.cancelled=true;},true);
+            document.addEventListener('gotpointercapture',(event)=>{if(window.__reviewTouchTrace)window.__reviewTouchTrace.capture.push({type:event.type,target:describe(event.target)});},true);
+            document.addEventListener('lostpointercapture',(event)=>{if(window.__reviewTouchTrace)window.__reviewTouchTrace.capture.push({type:event.type,target:describe(event.target)});},true);
+         }
+         window.__reviewTouchTrace={down:null,cancelled:false,capture:[]};
+      })()`);
+      const pointerId=reviewTouchPointerId++;
+      await cdp.send("Input.dispatchTouchEvent", {type:"touchStart",touchPoints:[{x:point.x,y:point.y,id:pointerId,radiusX:6,radiusY:6,force:1}]});
+      for (const move of moves) {
+         if (move.delay) await new Promise((resolve)=>setTimeout(resolve,move.delay));
+         await cdp.send("Input.dispatchTouchEvent", {type:"touchMove",touchPoints:[{x:point.x+move.dx,y:point.y+move.dy,id:pointerId,radiusX:6,radiusY:6,force:1}]});
+      }
+      const during=await evaluate(`(() => {const card=document.querySelector('#flash');return {index:session.index,classes:card.className,transform:card.style.transform};})()`);
+      await cdp.send("Input.dispatchTouchEvent", {type:"touchEnd",touchPoints:[]});
+      await new Promise((resolve)=>setTimeout(resolve,settle));
+      return {point,during,trace:await evaluate("window.__reviewTouchTrace"),after:await evaluate(`(() => {const card=document.querySelector('#flash');return {active:session.active,index:session.index,revealed:getState(session.index)?.revealed,classes:card?.className||'',transform:card?.style.transform||'',dialogs:document.querySelectorAll('.writing-practice-dialog').length};})()`)};
+   }
+   const thumbPath = (direction, distance, style) => {
+      if (style === "fast") return [{dx:direction*distance*.45,dy:2,delay:4},{dx:direction*distance,dy:4,delay:4}];
+      if (style === "diagonal") return [{dx:direction*3,dy:9,delay:12},{dx:direction*22,dy:12,delay:12},{dx:direction*58,dy:14,delay:12},{dx:direction*distance,dy:17,delay:12}];
+      return Array.from({length:8},(_,index)=>({dx:direction*distance*((index+1)/8),dy:4*((index+1)/8),delay:8}));
+   };
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();startCardsWith([db.cards.find(c=>c.id==='c1'),db.cards.find(c=>c.id==='c2'),db.cards.find(c=>c.id==='c3'),db.cards.find(c=>c.id==='c4')],'Tactile','cards')");
    assert((await evaluate("getComputedStyle(document.querySelector('.fl-body')).touchAction")) === "pan-y", "the card scroll container no longer declares touch-action: pan-y");
    const srsBeforeTouch = await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,h:c.reviewHistory,last:c.lastReviewed})))");
@@ -503,6 +536,63 @@ async function main() {
    assert((await evaluate("session.index")) === 3 && (await evaluate("session.active")) === true, "repeated forward touch swipes stalled");
    assert((await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,h:c.reviewHistory,last:c.lastReviewed})))")) === srsBeforeTouch, "a swipe graded a card");
    assert(await evaluate("session.states.filter(Boolean).every((state)=>!state.grade)"), "a swipe recorded a grade in the session state");
+
+   // Régression exacte du pouce posé bas : le premier mouvement est un peu plus
+   // vertical (3 × 9 px), puis l'intention devient franchement horizontale. La
+   // matrice couvre bas gauche/centre/droit et les quatre largeurs mobiles.
+   await cdp.send("Emulation.setEmulatedMedia", {features:[{name:"prefers-reduced-motion",value:"reduce"}]});
+   for (const width of [320,360,390,430]) {
+      await cdp.send("Emulation.setDeviceMetricsOverride", {width,height:844,deviceScaleFactor:2,mobile:true});
+      for (const y of [.75,.85,.92]) {
+         for (const x of [.2,.5,.8]) {
+            const direction=x===.2?1:-1,startIndex=direction>0?1:0,distance=Math.min(120,width*.34);
+            await evaluate(`session.index=${startIndex};getState(session.index).front='zh';getState(session.index).revealed=false;renderSession()`);
+            const gesture=await touchCardPath({x,y,moves:thumbPath(direction,distance,"diagonal")});
+            const expected=startIndex-direction;
+            assert(gesture.trace.down&&!gesture.trace.cancelled&&gesture.after.index===expected&&gesture.during.classes.includes('is-session-dragging')&&gesture.during.transform, `bottom-front diagonal swipe failed at ${width}px x=${x} y=${y}: ${JSON.stringify(gesture)}`);
+         }
+      }
+      for (const style of ["slow","fast"]) {
+         for (const x of [.2,.5,.8]) {
+            const direction=x===.2?1:-1,startIndex=direction>0?1:0,distance=Math.min(120,width*.34);
+            await evaluate(`session.index=${startIndex};getState(session.index).front='zh';getState(session.index).revealed=false;renderSession()`);
+            const gesture=await touchCardPath({x,y:.85,moves:thumbPath(direction,distance,style)});
+            assert(gesture.after.index===startIndex-direction&&!gesture.trace.cancelled, `bottom-front ${style} swipe failed at ${width}px x=${x}: ${JSON.stringify(gesture)}`);
+         }
+      }
+      // Le verso neutre reste navigable avec le même départ diagonal bas.
+      for (const x of [.2,.5,.8]) {
+         const direction=x===.2?1:-1,startIndex=direction>0?1:0,distance=Math.min(120,width*.34);
+         await evaluate(`session.index=${startIndex};getState(session.index).front='zh';getState(session.index).revealed=true;reviewStrokeExpanded=false;renderSession()`);
+         const gesture=await touchCardPath({x,y:.85,moves:thumbPath(direction,distance,"diagonal")});
+         assert(gesture.after.index===startIndex-direction&&!gesture.trace.cancelled, `bottom-back diagonal swipe failed at ${width}px x=${x}: ${JSON.stringify(gesture)}`);
+      }
+   }
+   pass("matrice tactile basse 320/360/390/430 : gauche, centre, droite, lent, rapide et intention diagonale");
+
+   // #s-practice arbitre désormais son tap et le glissement de la carte. Le tap
+   // ouvre une seule fois ; le drag est repris, ne clique pas et ne retourne rien.
+   await cdp.send("Emulation.setDeviceMetricsOverride", {width:390,height:844,deviceScaleFactor:2,mobile:true});
+   await evaluate("session.index=0;getState(0).front='zh';getState(0).revealed=false;getState(1).revealed=false;renderSession();window.__practiceTouchClicks=0;document.querySelector('#s-practice').addEventListener('click',()=>window.__practiceTouchClicks++)");
+   const practiceTap=await touchCardPath({selector:"#s-practice",settle:140});
+   assert(await evaluate("window.__practiceTouchClicks===1&&document.querySelectorAll('.writing-practice-dialog').length===1&&session.index===0&&getState(0).revealed===false"), `practice touch tap did not open exactly once: ${JSON.stringify(practiceTap)}`);
+   await click(".writing-practice-close");
+   await evaluate("window.__practiceTouchClicks=0");
+   const practiceDrag=await touchCardPath({selector:"#s-practice",moves:thumbPath(-1,120,"diagonal"),settle:100});
+   assert(practiceDrag.trace.down?.practice&&practiceDrag.trace.down?.blocked&&practiceDrag.during.classes.includes('is-session-dragging')&&practiceDrag.after.index===1&&practiceDrag.after.revealed===false&&!practiceDrag.after.dialogs&&(await evaluate("window.__practiceTouchClicks"))===0, `practice drag was not reclaimed or left a click: ${JSON.stringify(practiceDrag)}`);
+
+   // Les vrais contrôles gardent leur exclusivité tactile au verso.
+   await evaluate("session.index=0;getState(0).revealed=true;renderSession();window.__favBeforeTouch=currentCard().fav");
+   const favoriteDrag=await touchCardPath({selector:"#a-fav",moves:thumbPath(-1,120,"fast"),settle:100});
+   assert(favoriteDrag.trace.down?.blocked&&!favoriteDrag.trace.down?.practice&&favoriteDrag.after.index===0&&(await evaluate("currentCard().fav===window.__favBeforeTouch")), `interactive favorite drag navigated or clicked: ${JSON.stringify(favoriteDrag)}`);
+   pass("arbitrage tactile du bouton d’écriture et contrôles interactifs exclusifs");
+
+   // Un vrai tap neutre conserve le retournement natif exactement une fois.
+   await evaluate("getState(0).front='zh';getState(0).revealed=false;renderSession()");
+   const neutralTap=await touchCardPath({x:.5,y:.85,settle:140});
+   assert(neutralTap.after.index===0&&neutralTap.after.revealed===true&&!neutralTap.after.dialogs, `neutral touch tap no longer flipped exactly once: ${JSON.stringify(neutralTap)}`);
+   await cdp.send("Emulation.setEmulatedMedia", {features:[{name:"prefers-reduced-motion",value:"no-preference"}]});
+   assert((await evaluate("JSON.stringify(db.cards.map(c=>({id:c.id,lvl:c.lvl,due:c.due,h:c.reviewHistory,last:c.lastReviewed})))")) === srsBeforeTouch, "lower touch matrix or practice arbitration changed SRS history");
    await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });
    pass("glissement tactile : séquence suivant/précédent fiable, aucune note enregistrée");
    await evaluate("session={active:false};clearSavedSession();destroyReviewStrokeWorkspace();renderLearn()");

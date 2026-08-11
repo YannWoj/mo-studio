@@ -1,5 +1,5 @@
 {
-  "buildId": "f389f880246fe448cec818406c4a7524107e823de0f6c185bfc20768753dd4aa",
+  "buildId": "f339d958307342a6c82284b16125ff5d942542b6edc6834c9dcce8dc2c644f75",
   "builderVersion": "1.1.0",
   "counts": {
     "batchEntries": 40,
@@ -7,7 +7,7 @@
     "reviewItems": 210,
     "sourceConflicts": 186
   },
-  "dictionaryBuildId": "2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10",
+  "dictionaryBuildId": "3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27",
   "files": {
     "audit": "audit-report.json",
     "conflicts": "conflicts.json",
@@ -17,7 +17,7 @@
   },
   "format": "mo-studio-french-editorial-inventory",
   "inputs": {
-    "characterRadicalsBuildId": "edc1301f17b6a7d7fdff2c322081e26154e466b67b5545f3ab7a99a767b208a6",
+    "characterRadicalsBuildId": "4db239b3cbd701cbacf7698f80f87d8ac376aa730485e9153284e0e4d5005f6d",
     "dictionaryManifest": "data/generated/dictionary/manifest.json",
     "editorialDecisions": {
       "entryCount": 6,
@@ -33,12 +33,12 @@
     "hsk": {
       "cleanPath": "data/generated/hsk/hsk-clean.json",
       "cleanSha256": "aa2bd607410b4cbdcda18b365edd39e9bac87167b78b664286d11df8368d2762",
-      "dictionaryBuildId": "2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10",
+      "dictionaryBuildId": "3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27",
       "linksPath": "data/generated/hsk/hsk-dictionary-links.json",
       "sourceMetadataPath": "data/source/hsk/source-metadata.json",
       "sourceMetadataSha256": "6047428fe8cfc33379842d32c94cb27554e1da5b59b6693709666fe90f0fe01b"
     },
-    "learningUnitsBuildId": "9ea367ba953fd9df296f192268f636d42c38cd8ec8564514f62bc9a1506250c5",
+    "learningUnitsBuildId": "3f097c82343011144bf00c400f70536dfea0578cb2d9969a5089acd3e730592c",
     "personalLibrary": {
       "cardCount": 0,
       "found": false,

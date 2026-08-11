@@ -4,10 +4,10 @@
 var db = { cards: [] };
 
 importScripts(
-   "../dictionary/dictionary-loader.js",
-   "normalization.js",
-   "ranking.js",
-   "search-engine.js",
+   "../dictionary/dictionary-loader.js?runtime=5",
+   "normalization.js?runtime=5",
+   "ranking.js?runtime=5",
+   "search-engine.js?runtime=5",
 );
 
 self.addEventListener("message", async (event) => {

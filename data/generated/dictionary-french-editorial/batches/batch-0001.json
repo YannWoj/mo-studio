@@ -1,7 +1,7 @@
 {
-  "batchId": "fr-batch-046c9f2bdca1d2bcffdd157b",
+  "batchId": "fr-batch-cb8092f426ea180b505a32bf",
   "count": 40,
-  "dictionaryBuildId": "2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10",
+  "dictionaryBuildId": "3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27",
   "entries": [
     {
       "candidateId": "fr-candidate-4460f5cb4a679599e8d9273b",
@@ -3805,7 +3805,7 @@
       "variantsOrReferences": []
     }
   ],
-  "inventoryBuildId": "f389f880246fe448cec818406c4a7524107e823de0f6c185bfc20768753dd4aa",
+  "inventoryBuildId": "f339d958307342a6c82284b16125ff5d942542b6edc6834c9dcce8dc2c644f75",
   "maxEntries": 40,
   "requestedSize": 40,
   "schemaVersion": 1

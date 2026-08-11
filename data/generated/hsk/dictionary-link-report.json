@@ -16,10 +16,10 @@
   "dictionary": {
     "path": "data/generated/dictionary",
     "manifest_path": "data/generated/dictionary/manifest.json",
-    "manifest_sha256": "f6540c1f04d0172daad2c7da98a2bc1519630100697acffd061f5274d72a0eae",
-    "build_id": "2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10",
-    "builder_version": "2.3.0",
-    "schema_version": 4,
+    "manifest_sha256": "5c22336219881732859e40549ca7696f4c73cc2064369772141a733a12c3b015",
+    "build_id": "3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27",
+    "builder_version": "2.4.0",
+    "schema_version": 5,
     "entry_count": 145213,
     "exact_hanzi_index_key_count": 207350
   },

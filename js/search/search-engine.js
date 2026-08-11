@@ -401,7 +401,7 @@ function mergeDictionaryVisualResults(response) {
    return response;
 }
 
-async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidates) {
+async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidates, manifest) {
    const candidates = new Map();
    const maximum = maximumCandidates || SEARCH_RESULT_LIMIT;
    let englishFallback = false;
@@ -410,7 +410,7 @@ async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidate
 
    if (query.type.startsWith("hanzi")) {
       status("Chargement de l’index des caractères…");
-      const index = await loadDictionaryIndex("exactHanzi", false);
+      const index = await loadDictionaryIndex("exactHanzi", false, manifest);
       ensureCurrentSearch(epoch);
       const exact = index[query.hanzi] || [];
       addCandidateReferences(candidates, exact, "exact-hanzi", maximum);
@@ -435,7 +435,7 @@ async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidate
       }
    } else if (query.type.startsWith("pinyin")) {
       status("Chargement de l’index pinyin…");
-      const index = await loadDictionaryIndex("pinyin", false);
+      const index = await loadDictionaryIndex("pinyin", false, manifest);
       ensureCurrentSearch(epoch);
       const strictKey =
          query.type === "pinyin-marked"
@@ -452,7 +452,7 @@ async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidate
       }
    } else if (query.type === "translation") {
       status("Chargement de l’index français…");
-      const french = await loadDictionaryIndex("french", false);
+      const french = await loadDictionaryIndex("french", false, manifest);
       ensureCurrentSearch(epoch);
       const exactGroups = query.tokens.map((token) => french[token] || []);
       const exact = postingIntersection(exactGroups);
@@ -474,7 +474,7 @@ async function collectIndexedCandidates(query, epoch, onStatus, maximumCandidate
       }
       if (candidates.size === 0) {
          status("Aucun résultat français · essai du repli anglais…");
-         const english = await loadDictionaryIndex("english", false);
+         const english = await loadDictionaryIndex("english", false, manifest);
          ensureCurrentSearch(epoch);
          const groups = query.tokens.map((token) => english[token] || []);
          addCandidateReferences(
@@ -507,7 +507,10 @@ async function searchDictionaryLocally(rawQuery, options) {
       };
    }
 
-   const cacheKey = dictionarySearchCacheKey(query, settings);
+   const manifest = await loadDictionaryManifest(false);
+   ensureDictionaryGeneration(manifest);
+
+   const cacheKey = manifest.buildId + "|" + dictionarySearchCacheKey(query, settings);
    if (dictionarySearchCache.has(cacheKey)) {
       const cached = dictionarySearchCache.get(cacheKey);
       dictionarySearchCache.delete(cacheKey);
@@ -521,14 +524,21 @@ async function searchDictionaryLocally(rawQuery, options) {
 
    const revision = dictionaryPersonalRevision;
    const candidateLimit = Math.max(1, Math.min(settings.candidateLimit || SEARCH_RESULT_LIMIT, SEARCH_RESULT_LIMIT));
-   const indexed = await collectIndexedCandidates(query, epoch, settings.onStatus, candidateLimit);
+   const indexed = await collectIndexedCandidates(
+      query,
+      epoch,
+      settings.onStatus,
+      candidateLimit,
+      manifest,
+   );
    ensureCurrentSearch(epoch);
    const references = Array.from(indexed.candidates.keys()).slice(0, candidateLimit);
    if (settings.onStatus) settings.onStatus("Chargement des meilleures fiches…");
-   const dictionaryEntries = (await loadDictionaryPreviewsByReferences(references)).map((entry) =>
+   const dictionaryEntries = (await loadDictionaryPreviewsByReferences(references, { manifest })).map((entry) =>
       dictionaryEntryForQuery(entry, query, indexed.englishFallback),
    );
    ensureCurrentSearch(epoch);
+   ensureDictionaryGeneration(manifest);
 
    const personalEntries = db.cards
       .map(personalCardAsDictionaryEntry)
@@ -599,7 +609,7 @@ function rejectPendingDictionaryWorkerSearches() {
 
 function getDictionarySearchWorker() {
    if (dictionarySearchWorker) return dictionarySearchWorker;
-   const url = new URL("js/search/dictionary-search-worker.js", document.baseURI);
+   const url = new URL("js/search/dictionary-search-worker.js?runtime=5", document.baseURI);
    dictionarySearchWorker = new Worker(url.href);
    dictionarySearchWorker.addEventListener("message", (event) => {
       const message = event.data || {};

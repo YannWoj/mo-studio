@@ -15,7 +15,7 @@ const { pathToFileURL } = require("node:url");
    const report = JSON.parse(fs.readFileSync(path.join(generatedRoot, "build-report.json"), "utf8"));
 
    assert.equal(manifest.format, "mo-studio-character-radicals");
-   assert.equal(manifest.schemaVersion, 1);
+   assert.equal(manifest.schemaVersion, builder.RADICALS_SCHEMA_VERSION);
    assert.equal(manifest.builderVersion, builder.RADICALS_BUILDER_VERSION);
 
    // Measured facts (derived directly from the real generated data, not estimates).

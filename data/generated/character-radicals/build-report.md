@@ -1,6 +1,6 @@
 # Character radicals build report
 
-- Derived from: `character-composition` (buildId `86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3`) and `dictionary` (buildId `2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10`)
+- Derived from: `character-composition` (buildId `86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3`) and `dictionary` (buildId `3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27`)
 - Stroke counts from: `hanzi-writer` 2.0.1
 
 | Measurement | Value |

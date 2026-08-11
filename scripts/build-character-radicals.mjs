@@ -8,7 +8,8 @@ import { loadComponentLabelsFr } from "./component-labels-fr.mjs";
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
 
-export const RADICALS_BUILDER_VERSION = "1.2.0";
+export const RADICALS_SCHEMA_VERSION = 2;
+export const RADICALS_BUILDER_VERSION = "1.3.0";
 export const HANZI_WRITER_VERSION = "2.0.1";
 
 const defaultCompositionDirectory = path.join(
@@ -298,6 +299,7 @@ Generated chunks are a re-derivation of already-generated, already-licensed data
    await writeFile(path.join(outputDirectory, "build-report.md"), reportMarkdown, "utf8");
 
    const manifestSeed = JSON.stringify({
+      schemaVersion: RADICALS_SCHEMA_VERSION,
       builderVersion: RADICALS_BUILDER_VERSION,
       componentLabelsFrHash: componentLabelsFr.sha256,
       chunkDescriptors,
@@ -306,7 +308,7 @@ Generated chunks are a re-derivation of already-generated, already-licensed data
    });
    const manifest = {
       format: "mo-studio-character-radicals",
-      schemaVersion: 1,
+      schemaVersion: RADICALS_SCHEMA_VERSION,
       builderVersion: RADICALS_BUILDER_VERSION,
       buildId: sha256(manifestSeed),
       license: "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/",

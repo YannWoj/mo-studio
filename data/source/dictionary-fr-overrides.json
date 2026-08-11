@@ -320,6 +320,642 @@
         }
       ],
       "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "親子",
+      "simplified": "亲子",
+      "pinyinNumbered": "qin1 zi3",
+      "action": "replace",
+      "definitionsFr": [
+        "parents et enfants",
+        "relation parent-enfant",
+        "deux générations successives"
+      ],
+      "quarantinedDefinitionsFr": [
+        "parents et enfantsparent and child"
+      ],
+      "justification": "La première glose CFDICT concatène sans séparateur un texte français et sa source anglaise. L’identité traditionnelle/simplifiée et la lecture qin1 zi3 concordent avec CC-CEDICT ; les trois sens sont rendus intégralement en français.",
+      "references": [
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 3519 : 親子 亲子 [qin1 zi3] /parents et enfantsparent and child/parent-enfant (relation)/"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 99568 : 親子 亲子 [qin1 zi3] /parent and child/parent-child (relationship)/two successive generations/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "離合悲歡",
+      "simplified": "离合悲欢",
+      "pinyinNumbered": "li2 he2 bei1 huan1",
+      "action": "replace",
+      "definitionsFr": [
+        "séparations et retrouvailles, peines et joies de la vie"
+      ],
+      "quarantinedDefinitionsFr": [
+        "la vie est faite de joies et de peines (life is intermingled with joy and sorrow)"
+      ],
+      "justification": "La parenthèse anglaise a été importée dans la glose française. Le ministère de l’Éducation de Taïwan confirme l’identité lí hé bēi huān et le sens couvrant séparations, réunions, tristesses et joies de l’existence.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 離合悲歡",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=61652&la=0&powerMode=0",
+          "locator": "離合悲歡 lí hé bēi huān : 人生中分離、聚合、悲哀、歡樂等種種不同的心情和境遇"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 41735 : 離合悲歡 离合悲欢 [li2 he2 bei1 huan1]"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "柳葉刀",
+      "simplified": "柳叶刀",
+      "pinyinNumbered": "liu3 ye4 dao1",
+      "action": "replace",
+      "definitionsFr": [
+        "lancette (instrument chirurgical)",
+        "sabre court à lame en forme de feuille de saule"
+      ],
+      "quarantinedDefinitionsFr": [
+        "the lancet"
+      ],
+      "justification": "La glose CFDICT est restée en anglais. CC-CEDICT atteste le sens chirurgical pour liu3 ye4 dao1 ; le dictionnaire du ministère de l’Éducation de Taïwan atteste séparément l’arme courte à lame courbe en forme de feuille de saule, sous la même identité.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 57018 : 柳葉刀 柳叶刀 [liu3 ye4 dao1] /lancet (surgeon's knife)/"
+        },
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 柳葉刀",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=63741&la=0&powerMode=0",
+          "locator": "柳葉刀 liǔ yè dāo : arme courte, lame mince et courbe comme une feuille de saule"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "車裂",
+      "simplified": "车裂",
+      "pinyinNumbered": "che1 lie4",
+      "action": "replace",
+      "definitionsFr": [
+        "supplice de l’écartèlement par plusieurs chars ou chevaux"
+      ],
+      "quarantinedDefinitionsFr": [
+        "Hanged, drawn and quartered"
+      ],
+      "justification": "La glose CFDICT nomme en anglais un supplice britannique différent. CC-CEDICT et Hàn Diǎn attestent pour chē liè le supplice chinois consistant à attacher la tête et les quatre membres à plusieurs véhicules ou chevaux pour démembrer le condamné.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 105425 : 車裂 车裂 [che1 lie4] /to tear off sb's four limbs and head using five horse-drawn carts/"
+        },
+        {
+          "title": "Hàn Diǎn — 车裂",
+          "url": "https://www.zdic.net/hans/%E8%BD%A6%E8%A3%82",
+          "locator": "车裂 chē liè : 用五辆车把人体撕裂致死，是古时的一种酷刑"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "不速之客",
+      "simplified": "不速之客",
+      "pinyinNumbered": "bu4 su4 zhi1 ke4",
+      "action": "replace",
+      "definitionsFr": [
+        "visiteur inattendu",
+        "invité non convié"
+      ],
+      "quarantinedDefinitionsFr": [
+        "the visitor"
+      ],
+      "justification": "La glose CFDICT est anglaise et trop générale. CC-CEDICT et le ministère de l’Éducation de Taïwan confirment l’expression bù sù zhī kè et le trait essentiel d’un visiteur arrivé sans invitation ou sans être attendu.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 不速之客",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=21782&la=0&powerMode=0",
+          "locator": "不速之客 bù sù zhī kè : 沒邀請就自己來的客人"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 2928 : 不速之客 不速之客 [bu4 su4 zhi1 ke4] /(idiom) uninvited or unexpected guest/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "霙",
+      "simplified": "霙",
+      "pinyinNumbered": "ying1",
+      "action": "replace",
+      "definitionsFr": [
+        "flocon de neige",
+        "neige mêlée de pluie"
+      ],
+      "quarantinedDefinitionsFr": [
+        "Neige mouillÃ©e"
+      ],
+      "justification": "La glose CFDICT est du français corrompu par un double décodage. Hàn Diǎn confirme la lecture yīng, le sens principal « flocon de neige » et l’emploi pour un mélange de pluie et de neige.",
+      "references": [
+        {
+          "title": "Hàn Diǎn — 霙",
+          "url": "https://www.zdic.net/hant/%E9%9C%99",
+          "locator": "霙 yīng : 雪花 ; 雨雪雜下"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 116964 : 霙 霙 [ying1] /sleet/snowflakes/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "蜎",
+      "simplified": "蜎",
+      "pinyinNumbered": "yuan1",
+      "action": "replace",
+      "definitionsFr": [
+        "larve de moustique",
+        "nom de famille Yuan"
+      ],
+      "quarantinedDefinitionsFr": [
+        "LÃ©mure"
+      ],
+      "justification": "« Lémure » résulte d’un texte mal encodé mais reste sans rapport avec l’entrée. Pour 蜎 yuān, CC-CEDICT et Hàn Diǎn concordent sur la larve de moustique et le nom de famille Yuan.",
+      "references": [
+        {
+          "title": "Hàn Diǎn — 蜎",
+          "url": "https://www.zdic.net/hans/%E8%9C%8E",
+          "locator": "蜎 yuān : 蚊子的幼蟲，即孑孓；姓"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "lignes 96911-96912 : 蜎 蜎 [yuan1] /surname Yuan/larva of mosquito/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "展覽館",
+      "simplified": "展览馆",
+      "pinyinNumbered": "zhan3 lan3 guan3",
+      "action": "replace",
+      "definitionsFr": [
+        "hall d’exposition",
+        "palais des expositions"
+      ],
+      "quarantinedDefinitionsFr": [
+        "Palais des congrÃ¨s"
+      ],
+      "justification": "La glose CFDICT est mal encodée et confond un lieu d’exposition avec un palais des congrès. CC-CEDICT identifie exactement 展覽館/展览馆 zhan3 lan3 guan3 comme un « exhibition hall ».",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 35353 : 展覽館 展览馆 [zhan3 lan3 guan3] /exhibition hall/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 19672 : 展覽館 展览馆 [zhan3 lan3 guan3] /Palais des congrÃ¨s/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "斬殺",
+      "simplified": "斩杀",
+      "pinyinNumbered": "zhan3 sha1",
+      "action": "replace",
+      "definitionsFr": [
+        "décapiter",
+        "tuer à l’arme blanche"
+      ],
+      "quarantinedDefinitionsFr": [
+        "DÃ©capitation"
+      ],
+      "justification": "La glose CFDICT est mal encodée et nominalise un verbe. Hàn Diǎn distingue pour zhǎn shā l’exécution par décapitation et l’action de tuer ou abattre avec une lame.",
+      "references": [
+        {
+          "title": "Hàn Diǎn — 斬殺",
+          "url": "https://www.zdic.net/hant/%E6%96%AC%E6%AE%BA",
+          "locator": "斬殺 zhǎn shā : 斬首或腰斬；殺死或砍死"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 51548 : 斬殺 斩杀 [zhan3 sha1] /to behead/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "陶藝",
+      "simplified": "陶艺",
+      "pinyinNumbered": "tao2 yi4",
+      "action": "replace",
+      "definitionsFr": [
+        "art céramique"
+      ],
+      "quarantinedDefinitionsFr": [
+        "CÃ©ramiste"
+      ],
+      "justification": "La glose CFDICT est mal encodée et désigne la personne au lieu de l’art. Le ministère de l’Éducation de Taïwan et CC-CEDICT attestent pour táo yì la technique ou l’art de la céramique.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 陶藝",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=50164&la=0&powerMode=0",
+          "locator": "陶藝 táo yì : 捏陶、鑄陶的技藝"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 114829 : 陶藝 陶艺 [tao2 yi4] /ceramic art/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "癥",
+      "simplified": "癥",
+      "pinyinNumbered": "zheng1",
+      "action": "replace",
+      "definitionsFr": [
+        "masse abdominale pathologique (médecine traditionnelle chinoise)"
+      ],
+      "quarantinedDefinitionsFr": [
+        "SymptÃ´me"
+      ],
+      "justification": "La glose CFDICT est mal encodée et confond 癥 zhēng avec le sens moderne de 症. Hàn Diǎn atteste spécifiquement pour cette lecture une maladie caractérisée par une masse dure dans l’abdomen.",
+      "references": [
+        {
+          "title": "Hàn Diǎn — 癥",
+          "url": "https://zdic.net/hant/%E7%99%A5",
+          "locator": "癥 zhēng : 一種腹中結硬塊的病症；《玉篇》腹結病也"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 39503 : 癥 癥 [zheng1] /SymptÃ´me/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "乙狀結腸",
+      "simplified": "乙状结肠",
+      "pinyinNumbered": "yi3 zhuang4 jie2 chang2",
+      "action": "replace",
+      "definitionsFr": [
+        "côlon sigmoïde"
+      ],
+      "quarantinedDefinitionsFr": [
+        "CÃ´lon sigmoÃ¯de"
+      ],
+      "justification": "La chaîne CFDICT est une glose française correcte corrompue par un double décodage. CC-CEDICT confirme l’identité yi3 zhuang4 jie2 chang2 et le terme anatomique « sigmoid colon ».",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 4241 : 乙狀結腸 乙状结肠 [yi3 zhuang4 jie2 chang2] /sigmoid colon (anatomy)/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 2677 : 乙狀結腸 乙状结肠 [yi3 zhuang4 jie2 chang2] /CÃ´lon sigmoÃ¯de/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "晶片",
+      "simplified": "晶片",
+      "pinyinNumbered": "jing1 pian4",
+      "action": "replace",
+      "definitionsFr": [
+        "puce électronique",
+        "circuit intégré"
+      ],
+      "quarantinedDefinitionsFr": [
+        "Circuit intÃ©grÃ©"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme l’usage taïwanais de jīng piàn pour une puce informatique ; « puce électronique » et « circuit intégré » rendent le sens sans résidu d’encodage.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 53698 : 晶片 晶片 [jing1 pian4] /(Tw) (computing) chip/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 29218 : 晶片 晶片 [jing1 pian4] /Circuit intÃ©grÃ©/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "孔林",
+      "simplified": "孔林",
+      "pinyinNumbered": "kong3 lin2",
+      "action": "replace",
+      "definitionsFr": [
+        "cimetière de Confucius à Qufu"
+      ],
+      "quarantinedDefinitionsFr": [
+        "CimetiÃ¨re de Confucius"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme que Kǒnglín désigne le cimetière familial de Confucius à Qufu.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 31228 : 孔林 孔林 [Kong3 lin2] /the Confucius family mausoleum at Qufu/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 17695 : 孔林 孔林 [kong3 lin2] /CimetiÃ¨re de Confucius/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "瓊州海峽",
+      "simplified": "琼州海峡",
+      "pinyinNumbered": "qiong2 zhou1 hai3 xia2",
+      "action": "replace",
+      "definitionsFr": [
+        "détroit de Qiongzhou"
+      ],
+      "quarantinedDefinitionsFr": [
+        "DÃ©troit de Qiongzhou"
+      ],
+      "justification": "La glose CFDICT est seulement corrompue par l’encodage. CC-CEDICT confirme la forme, la lecture et le détroit entre Hainan et la Chine continentale.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 73733 : 瓊州海峽 琼州海峡 [Qiong2 zhou1 Hai3 xia2] /Qiongzhou Strait/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 38191 : 瓊州海峽 琼州海峡 [qiong2 zhou1 hai3 xia2] /DÃ©troit de Qiongzhou/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "臺獨",
+      "simplified": "台独",
+      "pinyinNumbered": "tai2 du2",
+      "action": "replace",
+      "definitionsFr": [
+        "indépendance de Taïwan"
+      ],
+      "quarantinedDefinitionsFr": [
+        "IndÃ©pendance de Taiwan"
+      ],
+      "justification": "La ligne CFDICT vérifie exactement 臺獨/台独 tai2 du2 ; la correction restaure les accents français et la graphie française usuelle « Taïwan » sans élargir le sens.",
+      "references": [
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 11719 : 臺獨 台独 [tai2 du2] /IndÃ©pendance de Taiwan/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "坐標",
+      "simplified": "坐标",
+      "pinyinNumbered": "zuo4 biao1",
+      "action": "replace",
+      "definitionsFr": [
+        "coordonnées",
+        "système de coordonnées",
+        "variante de 座標/坐标"
+      ],
+      "quarantinedDefinitionsFr": [
+        "SystÃ¨me de coordonnÃ©es"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme que zuò biāo est une variante graphique de 座標/坐标, terme désignant des coordonnées ou un système de coordonnées.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 25278 : 坐標 坐标 [zuo4 biao1] /variant of 座標|坐标[zuo4 biao1]/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 14696 : 坐標 坐标 [zuo4 biao1] /SystÃ¨me de coordonnÃ©es/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "大亞灣",
+      "simplified": "大亚湾",
+      "pinyinNumbered": "da4 ya4 wan1",
+      "action": "replace",
+      "definitionsFr": [
+        "baie de Daya"
+      ],
+      "quarantinedDefinitionsFr": [
+        "Baie de DÃ yÃ"
+      ],
+      "justification": "La glose CFDICT est corrompue par l’encodage. CC-CEDICT confirme Dàyà Wān comme la baie de Daya sur la côte du Guangdong, près de Shenzhen et Hong Kong.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 27601 : 大亞灣 大亚湾 [Da4 ya4 wan1] /Daya Bay/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 15849 : 大亞灣 大亚湾 [da4 ya4 wan1] /Baie de DÃ yÃ/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "異化",
+      "simplified": "异化",
+      "pinyinNumbered": "yi4 hua4",
+      "action": "replace",
+      "definitionsFr": [
+        "aliénation (philosophie)",
+        "dissimilation (linguistique)"
+      ],
+      "quarantinedDefinitionsFr": [
+        "AliÃ©nation"
+      ],
+      "justification": "La glose CFDICT est mal encodée et ne couvre qu’un sens. CC-CEDICT confirme sous l’identité yì huà les sens d’aliénation philosophique et de dissimilation linguistique.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 75062 : 異化 异化 [yi4 hua4] /alienation (philosophy)/(of speech) dissimilation/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 21572 : 異化 异化 [yi4 hua4] /AliÃ©nation/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "內源",
+      "simplified": "内源",
+      "pinyinNumbered": "nei4 yuan2",
+      "action": "replace",
+      "definitionsFr": [
+        "origine interne",
+        "endogène"
+      ],
+      "quarantinedDefinitionsFr": [
+        "EndogÃ¨ne"
+      ],
+      "justification": "La forme, la variante simplifiée et la lecture nei4 yuan2 sont concordantes dans les deux sources locales. La glose CFDICT est du français mal décodé ; « origine interne » explicite en outre la composition 內 + 源.",
+      "references": [
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 7039 : 內源 内源 [nei4 yuan2] /EndogÃ¨ne/"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 11145 : 內源 内源 [nei4 yuan2] /source/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "城鐵",
+      "simplified": "城铁",
+      "pinyinNumbered": "cheng2 tie3",
+      "action": "replace",
+      "definitionsFr": [
+        "métro",
+        "réseau ferroviaire urbain"
+      ],
+      "quarantinedDefinitionsFr": [
+        "MÃ©tro"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme pour chéng tiě un système de transport ferroviaire rapide ou urbain.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 25636 : 城鐵 城铁 [cheng2 tie3] /rapid transit system/urban railway/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 14926 : 城鐵 城铁 [cheng2 tie3] /MÃ©tro/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "推定",
+      "simplified": "推定",
+      "pinyinNumbered": "tui1 ding4",
+      "action": "replace",
+      "definitionsFr": [
+        "présomption",
+        "inférer ; conclure après examen"
+      ],
+      "quarantinedDefinitionsFr": [
+        "PrÃ©somption"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme l’identité tuī dìng et le sens d’inférer ou de parvenir à un jugement ; « présomption » est conservé comme terme nominal.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 47873 : 推定 推定 [tui1 ding4] /to infer; to consider and come to a judgment/to elect/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 26377 : 推定 推定 [tui1 ding4] /PrÃ©somption/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "交通部",
+      "simplified": "交通部",
+      "pinyinNumbered": "jiao1 tong1 bu4",
+      "action": "replace",
+      "definitionsFr": [
+        "ministère des Transports",
+        "département des Transports"
+      ],
+      "quarantinedDefinitionsFr": [
+        "MinistÃ¨re des Transports"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme que jiāo tōng bù désigne, selon le pays, un ministère ou un département des Transports.",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 5488 : 交通部 交通部 [jiao1 tong1 bu4] /Department of Transportation/(PRC) Ministry of Transport/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 3394 : 交通部 交通部 [jiao1 tong1 bu4] /MinistÃ¨re des Transports/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "篲",
+      "simplified": "篲",
+      "pinyinNumbered": "hui4",
+      "action": "replace",
+      "definitionsFr": [
+        "comète",
+        "variante de 彗"
+      ],
+      "quarantinedDefinitionsFr": [
+        "ComÃ¨te"
+      ],
+      "justification": "La glose CFDICT est mal encodée. CC-CEDICT confirme que 篲 huì est une variante de 彗, caractère signifiant notamment « comète ».",
+      "references": [
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "ligne 83286 : 篲 篲 [hui4] /variant of 彗[hui4]/"
+        },
+        {
+          "title": "CFDICT — source locale inchangée",
+          "url": "https://chine.in/mandarin/dictionnaire/CFDICT/",
+          "locator": "ligne 43047 : 篲 篲 [hui4] /ComÃ¨te/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
     }
   ]
 }

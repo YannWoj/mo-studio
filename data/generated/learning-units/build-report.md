@@ -3,8 +3,8 @@
 ## Provenance
 
 - Composition des caractères : `data/generated/character-composition/` (buildId `86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3`)
-- Clés/radicaux : `data/generated/character-radicals/` (buildId `edc1301f17b6a7d7fdff2c322081e26154e466b67b5545f3ab7a99a767b208a6`)
-- Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10`)
+- Clés/radicaux : `data/generated/character-radicals/` (buildId `4db239b3cbd701cbacf7698f80f87d8ac376aa730485e9153284e0e4d5005f6d`)
+- Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `3551c0869958a04b5df3a01a50d21ce77dc54d79a8ff3c23085b4d3a88ee1c27`)
 - HSK 1 (pack personnel) : `hsk1.json` (racine du dépôt), SHA-256 `80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419`
 - Bibliothèque personnelle (`db.cards`/packs) : **absente** — aucun fichier à `data/personal/library-export.json`. Ce signal vaut honnêtement zéro pour tous les caractères plutôt que d'être deviné. Pour l'inclure : Réglages → Données → Exporter dans l'application, puis enregistrer le fichier téléchargé à ce chemin et relancer le build.
 
