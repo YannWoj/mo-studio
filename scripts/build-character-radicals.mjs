@@ -8,7 +8,7 @@ import { loadComponentLabelsFr } from "./component-labels-fr.mjs";
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
 
-export const RADICALS_BUILDER_VERSION = "1.1.0";
+export const RADICALS_BUILDER_VERSION = "1.2.0";
 export const HANZI_WRITER_VERSION = "2.0.1";
 
 const defaultCompositionDirectory = path.join(
@@ -76,6 +76,9 @@ export async function buildCharacterRadicals(options = {}) {
    );
    const dictionaryManifest = JSON.parse(
       await readFile(path.join(dictionaryDirectory, "manifest.json"), "utf8"),
+   );
+   const dictionaryBuildReport = JSON.parse(
+      await readFile(path.join(dictionaryDirectory, dictionaryManifest.report), "utf8"),
    );
    const characterIndex = JSON.parse(
       await readFile(path.join(dictionaryDirectory, "character-index.json"), "utf8"),
@@ -174,6 +177,38 @@ export async function buildCharacterRadicals(options = {}) {
       dictionaryCharactersWithoutRadical: dictionaryCharactersTotal - charactersCovered,
    };
 
+   const dictionaryAttachment = dictionaryBuildReport.frenchQuality?.characterAttachment;
+   if (!dictionaryAttachment?.allCharacters || !dictionaryAttachment?.manyToOneCollisions) {
+      throw new Error("Le rapport du dictionnaire ne contient pas les métriques de rattachement français");
+   }
+   const recoveredCharacters = new Set(dictionaryAttachment.recoveredCharacters || []);
+   const navigationRecoveredCharacters = Array.from(coveredCharacters)
+      .filter((character) => recoveredCharacters.has(character))
+      .sort(compareCharacters);
+   const navigationCharactersWithFrenchAfter = Array.from(coveredCharacters).filter((character) => {
+      const indexed = characterIndex[character];
+      const preview = indexed ? searchPreviews.entries[indexed.entryRef] : null;
+      return Array.isArray(preview) && (
+         Boolean(preview[5]) ||
+         (Array.isArray(preview[11]) && preview[11].some((reading) => Array.isArray(reading[3]) && reading[3].length))
+      );
+   }).length;
+   const navigationCollisions = dictionaryAttachment.manyToOneCollisions.mappings
+      .filter((mapping) => coveredCharacters.has(mapping.simplified));
+   const navigationExclusions = (dictionaryAttachment.exclusions?.entries || []).filter(
+      (entry) => coveredCharacters.has(entry.simplified) || coveredCharacters.has(entry.traditional),
+   );
+   const navigationFrenchAttachment = {
+      total: charactersCovered,
+      withFrenchBefore: navigationCharactersWithFrenchAfter - navigationRecoveredCharacters.length,
+      withoutFrenchBefore:
+         charactersCovered - navigationCharactersWithFrenchAfter + navigationRecoveredCharacters.length,
+      recoveredByExplicitSimplifiedTraditionalAttachment: navigationRecoveredCharacters.length,
+      withFrenchAfter: navigationCharactersWithFrenchAfter,
+      remainingWithoutFrench: charactersCovered - navigationCharactersWithFrenchAfter,
+      manyToOneCollisionCharacters: navigationCollisions.length,
+   };
+
    const oneMemberRadicals = chunkDescriptors.filter((row) => row.memberCount === 1).map((row) => row.radical);
    const missingStrokeRadicals = chunkDescriptors.filter((row) => row.strokeCount == null).map((row) => row.radical);
 
@@ -216,6 +251,20 @@ export async function buildCharacterRadicals(options = {}) {
          radicalsStillWithoutGloss: chunkDescriptors.filter((row) => !row.sens).map((row) => row.radical),
          oneOrTwoMemberRadicals: chunkDescriptors.filter((row) => row.memberCount <= 2).length,
       },
+      frenchAttachment: {
+         allDictionaryCharacters: {
+            ...dictionaryAttachment.allCharacters,
+            manyToOneCollisionCharacters:
+               dictionaryAttachment.manyToOneCollisions.characterCount,
+         },
+         radicalNavigationCharacters: navigationFrenchAttachment,
+         recoveredCharacters: navigationRecoveredCharacters,
+         manyToOneCollisions: navigationCollisions,
+         exclusions: {
+            entries: navigationExclusions,
+            reasons: dictionaryAttachment.exclusions?.reasons || {},
+         },
+      },
       testCases,
    };
    await writeJson(path.join(outputDirectory, "build-report.json"), report, true);
@@ -233,6 +282,11 @@ export async function buildCharacterRadicals(options = {}) {
 | Dictionary characters covered by a known radical | ${counts.charactersCovered} |
 | Dictionary characters total | ${counts.dictionaryCharactersTotal} |
 | Dictionary characters without a known radical | ${counts.dictionaryCharactersWithoutRadical} |
+| Navigation characters with French before explicit form attachment | ${navigationFrenchAttachment.withFrenchBefore} |
+| Navigation characters recovered by explicit simplified/traditional attachment | ${navigationFrenchAttachment.recoveredByExplicitSimplifiedTraditionalAttachment} |
+| Navigation characters with French after attachment | ${navigationFrenchAttachment.withFrenchAfter} |
+| Navigation characters remaining without French | ${navigationFrenchAttachment.remainingWithoutFrench} |
+| Navigation many-to-one collision characters | ${navigationFrenchAttachment.manyToOneCollisionCharacters} |
 | Radicals with only 1-2 dictionary members | ${report.coverage.oneOrTwoMemberRadicals} |
 | Radicals with a short French gloss | ${report.coverage.radicalsWithGloss} |
 | … of which named by \`${componentLabelsFr.path}\` | ${report.coverage.radicalsWithManualFrenchName} |

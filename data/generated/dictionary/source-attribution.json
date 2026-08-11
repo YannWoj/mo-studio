@@ -1,18 +1,127 @@
 {
+  "frenchEditorialDecisions": {
+    "entryCount": 6,
+    "filename": "data/source/dictionary-fr-editorial-decisions.json",
+    "policyId": "mo-dictionary-fr-editorial-v2",
+    "schemaVersion": 2,
+    "sha256": "609b48ea9a5edc7ce857001db4eb322dfe966ab2b17adf0b4a06f71d89585548",
+    "sourceId": "MÒ-FR-EDITORIAL",
+    "stateCounts": {
+      "verified": 6
+    }
+  },
   "frenchEditorialPolicy": {
     "actionCounts": {
-      "add-verified": 2,
+      "add-verified": 3,
       "quarantine": 1,
-      "replace": 3
+      "replace": 8
     },
-    "entryCount": 6,
+    "entryCount": 12,
     "filename": "data/source/dictionary-fr-overrides.json",
     "policyId": "mo-studio-french-lexicography-2026-08",
     "schemaVersion": 1,
-    "sha256": "fec50e8604b2e90a0496ca14dbe798ffc733188eb97fb1d9726ee2c72f18edd0",
+    "sha256": "6cdfd574e5546899eb182548afaf384bd3d46d9d0fcc9a9ea7666eae44f19273",
     "sourceId": "MÒ-FR-OVERRIDES"
   },
-  "schemaVersion": 2,
+  "hskFrenchReuse": {
+    "metadataPath": "data/source/hsk/source-metadata.json",
+    "metadataSha256": "6047428fe8cfc33379842d32c94cb27554e1da5b59b6693709666fe90f0fe01b",
+    "reusePolicy": {
+      "automaticFrenchLanguages": [
+        "fr"
+      ],
+      "basis": "Existing project material whose attributed in-project reuse was requested by the project owner.",
+      "externalRedistributionNotice": "No open redistribution licence was found in the documents or on the publisher pages. Obtain permission before redistributing extracted translations outside this project."
+    },
+    "sourceSetId": "mo-hsk-2026-local-pdfs-v1",
+    "sources": [
+      {
+        "hskLevel": 1,
+        "license": "NOASSERTION",
+        "pageCount": 19,
+        "path": "data/source/hsk/new_hsk1.pdf",
+        "publisher": "Chinesimple par Khanji School",
+        "publisherUrl": "https://khanjischool.com/fr/",
+        "reuseStatus": "attributed-in-project-only",
+        "rightsStatement": "Chinesimple par Khanji School - Tous droits réservés",
+        "sha256": "b055296624d56424302c16a2acc1850cd318303386f9e7ef1c24d3b64e6517f3",
+        "sourceId": "HSK3-CHINESIMPLE-FR-L1-2026",
+        "title": "Le nouveau HSK 1 - Liste de vocabulaire 3.0 (2026)",
+        "translationLanguage": "fr"
+      },
+      {
+        "hskLevel": 2,
+        "license": "NOASSERTION",
+        "pageCount": 11,
+        "path": "data/source/hsk/new_hsk2.pdf",
+        "publisher": "Mandarin Zest",
+        "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+        "reuseStatus": "reference-only-not-french",
+        "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+        "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
+        "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
+        "title": "New HSK 2 Vocab List",
+        "translationLanguage": "en"
+      },
+      {
+        "hskLevel": 3,
+        "license": "NOASSERTION",
+        "pageCount": 25,
+        "path": "data/source/hsk/new_hsk3.pdf",
+        "publisher": "Mandarin Zest",
+        "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+        "reuseStatus": "reference-only-not-french",
+        "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+        "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
+        "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
+        "title": "New HSK 3 Vocab List",
+        "translationLanguage": "en"
+      },
+      {
+        "hskLevel": 4,
+        "license": "NOASSERTION",
+        "pageCount": 54,
+        "path": "data/source/hsk/new_hsk4.pdf",
+        "publisher": "Mandarin Zest",
+        "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+        "reuseStatus": "reference-only-not-french",
+        "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+        "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+        "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+        "title": "New HSK 4 Vocab List",
+        "translationLanguage": "en"
+      },
+      {
+        "hskLevel": 5,
+        "license": "NOASSERTION",
+        "pageCount": 82,
+        "path": "data/source/hsk/new_hsk5.pdf",
+        "publisher": "Mandarin Zest",
+        "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+        "reuseStatus": "reference-only-not-french",
+        "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+        "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+        "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+        "title": "New HSK 5 Vocab List",
+        "translationLanguage": "en"
+      },
+      {
+        "hskLevel": 6,
+        "license": "NOASSERTION",
+        "pageCount": 87,
+        "path": "data/source/hsk/new_hsk6.pdf",
+        "publisher": "Mandarin Zest",
+        "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+        "reuseStatus": "reference-only-not-french",
+        "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+        "sha256": "e8145f1995be3b29716fc551af5dd9306f38b3eebcfa8b0d63fabc7fc7aad825",
+        "sourceId": "HSK3-MANDARINZEST-EN-L6-2026",
+        "title": "New HSK 6 Vocab List",
+        "translationLanguage": "en"
+      }
+    ]
+  },
+  "schemaVersion": 4,
   "sources": [
     {
       "definition_language": "en",

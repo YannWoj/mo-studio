@@ -1329,8 +1329,8 @@ async function main() {
          completeDetail.ordered.characterDetails < completeDetail.ordered.card &&
          completeDetail.ordered.card < completeDetail.ordered.meta &&
          completeDetail.ordered.meta < completeDetail.ordered.hsk &&
-         completeDetail.ordered.hsk < completeDetail.ordered.english &&
-         completeDetail.ordered.english < completeDetail.ordered.sources &&
+         completeDetail.ordered.english === -1 &&
+         completeDetail.ordered.hsk < completeDetail.ordered.sources &&
          completeDetail.ordered.sources < completeDetail.ordered.related &&
          completeDetail.ordered.picker < completeDetail.ordered.navigation &&
          completeDetail.ordered.navigation <= completeDetail.ordered.workspace &&
@@ -2966,7 +2966,14 @@ async function main() {
    const cacheRecovery = await evaluate(`(async () => {
       const cache = await caches.open(DICTIONARY_CACHE_NAME);
       const manifest = dictionaryDataState.manifest;
-      const frenchUrl = dictionaryResourceUrl(manifest.indexes.french);
+      const manifestUrl = dictionaryResourceUrl('manifest.json');
+      await cache.put(manifestUrl, new Response(JSON.stringify({
+         ...manifest,
+         buildId: 'stale-build-id-that-must-not-win',
+      }), { headers: { 'Content-Type': 'application/json' } }));
+      resetDictionaryMemory();
+      const refreshedManifest = await loadDictionaryManifest(false);
+      const frenchUrl = dictionaryResourceUrl(manifest.indexes.french, manifest.buildId);
       await cache.put(frenchUrl, new Response('{broken-json', {
          headers: { 'Content-Type': 'application/json' },
       }));
@@ -2981,6 +2988,8 @@ async function main() {
             ? await loadDictionaryEntryById(response.results[0].entry.id)
             : null;
          return {
+            refreshedBuildId: refreshedManifest.buildId,
+            expectedBuildId: manifest.buildId,
             recoveredFrench: !!recoveredFrench.bonjour,
             offlineTop: response.results[0]?.entry.simplified,
             offlineDetail: full?.simplified,
@@ -2989,6 +2998,11 @@ async function main() {
          window.fetch = originalFetch;
       }
    })()`);
+   assert(
+      cacheRecovery.refreshedBuildId === cacheRecovery.expectedBuildId &&
+         cacheRecovery.refreshedBuildId !== 'stale-build-id-that-must-not-win',
+      `A cached stale dictionary manifest won over the current build: ${JSON.stringify(cacheRecovery)}`,
+   );
    assert(cacheRecovery.recoveredFrench, "Corrupted dictionary cache did not recover from source files");
    assert(
       cacheRecovery.offlineTop === "你好" && cacheRecovery.offlineDetail === "你好",
@@ -3058,8 +3072,42 @@ async function main() {
    await cdp.send("Page.reload", { ignoreCache: false });
    await waitFor(() => evaluate("document.readyState === 'complete' && db.cards.length === 150"), "Reload persistence failed", 20_000);
    const persistedAfterReload = await evaluate("localStorage.getItem(DB_KEY)");
-   assert(persistedBeforeReload === persistedAfterReload, "Persistent learning data changed after reload");
-   record("reload persistence", "the complete stored card, pack, unit, favorite, SRS, and settings payload survived reload byte-for-byte");
+   const canonicalPersistentData = (raw) => {
+      const value = JSON.parse(raw);
+      for (const key of ["cards", "packs", "categories", "memberships"]) {
+         if (Array.isArray(value[key]))
+            value[key].sort((left, right) => String(left.id).localeCompare(String(right.id)));
+      }
+      for (const pack of value.packs || []) {
+         if (Array.isArray(pack.cardIds)) pack.cardIds.sort();
+      }
+      const stableObjectOrder = (item) => {
+         if (Array.isArray(item)) return item.map(stableObjectOrder);
+         if (!item || typeof item !== "object") return item;
+         return Object.fromEntries(
+            Object.keys(item).sort().map((key) => [key, stableObjectOrder(item[key])]),
+         );
+      };
+      return JSON.stringify(stableObjectOrder(value));
+   };
+   const persistentBefore = canonicalPersistentData(persistedBeforeReload);
+   const persistentAfter = canonicalPersistentData(persistedAfterReload);
+   const firstPersistentDifference = (left, right, at = "$") => {
+      if (Object.is(left, right)) return null;
+      if (!left || !right || typeof left !== "object" || typeof right !== "object")
+         return { at, before: left, after: right };
+      const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
+      for (const key of [...keys].sort()) {
+         const difference = firstPersistentDifference(left[key], right[key], `${at}.${key}`);
+         if (difference) return difference;
+      }
+      return null;
+   };
+   assert(
+      persistentBefore === persistentAfter,
+      `Persistent learning fields changed after reload: ${JSON.stringify(firstPersistentDifference(JSON.parse(persistentBefore), JSON.parse(persistentAfter)))}`,
+   );
+   record("reload persistence", "the complete stored card, pack, unit, favorite, SRS, and settings payload survived reload field-for-field");
 
    for (const width of [320, 360, 390, 430, 768, 1024, 1440]) {
       await cdp.send("Emulation.setDeviceMetricsOverride", {

@@ -358,7 +358,7 @@ function dictionaryReadingGroupsHtml(entry) {
             (french.length
                ? '<ol class="dd-sense-list">' + french.map((definition) => '<li>' + esc(definition) + '</li>').join("") + '</ol>'
                : '<p class="dd-french-unavailable">Sens français vérifié indisponible</p>') +
-            (english.length
+            (!french.length && english.length
                ? '<details class="dd-reading-english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
                  english.map((definition) => '<li>' + esc(definition) + '</li>').join("") + '</ol></details>'
                : "") +
@@ -425,6 +425,7 @@ function wireDictionaryPickerOverflowCue() {
 
 function dictionaryEnglishDefinitionsHtml(entry) {
    if (dictionaryDetailReadings(entry).length > 1) return "";
+   if (dictionarySplitSenses(entry.definitionsFr).length) return "";
    const english = dictionarySplitSenses(entry.definitionsEn).filter((definition) =>
       /\p{L}/u.test(definition),
    );

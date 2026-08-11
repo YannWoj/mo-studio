@@ -247,8 +247,8 @@ async function main() {
          resolved:{sibling:resolved.__frenchSiblingEntryId,fr:resolved.definitionsFr}
       };
    })()`);
-   assert(riceTrace.current.id === "char-饭" && !riceTrace.current.fr.length, `饭 character fixture changed: ${JSON.stringify({listedRice,riceTrace})}`);
-   assert(riceTrace.resolved.sibling === "word-36f6538d2d4c5de27f843b75" && riceTrace.resolved.fr.includes("riz cuit"), `饭 French sibling was not resolved: ${JSON.stringify(riceTrace)}`);
+   assert(riceTrace.current.id === "char-饭" && riceTrace.current.fr.includes("riz cuit"), `饭 generated character entry was not enriched lexicographically: ${JSON.stringify({listedRice,riceTrace})}`);
+   assert(!riceTrace.resolved.sibling && riceTrace.resolved.fr.includes("riz cuit"), `饭 still required an interface sibling fallback: ${JSON.stringify(riceTrace)}`);
    await evaluate(`(async()=>openDictDetail(await loadDictionaryEntryById('char-饭')))()`);
    await waitFor(() => evaluate("document.querySelector('#dd-french-definitions')?.textContent.includes('riz cuit')"), "饭 detail did not reuse its French sibling");
    assert(!(await evaluate("document.querySelector('#dd-french-definitions').textContent.includes('Sens français vérifié indisponible')")), "饭 detail kept the unavailable notice");
@@ -376,14 +376,14 @@ async function main() {
    assert((await evaluate("document.querySelector('#sheet').textContent")).includes("Sens anglais de référence"), "genuine English reference disappeared");
    assert(await evaluate("!document.querySelector('#dd-close')"), "genuine non-search fallback kept a bottom Fermer action");
    await click("#dd-close-top");
-   pass(`饭 : résultat ${listedRice.id}, fiche char-饭 enrichie par ${riceTrace.resolved.sibling} ; 西 : ouest / occidental via CFDICT ; vrai repli anglais conservé`);
+   pass(`饭 : résultat ${listedRice.id}, fiche char-饭 enrichie pendant la génération sans repli d’interface ; 西 : ouest / occidental via CFDICT ; vrai repli anglais conservé`);
 
    const face = await search("面");
    assert(face.results[0].id === "word-453e719c9edd4078aac555e3", `wrong 面 primary: ${JSON.stringify(face.results.slice(0,4))}`);
    assert(face.results[0].hsk.includes(2) && face.results[0].hsk.includes(5), "distinct HSK senses missing");
    assert(face.results[0].group.length === 2 && face.merged >= 1, "character/word visual duplicate not merged");
    assert(!face.results[0].en.some((value) => /^flour$/i.test(value)), "flour incorrectly became the main 面 definition");
-   assert(face.html.includes("Sens français vérifié indisponible") && face.html.includes("Sens anglais de référence"), "French/English fallback labeling unclear");
+   assert(face.results[0].fr.includes("face") && !face.results[0].fr.some((value) => /farine/iu.test(value)), "面 did not recover its matching French sense cleanly");
    assert(face.results[0].variants.some((item) => item.traditional === "麵") && face.results[0].variants.some((item) => item.traditional === "麪") && face.grouped >= 2, "traditional variants were not grouped under the modern entry");
    assert(await evaluate("document.querySelectorAll('.dict-result:first-of-type .dict-result-meta .b').length <= 2 && !document.querySelector('.dict-result:first-of-type .dict-result-meta').textContent.includes('mot + caractère')"), "result badges are not compact");
    assert(await evaluate("document.querySelector('.dict-result:first-of-type .dict-result-variants:not([open])')?.textContent.includes('2 variantes traditionnelles')"), "variant disclosure is not collapsed or clear");
@@ -396,10 +396,10 @@ async function main() {
    const detail = await waitFor(async () => {
       const value = await evaluate(`document.querySelector('#dd-related')?.getAttribute('aria-busy')==='false' ? ({
          text:document.querySelector('#sheet').textContent,
-         englishOpen:document.querySelector('.dd-definitions.english')?.open,
+         englishPresent:!!document.querySelector('.dd-definitions.english'),
          hsk:document.querySelectorAll('.dd-hsk-source-item').length,
          add:!!document.querySelector('#dd-addcard'),
-         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-character-interaction','.dd-card-actions','.dd-meta','.dd-hsk-source','.dd-definitions.english','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
+         order:(()=>{const selectors=['.dd-definitions:not(.english)','.dd-character-interaction','.dd-card-actions','.dd-meta','.dd-hsk-source','.dd-sources','#dd-related'];return selectors.map((selector)=>[...document.querySelector('.dd-entry').children].indexOf(document.querySelector(selector)));})(),
          emptyEnglishHidden:dictionaryEnglishDefinitionsHtml({definitionsEn:['', ' ; ', '...', '1.']})==='',
          vulgarFilter:[
             dictionaryRelatedWordIsVulgar({simplified:'肏你妈',definitionsEn:['fuck your mother (vulgar)']}),
@@ -407,14 +407,13 @@ async function main() {
             dictionaryRelatedWordIsVulgar({simplified:'干你妈',definitionsEn:[]}),
             dictionaryRelatedWordIsVulgar({simplified:'操作',definitionsEn:['to work']})
          ],
-         englishHeight:document.querySelector('.dd-definitions.english')?.getBoundingClientRect().height
       }) : null`);
       return value;
    }, "detail/related words failed");
    for (const word of ["面粉", "面条", "方面", "见面"]) assert(detail.text.includes(word), `related word missing: ${word}`);
-   assert(detail.englishOpen === false && detail.englishHeight <= 48 && detail.hsk === 2 && detail.add && detail.emptyEnglishHidden && detail.vulgarFilter.join(',') === 'true,true,true,false' && detail.order.every((position,index,values)=>index===0||position>values[index-1]), "detail sections/actions are unclear");
+   assert(!detail.englishPresent && detail.hsk === 2 && detail.add && detail.emptyEnglishHidden && detail.vulgarFilter.join(',') === 'true,true,true,false' && detail.order.every((position,index,values)=>index===0||position>values[index-1]), "detail sections/actions are unclear");
    await click("#dd-close");
-   pass("fiche détaillée structurée, anglais replié, deux sens HSK et mots associés issus des données");
+   pass("fiche détaillée structurée, anglais masqué quand le français existe, deux sens HSK et mots associés issus des données");
 
    const flour = await search("面粉");
    const noodles = await search("面条");

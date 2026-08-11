@@ -308,6 +308,7 @@ function groupDictionaryScriptVariants(response) {
          !hidden.has(item.entry.id) && isVisualScriptVariantOf(candidate, item.entry),
       );
       if (!primary) return;
+      mergeDictionaryResultBadgeMetadata(primary, result);
       primary.entry.visualVariants = [...(primary.entry.visualVariants || []), candidate];
       hidden.add(candidate.id);
    });
@@ -320,6 +321,17 @@ function groupDictionaryScriptVariants(response) {
    });
    response.visualVariantsGrouped = hidden.size;
    return response;
+}
+
+function mergeDictionaryResultBadgeMetadata(primary, duplicate) {
+   const entry = primary.entry;
+   const other = duplicate.entry;
+   entry.hskLegacy = Array.from(new Set([...(entry.hskLegacy || []), ...(other.hskLegacy || [])]));
+   entry.hsk30 = Array.from(new Set([...(entry.hsk30 || []), ...(other.hsk30 || [])]));
+   entry.hskVerified = [...(entry.hskVerified || []), ...(other.hskVerified || [])].filter(
+      (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
+   );
+   if (other.personalCard && !entry.personalCard) entry.personalCard = other.personalCard;
 }
 
 function dictionaryDefinitionKeys(entry) {
@@ -356,18 +368,13 @@ function mergeDictionaryResultMetadata(primary, duplicate) {
       ...(other.visualEntryTypes || [other.entryType]),
    ]));
    entry.sources = Array.from(new Set([...(entry.sources || []), ...(other.sources || [])]));
-   entry.hskLegacy = Array.from(new Set([...(entry.hskLegacy || []), ...(other.hskLegacy || [])]));
-   entry.hsk30 = Array.from(new Set([...(entry.hsk30 || []), ...(other.hsk30 || [])]));
-   entry.hskVerified = [...(entry.hskVerified || []), ...(other.hskVerified || [])].filter(
-      (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
-   );
+   mergeDictionaryResultBadgeMetadata(primary, duplicate);
    if (!entry.definitionsFr?.length && other.definitionsFr?.length) {
       const primaryMeanings = dictionaryDefinitionKeys(entry);
       entry.definitionsFr = other.definitionsFr.filter((definition) =>
          primaryMeanings.has(normalizeTranslation(definition)),
       );
    }
-   if (other.personalCard && !entry.personalCard) entry.personalCard = other.personalCard;
    primary.rank.score = Math.max(primary.rank.score, duplicate.rank.score);
    return primary;
 }

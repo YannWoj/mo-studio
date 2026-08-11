@@ -12,12 +12,18 @@ const clean = JSON.parse(await readFile(path.join(hskDirectory, "hsk-clean.json"
 const linksDocument = JSON.parse(
    await readFile(path.join(hskDirectory, "hsk-dictionary-links.json"), "utf8"),
 );
+const dictionaryManifest = JSON.parse(
+   await readFile(path.join(projectRoot, "data", "generated", "dictionary", "manifest.json"), "utf8"),
+);
 
 if (!Array.isArray(clean) || clean.length !== 5399) {
    throw new Error("hsk-clean.json doit contenir exactement 5 399 entrées finales.");
 }
 if (!linksDocument || !Array.isArray(linksDocument.links)) {
    throw new Error("hsk-dictionary-links.json est invalide.");
+}
+if (linksDocument.dictionaryBuildId !== dictionaryManifest.buildId) {
+   throw new Error("Les liaisons HSK doivent être rafraîchies depuis la buildId courante du dictionnaire.");
 }
 
 const linksById = new Map(linksDocument.links.map((link) => [link.hskEntryId, link]));

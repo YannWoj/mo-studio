@@ -1,6 +1,6 @@
 "use strict";
 
-const DICTIONARY_SCHEMA_VERSION = 2;
+const DICTIONARY_SCHEMA_VERSION = 4;
 const DICTIONARY_CACHE_NAME = "mo-studio-dictionary-v2";
 const DICTIONARY_PARSED_CHUNK_LIMIT = 10;
 const DICTIONARY_ENTRY_CACHE_LIMIT = 240;
@@ -18,6 +18,8 @@ const DICTIONARY_ROOT = (() => {
 const dictionaryDataState = {
    status: "idle",
    manifest: null,
+   manifestPending: null,
+   manifestOfflineFallback: false,
    attribution: null,
    locations: null,
    referenceById: null,
@@ -28,20 +30,29 @@ const dictionaryDataState = {
    error: null,
 };
 
-function dictionaryResourceUrl(relativePath) {
-   return new URL(relativePath, DICTIONARY_ROOT).href;
+function dictionaryResourceUrl(relativePath, buildId) {
+   const url = new URL(relativePath, DICTIONARY_ROOT);
+   if (buildId) url.searchParams.set("build", buildId);
+   return url.href;
 }
 
 async function openDictionaryCache() {
    return "caches" in globalThis ? caches.open(DICTIONARY_CACHE_NAME) : null;
 }
 
-async function fetchDictionaryResponse(relativePath, reload) {
-   const url = dictionaryResourceUrl(relativePath);
+async function fetchDictionaryResponse(relativePath, reload, buildId) {
+   const url = dictionaryResourceUrl(relativePath, buildId);
    const cache = await openDictionaryCache();
    if (!reload && cache) {
       const cached = await cache.match(url);
       if (cached) return { response: cached, cached: true, cache, url };
+      // Migration path for a dictionary prepared by the pre-buildId loader.
+      // It is safe only when the manifest itself came from the offline cache.
+      if (buildId && dictionaryDataState.manifestOfflineFallback) {
+         const legacyUrl = dictionaryResourceUrl(relativePath);
+         const legacy = await cache.match(legacyUrl);
+         if (legacy) return { response: legacy, cached: true, cache, url: legacyUrl };
+      }
    }
    const response = await fetch(url, { cache: reload ? "reload" : "default" });
    if (!response.ok) throw new Error(relativePath + " · HTTP " + response.status);
@@ -53,14 +64,14 @@ async function fetchDictionaryResponse(relativePath, reload) {
    return { response, cached: false, cache, url };
 }
 
-async function fetchDictionaryJson(relativePath, reload) {
-   let loaded = await fetchDictionaryResponse(relativePath, !!reload);
+async function fetchDictionaryJson(relativePath, reload, buildId) {
+   let loaded = await fetchDictionaryResponse(relativePath, !!reload, buildId);
    try {
       return await loaded.response.json();
    } catch (error) {
       if (loaded.cached && loaded.cache) {
          await loaded.cache.delete(loaded.url);
-         loaded = await fetchDictionaryResponse(relativePath, true);
+         loaded = await fetchDictionaryResponse(relativePath, true, buildId);
          try {
             return await loaded.response.json();
          } catch (networkError) {
@@ -92,6 +103,8 @@ function resetDictionaryMemory() {
    if (typeof resetDictionarySearchWorker === "function")
       resetDictionarySearchWorker();
    dictionaryDataState.manifest = null;
+   dictionaryDataState.manifestPending = null;
+   dictionaryDataState.manifestOfflineFallback = false;
    dictionaryDataState.attribution = null;
    dictionaryDataState.locations = null;
    dictionaryDataState.referenceById = null;
@@ -103,31 +116,70 @@ function resetDictionaryMemory() {
    dictionaryDataState.status = "idle";
 }
 
+async function fetchCurrentDictionaryManifest(reload) {
+   const url = dictionaryResourceUrl("manifest.json");
+   const cache = await openDictionaryCache();
+   let networkError = null;
+   try {
+      const response = await fetch(url, { cache: reload ? "reload" : "no-cache" });
+      if (!response.ok) throw new Error("manifest.json · HTTP " + response.status);
+      const manifest = validateDictionaryManifest(await response.clone().json());
+      if (cache) await cache.put(url, response.clone());
+      return { manifest, offlineFallback: false };
+   } catch (error) {
+      networkError = error;
+   }
+   if (!reload && cache) {
+      const cached = await cache.match(url);
+      if (cached) {
+         try {
+            return {
+               manifest: validateDictionaryManifest(await cached.json()),
+               offlineFallback: true,
+            };
+         } catch (error) {
+            await cache.delete(url);
+         }
+      }
+   }
+   throw networkError || new Error("manifest.json · indisponible");
+}
+
 async function loadDictionaryManifest(reload) {
    if (dictionaryDataState.manifest && !reload) return dictionaryDataState.manifest;
+   if (dictionaryDataState.manifestPending && !reload)
+      return dictionaryDataState.manifestPending;
    dictionaryDataState.status = "loading";
-   try {
-      const manifest = validateDictionaryManifest(
-         await fetchDictionaryJson("manifest.json", !!reload),
-      );
-      if (
-         dictionaryDataState.manifest &&
-         dictionaryDataState.manifest.buildId !== manifest.buildId
-      ) {
-         dictionaryDataState.locations = null;
-         dictionaryDataState.referenceById = null;
-         dictionaryDataState.indexes.clear();
-         dictionaryDataState.chunks.clear();
-         dictionaryDataState.previewCatalog = null;
-         dictionaryDataState.entries.clear();
+   const request = (async () => {
+      try {
+         const previousBuildId = dictionaryDataState.manifest?.buildId || null;
+         const loaded = await fetchCurrentDictionaryManifest(!!reload);
+         const manifest = loaded.manifest;
+         if (previousBuildId && previousBuildId !== manifest.buildId) {
+            dictionaryDataState.attribution = null;
+            dictionaryDataState.locations = null;
+            dictionaryDataState.referenceById = null;
+            dictionaryDataState.indexes.clear();
+            dictionaryDataState.chunks.clear();
+            dictionaryDataState.previewCatalog = null;
+            dictionaryDataState.entries.clear();
+         }
+         dictionaryDataState.manifest = manifest;
+         dictionaryDataState.manifestOfflineFallback = loaded.offlineFallback;
+         dictionaryDataState.status = "ready";
+         return manifest;
+      } catch (error) {
+         dictionaryDataState.status = "error";
+         dictionaryDataState.error = error;
+         throw error;
       }
-      dictionaryDataState.manifest = manifest;
-      dictionaryDataState.status = "ready";
-      return manifest;
-   } catch (error) {
-      dictionaryDataState.status = "error";
-      dictionaryDataState.error = error;
-      throw error;
+   })();
+   dictionaryDataState.manifestPending = request;
+   try {
+      return await request;
+   } finally {
+      if (dictionaryDataState.manifestPending === request)
+         dictionaryDataState.manifestPending = null;
    }
 }
 
@@ -135,7 +187,7 @@ async function loadDictionaryAttribution(reload) {
    const manifest = await loadDictionaryManifest(reload);
    if (dictionaryDataState.attribution && !reload)
       return { manifest, attribution: dictionaryDataState.attribution };
-   const attribution = await fetchDictionaryJson(manifest.attribution, !!reload);
+   const attribution = await fetchDictionaryJson(manifest.attribution, !!reload, manifest.buildId);
    if (!Array.isArray(attribution.sources))
       throw new Error("Attribution du dictionnaire invalide.");
    dictionaryDataState.attribution = attribution;
@@ -145,7 +197,7 @@ async function loadDictionaryAttribution(reload) {
 async function loadDictionaryLocations(reload) {
    const manifest = await loadDictionaryManifest(reload);
    if (dictionaryDataState.locations && !reload) return dictionaryDataState.locations;
-   const locations = await fetchDictionaryJson(manifest.entryLocations, !!reload);
+   const locations = await fetchDictionaryJson(manifest.entryLocations, !!reload, manifest.buildId);
    if (!Array.isArray(locations) || locations.length !== manifest.counts.entries)
       throw new Error("Table des entrées du dictionnaire invalide.");
    dictionaryDataState.locations = locations;
@@ -159,7 +211,7 @@ async function loadDictionaryIndex(name, reload) {
    if (!path) throw new Error("Index inconnu : " + name);
    if (dictionaryDataState.indexes.has(name) && !reload)
       return dictionaryDataState.indexes.get(name);
-   const index = await fetchDictionaryJson(path, !!reload);
+   const index = await fetchDictionaryJson(path, !!reload, manifest.buildId);
    if (!index || typeof index !== "object" || Array.isArray(index))
       throw new Error(path + " · contenu invalide");
    dictionaryDataState.indexes.set(name, index);
@@ -192,7 +244,7 @@ async function loadDictionaryChunk(key, reload) {
    }
    const manifest = await loadDictionaryManifest(reload);
    const path = manifest.chunkPathTemplate.replace("{chunk}", key);
-   const payload = await fetchDictionaryJson(path, !!reload);
+   const payload = await fetchDictionaryJson(path, !!reload, manifest.buildId);
    if (
       !payload ||
       payload.schemaVersion !== DICTIONARY_SCHEMA_VERSION ||
@@ -244,7 +296,7 @@ function dictionaryPreviewFromArray(value, reference) {
 async function loadDictionaryPreviewCatalog() {
    if (dictionaryDataState.previewCatalog) return dictionaryDataState.previewCatalog;
    const manifest = await loadDictionaryManifest(false);
-   const payload = await fetchDictionaryJson(manifest.searchPreviews, false);
+   const payload = await fetchDictionaryJson(manifest.searchPreviews, false, manifest.buildId);
    if (
       !payload ||
       payload.schemaVersion !== DICTIONARY_SCHEMA_VERSION ||
@@ -381,7 +433,7 @@ async function rebuildDictionaryIndex(onStatus) {
          await Promise.all(
             chunks
                .slice(offset, offset + 8)
-               .map((chunk) => fetchDictionaryResponse(chunk.path, true)),
+               .map((chunk) => fetchDictionaryResponse(chunk.path, true, manifest.buildId)),
          );
       }
       dictionaryDataState.status = "ready";

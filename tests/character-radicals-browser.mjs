@@ -17,6 +17,8 @@ const visualProofs = {
    table1280: path.join(os.tmpdir(), "mo-studio-radical-table-1280.png"),
    selected390: path.join(os.tmpdir(), "mo-studio-radical-selected-390x844.png"),
    selected1280: path.join(os.tmpdir(), "mo-studio-radical-selected-1280x900.png"),
+   iceRadical390: path.join(os.tmpdir(), "mo-studio-radical-ice-390x844.png"),
+   songDetail390: path.join(os.tmpdir(), "mo-studio-radical-song-detail-390x844.png"),
    backToSearch390: path.join(os.tmpdir(), "mo-studio-radical-back-to-search-390.png"),
 };
 let server, browser, cdp;
@@ -87,11 +89,14 @@ async function main() {
    await navigate();
 
    const manifest = await evaluate(`(async () => (await fetch('data/generated/character-radicals/manifest.json')).json())()`);
+   const buildReport = await evaluate(`(async () => (await fetch('data/generated/character-radicals/build-report.json')).json())()`);
    assert(manifest.format === "mo-studio-character-radicals", "unexpected manifest format");
    assert(manifest.counts.radicalsWithDictionaryMembers === 288, `expected 288 radicals in the picker, got ${manifest.counts.radicalsWithDictionaryMembers}`);
    assert(manifest.counts.charactersCovered === 9409, `expected 9409 covered characters, got ${manifest.counts.charactersCovered}`);
    assert(manifest.counts.dictionaryCharactersTotal === 14426, `expected 14426 total dictionary characters, got ${manifest.counts.dictionaryCharactersTotal}`);
    assert(manifest.counts.dictionaryCharactersWithoutRadical === 5017, `expected 5017 dictionary characters without a known radical, got ${manifest.counts.dictionaryCharactersWithoutRadical}`);
+   assert(buildReport.frenchAttachment.radicalNavigationCharacters.recoveredByExplicitSimplifiedTraditionalAttachment === 2430, "unexpected recovered French count in radical navigation");
+   assert(buildReport.frenchAttachment.radicalNavigationCharacters.remainingWithoutFrench === 932, "unexpected remaining French gap in radical navigation");
    pass(`chiffres mesurés (source manifest) : ${manifest.counts.radicalsWithDictionaryMembers} clés, ${manifest.counts.charactersCovered} caractères couverts, ${manifest.counts.dictionaryCharactersWithoutRadical} sans clé connue`);
 
    await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
@@ -197,6 +202,70 @@ async function main() {
       await waitFor(() => evaluate("radicalBrowser.radical === null && document.querySelectorAll('.radical-chip').length > 0"), `${radical} did not return to the radical table`);
    }
    pass("氵/亻/女/木 : tri conservé ; clé > 100 membres paginée 32 puis 64 lignes");
+
+   await click('[data-radical="冫"]');
+   await waitFor(() => evaluate("radicalBrowser.radical === '冫' && Array.isArray(radicalBrowser.members)"), "冫 member list did not load");
+   await screenshot(visualProofs.iceRadical390);
+   const iceRadicalTargets = ['冰','冲','决','冻','净','凄','准','凇','凈','凉','冼'];
+   const recoveredByIceRadical = await evaluate(`(() => Object.fromEntries(
+      ${JSON.stringify(iceRadicalTargets)}.map((hanzi) => {
+         const entry=radicalBrowser.members.find((item)=>item.simplified===hanzi);
+         return [hanzi, entry ? {
+            pinyin:(entry.readings||[]).map((reading)=>reading.pinyin.numbered),
+            french:(entry.readings||[]).flatMap((reading)=>reading.definitionsFr||[]),
+         } : null];
+      })
+   ))()`);
+   assert(await evaluate("radicalBrowser.members.length === 26"), "冫 must expose exactly 26 associated characters");
+   for (const hanzi of iceRadicalTargets)
+      assert(recoveredByIceRadical[hanzi]?.french.length, `${hanzi} stayed French-empty in the mobile radical navigation`);
+   assert(recoveredByIceRadical['冲'].pinyin.join(',') === 'chong1,chong4', `冲 readings merged in radical navigation: ${JSON.stringify(recoveredByIceRadical['冲'])}`);
+   assert(recoveredByIceRadical['凉'].pinyin.join(',') === 'liang2,liang4', `凉 readings merged in radical navigation: ${JSON.stringify(recoveredByIceRadical['凉'])}`);
+
+   const directSearchByIceRadical = await evaluate(`(async () => {
+      const output={};
+      for (const hanzi of ${JSON.stringify(iceRadicalTargets)}) {
+         const result=(await searchDictionary(hanzi)).results.find((item)=>item.entry.id==='char-'+hanzi);
+         const entry=result && await loadDictionaryEntryById(result.entry.id);
+         output[hanzi]=entry ? {
+            pinyin:(entry.readings||[]).map((reading)=>reading.pinyin.numbered),
+            french:(entry.readings||[]).flatMap((reading)=>reading.definitionsFr||[]),
+         } : null;
+      }
+      return output;
+   })()`);
+   for (const hanzi of iceRadicalTargets)
+      assert(JSON.stringify(directSearchByIceRadical[hanzi]) === JSON.stringify(recoveredByIceRadical[hanzi]), `${hanzi}: direct search and radical navigation disagree`);
+
+   const detailFragments = {
+      冰:'glace', 冲:'infuser', 决:'décider', 冻:'congeler', 净:'propre', 凄:'glacial',
+      准:'autoriser', 凇:'givre', 凈:'variante graphique de 淨/净', 凉:'laisser refroidir', 冼:'nom de famille Xian',
+   };
+   for (const hanzi of iceRadicalTargets) {
+      await evaluate(`(() => {
+         const article=[...document.querySelectorAll('#dradical-panel .dict-result')].find((node)=>node.dataset.entryId==='char-'+${JSON.stringify(hanzi)});
+         if(!article) throw new Error('missing radical result for '+${JSON.stringify(hanzi)});
+         article.querySelector('.dict-result-primary').click();
+      })()`);
+      await waitFor(() => evaluate(`sheetOpen() && document.querySelector('#dd-french-definitions')?.textContent.includes(${JSON.stringify(detailFragments[hanzi])})`), `${hanzi} detail lost its verified French`);
+      const detail = await evaluate(`(() => ({
+         overflow:document.documentElement.scrollWidth>innerWidth+1,
+         width:innerWidth,
+         french:document.querySelector('#dd-french-definitions')?.textContent || '',
+         unavailable:document.querySelector('#dd-french-definitions')?.textContent.includes('Sens français vérifié indisponible'),
+         englishReference:document.querySelector('#sheet')?.textContent.includes('Sens anglais de référence'),
+         readingGroups:[...document.querySelectorAll('.dd-reading-group')].map((node)=>node.dataset.reading),
+      }))()`);
+      assert(detail.width === 390 && !detail.overflow && !detail.unavailable && !detail.englishReference, `${hanzi} mobile detail failed: ${JSON.stringify(detail)}`);
+      if (hanzi === '冲') assert(detail.readingGroups.join(',') === 'chong1,chong4', `冲 detail merged readings: ${JSON.stringify(detail)}`);
+      if (hanzi === '凉') assert(detail.readingGroups.join(',') === 'liang2,liang4', `凉 detail merged readings: ${JSON.stringify(detail)}`);
+      if (hanzi === '凇') await screenshot(visualProofs.songDetail390);
+      await click('#dd-close');
+      await waitFor(() => evaluate("!sheetOpen() && radicalBrowser.radical === '冫'"), `closing ${hanzi} did not restore the 冫 list`);
+   }
+   await click('#radical-back');
+   await waitFor(() => evaluate("radicalBrowser.radical === null"), "did not return from 冫 to the radical table");
+   pass("viewport mobile 390×844 : les 26 membres de 冫 sont présents ; recherche, navigation et fiches concordent pour 冰/冲/决/冻/净/凄/准/凇/凈/凉/冼");
 
    await click('[data-radical="氵"]');
    await waitFor(() => evaluate("radicalBrowser.radical === '氵' && document.querySelectorAll('#dradical-panel .dict-result').length > 0"), "氵 member list did not reload");

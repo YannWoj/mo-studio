@@ -2669,24 +2669,156 @@
    margin-inline: auto;
 }
 .search-hero {
+   display: grid;
+   gap: 10px;
    margin-bottom: 20px;
+}
+.search-hero-top {
+   display: flex;
+   min-width: 0;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 12px;
+}
+.search-hero-copy {
+   min-width: 0;
 }
 .search-hero .v-t {
    margin-bottom: 4px;
 }
-.search-mode-bar {
-   display: flex;
-   justify-content: flex-end;
-   margin-top: 10px;
-}
 .search-mode-toggle {
    display: inline-flex;
+   min-height: 44px;
+   flex: none;
    align-items: center;
    gap: 6px;
 }
 .search-mode-toggle b {
    font-family: var(--serif);
    font-size: 15px;
+}
+.search-mode-toggle:focus-visible,
+.radical-context-back:focus-visible {
+   outline: 2px solid color-mix(in srgb, var(--seal) 60%, transparent);
+   outline-offset: 2px;
+}
+.search-hero.is-radical-mode {
+   margin-bottom: 14px;
+}
+.search-hero.has-radical-selection {
+   gap: 9px;
+}
+.radical-context-host {
+   min-width: 0;
+}
+.radical-context-card {
+   position: relative;
+   overflow: hidden;
+   padding: 9px 13px 14px;
+   border: 1px solid color-mix(in srgb, var(--seal) 30%, var(--line));
+   border-radius: 16px;
+   background:
+      radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--gold) 12%, transparent), transparent 36%),
+      linear-gradient(145deg, color-mix(in srgb, var(--card-2) 92%, var(--seal) 8%), var(--card));
+   box-shadow: 0 8px 22px rgba(23, 20, 15, 0.08);
+}
+.radical-context-card::after {
+   position: absolute;
+   right: -16px;
+   bottom: -29px;
+   color: color-mix(in srgb, var(--seal) 5%, transparent);
+   content: "部";
+   font: 100px/1 var(--serif);
+   pointer-events: none;
+}
+.radical-context-actions {
+   position: relative;
+   z-index: 1;
+   display: flex;
+   min-height: 44px;
+   align-items: center;
+}
+.radical-context-back {
+   display: inline-flex;
+   min-height: 44px;
+   align-items: center;
+   gap: 7px;
+   padding: 0 3px;
+   color: var(--lacquer);
+   font-size: 13px;
+   font-weight: 700;
+   text-align: left;
+}
+.radical-context-back span {
+   font-size: 18px;
+}
+.radical-context-body {
+   position: relative;
+   z-index: 1;
+   display: grid;
+   grid-template-columns: 72px minmax(0, 1fr);
+   gap: 14px;
+   align-items: center;
+}
+.radical-context-glyph {
+   display: grid;
+   width: 72px;
+   height: 72px;
+   place-items: center;
+   border: 1px solid color-mix(in srgb, var(--seal) 38%, var(--line));
+   border-radius: 15px;
+   background: color-mix(in srgb, var(--card-2) 88%, var(--seal) 12%);
+   color: var(--seal);
+   box-shadow: inset 0 -3px color-mix(in srgb, var(--seal) 12%, transparent);
+   font: 52px/1 var(--serif);
+}
+.radical-context-copy {
+   min-width: 0;
+}
+.radical-context-copy .eyebrow {
+   margin: 0 0 3px;
+}
+.radical-context-sense {
+   margin: 0;
+   color: var(--ink);
+   font-family: var(--disp);
+   font-size: 17px;
+   font-weight: 650;
+   line-height: 1.25;
+   overflow-wrap: anywhere;
+}
+.radical-context-sense.is-unavailable {
+   color: var(--ink-soft);
+   font-family: var(--sans);
+   font-size: 14px;
+   font-style: italic;
+   font-weight: 500;
+}
+.radical-context-meta {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 5px;
+   margin-top: 8px;
+}
+.radical-context-meta > span {
+   display: inline-flex;
+   min-height: 26px;
+   align-items: center;
+   padding: 3px 8px;
+   border: 1px solid var(--line-soft);
+   border-radius: 999px;
+   background: color-mix(in srgb, var(--card-2) 82%, transparent);
+   color: var(--ink-soft);
+   font-size: 11px;
+   line-height: 1.2;
+}
+.radical-context-meta .is-linked {
+   border-color: color-mix(in srgb, var(--gold) 42%, var(--line));
+   color: color-mix(in srgb, var(--gold) 70%, var(--ink));
+}
+.radical-context-meta .is-linked b {
+   margin-left: 4px;
+   font: 700 14px/1 var(--serif);
 }
 .dictionary-search-form {
    display: grid;
@@ -3015,8 +3147,59 @@
    color: var(--ink-faint);
    font-size: 11px;
 }
-.radical-back {
-   margin-bottom: 6px;
+.radical-members-heading {
+   display: flex;
+   align-items: end;
+   justify-content: space-between;
+   gap: 12px;
+   margin: 2px 0 3px;
+   padding: 0 6px 8px;
+   border-bottom: 1px solid var(--line-soft);
+}
+.radical-members-heading h3 {
+   margin: 0;
+   font-family: var(--disp);
+   font-size: 20px;
+   line-height: 1.2;
+}
+.radical-members-heading p {
+   margin: 3px 0 0;
+   color: var(--ink-faint);
+   font-size: 12px;
+}
+.radical-members-empty,
+.radical-members-error {
+   min-height: 180px;
+}
+@media (max-width: 360px) {
+   .search-hero-top {
+      gap: 8px;
+   }
+   .search-hero .v-t {
+      font-size: 21px;
+   }
+   .search-hero.has-radical-selection [data-search-mode-label] {
+      font-size: 0;
+   }
+   .search-hero.has-radical-selection [data-search-mode-label]::after {
+      content: "Quitter";
+      font-size: 13px;
+   }
+   .radical-context-card {
+      padding-inline: 11px;
+   }
+   .radical-context-body {
+      grid-template-columns: 60px minmax(0, 1fr);
+      gap: 11px;
+   }
+   .radical-context-glyph {
+      width: 60px;
+      height: 60px;
+      font-size: 44px;
+   }
+   .radical-context-sense {
+      font-size: 16px;
+   }
 }
 .dd-entry .cd-head {
    align-items: flex-start;
@@ -3148,6 +3331,39 @@
 .dd-variant-note p {
    margin: 5px 0 0;
 }
+.dd-reading-groups {
+   display: grid;
+   gap: 10px;
+}
+.dd-reading-group {
+   padding: 12px 14px;
+   border: 1px solid var(--line-soft);
+   border-radius: 11px;
+   background: var(--card-2);
+}
+.dd-reading-group h3 {
+   margin: 0;
+   color: var(--seal);
+   font-size: 18px;
+}
+.dd-reading-group .dd-french-unavailable {
+   margin: 8px 0 0;
+   padding: 8px 10px;
+}
+.dd-reading-english {
+   margin-top: 8px;
+   color: var(--ink-soft);
+}
+.dd-reading-english summary {
+   cursor: pointer;
+   color: var(--gold);
+   font-weight: 650;
+}
+.dd-reading-provenance {
+   display: block;
+   margin-top: 9px;
+   color: var(--ink-faint);
+}
 .dd-variant-note {
    margin: 12px 0;
    padding: 11px 13px;
@@ -3218,6 +3434,18 @@
 .dd-sources > span {
    display: block;
    margin-top: 8px;
+}
+.dd-source-provenance {
+   margin-top: 10px;
+   padding-top: 10px;
+   border-top: 1px solid var(--line-soft);
+}
+.dd-source-provenance p {
+   margin: 5px 0;
+}
+.dd-source-provenance ul {
+   margin: 6px 0 0;
+   padding-left: 18px;
 }
 .dd-related {
    min-height: 46px;
@@ -6190,6 +6418,239 @@ body.writing-fullscreen-open {
    text-underline-offset: 3px;
 }
 
+.library-virtual-stack {
+   display: grid;
+   gap: 10px;
+}
+
+.library-virtual-section {
+   overflow: clip;
+   border: 1px solid color-mix(in srgb, var(--gold) 48%, var(--line));
+   border-radius: 16px;
+   background:
+      linear-gradient(135deg, color-mix(in srgb, var(--card-2) 94%, var(--gold) 6%), var(--card));
+   box-shadow: 0 8px 24px rgba(23, 20, 15, 0.07);
+}
+
+.library-virtual-review {
+   border-color: color-mix(in srgb, var(--jade) 42%, var(--line));
+   background:
+      linear-gradient(135deg, color-mix(in srgb, var(--card-2) 94%, var(--jade) 6%), var(--card));
+}
+
+.library-virtual-toggle {
+   display: grid;
+   width: 100%;
+   min-height: 68px;
+   grid-template-columns: 46px minmax(0, 1fr) 44px;
+   align-items: center;
+   gap: 11px;
+   padding: 10px 8px 10px 12px;
+   text-align: left;
+}
+
+.library-virtual-icon {
+   display: grid;
+   width: 44px;
+   height: 44px;
+   place-items: center;
+   border: 1px solid color-mix(in srgb, var(--gold) 50%, var(--line));
+   border-radius: 13px;
+   background: color-mix(in srgb, var(--gold) 13%, var(--card-2));
+   color: var(--lacquer);
+   font: 600 22px var(--serif);
+}
+
+.library-virtual-review .library-virtual-icon {
+   border-color: color-mix(in srgb, var(--jade) 45%, var(--line));
+   background: color-mix(in srgb, var(--jade) 12%, var(--card-2));
+   color: var(--jade);
+}
+
+.library-virtual-heading {
+   display: grid;
+   min-width: 0;
+   gap: 2px;
+}
+
+.library-virtual-heading > strong {
+   font: 600 20px var(--disp);
+}
+
+.library-virtual-heading > span {
+   min-width: 0;
+   overflow-wrap: anywhere;
+   color: var(--ink-faint);
+   font-size: 12.5px;
+   line-height: 1.35;
+}
+
+.library-virtual-heading b {
+   color: var(--ink-soft);
+}
+
+.library-virtual-chevron {
+   display: grid;
+   width: 44px;
+   height: 44px;
+   place-items: center;
+   color: var(--ink-soft);
+   font-size: 24px;
+   transition: transform 160ms ease;
+}
+
+.library-virtual-toggle[aria-expanded="true"] .library-virtual-chevron {
+   transform: rotate(180deg);
+}
+
+.library-virtual-content {
+   padding: 12px 14px 14px;
+   border-top: 1px solid color-mix(in srgb, var(--line-soft) 82%, transparent);
+}
+
+.library-virtual-list {
+   display: grid;
+   gap: 6px;
+}
+
+.library-virtual-card {
+   display: grid;
+   width: 100%;
+   min-width: 0;
+   grid-template-columns: 46px minmax(0, 1fr) auto;
+   align-items: center;
+   gap: 9px;
+   padding: 7px 9px;
+   border: 1px solid var(--line-soft);
+   border-radius: 11px;
+   background: color-mix(in srgb, var(--card-2) 76%, transparent);
+   text-align: left;
+}
+
+.library-virtual-card .row-hz {
+   overflow: hidden;
+   font: 600 23px var(--serif);
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.library-virtual-card-copy {
+   display: grid;
+   min-width: 0;
+   gap: 1px;
+}
+
+.library-virtual-card-copy strong,
+.library-virtual-card-copy > span {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.library-virtual-card-copy strong {
+   font-size: 13px;
+}
+
+.library-virtual-card-copy > span {
+   color: var(--ink-faint);
+   font-size: 12px;
+}
+
+.library-virtual-card time {
+   display: grid;
+   max-width: 132px;
+   justify-items: end;
+   color: var(--jade);
+   font-size: 11.5px;
+   white-space: nowrap;
+}
+
+.library-virtual-card time small {
+   overflow: hidden;
+   max-width: 100%;
+   color: var(--ink-faint);
+   font-size: 9.5px;
+   text-overflow: ellipsis;
+}
+
+.library-virtual-empty,
+.library-virtual-more {
+   margin: 0;
+   color: var(--ink-faint);
+   font-size: 12.5px;
+}
+
+.library-virtual-empty {
+   padding: 11px 12px;
+   border: 1px dashed var(--line);
+   border-radius: 10px;
+   text-align: center;
+}
+
+.library-virtual-more {
+   padding: 6px 2px 0;
+   text-align: right;
+}
+
+.library-virtual-actions,
+.library-smart-actions {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+   gap: 8px;
+   margin-top: 10px;
+}
+
+.library-smart-grid {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 10px;
+}
+
+.library-smart-group {
+   min-width: 0;
+   padding: 11px;
+   border: 1px solid var(--line-soft);
+   border-radius: 13px;
+   background: color-mix(in srgb, var(--card-2) 62%, transparent);
+}
+
+.library-smart-group > header {
+   margin-bottom: 8px;
+}
+
+.library-smart-group > header > div {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   gap: 8px;
+}
+
+.library-smart-group h4 {
+   margin: 0;
+   color: var(--ink);
+   font: 600 16px var(--disp);
+}
+
+.library-smart-group header span {
+   flex: none;
+   color: var(--ink-faint);
+   font-size: 11px;
+}
+
+.library-smart-group .library-virtual-card {
+   grid-template-columns: 38px minmax(0, 1fr);
+}
+
+.library-smart-group .library-virtual-card time {
+   grid-column: 2;
+   justify-items: start;
+}
+
+.library-smart-actions .btn {
+   flex: 1 1 150px;
+}
+
 .pack-grid {
    display: grid;
    gap: 14px;
@@ -7057,6 +7518,16 @@ body.writing-fullscreen-open {
 }
 
 @media (max-width: 600px) {
+   .library-smart-grid { grid-template-columns: 1fr; }
+   .library-virtual-content { padding-inline: 10px; }
+   .library-virtual-card { grid-template-columns: 42px minmax(0, 1fr); }
+   .library-virtual-card time {
+      grid-column: 2;
+      max-width: 100%;
+      justify-items: start;
+   }
+   .library-virtual-actions .btn,
+   .library-smart-actions .btn { flex: 1 1 100%; }
    .library-head,
    .pack-detail-title,
    .word-list-title,
@@ -13423,8 +13894,206 @@ let lib = {
    selected: new Set(),
 };
 
-function dueCount(cards) {
+let libraryVirtualSections = {
+   favorites: false,
+   review: false,
+};
+
+const LIBRARY_REVIEW_GRADES = new Set(["again", "hard", "good", "easy"]);
+
+function dueCount(cards, referenceNow) {
+   if (Number.isFinite(referenceNow))
+      return cards.filter((card) => Number.isFinite(card.due) && card.due <= referenceNow).length;
    return cards.filter(isDue).length;
+}
+
+function uniqueLibraryCards(cards) {
+   const ids = new Set();
+   return (cards || []).filter((card) => {
+      const id = card && String(card.id || "");
+      if (!id || ids.has(id)) return false;
+      ids.add(id);
+      return true;
+   });
+}
+
+function latestLibraryReviewEvent(card) {
+   return (Array.isArray(card && card.reviewHistory) ? card.reviewHistory : [])
+      .filter((event) =>
+         event && Number.isFinite(event.at) && LIBRARY_REVIEW_GRADES.has(event.grade),
+      )
+      .sort((left, right) => right.at - left.at)[0] || null;
+}
+
+function libraryVirtualData(cards, renderedAt) {
+   const values = uniqueLibraryCards(cards);
+   const eventById = new Map(values.map((card) => [card.id, latestLibraryReviewEvent(card)]));
+   const dueNow = values
+      .filter((card) => Number.isFinite(card.due) && card.due <= renderedAt)
+      .sort((left, right) => left.due - right.due);
+   const future = values
+      .filter((card) => Number.isFinite(card.due) && card.due > renderedAt)
+      .sort((left, right) => left.due - right.due);
+   const byLatestEvent = (grade) => values
+      .filter((card) => eventById.get(card.id)?.grade === grade)
+      .sort((left, right) => eventById.get(right.id).at - eventById.get(left.id).at);
+   return {
+      renderedAt,
+      favorites: values.filter((card) => card.fav).sort((left, right) => right.created - left.created),
+      dueNow,
+      future,
+      scheduled: uniqueLibraryCards([...dueNow, ...future]),
+      failed: byLatestEvent("again"),
+      hard: byLatestEvent("hard"),
+      eventById,
+   };
+}
+
+function libraryRelativeDue(due, renderedAt) {
+   if (!Number.isFinite(due)) return "";
+   const delta = due - renderedAt;
+   if (delta <= 0) return "maintenant";
+   if (delta < 60 * 60e3)
+      return "dans " + Math.max(1, Math.ceil(delta / 60e3)) + " min";
+   if (delta < 48 * 60 * 60e3)
+      return "dans " + Math.max(1, Math.ceil(delta / (60 * 60e3))) + " h";
+   return "dans " + Math.max(1, Math.ceil(delta / (24 * 60 * 60e3))) + " j";
+}
+
+function libraryLocalDateTime(value) {
+   if (!Number.isFinite(value)) return "";
+   try {
+      return new Intl.DateTimeFormat("fr-FR", {
+         dateStyle: "medium",
+         timeStyle: "short",
+      }).format(new Date(value));
+   } catch (error) {
+      return "";
+   }
+}
+
+function libraryVirtualCardHtml(card, group, timing) {
+   const detail = timing && Number.isFinite(timing.at)
+      ? '<time datetime="' + new Date(timing.at).toISOString() + '" title="' +
+        esc(timing.exact || "") + '"><span>' + esc(timing.label) + "</span>" +
+        (timing.exact ? "<small>" + esc(timing.exact) + "</small>" : "") + "</time>"
+      : "";
+   return '<button type="button" class="library-virtual-card" data-virtual-card="' +
+      esc(card.id) + '" data-virtual-card-group="' + esc(group) + '"><span class="row-hz">' +
+      esc(card.hz) + '</span><span class="library-virtual-card-copy"><strong>' +
+      (card.fr ? esc(card.fr) : "Traduction manquante") + '</strong><span>' +
+      (card.py ? colorPinyin(card.py) : "Pinyin manquant") + "</span></span>" + detail + "</button>";
+}
+
+function libraryVirtualPreviewHtml(cards, group, timingForCard, emptyText) {
+   if (!cards.length)
+      return '<p class="library-virtual-empty">' + esc(emptyText) + "</p>";
+   const shown = cards.slice(0, 4);
+   return '<div class="library-virtual-list">' + shown.map((card) =>
+      libraryVirtualCardHtml(card, group, timingForCard ? timingForCard(card) : null),
+   ).join("") + "</div>" + (cards.length > shown.length
+      ? '<p class="library-virtual-more">+' + (cards.length - shown.length) + " autre" +
+        (cards.length - shown.length > 1 ? "s" : "") + "</p>"
+      : "");
+}
+
+function libraryVirtualSectionShell(kind, icon, title, summary, content) {
+   const open = !!libraryVirtualSections[kind];
+   const panelId = "library-virtual-" + kind + "-content";
+   return '<article class="library-virtual-section library-virtual-' + kind +
+      (open ? " is-open" : "") + '" data-virtual-section="' + kind + '">' +
+      '<button type="button" class="library-virtual-toggle" data-virtual-toggle="' + kind +
+      '" aria-expanded="' + String(open) + '" aria-controls="' + panelId + '">' +
+      '<span class="library-virtual-icon" aria-hidden="true">' + icon + "</span>" +
+      '<span class="library-virtual-heading"><strong>' + title + "</strong><span>" + summary +
+      '</span></span><span class="library-virtual-chevron" aria-hidden="true">⌄</span></button>' +
+      '<div class="library-virtual-content" id="' + panelId + '"' + (open ? "" : " hidden") +
+      ">" + content + "</div></article>";
+}
+
+function libraryFavoritesSectionHtml(data) {
+   const count = data.favorites.length;
+   const summary = count
+      ? '<b data-virtual-favorite-count>' + count + "</b> favori" + (count > 1 ? "s" : "")
+      : '<b data-virtual-favorite-count>0</b> favori · ajoute une étoile à tes mots clés';
+   const preview = libraryVirtualPreviewHtml(
+      data.favorites,
+      "favorites",
+      null,
+      "Aucun favori pour le moment.",
+   );
+   const content = preview + '<div class="library-virtual-actions"><button class="btn" type="button" data-virtual-list="favorites">Voir les favoris</button>' +
+      '<button class="btn primary" type="button" data-virtual-review="favorites"' +
+      (count ? "" : " disabled") + ">Réviser les favoris</button></div>";
+   return libraryVirtualSectionShell("favorites", "★", "Favoris", summary, content);
+}
+
+function librarySmartGroupHtml(key, title, cards, data, options) {
+   const settings = options || {};
+   const timingForCard = settings.timing === "due"
+      ? (card) => ({
+           at: card.due,
+           label: libraryRelativeDue(card.due, data.renderedAt),
+           exact: libraryLocalDateTime(card.due),
+        })
+      : settings.timing === "history"
+        ? (card) => {
+             const event = data.eventById.get(card.id);
+             return {
+                at: event.at,
+                label: event.grade === "again" ? "Dernière note · raté" : "Dernière note · difficile",
+                exact: libraryLocalDateTime(event.at),
+             };
+          }
+        : null;
+   return '<section class="library-smart-group" data-smart-group="' + key + '"><header><div><h4>' +
+      title + '</h4><span>' + cards.length + " carte" + (cards.length > 1 ? "s" : "") +
+      "</span></div></header>" + libraryVirtualPreviewHtml(
+         cards,
+         key,
+         timingForCard,
+         settings.empty,
+      ) + '<div class="library-smart-actions"><button class="btn sm primary" type="button" data-virtual-review="' +
+      key + '"' + (cards.length ? "" : " disabled") + ">" + settings.action + "</button>" +
+      (settings.list ? '<button class="btn sm ghost" type="button" data-virtual-list="' + settings.list.key +
+         '">' + settings.list.label + "</button>" : "") + "</div></section>";
+}
+
+function libraryReviewSectionHtml(data) {
+   const nearest = data.future[0];
+   const summary = '<b data-smart-due-count>' + data.dueNow.length + "</b> maintenant · <b data-smart-future-count>" +
+      data.future.length + "</b> plus tard" + (nearest
+         ? ' · <span data-smart-nearest title="' + esc(libraryLocalDateTime(nearest.due)) + '">' +
+           esc(libraryRelativeDue(nearest.due, data.renderedAt)) + "</span>"
+         : "");
+   const content = '<div class="library-smart-grid">' +
+      librarySmartGroupHtml("due", "À revoir maintenant", data.dueNow, data, {
+         timing: "due",
+         empty: "Aucune carte arrivée à échéance.",
+         action: "Réviser maintenant",
+         list: { key: "due", label: "Voir les cartes dues" },
+      }) +
+      librarySmartGroupHtml("scheduled", "Plus tard", data.future, data, {
+         timing: "due",
+         empty: "Aucune révision programmée plus tard.",
+         action: "Réviser tout, même en avance",
+      }) +
+      librarySmartGroupHtml("failed", "Ratés", data.failed, data, {
+         timing: "history",
+         empty: "Aucune dernière note « raté ».",
+         action: "Réviser les ratés",
+      }) +
+      librarySmartGroupHtml("hard", "Difficiles", data.hard, data, {
+         timing: "history",
+         empty: "Aucune dernière note « difficile ».",
+         action: "Réviser les difficiles",
+      }) + "</div>";
+   return libraryVirtualSectionShell("review", "复", "À revoir", summary, content);
+}
+
+function libraryVirtualSectionsHtml(data) {
+   return '<div class="library-virtual-stack" aria-label="Vues intelligentes de Mes mots">' +
+      libraryFavoritesSectionHtml(data) + libraryReviewSectionHtml(data) + "</div>";
 }
 
 function libraryScopeCards() {
@@ -13470,19 +14139,23 @@ function libraryHeaderHtml() {
       (lib.level !== "packs" ? '<nav class="lib-breadcrumb" aria-label="Fil d’Ariane">' + libraryBreadcrumb() + "</nav>" : "");
 }
 
-function packTileHtml(pack) {
+function packTileHtml(pack, renderedAt) {
    const categories = categoriesForPack(pack.id);
    const cards = cardsForPack(pack.id);
-   return '<article class="pack-tile"><button class="pack-open" data-pack-open="' + esc(pack.id) + '"><span class="pack-mark">册</span><span class="pack-copy"><strong>' + esc(pack.name) + '</strong><span>' + categories.length + ' sous-catégorie' + (categories.length > 1 ? "s" : "") + ' · ' + cards.length + ' mot' + (cards.length > 1 ? "s" : "") + '</span></span><span class="due-pill">' + dueCount(cards) + ' à revoir</span></button><div class="tile-actions"><button class="btn sm ghost" data-pack-review="' + esc(pack.id) + '">Réviser</button><button class="btn sm ghost" data-pack-export="' + esc(pack.id) + '">Exporter</button><button class="btn sm ghost" data-pack-rename="' + esc(pack.id) + '">Renommer</button><button class="btn sm danger" data-pack-delete="' + esc(pack.id) + '">Supprimer</button></div></article>';
+   return '<article class="pack-tile"><button class="pack-open" data-pack-open="' + esc(pack.id) + '"><span class="pack-mark">册</span><span class="pack-copy"><strong>' + esc(pack.name) + '</strong><span>' + categories.length + ' sous-catégorie' + (categories.length > 1 ? "s" : "") + ' · ' + cards.length + ' mot' + (cards.length > 1 ? "s" : "") + '</span></span><span class="due-pill">' + dueCount(cards, renderedAt) + ' à revoir</span></button><div class="tile-actions"><button class="btn sm ghost" data-pack-review="' + esc(pack.id) + '">Réviser</button><button class="btn sm ghost" data-pack-export="' + esc(pack.id) + '">Exporter</button><button class="btn sm ghost" data-pack-rename="' + esc(pack.id) + '">Renommer</button><button class="btn sm danger" data-pack-delete="' + esc(pack.id) + '">Supprimer</button></div></article>';
 }
 
 function renderPackLibrary() {
    const root = $("view");
+   const renderedAt = Date.now();
+   const virtualData = libraryVirtualData(db.cards, renderedAt);
    root.innerHTML = '<section class="library-page">' + libraryHeaderHtml() +
       '<div class="library-toolbar"><button class="btn" id="lib-create-pack">Créer un pack</button><button class="btn ghost" id="lib-show-all">Voir tous les mots (' + db.cards.length + ')</button><button class="btn ghost" id="lib-export">Exporter</button></div>' +
-      (db.packs.length ? '<div class="pack-grid">' + db.packs.map(packTileHtml).join("") + "</div>" : '<div class="lib-empty card"><div class="pack-mark large">册</div><h3>Aucun pack</h3><p>Crée un pack ou importe directement un JSON. Tes anciennes cartes restent accessibles dans « Tous les mots ».</p></div>') +
+      libraryVirtualSectionsHtml(virtualData) +
+      (db.packs.length ? '<div class="pack-grid">' + db.packs.map((pack) => packTileHtml(pack, renderedAt)).join("") + "</div>" : '<div class="lib-empty card"><div class="pack-mark large">册</div><h3>Aucun pack</h3><p>Crée un pack ou importe directement un JSON. Tes anciennes cartes restent accessibles dans « Tous les mots ».</p></div>') +
       "</section>";
    wireLibraryCommon();
+   wireLibraryVirtualSections(root, virtualData);
    $("lib-create-pack").onclick = () => {
       const name = prompt("Nom du nouveau pack :");
       const pack = createPersonalPack(name);
@@ -13507,6 +14180,60 @@ function renderPackLibrary() {
       const pack = db.packs.find((item) => item.id === button.dataset.packDelete);
       if (!confirm("Supprimer le pack « " + pack.name + " » et sa structure ? Les cartes resteront dans Mes mots.")) return;
       deletePersonalPack(pack.id); renderLib();
+   });
+}
+
+function wireLibraryVirtualSections(root, data) {
+   const groups = {
+      favorites: data.favorites,
+      due: data.dueNow,
+      scheduled: data.scheduled,
+      failed: data.failed,
+      hard: data.hard,
+   };
+   root.querySelectorAll("[data-virtual-toggle]").forEach((button) => {
+      button.onclick = () => {
+         const kind = button.dataset.virtualToggle;
+         const open = !libraryVirtualSections[kind];
+         libraryVirtualSections[kind] = open;
+         button.setAttribute("aria-expanded", String(open));
+         const section = button.closest("[data-virtual-section]");
+         section.classList.toggle("is-open", open);
+         const content = $(button.getAttribute("aria-controls"));
+         if (content) content.hidden = !open;
+      };
+   });
+   root.querySelectorAll("[data-virtual-card]").forEach((button) => {
+      button.onclick = () => {
+         const cards = groups[button.dataset.virtualCardGroup] || [];
+         openCardDetail(button.dataset.virtualCard, {
+            cardIds: uniqueLibraryCards(cards).map((card) => card.id),
+         });
+      };
+   });
+   root.querySelectorAll("[data-virtual-review]").forEach((button) => {
+      button.onclick = () => {
+         const kind = button.dataset.virtualReview;
+         const labels = {
+            favorites: "Favoris",
+            due: "À revoir maintenant",
+            scheduled: "Toutes les cartes programmées",
+            failed: "Derniers ratés",
+            hard: "Dernières difficiles",
+         };
+         reviewLibraryCards(groups[kind] || [], labels[kind]);
+      };
+   });
+   root.querySelectorAll("[data-virtual-list]").forEach((button) => {
+      button.onclick = () => {
+         lib.level = "all";
+         lib.packId = "";
+         lib.categoryId = "";
+         lib.q = "";
+         lib.flt = button.dataset.virtualList === "favorites" ? "fav" : "due";
+         lib.selected.clear();
+         renderLib();
+      };
    });
 }
 
@@ -13622,8 +14349,16 @@ function renderLib() {
 }
 
 function reviewLibraryCards(cards, label) {
-   if (!cards.length) { toast("Aucune carte dans cette sélection."); return; }
-   openReviewForManualCards(cards, label);
+   const requestedIds = new Set(uniqueLibraryCards(cards).map((card) => card.id));
+   const selectedCards = db.cards.filter((card) => requestedIds.has(card.id));
+   if (!selectedCards.length) { toast("Aucune carte dans cette sélection."); return; }
+   reviewExtraFilters = {
+      newOnly: false,
+      favoritesOnly: false,
+      difficultOnly: false,
+      includeLearned: true,
+   };
+   openReviewForManualCards(selectedCards, label);
 }
 
 function openMoveSelectedSheet() {
@@ -13742,7 +14477,13 @@ function openCardDetail(id, options) {
       '<div class="sh-btns"><button class="btn primary" id="card-review-one">Réviser</button><button class="btn" id="card-edit">Modifier</button><button class="btn danger" id="card-delete">Supprimer</button><button class="btn ghost" id="card-close" data-sheet-close>Fermer</button></div></article>',
    );
    wireCardStrokeWorkspace(card, characters, context, initialCharacterIndex);
-   $("card-favorite").onclick = () => { card.fav = !card.fav; card.updated = Date.now(); save(); openCardDetail(id, context); };
+   $("card-favorite").onclick = () => {
+      card.fav = !card.fav;
+      card.updated = Date.now();
+      save();
+      if (activeView === "lib" && lib.level === "packs") renderPackLibrary();
+      openCardDetail(id, context);
+   };
    $("card-difficult").onclick = () => { card.difficult = !card.difficult; card.updated = Date.now(); save(); openCardDetail(id, context); };
    $("card-mastered").onclick = () => { card.acquired = !card.acquired; if (card.acquired) card.due = null; card.updated = Date.now(); save(); openCardDetail(id, context); };
    document.querySelectorAll("[data-card-category]").forEach((input) => input.onchange = () => {
@@ -14147,8 +14888,8 @@ function openLibraryExportSheet() {
 
 "use strict";
 
-const DICTIONARY_SCHEMA_VERSION = 1;
-const DICTIONARY_CACHE_NAME = "mo-studio-dictionary-v1";
+const DICTIONARY_SCHEMA_VERSION = 4;
+const DICTIONARY_CACHE_NAME = "mo-studio-dictionary-v2";
 const DICTIONARY_PARSED_CHUNK_LIMIT = 10;
 const DICTIONARY_ENTRY_CACHE_LIMIT = 240;
 const DICTIONARY_ROOT = (() => {
@@ -14165,6 +14906,8 @@ const DICTIONARY_ROOT = (() => {
 const dictionaryDataState = {
    status: "idle",
    manifest: null,
+   manifestPending: null,
+   manifestOfflineFallback: false,
    attribution: null,
    locations: null,
    referenceById: null,
@@ -14175,20 +14918,29 @@ const dictionaryDataState = {
    error: null,
 };
 
-function dictionaryResourceUrl(relativePath) {
-   return new URL(relativePath, DICTIONARY_ROOT).href;
+function dictionaryResourceUrl(relativePath, buildId) {
+   const url = new URL(relativePath, DICTIONARY_ROOT);
+   if (buildId) url.searchParams.set("build", buildId);
+   return url.href;
 }
 
 async function openDictionaryCache() {
    return "caches" in globalThis ? caches.open(DICTIONARY_CACHE_NAME) : null;
 }
 
-async function fetchDictionaryResponse(relativePath, reload) {
-   const url = dictionaryResourceUrl(relativePath);
+async function fetchDictionaryResponse(relativePath, reload, buildId) {
+   const url = dictionaryResourceUrl(relativePath, buildId);
    const cache = await openDictionaryCache();
    if (!reload && cache) {
       const cached = await cache.match(url);
       if (cached) return { response: cached, cached: true, cache, url };
+      // Migration path for a dictionary prepared by the pre-buildId loader.
+      // It is safe only when the manifest itself came from the offline cache.
+      if (buildId && dictionaryDataState.manifestOfflineFallback) {
+         const legacyUrl = dictionaryResourceUrl(relativePath);
+         const legacy = await cache.match(legacyUrl);
+         if (legacy) return { response: legacy, cached: true, cache, url: legacyUrl };
+      }
    }
    const response = await fetch(url, { cache: reload ? "reload" : "default" });
    if (!response.ok) throw new Error(relativePath + " · HTTP " + response.status);
@@ -14200,14 +14952,14 @@ async function fetchDictionaryResponse(relativePath, reload) {
    return { response, cached: false, cache, url };
 }
 
-async function fetchDictionaryJson(relativePath, reload) {
-   let loaded = await fetchDictionaryResponse(relativePath, !!reload);
+async function fetchDictionaryJson(relativePath, reload, buildId) {
+   let loaded = await fetchDictionaryResponse(relativePath, !!reload, buildId);
    try {
       return await loaded.response.json();
    } catch (error) {
       if (loaded.cached && loaded.cache) {
          await loaded.cache.delete(loaded.url);
-         loaded = await fetchDictionaryResponse(relativePath, true);
+         loaded = await fetchDictionaryResponse(relativePath, true, buildId);
          try {
             return await loaded.response.json();
          } catch (networkError) {
@@ -14239,6 +14991,8 @@ function resetDictionaryMemory() {
    if (typeof resetDictionarySearchWorker === "function")
       resetDictionarySearchWorker();
    dictionaryDataState.manifest = null;
+   dictionaryDataState.manifestPending = null;
+   dictionaryDataState.manifestOfflineFallback = false;
    dictionaryDataState.attribution = null;
    dictionaryDataState.locations = null;
    dictionaryDataState.referenceById = null;
@@ -14250,31 +15004,70 @@ function resetDictionaryMemory() {
    dictionaryDataState.status = "idle";
 }
 
+async function fetchCurrentDictionaryManifest(reload) {
+   const url = dictionaryResourceUrl("manifest.json");
+   const cache = await openDictionaryCache();
+   let networkError = null;
+   try {
+      const response = await fetch(url, { cache: reload ? "reload" : "no-cache" });
+      if (!response.ok) throw new Error("manifest.json · HTTP " + response.status);
+      const manifest = validateDictionaryManifest(await response.clone().json());
+      if (cache) await cache.put(url, response.clone());
+      return { manifest, offlineFallback: false };
+   } catch (error) {
+      networkError = error;
+   }
+   if (!reload && cache) {
+      const cached = await cache.match(url);
+      if (cached) {
+         try {
+            return {
+               manifest: validateDictionaryManifest(await cached.json()),
+               offlineFallback: true,
+            };
+         } catch (error) {
+            await cache.delete(url);
+         }
+      }
+   }
+   throw networkError || new Error("manifest.json · indisponible");
+}
+
 async function loadDictionaryManifest(reload) {
    if (dictionaryDataState.manifest && !reload) return dictionaryDataState.manifest;
+   if (dictionaryDataState.manifestPending && !reload)
+      return dictionaryDataState.manifestPending;
    dictionaryDataState.status = "loading";
-   try {
-      const manifest = validateDictionaryManifest(
-         await fetchDictionaryJson("manifest.json", !!reload),
-      );
-      if (
-         dictionaryDataState.manifest &&
-         dictionaryDataState.manifest.buildId !== manifest.buildId
-      ) {
-         dictionaryDataState.locations = null;
-         dictionaryDataState.referenceById = null;
-         dictionaryDataState.indexes.clear();
-         dictionaryDataState.chunks.clear();
-         dictionaryDataState.previewCatalog = null;
-         dictionaryDataState.entries.clear();
+   const request = (async () => {
+      try {
+         const previousBuildId = dictionaryDataState.manifest?.buildId || null;
+         const loaded = await fetchCurrentDictionaryManifest(!!reload);
+         const manifest = loaded.manifest;
+         if (previousBuildId && previousBuildId !== manifest.buildId) {
+            dictionaryDataState.attribution = null;
+            dictionaryDataState.locations = null;
+            dictionaryDataState.referenceById = null;
+            dictionaryDataState.indexes.clear();
+            dictionaryDataState.chunks.clear();
+            dictionaryDataState.previewCatalog = null;
+            dictionaryDataState.entries.clear();
+         }
+         dictionaryDataState.manifest = manifest;
+         dictionaryDataState.manifestOfflineFallback = loaded.offlineFallback;
+         dictionaryDataState.status = "ready";
+         return manifest;
+      } catch (error) {
+         dictionaryDataState.status = "error";
+         dictionaryDataState.error = error;
+         throw error;
       }
-      dictionaryDataState.manifest = manifest;
-      dictionaryDataState.status = "ready";
-      return manifest;
-   } catch (error) {
-      dictionaryDataState.status = "error";
-      dictionaryDataState.error = error;
-      throw error;
+   })();
+   dictionaryDataState.manifestPending = request;
+   try {
+      return await request;
+   } finally {
+      if (dictionaryDataState.manifestPending === request)
+         dictionaryDataState.manifestPending = null;
    }
 }
 
@@ -14282,7 +15075,7 @@ async function loadDictionaryAttribution(reload) {
    const manifest = await loadDictionaryManifest(reload);
    if (dictionaryDataState.attribution && !reload)
       return { manifest, attribution: dictionaryDataState.attribution };
-   const attribution = await fetchDictionaryJson(manifest.attribution, !!reload);
+   const attribution = await fetchDictionaryJson(manifest.attribution, !!reload, manifest.buildId);
    if (!Array.isArray(attribution.sources))
       throw new Error("Attribution du dictionnaire invalide.");
    dictionaryDataState.attribution = attribution;
@@ -14292,7 +15085,7 @@ async function loadDictionaryAttribution(reload) {
 async function loadDictionaryLocations(reload) {
    const manifest = await loadDictionaryManifest(reload);
    if (dictionaryDataState.locations && !reload) return dictionaryDataState.locations;
-   const locations = await fetchDictionaryJson(manifest.entryLocations, !!reload);
+   const locations = await fetchDictionaryJson(manifest.entryLocations, !!reload, manifest.buildId);
    if (!Array.isArray(locations) || locations.length !== manifest.counts.entries)
       throw new Error("Table des entrées du dictionnaire invalide.");
    dictionaryDataState.locations = locations;
@@ -14306,7 +15099,7 @@ async function loadDictionaryIndex(name, reload) {
    if (!path) throw new Error("Index inconnu : " + name);
    if (dictionaryDataState.indexes.has(name) && !reload)
       return dictionaryDataState.indexes.get(name);
-   const index = await fetchDictionaryJson(path, !!reload);
+   const index = await fetchDictionaryJson(path, !!reload, manifest.buildId);
    if (!index || typeof index !== "object" || Array.isArray(index))
       throw new Error(path + " · contenu invalide");
    dictionaryDataState.indexes.set(name, index);
@@ -14339,7 +15132,7 @@ async function loadDictionaryChunk(key, reload) {
    }
    const manifest = await loadDictionaryManifest(reload);
    const path = manifest.chunkPathTemplate.replace("{chunk}", key);
-   const payload = await fetchDictionaryJson(path, !!reload);
+   const payload = await fetchDictionaryJson(path, !!reload, manifest.buildId);
    if (
       !payload ||
       payload.schemaVersion !== DICTIONARY_SCHEMA_VERSION ||
@@ -14351,8 +15144,18 @@ async function loadDictionaryChunk(key, reload) {
 }
 
 function dictionaryPreviewFromArray(value, reference) {
-   if (!Array.isArray(value) || value.length !== 11)
+   if (!Array.isArray(value) || value.length !== 12)
       throw new Error("Aperçu de dictionnaire invalide.");
+   const readings = (value[11] || []).map((reading) => ({
+      pinyin: {
+         marked: reading[0],
+         numbered: reading[1],
+         plain: reading[2],
+      },
+      definitionsFr: Array.isArray(reading[3]) ? reading[3].slice() : [],
+      definitionsEn: Array.isArray(reading[4]) ? reading[4].slice() : [],
+      frenchStatus: reading[5] || (reading[3]?.length ? "source" : "unavailable"),
+   }));
    return {
       id: value[0],
       simplified: value[1],
@@ -14366,6 +15169,9 @@ function dictionaryPreviewFromArray(value, reference) {
       definitionsFr: value[5] ? [value[5]] : [],
       definitionsEn: value[6] ? [value[6]] : [],
       sources: value[7] || [],
+      frenchStatus: readings[0]?.frenchStatus || (value[5] ? "source" : "unavailable"),
+      frenchProvenance: [],
+      readings,
       hskLegacy: value[8] || [],
       hsk30: value[9] || [],
       frequencyRank: value[10],
@@ -14378,7 +15184,7 @@ function dictionaryPreviewFromArray(value, reference) {
 async function loadDictionaryPreviewCatalog() {
    if (dictionaryDataState.previewCatalog) return dictionaryDataState.previewCatalog;
    const manifest = await loadDictionaryManifest(false);
-   const payload = await fetchDictionaryJson(manifest.searchPreviews, false);
+   const payload = await fetchDictionaryJson(manifest.searchPreviews, false, manifest.buildId);
    if (
       !payload ||
       payload.schemaVersion !== DICTIONARY_SCHEMA_VERSION ||
@@ -14515,7 +15321,7 @@ async function rebuildDictionaryIndex(onStatus) {
          await Promise.all(
             chunks
                .slice(offset, offset + 8)
-               .map((chunk) => fetchDictionaryResponse(chunk.path, true)),
+               .map((chunk) => fetchDictionaryResponse(chunk.path, true, manifest.buildId)),
          );
       }
       dictionaryDataState.status = "ready";
@@ -14574,6 +15380,13 @@ function openDictionarySources() {
             '<h3 class="sh-t">Sources du dictionnaire</h3>' +
             '<p class="sh-p">Les données globales restent séparées de Mes mots et de ta progression.</p>' +
             attribution.sources.map(dictionarySourceHtml).join("") +
+            (attribution.frenchEditorialPolicy
+               ? '<div class="card pad" style="box-shadow:none;margin-top:10px"><h3 class="v-t" style="font-size:20px">Révisions françaises Mò Studio</h3>' +
+                 '<p class="sh-p">Corrections humaines ciblées par graphie et pinyin exacts ; aucune traduction automatique.</p>' +
+                 '<p class="sh-note">Politique ' + esc(attribution.frenchEditorialPolicy.policyId) + ' · ' +
+                 Number(attribution.frenchEditorialPolicy.entryCount).toLocaleString("fr-FR") + ' décisions · SHA-256 ' +
+                 esc(attribution.frenchEditorialPolicy.sha256.slice(0, 12)) + '</p></div>'
+               : "") +
             '<div class="card pad" style="box-shadow:none;margin-top:10px"><h3 class="v-t" style="font-size:20px">Données de traits</h3>' +
             '<p class="sh-p">Hanzi Writer Data 2.0.1 fournit les tracés, les médianes disponibles et les indices de traits de la clé. Il ne fournit aucune décomposition IDS ni étymologie.</p>' +
             '<p class="sh-note">Licence publique Arphic · copie intégrale dans data/generated/hanzi-writer/2.0.1/ARPHICPL.TXT. Moteur Hanzi Writer 3.7.3 sous licence MIT.</p></div>' +
@@ -14680,6 +15493,8 @@ function dictionaryPinyinSortTier(entry, query) {
 }
 
 function entryPinyinVariants(entry) {
+   if (Array.isArray(entry.readings) && entry.readings.length)
+      return entry.readings.map((reading) => reading.pinyin).filter(Boolean);
    if (Array.isArray(entry.pinyin)) return entry.pinyin;
    if (entry.py) {
       return [
@@ -14694,6 +15509,10 @@ function entryPinyinVariants(entry) {
 }
 
 function entryDefinitions(entry, language) {
+   if (Array.isArray(entry.readings) && entry.readings.length) {
+      const field = language === "fr" ? "definitionsFr" : "definitionsEn";
+      return Array.from(new Set(entry.readings.flatMap((reading) => reading[field] || [])));
+   }
    if (language === "fr")
       return Array.isArray(entry.definitionsFr)
          ? entry.definitionsFr
@@ -15035,10 +15854,62 @@ function dictionaryEntryIdentity(entry) {
 }
 
 function dictionaryEntryPronunciationKeys(entry) {
+   if (entry.__displayReadingNumbered)
+      return new Set([normalizePinyinNumbered(entry.__displayReadingNumbered)].filter(Boolean));
    return new Set(
       entryPinyinVariants(entry)
          .map((variant) => normalizePinyinNumbered(variant.numbered || variant.marked || ""))
          .filter(Boolean),
+   );
+}
+
+function dictionaryReadingMatchesPinyin(reading, query) {
+   const variant = reading.pinyin || {};
+   const marked = normalizePinyinMarked(variant.marked || variant.numbered || "");
+   const numbered = normalizePinyinNumbered(variant.numbered || variant.marked || "");
+   const plain = normalizePinyinPlain(variant.plain || variant.numbered || variant.marked || "");
+   if (query.type === "pinyin-marked") return marked === query.marked;
+   if (query.type === "pinyin-numbered") return numbered === query.numbered;
+   return plain === query.plain || plain.startsWith(query.plain);
+}
+
+function dictionaryReadingMatchesTranslation(reading, query, englishFallback) {
+   const field = englishFallback ? "definitionsEn" : "definitionsFr";
+   const words = (reading[field] || [])
+      .flatMap((definition) => normalizeTranslation(definition).split(" "))
+      .filter(Boolean);
+   return (query.tokens || []).every((token) =>
+      words.some((word) => word === token || word.startsWith(token)),
+   );
+}
+
+function dictionaryEntryForReading(entry, numbered) {
+   if (!entry || !Array.isArray(entry.readings) || !entry.readings.length) return entry;
+   const reading = entry.readings.find((candidate) =>
+      normalizePinyinNumbered(candidate.pinyin?.numbered || candidate.pinyin?.marked || "") === numbered,
+   ) || entry.readings[0];
+   return {
+      ...entry,
+      pinyin: reading.pinyin ? [reading.pinyin] : [],
+      definitionsFr: (reading.definitionsFr || []).slice(),
+      definitionsEn: (reading.definitionsEn || []).slice(),
+      frenchStatus: reading.frenchStatus || ((reading.definitionsFr || []).length ? "source" : "unavailable"),
+      __displayReadingNumbered: reading.pinyin?.numbered || "",
+   };
+}
+
+function dictionaryEntryForQuery(entry, query, englishFallback) {
+   if (!entry || !Array.isArray(entry.readings) || !entry.readings.length) return entry;
+   let reading = null;
+   if (query.type.startsWith("pinyin"))
+      reading = entry.readings.find((candidate) => dictionaryReadingMatchesPinyin(candidate, query));
+   else if (query.type === "translation")
+      reading = entry.readings.find((candidate) =>
+         dictionaryReadingMatchesTranslation(candidate, query, englishFallback),
+      );
+   return dictionaryEntryForReading(
+      entry,
+      (reading || entry.readings[0]).pinyin?.numbered || "",
    );
 }
 
@@ -15137,6 +16008,7 @@ function groupDictionaryScriptVariants(response) {
          !hidden.has(item.entry.id) && isVisualScriptVariantOf(candidate, item.entry),
       );
       if (!primary) return;
+      mergeDictionaryResultBadgeMetadata(primary, result);
       primary.entry.visualVariants = [...(primary.entry.visualVariants || []), candidate];
       hidden.add(candidate.id);
    });
@@ -15149,6 +16021,17 @@ function groupDictionaryScriptVariants(response) {
    });
    response.visualVariantsGrouped = hidden.size;
    return response;
+}
+
+function mergeDictionaryResultBadgeMetadata(primary, duplicate) {
+   const entry = primary.entry;
+   const other = duplicate.entry;
+   entry.hskLegacy = Array.from(new Set([...(entry.hskLegacy || []), ...(other.hskLegacy || [])]));
+   entry.hsk30 = Array.from(new Set([...(entry.hsk30 || []), ...(other.hsk30 || [])]));
+   entry.hskVerified = [...(entry.hskVerified || []), ...(other.hskVerified || [])].filter(
+      (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
+   );
+   if (other.personalCard && !entry.personalCard) entry.personalCard = other.personalCard;
 }
 
 function dictionaryDefinitionKeys(entry) {
@@ -15185,18 +16068,13 @@ function mergeDictionaryResultMetadata(primary, duplicate) {
       ...(other.visualEntryTypes || [other.entryType]),
    ]));
    entry.sources = Array.from(new Set([...(entry.sources || []), ...(other.sources || [])]));
-   entry.hskLegacy = Array.from(new Set([...(entry.hskLegacy || []), ...(other.hskLegacy || [])]));
-   entry.hsk30 = Array.from(new Set([...(entry.hsk30 || []), ...(other.hsk30 || [])]));
-   entry.hskVerified = [...(entry.hskVerified || []), ...(other.hskVerified || [])].filter(
-      (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
-   );
+   mergeDictionaryResultBadgeMetadata(primary, duplicate);
    if (!entry.definitionsFr?.length && other.definitionsFr?.length) {
       const primaryMeanings = dictionaryDefinitionKeys(entry);
       entry.definitionsFr = other.definitionsFr.filter((definition) =>
          primaryMeanings.has(normalizeTranslation(definition)),
       );
    }
-   if (other.personalCard && !entry.personalCard) entry.personalCard = other.personalCard;
    primary.rank.score = Math.max(primary.rank.score, duplicate.rank.score);
    return primary;
 }
@@ -15347,7 +16225,9 @@ async function searchDictionaryLocally(rawQuery, options) {
    ensureCurrentSearch(epoch);
    const references = Array.from(indexed.candidates.keys()).slice(0, candidateLimit);
    if (settings.onStatus) settings.onStatus("Chargement des meilleures fiches…");
-   const dictionaryEntries = await loadDictionaryPreviewsByReferences(references);
+   const dictionaryEntries = (await loadDictionaryPreviewsByReferences(references)).map((entry) =>
+      dictionaryEntryForQuery(entry, query, indexed.englishFallback),
+   );
    ensureCurrentSearch(epoch);
 
    const personalEntries = db.cards
@@ -15587,8 +16467,8 @@ function dictionaryResultDefinition(entry) {
    if (entry.definitionsFr && entry.definitionsFr.length)
       return { text: entry.definitionsFr[0], english: false, unavailable: false };
    if (entry.definitionsEn && entry.definitionsEn.length)
-      return { text: "Traduction française indisponible", english: true, englishText: entry.definitionsEn[0], unavailable: true };
-   return { text: "Traduction française indisponible", english: false, unavailable: true };
+      return { text: "Sens français vérifié indisponible", english: true, englishText: entry.definitionsEn[0], unavailable: true };
+   return { text: "Sens français vérifié indisponible", english: false, unavailable: true };
 }
 
 function dictionaryEntryDetailedTypeLabels(entry) {
@@ -15927,14 +16807,21 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
    }
    srch.mode = "detail";
    const selectedHanzi = entry.__selectedHanzi || "";
+   const selectedReading = entry.__displayReadingNumbered || "";
    const visualGroup = Array.isArray(entry.visualGroup) ? entry.visualGroup.slice() : [];
+   const resultHskVerified = Array.isArray(entry.hskVerified) ? entry.hskVerified.slice() : [];
    if (entry.__preview) {
       openSheet(
          '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche complète…</b></div>',
       );
       try {
          entry = (await loadHskSearchDetailEntry(entry.id)) || entry;
+         if (selectedReading && typeof dictionaryEntryForReading === "function")
+            entry = dictionaryEntryForReading(entry, selectedReading);
          if (selectedHanzi) entry.__selectedHanzi = selectedHanzi;
+         entry.hskVerified = [...(entry.hskVerified || []), ...resultHskVerified].filter(
+            (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
+         );
          if (visualGroup.length > 1) {
             const grouped = (await Promise.all(
                visualGroup.filter((id) => id !== entry.id).map((id) => loadHskSearchDetailEntry(id)),
@@ -15998,8 +16885,9 @@ function restoreSearchHistory(state) {
    if (state.mode === "radical") {
       srch.mode = srch.q ? "results" : "landing";
       renderSearch();
-      if (state.radical) selectRadical(state.radical, { fromHistory: true });
-      else openRadicalMode({ fromHistory: true });
+      if (state.radical)
+         selectRadical(state.radical, { fromHistory: true, scrollY: srch.scrollY, visible: state.visible });
+      else openRadicalMode({ fromHistory: true, scrollY: srch.scrollY });
       return;
    }
    renderSearch();
@@ -16021,10 +16909,12 @@ function renderSearch() {
    radicalBrowser.radical = null;
    const root = $("view");
    root.innerHTML =
-      '<section class="card pad search-page"><header class="search-hero"><h2 class="v-t">查 · Rechercher</h2>' +
-      '<p class="muted">Trouve un caractère, un mot, un pinyin ou une traduction.</p>' +
-      '<div class="search-mode-bar"><button type="button" class="chip search-mode-toggle" id="search-mode-toggle" aria-pressed="false">' +
-      '<b lang="zh-Hans">部</b> Clés</button></div></header>' +
+      '<section class="card pad search-page"><header class="search-hero" id="search-hero">' +
+      '<div class="search-hero-top"><div class="search-hero-copy"><h2 class="v-t" id="search-page-title">查 · Rechercher</h2>' +
+      '<p class="muted" id="search-hero-description">Trouve un caractère, un mot, un pinyin ou une traduction.</p></div>' +
+      '<button type="button" class="chip search-mode-toggle" id="search-mode-toggle" aria-pressed="false" aria-label="Parcourir par clés">' +
+      '<b lang="zh-Hans" data-search-mode-icon>部</b><span data-search-mode-label>Clés</span></button></div>' +
+      '<div class="radical-context-host" id="radical-context-host" hidden></div></header>' +
       '<div id="dsearch-normal">' +
       '<form class="dictionary-search-form" id="dsearch-form"><div class="dictionary-search-input">' +
       '<input class="search" id="dq" placeholder="汉字, pinyin ou français…" value="' + esc(srch.q) +
@@ -16434,22 +17324,19 @@ async function loadRadicalCharacters(radical) {
    if (radicalChunkPending.has(radical)) return radicalChunkPending.get(radical);
    const request = (async () => {
       const manifest = await loadRadicalsManifest();
-      const declared = manifest && manifest.radicals.find((row) => row.radical === radical);
+      if (!manifest) throw new Error("Données de clés indisponibles");
+      const declared = manifest.radicals.find((row) => row.radical === radical);
       if (!declared) return { radical, characters: [] };
-      try {
-         const response = await fetch(new URL(declared.path, CHARACTER_RADICALS_ROOT).href, {
-            cache: "default",
-         });
-         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-         const chunk = await response.json();
-         if (!chunk || chunk.radical !== radical || !Array.isArray(chunk.characters))
-            throw new Error("Chunk de clé invalide");
-         const frozen = Object.freeze({ radical, characters: Object.freeze(chunk.characters) });
-         radicalChunkCache.set(radical, frozen);
-         return frozen;
-      } catch (error) {
-         return { radical, characters: [] };
-      }
+      const response = await fetch(new URL(declared.path, CHARACTER_RADICALS_ROOT).href, {
+         cache: "default",
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const chunk = await response.json();
+      if (!chunk || chunk.radical !== radical || !Array.isArray(chunk.characters))
+         throw new Error("Chunk de clé invalide");
+      const frozen = Object.freeze({ radical, characters: Object.freeze(chunk.characters) });
+      radicalChunkCache.set(radical, frozen);
+      return frozen;
    })().finally(() => radicalChunkPending.delete(radical));
    radicalChunkPending.set(radical, request);
    return request;
@@ -18017,10 +18904,53 @@ function dictionarySplitSenses(values) {
    ));
 }
 
+function dictionaryDetailReadings(entry) {
+   if (Array.isArray(entry.readings) && entry.readings.length) return entry.readings;
+   const pinyin = (entry.pinyin || [])[0];
+   if (!pinyin) return [];
+   return [{
+      pinyin,
+      definitionsFr: entry.definitionsFr || [],
+      definitionsEn: entry.definitionsEn || [],
+      frenchStatus: entry.frenchStatus || ((entry.definitionsFr || []).length ? "source" : "unavailable"),
+      sources: entry.sources || [],
+      frenchProvenance: entry.frenchProvenance || [],
+   }];
+}
+
+function dictionaryReadingProvenanceHtml(reading) {
+   const verified = (reading.frenchProvenance || []).filter((item) => item.verifiedAt);
+   if (!verified.length) return "";
+   return '<small class="dd-reading-provenance">Révision éditoriale Mò Studio · vérifiée le ' +
+      verified.map((item) => esc(item.verifiedAt)).join(" · ") + "</small>";
+}
+
+function dictionaryReadingGroupsHtml(entry) {
+   const readings = dictionaryDetailReadings(entry);
+   if (readings.length <= 1) return "";
+   return '<section class="dd-definitions dd-reading-groups" id="dd-french-definitions" aria-label="Lectures et sens">' +
+      '<div class="eyebrow">Lectures et sens</div>' + readings.map((reading) => {
+         const french = dictionarySplitSenses(reading.definitionsFr);
+         const english = dictionarySplitSenses(reading.definitionsEn).filter((definition) => /\p{L}/u.test(definition));
+         return '<article class="dd-reading-group" data-reading="' + esc(reading.pinyin?.numbered || "") + '">' +
+            '<h3>' + colorPinyin(reading.pinyin?.marked || reading.pinyin?.numbered || "") + '</h3>' +
+            (french.length
+               ? '<ol class="dd-sense-list">' + french.map((definition) => '<li>' + esc(definition) + '</li>').join("") + '</ol>'
+               : '<p class="dd-french-unavailable">Sens français vérifié indisponible</p>') +
+            (!french.length && english.length
+               ? '<details class="dd-reading-english"><summary>Sens anglais de référence</summary><ol class="dd-sense-list">' +
+                 english.map((definition) => '<li>' + esc(definition) + '</li>').join("") + '</ol></details>'
+               : "") +
+            dictionaryReadingProvenanceHtml(reading) + '</article>';
+      }).join("") + '</section>';
+}
+
 function dictionaryFrenchDefinitionsHtml(entry) {
+   const readingGroups = dictionaryReadingGroupsHtml(entry);
+   if (readingGroups) return readingGroups;
    const french = dictionarySplitSenses(entry.definitionsFr);
    if (!french.length)
-      return '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Traduction française indisponible</p></section>';
+      return '<section class="dd-definitions dd-french-unavailable" id="dd-french-definitions"><div class="eyebrow">Sens français</div><p>Sens français vérifié indisponible</p></section>';
    const joined = french.join(" ; ");
    if (french.length <= 3)
       return '<section class="dd-definitions dd-french-compact dd-french-short" id="dd-french-definitions" aria-label="Sens français"><p class="dd-french-preview" title="' +
@@ -18073,6 +19003,8 @@ function wireDictionaryPickerOverflowCue() {
 }
 
 function dictionaryEnglishDefinitionsHtml(entry) {
+   if (dictionaryDetailReadings(entry).length > 1) return "";
+   if (dictionarySplitSenses(entry.definitionsFr).length) return "";
    const english = dictionarySplitSenses(entry.definitionsEn).filter((definition) =>
       /\p{L}/u.test(definition),
    );
@@ -18094,10 +19026,23 @@ function dictionaryVariantExplanationHtml(entry) {
 
 function dictionarySourcesHtml(entry) {
    if (!entry.sources || !entry.sources.length) return "";
+   const provenance = Array.from(new Map(
+      [
+         ...(entry.frenchProvenance || []),
+         ...dictionaryDetailReadings(entry).flatMap((reading) => reading.frenchProvenance || []),
+      ].map((item) => [JSON.stringify(item), item]),
+   ).values());
    return (
-      '<details class="dd-sources"><summary>Sources du dictionnaire</summary><span>' +
+      '<details class="dd-sources"><summary>Sources du dictionnaire et provenance</summary><span>' +
       entry.sources.map(esc).join(" · ") +
-      "</span></details>"
+      "</span>" + provenance.map((item) =>
+         '<div class="dd-source-provenance"><b>Révision éditoriale · ' + esc(item.action) +
+         ' · ' + esc(item.verifiedAt) + '</b><p>' + esc(item.justification) + '</p>' +
+         '<ul>' + (item.references || []).map((reference) =>
+            '<li><a href="' + esc(reference.url) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(reference.title) + '</a> · ' + esc(reference.locator) + '</li>'
+         ).join("") + '</ul></div>'
+      ).join("") + "</details>"
    );
 }
 
@@ -18269,7 +19214,7 @@ function openDictionaryAddToWords(entry, options, suppliedState) {
    const frenchBlock = existing
       ? '<section class="dd-personal-definition"><div class="eyebrow">Définition française personnelle</div><p>' + (esc(existing.fr) || '<span class="muted">Non renseignée</span>') + "</p></section>"
       : '<label class="f-lab">Définition française *<input class="search" id="dd-add-fr" value="' + esc(state.french) + '" autocomplete="off"></label>' +
-        (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Traduction française indisponible dans les sources. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
+        (!(entry.definitionsFr || []).length ? '<p class="dd-language-notice">Sens français vérifié indisponible. Saisis uniquement une définition que tu as vérifiée.</p>' : "");
    const selectedHanzi = dictionaryDetailDisplayHanzi(entry);
    const identity = entry.traditional && entry.traditional !== entry.simplified
       ? (dictionaryVariantStatus(entry) !== "modern"
@@ -20234,6 +21179,10 @@ function radicalHistoryPayload(radical) {
       mode: "radical",
       q: srch.q,
       radical: radical || null,
+      visible:
+         radical && radical === radicalBrowser.radical
+            ? radicalBrowser.visible
+            : RADICAL_PAGE_SIZE,
       scrollY: window.scrollY,
    };
 }
@@ -20244,8 +21193,7 @@ function setRadicalPanelVisible(active) {
    const panel = $("dradical-panel");
    if (normal) normal.hidden = active;
    if (panel) panel.hidden = !active;
-   const toggle = $("search-mode-toggle");
-   if (toggle) toggle.setAttribute("aria-pressed", String(active));
+   syncRadicalHeader();
 }
 
 function radicalLoadingHtml(label) {
@@ -20257,10 +21205,10 @@ function radicalLoadingHtml(label) {
 
 async function openRadicalMode(options) {
    const settings = options || {};
-   setRadicalPanelVisible(true);
-   if (!settings.fromHistory) history.pushState(radicalHistoryPayload(null), "");
    radicalBrowser.radical = null;
    radicalBrowser.filter = "";
+   setRadicalPanelVisible(true);
+   if (!settings.fromHistory) history.pushState(radicalHistoryPayload(null), "");
    const panel = $("dradical-panel");
    if (panel) panel.innerHTML = radicalLoadingHtml();
    try {
@@ -20268,12 +21216,85 @@ async function openRadicalMode(options) {
    } catch (error) {
       radicalBrowser.catalog = [];
    }
-   if (radicalBrowser.active && !radicalBrowser.radical) renderRadicalTable();
+   if (radicalBrowser.active && !radicalBrowser.radical) {
+      renderRadicalTable();
+      requestAnimationFrame(() => window.scrollTo(0, settings.fromHistory ? Number(settings.scrollY) || 0 : 0));
+   }
 }
 
 function radicalGroupHeading(strokeCount) {
    if (strokeCount == null) return "Nombre de traits inconnu";
    return strokeCount + " trait" + (strokeCount > 1 ? "s" : "");
+}
+
+function radicalCatalogRow(radical) {
+   const catalog = Array.isArray(radicalBrowser.catalog) ? radicalBrowser.catalog : [];
+   return catalog.find((row) => row.radical === radical) || null;
+}
+
+function radicalLinkedForm(sens) {
+   if (!sens) return null;
+   const match = sens.match(/forme liée(?: simplifiée)? de\s+(\p{Script=Han}+)/iu);
+   return match ? { origin: match[1] } : null;
+}
+
+function radicalContextHeaderHtml(row, resolvedMemberCount) {
+   const radical = row?.radical || radicalBrowser.radical || "";
+   const sens = typeof row?.sens === "string" ? row.sens.trim() : "";
+   const linked = radicalLinkedForm(sens);
+   const memberCount = Number.isInteger(row?.memberCount)
+      ? row.memberCount
+      : Math.max(0, Number(resolvedMemberCount) || 0);
+   const strokeLabel = radicalGroupHeading(row?.strokeCount == null ? null : row.strokeCount);
+   const memberLabel = memberCount + " caractère" + (memberCount > 1 ? "s" : "") + " associé" +
+      (memberCount > 1 ? "s" : "");
+   return (
+      '<section class="radical-context-card" aria-labelledby="radical-context-title">' +
+      '<div class="radical-context-actions"><button type="button" class="radical-context-back" id="radical-back">' +
+      '<span aria-hidden="true">←</span> Toutes les clés</button></div>' +
+      '<div class="radical-context-body"><div class="radical-context-glyph" lang="zh-Hans" role="img" aria-label="Clé ' +
+      esc(radical) + '">' + esc(radical) + '</div><div class="radical-context-copy">' +
+      '<h3 class="eyebrow" id="radical-context-title">Clé sélectionnée</h3>' +
+      '<p class="radical-context-sense' + (sens ? "" : " is-unavailable") + '">' +
+      esc(sens || "Sens français vérifié indisponible") + '</p><div class="radical-context-meta">' +
+      '<span data-radical-strokes>' + esc(strokeLabel) + '</span>' +
+      '<span data-radical-count>' + esc(memberLabel) + '</span>' +
+      (linked ? '<span class="is-linked" data-radical-linked>Forme liée · <b lang="zh-Hans">' + esc(linked.origin) + '</b></span>' : "") +
+      '</div></div></div></section>'
+   );
+}
+
+function syncRadicalHeader(resolvedMemberCount) {
+   const hero = $("search-hero");
+   const pageTitle = $("search-page-title");
+   const description = $("search-hero-description");
+   const toggle = $("search-mode-toggle");
+   const modeIcon = toggle && toggle.querySelector("[data-search-mode-icon]");
+   const modeLabel = toggle && toggle.querySelector("[data-search-mode-label]");
+   const context = $("radical-context-host");
+   if (!hero || !toggle || !context) return;
+   const selected = radicalBrowser.active && !!radicalBrowser.radical;
+   hero.classList.toggle("is-radical-mode", radicalBrowser.active);
+   hero.classList.toggle("has-radical-selection", selected);
+   toggle.setAttribute("aria-pressed", String(radicalBrowser.active));
+   toggle.setAttribute("aria-label", radicalBrowser.active ? "Quitter le mode Clés" : "Parcourir par clés");
+   if (pageTitle) pageTitle.textContent = radicalBrowser.active ? "部 · Clés" : "查 · Rechercher";
+   if (modeIcon) modeIcon.textContent = radicalBrowser.active ? "×" : "部";
+   if (modeLabel) modeLabel.textContent = radicalBrowser.active ? "Quitter les clés" : "Clés";
+   if (description) {
+      description.hidden = selected;
+      description.textContent = radicalBrowser.active
+         ? "Choisis une clé pour explorer les caractères qui l’utilisent."
+         : "Trouve un caractère, un mot, un pinyin ou une traduction.";
+   }
+   context.hidden = !selected;
+   if (!selected) {
+      context.innerHTML = "";
+      return;
+   }
+   context.innerHTML = radicalContextHeaderHtml(radicalCatalogRow(radicalBrowser.radical), resolvedMemberCount);
+   const back = $("radical-back");
+   if (back) back.onclick = () => backToRadicalTable();
 }
 
 function radicalMatchesFilter(row, filter) {
@@ -20336,6 +21357,7 @@ function renderRadicalGroups() {
 function renderRadicalTable() {
    const panel = $("dradical-panel");
    if (!panel) return;
+   syncRadicalHeader();
    const catalog = Array.isArray(radicalBrowser.catalog) ? radicalBrowser.catalog : [];
    if (!catalog.length) {
       panel.innerHTML =
@@ -20385,21 +21407,27 @@ async function resolveRadicalMembers(radical) {
 
 async function selectRadical(radical, options) {
    const settings = options || {};
-   setRadicalPanelVisible(true);
+   if (!settings.fromHistory && history.state?.moStudioSearch && history.state.mode === "radical")
+      history.replaceState(radicalHistoryPayload(history.state.radical), "");
    if (!settings.fromHistory) history.pushState(radicalHistoryPayload(radical), "");
    radicalBrowser.radical = radical;
-   radicalBrowser.visible = RADICAL_PAGE_SIZE;
+   radicalBrowser.members = null;
+   radicalBrowser.visible = Math.max(RADICAL_PAGE_SIZE, Number(settings.visible) || RADICAL_PAGE_SIZE);
+   setRadicalPanelVisible(true);
+   if (!settings.fromHistory) window.scrollTo(0, 0);
    const panel = $("dradical-panel");
    if (panel) panel.innerHTML = radicalLoadingHtml("Chargement des caractères…");
    try {
+      if (!Array.isArray(radicalBrowser.catalog)) radicalBrowser.catalog = await loadRadicalCatalog();
+      syncRadicalHeader();
       radicalBrowser.members = await resolveRadicalMembers(radical);
-      if (radicalBrowser.active && radicalBrowser.radical === radical) renderRadicalMembers();
+      if (radicalBrowser.active && radicalBrowser.radical === radical) {
+         renderRadicalMembers();
+         if (settings.fromHistory)
+            requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, Number(settings.scrollY) || 0)));
+      }
    } catch (error) {
-      if (panel)
-         panel.innerHTML =
-            '<div class="search-empty error" role="alert"><b>Les caractères n’ont pas pu être chargés.</b>' +
-            '<button class="btn" id="radical-retry">Réessayer</button></div>';
-      if ($("radical-retry")) $("radical-retry").onclick = () => selectRadical(radical, { fromHistory: true });
+      renderRadicalMembersError(radical);
    }
 }
 
@@ -20409,10 +21437,21 @@ function openRadicalCharacterDetail(entry) {
    openSearchDictionaryDetail(entry, false);
 }
 
+function renderRadicalMembersError(radical) {
+   const panel = $("dradical-panel");
+   if (!panel) return;
+   panel.innerHTML =
+      '<div class="search-empty error radical-members-error" role="alert"><b>Les caractères n’ont pas pu être chargés.</b>' +
+      '<p>La clé sélectionnée est conservée. Réessaie quand les données locales sont disponibles.</p>' +
+      '<button class="btn" id="radical-retry">Réessayer</button></div>';
+   if ($("radical-retry")) $("radical-retry").onclick = () => selectRadical(radical, { fromHistory: true });
+}
+
 function renderRadicalMembers() {
    const panel = $("dradical-panel");
    if (!panel) return;
    const entries = Array.isArray(radicalBrowser.members) ? radicalBrowser.members : [];
+   syncRadicalHeader(entries.length);
    const visible = entries.slice(0, radicalBrowser.visible);
    const items = visible.map((entry) => ({
       entry,
@@ -20424,15 +21463,14 @@ function renderRadicalMembers() {
       },
    }));
    panel.innerHTML =
-      '<button type="button" class="btn ghost radical-back" id="radical-back">← Retour aux clés</button>' +
-      '<div class="radical-summary search-result-summary"><span>' + entries.length + " caractère" +
-      (entries.length > 1 ? "s" : "") + " pour la clé " + esc(radicalBrowser.radical) + "</span></div>" +
+      '<section class="radical-members" aria-labelledby="radical-results-title">' +
+      '<header class="radical-members-heading"><div><h3 id="radical-results-title">Caractères utilisant cette clé</h3>' +
+      '<p>Triés par nombre de traits croissant.</p></div></header>' +
       (items.map((item, index) => dictionaryResultHtml(item, index)).join("") ||
-         '<div class="search-empty"><p>Aucun caractère.</p></div>') +
+         '<div class="search-empty radical-members-empty"><p>Aucun caractère associé à cette clé.</p></div>') +
       (radicalBrowser.visible < entries.length
          ? '<div class="search-more"><button class="btn ghost" id="radical-show-more">Afficher plus</button></div>'
-         : "");
-   $("radical-back").onclick = () => backToRadicalTable();
+         : "") + '</section>';
    panel.querySelectorAll("[data-result-index]").forEach((button) => {
       button.onclick = () => {
          const entry = visible[Number(button.dataset.resultIndex)];
@@ -20444,6 +21482,8 @@ function renderRadicalMembers() {
    if ($("radical-show-more"))
       $("radical-show-more").onclick = () => {
          radicalBrowser.visible += RADICAL_PAGE_SIZE;
+         if (history.state?.moStudioSearch && history.state.mode === "radical")
+            history.replaceState(radicalHistoryPayload(radicalBrowser.radical), "");
          renderRadicalMembers();
       };
 }
@@ -20460,6 +21500,7 @@ function backToRadicalTable(options) {
       history.back();
    } else {
       radicalBrowser.radical = null;
+      syncRadicalHeader();
       renderRadicalTable();
    }
 }

@@ -14,11 +14,22 @@ from typing import Any
 
 from build_dictionary import (
     SCHEMA_VERSION,
+    _merge_records,
     build_dictionary,
     chunk_key,
     entry_readings,
+    merge_source_ref_dicts,
     search_priority,
+    source_sort,
     stable_word_id,
+    unique_provenance,
+)
+from dictionary_french_editorial import (
+    DEFAULT_EDITORIAL_DECISIONS,
+    DEFAULT_HSK_CLEAN,
+    DEFAULT_HSK_LINKS,
+    DEFAULT_HSK_SOURCE_METADATA,
+    apply_french_editorial_sources,
 )
 from dictionary_common import (
     canonical_numbered_pinyin,
@@ -56,6 +67,7 @@ REQUIRED_WORD_KEYS = {
     "frequencyRank",
     "characters",
     "searchAliases",
+    "senses",
 }
 REQUIRED_CHARACTER_KEYS = {
     "id",
@@ -141,6 +153,18 @@ READING_KEYS = {
     "sourceRefs",
     "frenchProvenance",
     "wordIds",
+    "lexicalEntries",
+}
+LEXICAL_ENTRY_KEYS = {"wordId", "traditional", "simplified"}
+SENSE_KEYS = {
+    "id",
+    "definitionsFr",
+    "definitionsEn",
+    "sources",
+    "sourceRefs",
+    "frenchStatus",
+    "frenchProvenance",
+    "alignment",
 }
 
 
@@ -155,15 +179,73 @@ def validate_french_fields(value: dict[str, Any], entry_id: str) -> None:
         not value["definitionsFr"] or value["frenchStatus"] != "unavailable",
         f"{entry_id}: French definitions have unavailable status",
     )
-    if value["frenchProvenance"]:
-        require(OVERRIDE_SOURCE_ID in value["sources"], f"{entry_id}: override source missing")
+    for provenance in value["frenchProvenance"]:
+        require(isinstance(provenance, dict), f"{entry_id}: invalid French provenance item")
+        source_id = provenance.get("sourceId")
+        if source_id:
+            require(source_id in value["sources"], f"{entry_id}: provenance source missing: {source_id}")
+        elif provenance.get("policyId"):
+            require(OVERRIDE_SOURCE_ID in value["sources"], f"{entry_id}: override source missing")
+
+
+def validate_senses(senses: Any, entry: dict[str, Any]) -> None:
+    entry_id = entry["id"]
+    require(isinstance(senses, list), f"{entry_id}: senses must be a list")
+    if not senses:
+        require(
+            not entry["definitionsFr"] and not entry["definitionsEn"] and entry["frenchStatus"] == "unavailable",
+            f"{entry_id}: only a fully unavailable quarantined entry may have no visible senses",
+        )
+        return
+    sense_ids: set[str] = set()
+    visible_fr: set[str] = set()
+    visible_en: set[str] = set()
+    expected_identity = {
+        "traditional": entry["traditional"],
+        "simplified": entry["simplified"],
+        "pinyinNumbered": entry["pinyin"][0]["numbered"],
+    }
+    for sense in senses:
+        require(isinstance(sense, dict) and set(sense) == SENSE_KEYS, f"{entry_id}: invalid sense schema")
+        require(isinstance(sense["id"], str) and sense["id"] not in sense_ids, f"{entry_id}: duplicate or invalid sense ID")
+        sense_ids.add(sense["id"])
+        for key in ("definitionsFr", "definitionsEn", "sources", "sourceRefs", "frenchProvenance"):
+            require(isinstance(sense[key], list), f"{entry_id}: sense {key} must be a list")
+        require(bool(sense["definitionsFr"] or sense["definitionsEn"]), f"{entry_id}: empty sense")
+        require(isinstance(sense["alignment"], dict) and sense["alignment"].get("lexicalIdentity") == expected_identity, f"{entry_id}: sense lexical identity mismatch")
+        validate_french_fields(sense, f"{entry_id}/{sense['id']}")
+        visible_fr.update(sense["definitionsFr"])
+        visible_en.update(sense["definitionsEn"])
+    require(visible_fr == set(entry["definitionsFr"]), f"{entry_id}: French sense coverage mismatch")
+    require(visible_en == set(entry["definitionsEn"]), f"{entry_id}: English sense coverage mismatch")
 
 
 def validate_reading(reading: Any, entry_id: str) -> None:
     require(isinstance(reading, dict) and set(reading) == READING_KEYS, f"{entry_id}: invalid reading schema")
     validate_pinyin([reading["pinyin"]], entry_id)
-    for key in ("definitionsFr", "definitionsEn", "sources", "sourceRefs", "frenchProvenance", "wordIds"):
+    for key in (
+        "definitionsFr",
+        "definitionsEn",
+        "sources",
+        "sourceRefs",
+        "frenchProvenance",
+        "wordIds",
+        "lexicalEntries",
+    ):
         require(isinstance(reading[key], list), f"{entry_id}: reading {key} must be a list")
+    require(
+        all(
+            isinstance(item, dict)
+            and set(item) == LEXICAL_ENTRY_KEYS
+            and all(isinstance(item[key], str) and item[key] for key in LEXICAL_ENTRY_KEYS)
+            for item in reading["lexicalEntries"]
+        ),
+        f"{entry_id}: invalid reading lexical entries",
+    )
+    require(
+        reading["wordIds"] == [item["wordId"] for item in reading["lexicalEntries"]],
+        f"{entry_id}: lexical entry IDs do not match wordIds",
+    )
     validate_french_fields(reading, entry_id)
 
 
@@ -194,6 +276,7 @@ def validate_entry(entry: dict[str, Any]) -> None:
                 expected_characters.append(character)
         require(entry["characters"] == expected_characters, f"{entry_id}: incorrect character links")
         require(entry["searchAliases"] == [], f"{entry_id}: unverified aliases present")
+        validate_senses(entry["senses"], entry)
     elif entry_type == "character":
         require(entry_id == f"char-{entry['simplified']}", f"{entry_id}: unstable character ID")
         require(entry["simplified"] == entry["traditional"], f"{entry_id}: structural glyph mismatch")
@@ -245,6 +328,10 @@ def validate_dictionary(
     hsk_path: Path,
     determinism_check: bool,
     overrides_path: Path = DEFAULT_OVERRIDES,
+    hsk_clean_path: Path = DEFAULT_HSK_CLEAN,
+    hsk_links_path: Path = DEFAULT_HSK_LINKS,
+    hsk_source_metadata_path: Path = DEFAULT_HSK_SOURCE_METADATA,
+    editorial_decisions_path: Path = DEFAULT_EDITORIAL_DECISIONS,
 ) -> dict[str, Any]:
     started = time.perf_counter()
     manifest = load_json(generated_dir / "manifest.json")
@@ -274,6 +361,135 @@ def validate_dictionary(
     require(len(words) == manifest["counts"]["words"], "Manifest word count mismatch")
     require(len(characters) == manifest["counts"]["characters"], "Manifest character count mismatch")
     require(len(entries) == manifest["counts"]["entries"], "Manifest entry count mismatch")
+
+    words_by_character_and_reading: dict[
+        tuple[str, str], list[dict[str, Any]]
+    ] = defaultdict(list)
+    previous_words_by_character: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    traditional_forms_by_simplified: dict[str, set[str]] = defaultdict(set)
+    for word in words:
+        simplified_chars = han_characters(word["simplified"])
+        traditional_chars = han_characters(word["traditional"])
+        if (
+            len(word["simplified"]) != 1
+            or len(word["traditional"]) != 1
+            or len(simplified_chars) != 1
+            or len(traditional_chars) != 1
+        ):
+            continue
+        simplified = simplified_chars[0]
+        traditional = traditional_chars[0]
+        numbered = word["pinyin"][0]["numbered"]
+        previous_words_by_character[traditional].append(word)
+        words_by_character_and_reading[(traditional, numbered)].append(word)
+        if simplified != traditional:
+            words_by_character_and_reading[(simplified, numbered)].append(word)
+            traditional_forms_by_simplified[simplified].add(traditional)
+
+    characters_by_glyph = {character["simplified"]: character for character in characters}
+    for character in characters:
+        glyph = character["simplified"]
+        expected_by_reading = {
+            numbered: sorted(reading_words, key=lambda item: item["id"])
+            for (display, numbered), reading_words in words_by_character_and_reading.items()
+            if display == glyph
+        }
+        actual_by_reading = {
+            reading["pinyin"]["numbered"]: reading for reading in character["readings"]
+        }
+        require(
+            set(actual_by_reading) == set(expected_by_reading),
+            f"{character['id']}: explicit lexical readings differ",
+        )
+        for numbered, reading_words in expected_by_reading.items():
+            reading = actual_by_reading[numbered]
+            expected_word_ids = [word["id"] for word in reading_words]
+            require(reading["wordIds"] == expected_word_ids, f"{character['id']}: word IDs differ for {numbered}")
+            require(
+                reading["lexicalEntries"]
+                == [
+                    {
+                        "wordId": word["id"],
+                        "traditional": word["traditional"],
+                        "simplified": word["simplified"],
+                    }
+                    for word in reading_words
+                ],
+                f"{character['id']}: lexical forms differ for {numbered}",
+            )
+            for word in reading_words:
+                require(
+                    glyph in {word["traditional"], word["simplified"]},
+                    f"{character['id']}: reverse or inferred attachment from {word['id']}",
+                )
+                require(
+                    len(word["traditional"]) == len(word["simplified"]) == 1,
+                    f"{character['id']}: compound lexical attachment from {word['id']}",
+                )
+                require(
+                    word["pinyin"][0]["numbered"] == numbered,
+                    f"{character['id']}: mixed reading from {word['id']}",
+                )
+            expected_fr = unique_in_order(
+                definition for word in reading_words for definition in word["definitionsFr"]
+            )
+            expected_en = unique_in_order(
+                definition for word in reading_words for definition in word["definitionsEn"]
+            )
+            expected_sources = source_sort(
+                source for word in reading_words for source in word["sources"]
+            )
+            expected_source_refs = merge_source_ref_dicts(
+                reference for word in reading_words for reference in word["sourceRefs"]
+            )
+            expected_provenance = unique_provenance(
+                item for word in reading_words for item in word["frenchProvenance"]
+            )
+            expected_statuses = {word["frenchStatus"] for word in reading_words}
+            expected_status = (
+                "verified" if "verified" in expected_statuses and expected_fr
+                else "source" if expected_fr
+                else "unavailable"
+            )
+            require(reading["definitionsFr"] == expected_fr, f"{character['id']}: French aggregation differs for {numbered}")
+            require(reading["definitionsEn"] == expected_en, f"{character['id']}: English aggregation differs for {numbered}")
+            require(reading["sources"] == expected_sources, f"{character['id']}: sources differ for {numbered}")
+            require(reading["sourceRefs"] == expected_source_refs, f"{character['id']}: source lines differ for {numbered}")
+            require(reading["frenchProvenance"] == expected_provenance, f"{character['id']}: French provenance differs for {numbered}")
+            require(reading["frenchStatus"] == expected_status, f"{character['id']}: French status differs for {numbered}")
+
+    attachment = report["frenchQuality"]["characterAttachment"]
+    french_before = {
+        glyph
+        for glyph, attached_words in previous_words_by_character.items()
+        if any(word["definitionsFr"] for word in attached_words)
+    }
+    french_after = {
+        glyph
+        for glyph, character in characters_by_glyph.items()
+        if any(reading["definitionsFr"] for reading in character["readings"])
+    }
+    recovered = sorted(french_after - french_before)
+    require(attachment["recoveredCharacters"] == recovered, "Recovered-character report differs from generated entries")
+    require(
+        attachment["allCharacters"]
+        == {
+            "total": len(characters),
+            "withFrenchBefore": len(french_before),
+            "withoutFrenchBefore": len(characters) - len(french_before),
+            "recoveredByExplicitSimplifiedTraditionalAttachment": len(recovered),
+            "withFrenchAfter": len(french_after),
+            "remainingWithoutFrench": len(characters) - len(french_after),
+        },
+        "Character French attachment coverage report differs",
+    )
+    expected_collision_count = sum(
+        len(forms) > 1 for forms in traditional_forms_by_simplified.values()
+    )
+    require(
+        attachment["manyToOneCollisions"]["characterCount"] == expected_collision_count,
+        "Many-to-one collision count differs",
+    )
 
     entry_locations = load_json(generated_dir / manifest["entryLocations"])
     require(len(entry_locations) == len(entries), "Entry-location count mismatch")
@@ -381,34 +597,28 @@ def validate_dictionary(
                 )
             ].append(record)
     validate_policy_targets(policy, source_groups)
-    policy_by_key = {lexical_key(entry): entry for entry in policy.entries}
+    expected_words, _expected_policy_stats = _merge_records([cc, cf], policy)
+    expected_editorial = apply_french_editorial_sources(
+        expected_words,
+        hsk_clean_path=hsk_clean_path.resolve(),
+        hsk_links_path=hsk_links_path.resolve(),
+        hsk_source_metadata_path=hsk_source_metadata_path.resolve(),
+        editorial_decisions_path=editorial_decisions_path.resolve(),
+    )
+    expected_words_by_id = {word["id"]: word for word in expected_words}
     for word in words:
-        key = (
-            word["traditional"],
-            word["simplified"],
-            word["pinyin"][0]["numbered"],
-        )
-        source_records = source_groups.get(key)
-        require(bool(source_records), f"No source record for {word['id']}")
-        raw_expected_fr = unique_in_order(
-            definition
-            for record in source_records
-            if record.definition_language == "fr"
-            for definition in record.definitions
-        )
-        expected_fr, expected_status, expected_provenance = apply_french_policy(
-            key, raw_expected_fr, policy_by_key, policy
-        )
-        expected_en = unique_in_order(
-            definition
-            for record in source_records
-            if record.definition_language == "en"
-            for definition in record.definitions
-        )
-        require(word["definitionsFr"] == expected_fr, f"French source fidelity failed: {word['id']}")
-        require(word["definitionsEn"] == expected_en, f"English source fidelity failed: {word['id']}")
-        require(word["frenchStatus"] == expected_status, f"French status policy failed: {word['id']}")
-        require(word["frenchProvenance"] == expected_provenance, f"French provenance policy failed: {word['id']}")
+        expected = expected_words_by_id.get(word["id"])
+        require(expected is not None, f"No source record for {word['id']}")
+        for field in (
+            "definitionsFr",
+            "definitionsEn",
+            "frenchStatus",
+            "frenchProvenance",
+            "sources",
+            "sourceRefs",
+            "senses",
+        ):
+            require(word[field] == expected[field], f"Editorial source fidelity failed for {word['id']}.{field}")
     parsed_by_id = {cc.metadata.source_id: cc, cf.metadata.source_id: cf}
     attribution_by_id = {source["source_id"]: source for source in attribution["sources"]}
     for source_id, parsed in parsed_by_id.items():
@@ -420,10 +630,16 @@ def validate_dictionary(
         attribution["frenchEditorialPolicy"] == policy_metadata(policy),
         "French editorial attribution changed",
     )
+    require(attribution["hskFrenchReuse"] == expected_editorial["sourceAttribution"], "HSK French source attribution changed")
+    require(attribution["frenchEditorialDecisions"] == expected_editorial["editorialPolicy"], "French editorial decision attribution changed")
     require(manifest["frenchEditorialPolicy"] == policy_metadata(policy), "Manifest French policy changed")
+    require(manifest["frenchEditorialDecisions"] == expected_editorial["editorialPolicy"], "Manifest editorial decisions changed")
+    require(manifest["hskFrenchReuse"]["automaticImportCount"] == len(expected_editorial["automaticImports"]), "Manifest HSK import count changed")
     require(manifest["frenchAudit"] == "french-audit-report.json", "French audit path missing")
     require(audit["status"] == "PASS" and not audit["criticalIssues"], "French audit contains critical issues")
     require(audit["policy"] == policy_metadata(policy), "French audit policy metadata changed")
+    require(audit["hskFrenchReuse"]["automaticImports"] == expected_editorial["automaticImports"], "French audit HSK imports changed")
+    require(audit["hskFrenchReuse"]["reviewQueue"] == expected_editorial["reviewQueue"], "French audit HSK review queue changed")
 
     hsk_raw = hsk_path.read_bytes()
     hsk = json.loads(hsk_raw.decode("utf-8"))
@@ -455,7 +671,17 @@ def validate_dictionary(
         with tempfile.TemporaryDirectory(prefix="mo-dictionary-rebuild-") as directory:
             rebuilt = Path(directory) / "dictionary"
             rebuild_started = time.perf_counter()
-            build_dictionary(cc_path, cf_path, hsk_path, rebuilt, overrides_path)
+            build_dictionary(
+                cc_path,
+                cf_path,
+                hsk_path,
+                rebuilt,
+                overrides_path,
+                hsk_clean_path,
+                hsk_links_path,
+                hsk_source_metadata_path,
+                editorial_decisions_path,
+            )
             deterministic_build_duration = time.perf_counter() - rebuild_started
             deterministic = tree_hashes(generated_dir) == tree_hashes(rebuilt)
             require(deterministic, "Rebuilt dictionary files are not byte-for-byte deterministic")
@@ -505,6 +731,10 @@ def main() -> None:
     parser.add_argument("--cf", type=Path, default=Path("data/source/cfdict.u8"))
     parser.add_argument("--hsk", type=Path, default=Path("hsk1.json"))
     parser.add_argument("--fr-overrides", type=Path, default=DEFAULT_OVERRIDES)
+    parser.add_argument("--hsk-clean", type=Path, default=DEFAULT_HSK_CLEAN)
+    parser.add_argument("--hsk-links", type=Path, default=DEFAULT_HSK_LINKS)
+    parser.add_argument("--hsk-source-metadata", type=Path, default=DEFAULT_HSK_SOURCE_METADATA)
+    parser.add_argument("--fr-editorial-decisions", type=Path, default=DEFAULT_EDITORIAL_DECISIONS)
     parser.add_argument("--skip-determinism", action="store_true")
     parser.add_argument("--report-json", type=Path)
     args = parser.parse_args()
@@ -515,6 +745,10 @@ def main() -> None:
         args.hsk,
         not args.skip_determinism,
         args.fr_overrides,
+        args.hsk_clean,
+        args.hsk_links,
+        args.hsk_source_metadata,
+        args.fr_editorial_decisions,
     )
     text = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True)
     if args.report_json:

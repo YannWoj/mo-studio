@@ -25,6 +25,30 @@ const { pathToFileURL } = require("node:url");
    assert.equal(manifest.counts.dictionaryCharactersTotal, 14426);
    assert.equal(manifest.counts.dictionaryCharactersWithoutRadical, 5017);
    assert.equal(manifest.radicals.length, 288);
+   assert.deepEqual(report.frenchAttachment.allDictionaryCharacters, {
+      total: 14426,
+      withFrenchBefore: 8371,
+      withoutFrenchBefore: 6055,
+      recoveredByExplicitSimplifiedTraditionalAttachment: 2503,
+      withFrenchAfter: 10874,
+      remainingWithoutFrench: 3552,
+      manyToOneCollisionCharacters: 351,
+   });
+   assert.deepEqual(report.frenchAttachment.radicalNavigationCharacters, {
+      total: 9409,
+      withFrenchBefore: 6047,
+      withoutFrenchBefore: 3362,
+      recoveredByExplicitSimplifiedTraditionalAttachment: 2430,
+      withFrenchAfter: 8477,
+      remainingWithoutFrench: 932,
+      manyToOneCollisionCharacters: 347,
+   });
+   assert.equal(report.frenchAttachment.recoveredCharacters.length, 2430);
+   assert(report.frenchAttachment.recoveredCharacters.includes("习"));
+   assert(report.frenchAttachment.manyToOneCollisions.some(
+      (mapping) => mapping.simplified === "发" &&
+         mapping.traditionalForms.includes("發") && mapping.traditionalForms.includes("髮"),
+   ));
 
    // The one radical with zero dictionary-linked members is excluded from the picker.
    assert.deepEqual(report.coverage.excludedRadicals, ["尣"]);

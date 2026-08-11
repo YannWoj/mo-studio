@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "sourceSetId": "mo-hsk-2026-local-pdfs-v1",
+  "reusePolicy": {
+    "automaticFrenchLanguages": [
+      "fr"
+    ],
+    "basis": "Existing project material whose attributed in-project reuse was requested by the project owner.",
+    "externalRedistributionNotice": "No open redistribution licence was found in the documents or on the publisher pages. Obtain permission before redistributing extracted translations outside this project."
+  },
+  "sources": [
+    {
+      "sourceId": "HSK3-CHINESIMPLE-FR-L1-2026",
+      "hskLevel": 1,
+      "path": "data/source/hsk/new_hsk1.pdf",
+      "sha256": "b055296624d56424302c16a2acc1850cd318303386f9e7ef1c24d3b64e6517f3",
+      "pageCount": 19,
+      "title": "Le nouveau HSK 1 - Liste de vocabulaire 3.0 (2026)",
+      "publisher": "Chinesimple par Khanji School",
+      "publisherUrl": "https://khanjischool.com/fr/",
+      "translationLanguage": "fr",
+      "rightsStatement": "Chinesimple par Khanji School - Tous droits réservés",
+      "license": "NOASSERTION",
+      "reuseStatus": "attributed-in-project-only"
+    },
+    {
+      "sourceId": "HSK3-MANDARINZEST-EN-L2-2026",
+      "hskLevel": 2,
+      "path": "data/source/hsk/new_hsk2.pdf",
+      "sha256": "93174af3e2b3f72ee49c4baf544eddcf71c4f8b82b2492837754b44eaf718c4a",
+      "pageCount": 11,
+      "title": "New HSK 2 Vocab List",
+      "publisher": "Mandarin Zest",
+      "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+      "translationLanguage": "en",
+      "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+      "license": "NOASSERTION",
+      "reuseStatus": "reference-only-not-french"
+    },
+    {
+      "sourceId": "HSK3-MANDARINZEST-EN-L3-2026",
+      "hskLevel": 3,
+      "path": "data/source/hsk/new_hsk3.pdf",
+      "sha256": "f8bb5811cd1512cb445cb37553b0235703ca26d80f5d95b3bdefb4121aaaf5b1",
+      "pageCount": 25,
+      "title": "New HSK 3 Vocab List",
+      "publisher": "Mandarin Zest",
+      "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+      "translationLanguage": "en",
+      "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+      "license": "NOASSERTION",
+      "reuseStatus": "reference-only-not-french"
+    },
+    {
+      "sourceId": "HSK3-MANDARINZEST-EN-L4-2026",
+      "hskLevel": 4,
+      "path": "data/source/hsk/new_hsk4.pdf",
+      "sha256": "b99e6866ec2d86609b349ede5cb35dbd0e3ccb971bd0dce8ed2071139de92c7e",
+      "pageCount": 54,
+      "title": "New HSK 4 Vocab List",
+      "publisher": "Mandarin Zest",
+      "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+      "translationLanguage": "en",
+      "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+      "license": "NOASSERTION",
+      "reuseStatus": "reference-only-not-french"
+    },
+    {
+      "sourceId": "HSK3-MANDARINZEST-EN-L5-2026",
+      "hskLevel": 5,
+      "path": "data/source/hsk/new_hsk5.pdf",
+      "sha256": "c5674d729a013c624f67213cc31fc065cea30019f426b79fe51eb2b1e7bcdeb4",
+      "pageCount": 82,
+      "title": "New HSK 5 Vocab List",
+      "publisher": "Mandarin Zest",
+      "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+      "translationLanguage": "en",
+      "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+      "license": "NOASSERTION",
+      "reuseStatus": "reference-only-not-french"
+    },
+    {
+      "sourceId": "HSK3-MANDARINZEST-EN-L6-2026",
+      "hskLevel": 6,
+      "path": "data/source/hsk/new_hsk6.pdf",
+      "sha256": "e8145f1995be3b29716fc551af5dd9306f38b3eebcfa8b0d63fabc7fc7aad825",
+      "pageCount": 87,
+      "title": "New HSK 6 Vocab List",
+      "publisher": "Mandarin Zest",
+      "publisherUrl": "https://www.mandarinzest.com/the-new-hsk-vocabulary-lists-2026",
+      "translationLanguage": "en",
+      "rightsStatement": "Copyright Mandarin Zest; no open licence stated in the document or publisher page",
+      "license": "NOASSERTION",
+      "reuseStatus": "reference-only-not-french"
+    }
+  ]
+}

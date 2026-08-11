@@ -12,6 +12,7 @@ const readJson = (file) => JSON.parse(fs.readFileSync(file, "utf8"));
 const clean = readJson(path.join(hskRoot, "hsk-clean.json"));
 const links = readJson(path.join(hskRoot, "hsk-dictionary-links.json"));
 const manifest = readJson(path.join(runtimeRoot, "manifest.json"));
+const dictionaryManifest = readJson(path.join(projectRoot, "data", "generated", "dictionary", "manifest.json"));
 const search = readJson(path.join(runtimeRoot, "search-index.json"));
 
 assert.equal(clean.length, 5399);
@@ -19,6 +20,8 @@ assert.equal(links.links.length, clean.length);
 assert.equal(manifest.format, "mo-studio-hsk-runtime");
 assert.equal(manifest.schemaVersion, 1);
 assert.equal(manifest.totalEntries, clean.length);
+assert.equal(links.dictionaryBuildId, dictionaryManifest.buildId);
+assert.equal(manifest.dictionaryBuildId, dictionaryManifest.buildId);
 assert.deepEqual(
    Object.values(manifest.countsByFirstHskLevel).map(Number),
    [301, 200, 499, 1000, 1600, 1799],

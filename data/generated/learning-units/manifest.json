@@ -2,12 +2,12 @@
   "format": "mo-studio-learning-units",
   "schemaVersion": 1,
   "builderVersion": "1.1.0",
-  "buildId": "3d458439fb3f55bf9357636b8b98be60f8cc5dc2192338b34eedfcfd38fdbff9",
+  "buildId": "9ea367ba953fd9df296f192268f636d42c38cd8ec8564514f62bc9a1506250c5",
   "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/ and data/generated/character-radicals/; character and word glosses/pinyin derived from CC-CEDICT (CC BY-SA 4.0) and CFDICT (CC BY-SA 3.0) via data/generated/dictionary/",
   "derivedFrom": {
-    "characterCompositionBuildId": "1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4",
-    "characterRadicalsBuildId": "c37b6d73d04bfddec12ddf6062d006cdb5b9b9ef4e601144d19233d104e8f56a",
-    "dictionaryBuildId": "4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813",
+    "characterCompositionBuildId": "86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3",
+    "characterRadicalsBuildId": "edc1301f17b6a7d7fdff2c322081e26154e466b67b5545f3ab7a99a767b208a6",
+    "dictionaryBuildId": "2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10",
     "hsk1RootSha256": "80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419",
     "personalLibrary": {
       "found": false,
@@ -107,8 +107,8 @@
     "unitsIndex": {
       "path": "units-index.json",
       "count": 1793,
-      "bytes": 433649,
-      "sha256": "b5fcfb91bce06c74abd77e842bfb8f491a4fee47f823fbd25204ad2f3eb34fda"
+      "bytes": 433795,
+      "sha256": "c2ad7fc3f13543ff49148b3d7c317cf44fefd0b6019103a0d0ea0cb127aeabae"
     },
     "utilityScores": {
       "path": "utility-scores.json",
@@ -117,8 +117,8 @@
     },
     "phoneticFamilies": {
       "path": "phonetic-families.json",
-      "bytes": 481531,
-      "sha256": "f6acd537f49332e24eb2be293f040a79270d970dc40ad3f08bb76cd175e5e329"
+      "bytes": 482081,
+      "sha256": "7ec7453681637713bf45d9d019b0c0ef149efbdeb24af248011612867f7eb47b"
     },
     "graph": {
       "path": "graph.json",
@@ -133,246 +133,246 @@
           "key": "000",
           "path": "chunks/000.json",
           "count": 30,
-          "bytes": 74812,
-          "sha256": "d9f8f73115edcce88dddebd3af04e12216f2403218c95499916acafc7879ac9c"
+          "bytes": 74787,
+          "sha256": "92510b00dbf3691c9a4339e116240fc1ca71a75c10345eb634d5d1e0c2c9543f"
         },
         {
           "key": "001",
           "path": "chunks/001.json",
           "count": 30,
-          "bytes": 72441,
-          "sha256": "aa793f1cdad2b6566939e2d6403932bdb184ff184038db14fc259a3e324a0731"
+          "bytes": 72546,
+          "sha256": "f8eb3dccc4859c1c161003a5c144c26d06073f26efbacdf168049172bcb11adc"
         },
         {
           "key": "002",
           "path": "chunks/002.json",
           "count": 30,
-          "bytes": 74755,
-          "sha256": "2a626c9b14bb6bfce6b1d44881b3a5a4f5890211ea0a97534e46419452a650f4"
+          "bytes": 74844,
+          "sha256": "c651e37c2a45e246d5f341cd3662266338e290252db8dd6844ffa0182ef6d044"
         },
         {
           "key": "003",
           "path": "chunks/003.json",
           "count": 30,
-          "bytes": 75900,
-          "sha256": "e5782238ea3719cac769ec0bc38b22faa98801be1bf19c0e0bcfa01aaf32b978"
+          "bytes": 75998,
+          "sha256": "6bff17d34543c89cd855b97c4410ca799aa2969154571aec8e0ec80e44b1ef84"
         },
         {
           "key": "004",
           "path": "chunks/004.json",
           "count": 30,
-          "bytes": 75603,
-          "sha256": "5e9494e134e8cf241e861f3ba20761b97e0f263a512da4ced99979cc515347b9"
+          "bytes": 75601,
+          "sha256": "c0b3ca445e3aed299072a1b8dcbfc6604ca13251ab92423cf1f98bd6ea1c6b10"
         },
         {
           "key": "005",
           "path": "chunks/005.json",
           "count": 30,
-          "bytes": 75243,
-          "sha256": "a5c3ae5ce19573a70ab642c2b57424491f0dfa6c069563f25a2b5f76e7c8be45"
+          "bytes": 75250,
+          "sha256": "bac5a9ed62d1323ff2be490e5ad27050965426e06dc9d0c8f2bde1446754a4aa"
         },
         {
           "key": "006",
           "path": "chunks/006.json",
           "count": 30,
-          "bytes": 76616,
-          "sha256": "2e27609306b011b9658bc4393eb55330d1e71b2f181d8c7102f07a556c4c2342"
+          "bytes": 76625,
+          "sha256": "8928a5dd85fd795541b5a4af69417d262dcd17ea463841f832348e081543f291"
         },
         {
           "key": "007",
           "path": "chunks/007.json",
           "count": 30,
-          "bytes": 75390,
-          "sha256": "75541603e4a631415b01da391568224ac630a097fe45fd67013032858374ead9"
+          "bytes": 75378,
+          "sha256": "555c9cb3002b6f7af214a35bbce4eff16dff80fc8e07ca96d19f877accfe2df6"
         },
         {
           "key": "008",
           "path": "chunks/008.json",
           "count": 30,
-          "bytes": 76034,
-          "sha256": "9bab7bb57387b3554e1492ef16e1c50e2317fd38779347d507a04bb73f0572a5"
+          "bytes": 76030,
+          "sha256": "5d1aa11ab00c833a223de4aeb98f544dfb65feffe01a9ccbb2a8c1840c81179e"
         },
         {
           "key": "009",
           "path": "chunks/009.json",
           "count": 30,
-          "bytes": 67870,
-          "sha256": "e52a42329c9f821c4edf12355da9af9892f46ebbbef4ef67efedd2a0e7eb5525"
+          "bytes": 67884,
+          "sha256": "185d87a2b3b4f53a21fc8dcd3c32eb1bea2070f94f82fb71eaed30278f04ab0f"
         },
         {
           "key": "010",
           "path": "chunks/010.json",
           "count": 30,
-          "bytes": 67500,
-          "sha256": "0120257e27b43b69182c6ee95d37e4c43bd575a5ec7d705ea3cbbef24368d104"
+          "bytes": 67572,
+          "sha256": "df70042ef09582270d6760b7e0d7db44eaaf4df4a5ee0185eb2be09e7a1a55cf"
         },
         {
           "key": "011",
           "path": "chunks/011.json",
           "count": 30,
-          "bytes": 66595,
-          "sha256": "ade2f10461516b79e159324458052b7d14763ed4cead50ac9bbd7b306c7b664e"
+          "bytes": 66628,
+          "sha256": "454bd7fe1ae22fdd449a35ab919b8a994f17e231df0ffe20b3161925026953cb"
         },
         {
           "key": "012",
           "path": "chunks/012.json",
           "count": 30,
           "bytes": 66793,
-          "sha256": "554af4928d91fab539c95f5e9c2ac008aaee41c65bef6ad156a5749df8338f8d"
+          "sha256": "c3024f9d365b05cdd39726055c95d1eb6a755a3a51d7ba24e674deaca15a33e7"
         },
         {
           "key": "013",
           "path": "chunks/013.json",
           "count": 30,
-          "bytes": 66999,
-          "sha256": "726ef62fab09beacac51b97b4832be2acef60e5753cd06a63dde6746db39d37d"
+          "bytes": 67052,
+          "sha256": "f2d2ffacfbe0d2cb3012ddb4868e8aa9c28e73313df779cb75eedafe98d211d1"
         },
         {
           "key": "014",
           "path": "chunks/014.json",
           "count": 30,
-          "bytes": 67578,
-          "sha256": "e352860cd7c8361dc689d9d545666074c6a40cc278d3434754081a636b785c4e"
+          "bytes": 67589,
+          "sha256": "9df24d9601cff8fb8652ef1eee911d9b86901bbc7438ce4b0097347e813f565c"
         },
         {
           "key": "015",
           "path": "chunks/015.json",
           "count": 30,
-          "bytes": 66187,
-          "sha256": "598ba7743f17f4f6bead1bbe60ded9fe848c6ac1a7e53473137eba6c8717d6f5"
+          "bytes": 66186,
+          "sha256": "268241bb2fe64e2914882febd85b84f4b6175e6b773193281c8103d8a06f5af8"
         },
         {
           "key": "016",
           "path": "chunks/016.json",
           "count": 30,
-          "bytes": 65700,
-          "sha256": "e6aa95ecc1ffe4111c6fd56faf7ecabe30ecae9237ac3b1aa9a870d2cdc09632"
+          "bytes": 65698,
+          "sha256": "45b0a2673fdff7fb4f8e00e529fe342ad693115a2b76cbcb5ccfb34e6e28ed3f"
         },
         {
           "key": "017",
           "path": "chunks/017.json",
           "count": 30,
           "bytes": 62717,
-          "sha256": "66969354fae985504f803bcf439dbdd4bb6e2993870dd29df8985eb047c8f01f"
+          "sha256": "addc9aeb27169a35e52bfee6c9fbfd63a82205e5c40b736b1b972e2d3537d368"
         },
         {
           "key": "018",
           "path": "chunks/018.json",
           "count": 30,
-          "bytes": 56708,
-          "sha256": "9073dac5cb57c70478c22bda1a6b02b7f835ec163519bca6f715962ec6985a4f"
+          "bytes": 56711,
+          "sha256": "ab1b84a2eafd586670698508d4069168f59a51613692a540c6cbe8d929d0118f"
         },
         {
           "key": "019",
           "path": "chunks/019.json",
           "count": 30,
           "bytes": 49466,
-          "sha256": "7815743021f4a449b329321a0f58ff9f140fb6d3b7ed6a1f10d178005a0bb47c"
+          "sha256": "054e3eeb2571b5465accb68129c3af6b8f9795aa8d494efb9aa13b332cd1a944"
         },
         {
           "key": "020",
           "path": "chunks/020.json",
           "count": 30,
-          "bytes": 57403,
-          "sha256": "16889a7664b6ac949bb1e7c7f8531e85d9f43480bf08aa332dd56f8737b487eb"
+          "bytes": 57658,
+          "sha256": "d80a2ebf309a462e8e1b64f9ec96e4aa440f5202bd2063b82d97da3f1adfb172"
         },
         {
           "key": "021",
           "path": "chunks/021.json",
           "count": 30,
-          "bytes": 59225,
-          "sha256": "c5b1fc9a794c58d828ba73a7fbb9ac31f40187a323c39905d7854b5a865ecdff"
+          "bytes": 59247,
+          "sha256": "2f1da9f46967d1fbce0f7cce805834453c785d735fa023f8a0ff775575fe25f2"
         },
         {
           "key": "022",
           "path": "chunks/022.json",
           "count": 30,
-          "bytes": 57895,
-          "sha256": "ebf3225080f47400f90e4b2caa9715867d5ea20b94f0d068a42ef45f0b8d6d25"
+          "bytes": 57863,
+          "sha256": "b51d8af1463e7c661da886fbe6720478b3780f5af807e4025027bca1be6f70f9"
         },
         {
           "key": "023",
           "path": "chunks/023.json",
           "count": 30,
-          "bytes": 57697,
-          "sha256": "5e2bb55fc0a55f934cbcdbe34e55d1c1e571f377984462a4b5e003ddeac89082"
+          "bytes": 57719,
+          "sha256": "7a5454c7494724522c63eda32cd31f1550ddb3feae35de6bdb757b35e4add9c9"
         },
         {
           "key": "024",
           "path": "chunks/024.json",
           "count": 30,
-          "bytes": 57973,
-          "sha256": "28205bdc1fa097a8f5dd15202c4a4a08cc75b22d35c9fec69d75debc984e78fc"
+          "bytes": 57987,
+          "sha256": "a4a8d933a1d9b7de0fb1e7f912a7a33320a8293e89fb85122cd039536cc5d515"
         },
         {
           "key": "025",
           "path": "chunks/025.json",
           "count": 30,
-          "bytes": 58106,
-          "sha256": "a694f72fe695db71e967c23b5e527c9f33e98513837cad5f5b513c657b36071b"
+          "bytes": 58098,
+          "sha256": "5717043a3cb15dd4fbea23e615f23ddf1cee1994fa018d6851bdb54127a50684"
         },
         {
           "key": "026",
           "path": "chunks/026.json",
           "count": 30,
-          "bytes": 54974,
-          "sha256": "418e1b0459801dc8512dbee14813add5f8bc72548d70cb5626b3a45460dbc8d4"
+          "bytes": 54975,
+          "sha256": "8f3bfbe8a6c03281f82237f932484a1b585bb1735734696d69c48d318a872e7f"
         },
         {
           "key": "027",
           "path": "chunks/027.json",
           "count": 30,
-          "bytes": 55059,
-          "sha256": "502ae4d4e788559f7e551785f9c237a70046fed1aa266516a5d803f1d87f1d31"
+          "bytes": 55054,
+          "sha256": "6ad29b173ba368f12d496e0ade202baa62084cf7176ea2a5a8860de8201cc3cb"
         },
         {
           "key": "028",
           "path": "chunks/028.json",
           "count": 30,
-          "bytes": 55637,
-          "sha256": "2cd7daae7adf4fb2cf5d53a7391e55746d384902b7a630477168e9f3685969b2"
+          "bytes": 55702,
+          "sha256": "810cb0a76f810018a3ecf4f5ef96ad161702761bb587ec2d370b1eb5599397a2"
         },
         {
           "key": "029",
           "path": "chunks/029.json",
           "count": 30,
-          "bytes": 50453,
-          "sha256": "5e36a797950c4a4f444e8fb5c8d34be3915475659d162d16fc5cc09cdea3c13c"
+          "bytes": 50454,
+          "sha256": "6671525c85c96048065ebede30eb3e6f93771577f5c0cddb720301eef4857866"
         },
         {
           "key": "030",
           "path": "chunks/030.json",
           "count": 30,
           "bytes": 48665,
-          "sha256": "5ba8338177f2bf2fdb645b57ea209266f400f445677ca1d81a488e726c7df77e"
+          "sha256": "71a0ace43a1905c61c50d1f590e3e54dc03b0b5e5c9b3e577a7ddbadeafecc06"
         },
         {
           "key": "031",
           "path": "chunks/031.json",
           "count": 30,
-          "bytes": 49135,
-          "sha256": "39d426fafa0b76a794610c1c10a53c85c95edb9442399be068f7731267ae5880"
+          "bytes": 49139,
+          "sha256": "26875ba62e4ca7aadb629295dea5d9b15f5b263521946d857efea15d1ec7c11c"
         },
         {
           "key": "032",
           "path": "chunks/032.json",
           "count": 30,
-          "bytes": 49972,
-          "sha256": "56cd5b446f80a31258be534cc3a8e230b9ec52a30a18bbc9df5c732b6679e7e1"
+          "bytes": 49974,
+          "sha256": "535d1e572cbe4d620b449e138a6b27cfef2ee5dc8d527058dbb5062abcc5deb1"
         },
         {
           "key": "033",
           "path": "chunks/033.json",
           "count": 30,
-          "bytes": 49845,
-          "sha256": "b070caccfe12a693933cd236d78ad3e61aa43a2abdfe847f0f7df56667e8128a"
+          "bytes": 49823,
+          "sha256": "a08de91697906a09154303ea75f0dfaaad7f843744ce26e1280aa70a16f9d481"
         },
         {
           "key": "034",
           "path": "chunks/034.json",
           "count": 30,
-          "bytes": 49583,
-          "sha256": "e6b7946e8a64cf34ba80a93b411f95115a0d542918094ae2291fb1c88692105a"
+          "bytes": 49619,
+          "sha256": "2c110c79311987010cbd32ce4a412f9a9701408f08035308b4145861dcd01884"
         },
         {
           "key": "035",
@@ -385,43 +385,43 @@
           "key": "036",
           "path": "chunks/036.json",
           "count": 30,
-          "bytes": 47374,
-          "sha256": "ddde53a5e81771bb420c7acef10bb3ba0f6d79f098c9883b9dad77d9142d2b65"
+          "bytes": 47381,
+          "sha256": "e71570bcfeeeeb9cdd9f6aaac63d2843523998bf8d5cb060101885d71e5e5861"
         },
         {
           "key": "037",
           "path": "chunks/037.json",
           "count": 30,
           "bytes": 47688,
-          "sha256": "84f4472669a496243ba5f79687e33d12ad0311540f58dd1ea2d2405140640a7e"
+          "sha256": "593433754ef8ef4855359ca84b6eea65b2a1bdf63bfb3781876ca8988a2c4d2b"
         },
         {
           "key": "038",
           "path": "chunks/038.json",
           "count": 30,
-          "bytes": 43463,
-          "sha256": "997300a629c0638f41d6c2a2f80bb833d694e7c0d925f32128aff10ce7d21d14"
+          "bytes": 43468,
+          "sha256": "39a2e6538890bc1a39a0627ff46d97ea57c0b00857b31d6f36dbfafa97f9a59a"
         },
         {
           "key": "039",
           "path": "chunks/039.json",
           "count": 30,
-          "bytes": 39194,
-          "sha256": "5430f09de05d07e02e6dbbe410db32585614c2d3dca0560463610448ecf3a275"
+          "bytes": 39208,
+          "sha256": "f640a24ac0e267184546562dfc40d0504652cc483710445ea4a5145319f96b9d"
         },
         {
           "key": "040",
           "path": "chunks/040.json",
           "count": 30,
-          "bytes": 41012,
-          "sha256": "6f65e1ac5e334590acc5187270a81f11c72db492c3035785713b1d8e1c3286ad"
+          "bytes": 41108,
+          "sha256": "ac032ec7ab656c3b8b90977cbbb21255f2559337ce1b5a971a366e840d58fe40"
         },
         {
           "key": "041",
           "path": "chunks/041.json",
           "count": 30,
-          "bytes": 40553,
-          "sha256": "785ec0923e6eabdd8f6413e8514abba286b90c1155ffb54d342392b36b0c151e"
+          "bytes": 40551,
+          "sha256": "c70a18fa0aa6f04e15f0654306ab8f816bf371175f586c981d94b3c4bb271f96"
         },
         {
           "key": "042",
@@ -434,36 +434,36 @@
           "key": "043",
           "path": "chunks/043.json",
           "count": 30,
-          "bytes": 40441,
-          "sha256": "d5e01b72c8212c7a692efa29b04171c5371b3199b234de89fc71e464afddb6ca"
+          "bytes": 40500,
+          "sha256": "2e22d87993893f11e58c81f5795bce1b384f5825b526ca36f160dbe2b7d1b044"
         },
         {
           "key": "044",
           "path": "chunks/044.json",
           "count": 30,
-          "bytes": 38022,
-          "sha256": "e4b87c435f70eef6c675d0318018074844aa0e2e6ef5df9f0c2a655bb2982dd1"
+          "bytes": 38012,
+          "sha256": "98425c589558a627d459f116fc1b40097fbfda9e71019cd790deb6714b68ba0d"
         },
         {
           "key": "045",
           "path": "chunks/045.json",
           "count": 30,
-          "bytes": 31863,
-          "sha256": "c442933637e64d25817d7a887139ca478e229689a07a5f0b57ab17864fa8ef5c"
+          "bytes": 31865,
+          "sha256": "c6f198fd3b17bdddd9adcf923094393faaf024b9aa5108cd2f23cc3744d98d11"
         },
         {
           "key": "046",
           "path": "chunks/046.json",
           "count": 30,
-          "bytes": 31914,
-          "sha256": "3fb7871894a349baf49007d41ecaf7c4c1f9bb3c3e8756c7988bc92d2b8507d1"
+          "bytes": 31913,
+          "sha256": "a10bd4fd01126d44539cae9b7218b31f6396edbf4c497172456a0f960fb6002c"
         },
         {
           "key": "047",
           "path": "chunks/047.json",
           "count": 30,
-          "bytes": 32154,
-          "sha256": "4174dc55bf60868df372486ea3b131cbe4ac5fb519c8d97aea70695f32cc0cd0"
+          "bytes": 32153,
+          "sha256": "afee88a02f8e9c3fb7181ba4c9b1badae5f782265728fbe1dd5a3adbedc17005"
         },
         {
           "key": "048",
@@ -476,8 +476,8 @@
           "key": "049",
           "path": "chunks/049.json",
           "count": 30,
-          "bytes": 31876,
-          "sha256": "f67eaee9bbd676e51bf74c72fd865f209ce4337e3377a43425f9d0ba00b1c8f1"
+          "bytes": 31928,
+          "sha256": "80c6b4b1328f7a799b77890368cb1697a6965ccb1dbccf598b9d3daf83aa1b3c"
         },
         {
           "key": "050",
@@ -490,8 +490,8 @@
           "key": "051",
           "path": "chunks/051.json",
           "count": 30,
-          "bytes": 26376,
-          "sha256": "dd1d1343bec366c294681636bd0cec6bca735f07a3dc5f6c593feb8ece4634ce"
+          "bytes": 26406,
+          "sha256": "718dedd35da9fa73a33cfd9e074388dbc1261a14d6eea4cdb6835cd14c458d06"
         },
         {
           "key": "052",
@@ -512,14 +512,14 @@
           "path": "chunks/054.json",
           "count": 30,
           "bytes": 23912,
-          "sha256": "e5bd0b2bcab12cc3566232189555d4222d259fc17bce745e914ec615530f7b6e"
+          "sha256": "8bdbcf0dee0357c7a8d403b36d8fae06a472efc058cb15685e7d5a0a47641d9b"
         },
         {
           "key": "055",
           "path": "chunks/055.json",
           "count": 30,
-          "bytes": 23861,
-          "sha256": "0c047e08ee1e7b4007d5c1aa5cc89d5cdb11f1e8e8107c55d847ec8c50f52bfb"
+          "bytes": 23878,
+          "sha256": "3068775a557d33c383438172085b00d3d0d46238f7dd90c2b952e059c8996384"
         },
         {
           "key": "056",
@@ -532,22 +532,22 @@
           "key": "057",
           "path": "chunks/057.json",
           "count": 30,
-          "bytes": 23859,
-          "sha256": "e2e541ccd2b82415860ad0be2a32704fe8f49786088fd1f9e62bf911fc38ab2e"
+          "bytes": 23887,
+          "sha256": "2d0320f0685f9a629c5cf0f0803406c2a4b3de8390cb440ba37139846fae97d3"
         },
         {
           "key": "058",
           "path": "chunks/058.json",
           "count": 30,
-          "bytes": 22912,
-          "sha256": "2d80a4029ef72e0816a7ae4ca698fcafaf7445c1be7d16a179466fbe69324364"
+          "bytes": 22916,
+          "sha256": "86e21d564ef6f61b61efed16e30dc66a6b0779e376f25ea71351fec4814ae4b1"
         },
         {
           "key": "059",
           "path": "chunks/059.json",
           "count": 23,
-          "bytes": 15246,
-          "sha256": "a7e6f439c846da8a658d119f4cb6b8ba30094d1f3caab2f4e595d243f5e6c745"
+          "bytes": 15258,
+          "sha256": "d8ed17f4472da65c647ea6b82f36733202ef82bea94ba50fc6438c79f0102685"
         }
       ]
     }

@@ -1,12 +1,12 @@
 {
   "format": "mo-studio-character-radicals",
   "schemaVersion": 1,
-  "builderVersion": "1.1.0",
-  "buildId": "c37b6d73d04bfddec12ddf6062d006cdb5b9b9ef4e601144d19233d104e8f56a",
+  "builderVersion": "1.2.0",
+  "buildId": "edc1301f17b6a7d7fdff2c322081e26154e466b67b5545f3ab7a99a767b208a6",
   "license": "Derived from Make Me a Hanzi (GNU Lesser General Public License v3 or later) via data/generated/character-composition/",
   "derivedFrom": {
-    "characterCompositionBuildId": "1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4",
-    "dictionaryBuildId": "4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813",
+    "characterCompositionBuildId": "86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3",
+    "dictionaryBuildId": "2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10",
     "hanziWriterVersion": "2.0.1"
   },
   "componentLabelsFr": {
@@ -226,7 +226,7 @@
     {
       "radical": "几",
       "strokeCount": 2,
-      "sens": "petite table",
+      "sens": "presque",
       "memberCount": 9,
       "path": "chunks/几.json",
       "bytes": 324,
@@ -622,7 +622,7 @@
     {
       "radical": "干",
       "strokeCount": 3,
-      "sens": "bouclier",
+      "sens": "sec",
       "memberCount": 5,
       "path": "chunks/干.json",
       "bytes": 194,

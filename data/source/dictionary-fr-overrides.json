@@ -155,6 +155,171 @@
         }
       ],
       "verifiedAt": "2026-08-10"
+    },
+    {
+      "traditional": "衝",
+      "simplified": "冲",
+      "pinyinNumbered": "chong1",
+      "action": "replace",
+      "definitionsFr": [
+        "voie de passage ; carrefour",
+        "se précipiter ; foncer",
+        "heurter ; entrer en collision",
+        "attaquer ; charger",
+        "heurter ou offenser par ses paroles ou son comportement"
+      ],
+      "justification": "La ligne CFDICT de 衝/冲 mélange des sens de 沖 (ajout d’eau, infusion) et de 衝 (voie de passage, mouvement rapide, choc ou offense). La définition vérifiée de 衝 est remplacée sens par sens ; les emplois hydrauliques sont rétablis séparément sur 沖/冲.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 衝",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8697&la=0&powerMode=0",
+          "locator": "衝 chōng : 交通要道；快速移動；突擊、衝擊；頂撞、冒犯"
+        },
+        {
+          "title": "Hàn Diǎn — 衝",
+          "url": "https://zdic.net/hant/%E8%A1%9D",
+          "locator": "衝 chōng : 通途、交道；碰撞、突擊；衝撞、觸犯"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "衝",
+      "simplified": "冲",
+      "pinyinNumbered": "chong4",
+      "action": "replace",
+      "definitionsFr": [
+        "vers ; en direction de",
+        "à cause de ; eu égard à",
+        "fort ; puissant ; vigoureux",
+        "âcre ; piquant (odeur ou goût)",
+        "brusque ; agressif (propos ou comportement)"
+      ],
+      "justification": "La lecture chòng doit rester distincte de chōng. Les sources lui attribuent la direction, la considération, l’intensité, une odeur ou un goût fort et un comportement brusque ; « donner un coup de poing » n’est pas attesté pour cette identité.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 衝",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8697&la=0&powerMode=0",
+          "locator": "衝 chòng : 因、看；向、對；氣味強烈；幹勁足、力量大；激烈、無禮"
+        },
+        {
+          "title": "Hàn Diǎn — 衝",
+          "url": "https://zdic.net/hant/%E8%A1%9D",
+          "locator": "衝 chòng : 向著、對著；力量充足或猛烈；表示憑藉、根據"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "冼",
+      "simplified": "冼",
+      "pinyinNumbered": "xian3",
+      "action": "replace",
+      "definitionsFr": [
+        "nom de famille Xian"
+      ],
+      "justification": "La glose CFDICT est juste mais trop imprécise. Pour la lecture xiǎn, les deux sources identifient explicitement le nom de famille Xian. Les lectures historiques liées au froid ou à 洗 ne sont pas importées dans cette identité xiǎn.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — Dictionnaire des variantes, 冼",
+          "url": "https://dict.variants.moe.edu.tw/dictView.jsp?ID=54710",
+          "locator": "冼 xiǎn : 姓"
+        },
+        {
+          "title": "Hàn Diǎn — 冼",
+          "url": "https://www.zdic.net/hans/%E5%86%BC",
+          "locator": "冼 Xiǎn : 姓氏"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "凇",
+      "simplified": "凇",
+      "pinyinNumbered": "song1",
+      "action": "replace",
+      "definitionsFr": [
+        "givre",
+        "dépôt de cristaux de glace formé lorsque des gouttelettes d’eau en surfusion gèlent sur une surface, notamment dans le brouillard givrant"
+      ],
+      "quarantinedDefinitionsFr": [
+        "stalactite"
+      ],
+      "justification": "« Stalactite » ne décrit pas 凇. Les dictionnaires sinophones décrivent une formation due à l’eau atmosphérique refroidie, et la terminologie météorologique française nomme givre le dépôt de glace formé lorsque des gouttelettes d’eau en surfusion gèlent au contact d’objets, notamment dans le brouillard givrant.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 凇",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=10222",
+          "locator": "凇 sōng : 水氣遇冷凝結成的水珠"
+        },
+        {
+          "title": "Hàn Diǎn — 凇",
+          "url": "https://www.zdic.net/hant/%E5%87%87",
+          "locator": "凇 sōng : 雲霧或水氣凝結而成的冰花；霧凇附著於樹枝、電線"
+        },
+        {
+          "title": "Office québécois de la langue française — givre",
+          "url": "https://vitrinelinguistique.oqlf.gouv.qc.ca/fiche-gdt/fiche/26514816/givre",
+          "locator": "Dépôt de glace formé généralement par la congélation de gouttelettes de brouillard ou de nuages en surfusion"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "涼",
+      "simplified": "凉",
+      "pinyinNumbered": "liang2",
+      "action": "add-verified",
+      "definitionsFr": [
+        "Liáng — nom de plusieurs États chinois historiques, dont les cinq Liang des Seize Royaumes",
+        "Liáng — nom de famille"
+      ],
+      "justification": "La glose adjectivale CFDICT « frais » reste intacte. Les sens de nom propre, attestés séparément par les sources, sont ajoutés avec la forme pinyin tonale et un libellé explicite afin de ne pas les confondre avec l’adjectif liáng.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 涼",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=3670&la=0&powerMode=0",
+          "locator": "涼 liáng : 朝代名，前涼、後涼等；姓"
+        },
+        {
+          "title": "Hàn Diǎn — 涼",
+          "url": "https://zdic.net/hant/%E6%B6%BC",
+          "locator": "涼 liáng : 朝代名；姓"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "涼 凉 [Liang2] /the five Liang of the Sixteen Kingdoms/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "準",
+      "simplified": "准",
+      "pinyinNumbered": "zhun3",
+      "action": "replace",
+      "definitionsFr": [
+        "exact ; précis",
+        "certainement ; à coup sûr",
+        "critère ; norme ; standard",
+        "futur ; sur le point de devenir",
+        "quasi- ; para-"
+      ],
+      "justification": "CFDICT place dans 準/准 une liste française qui comprend les emplois d’autorisation propres à 准. La nouvelle liste conserve les sens vérifiés de 準 (précision, certitude, norme, futur ou préfixe de rapprochement) ; les emplois d’autorisation sont rétablis séparément sur 准/准.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 準",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8135&la=0&powerMode=0",
+          "locator": "準 zhǔn : 正確、精確；一定、肯定；法度、法則；將來、即將成為"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "準 准 [zhun3] /accurate/standard/definitely/certainly/about to become/quasi-/para-/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
     }
   ]
 }

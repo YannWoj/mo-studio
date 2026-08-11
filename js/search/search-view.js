@@ -446,6 +446,7 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
    const selectedHanzi = entry.__selectedHanzi || "";
    const selectedReading = entry.__displayReadingNumbered || "";
    const visualGroup = Array.isArray(entry.visualGroup) ? entry.visualGroup.slice() : [];
+   const resultHskVerified = Array.isArray(entry.hskVerified) ? entry.hskVerified.slice() : [];
    if (entry.__preview) {
       openSheet(
          '<div class="dictionary-loading"><span class="ink-loader"></span><b>Chargement de la fiche complète…</b></div>',
@@ -455,6 +456,9 @@ async function openSearchDictionaryDetail(entry, pushHistory) {
          if (selectedReading && typeof dictionaryEntryForReading === "function")
             entry = dictionaryEntryForReading(entry, selectedReading);
          if (selectedHanzi) entry.__selectedHanzi = selectedHanzi;
+         entry.hskVerified = [...(entry.hskVerified || []), ...resultHskVerified].filter(
+            (item, index, values) => values.findIndex((candidate) => candidate.hskEntryId === item.hskEntryId) === index,
+         );
          if (visualGroup.length > 1) {
             const grouped = (await Promise.all(
                visualGroup.filter((id) => id !== entry.id).map((id) => loadHskSearchDetailEntry(id)),

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 2,
+  "policyId": "mo-dictionary-fr-editorial-v2",
+  "entries": [
+    {
+      "traditional": "冰",
+      "simplified": "冰",
+      "pinyinNumbered": "bing1",
+      "state": "verified",
+      "definitionsFr": [
+        "glace"
+      ],
+      "reason": "L’entrée lexicale exacte 冰/冰 restait sans français et empruntait indirectement « glace » à la variante 氷/冰. Les deux dictionnaires sinophones décrivent explicitement la glace comme de l’eau solidifiée par le froid ; le sens français est donc rattaché ici à l’identité exacte.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 冰",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=530&la=0&powerMode=0",
+          "locator": "冰 bīng : 水在攝氏零度以下所凝結成的固體"
+        },
+        {
+          "title": "Hàn Diǎn — 冰",
+          "url": "https://zdic.net/hans/%E5%86%B0",
+          "locator": "冰 bīng : 水因冷凝结成的固体"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "沖",
+      "simplified": "冲",
+      "pinyinNumbered": "chong1",
+      "state": "verified",
+      "definitionsFr": [
+        "verser de l’eau pour mélanger ou préparer ; infuser",
+        "rincer ; laver à l’eau",
+        "heurter ou emporter sous l’effet de l’eau",
+        "s’élever rapidement"
+      ],
+      "reason": "Le français CFDICT était porté par 衝/冲 et mélangeait les sens des deux graphies traditionnelles. Les sens hydrauliques et de préparation par ajout d’eau appartiennent à l’identité exacte 沖/冲 ; ils sont ajoutés ici sans être transférés à une autre graphie traditionnelle.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 沖",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8689&word=%3D%E6%B2%96",
+          "locator": "沖 chōng : 以水注入或調勻；以水刷洗；被大水撞擊或捲走；向上直飛"
+        },
+        {
+          "title": "Hàn Diǎn — 沖",
+          "url": "https://zdic.net/hans/%E6%B2%96",
+          "locator": "沖 chōng : 沖擊、沖洗；用水或酒澆注調製"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "凄",
+      "simplified": "凄",
+      "pinyinNumbered": "qi1",
+      "state": "verified",
+      "definitionsFr": [
+        "très froid ; glacial",
+        "triste ; affligé",
+        "désolé ; morne",
+        "variante graphique de 淒/凄"
+      ],
+      "reason": "L’identité exacte 凄/凄 restait sans français et recevait seulement, au niveau caractère, les gloses incomplètes de 淒/凄. Les sources distinguent le froid intense, la tristesse et l’emploi de 凄 comme variante de 淒 ; la formulation française conserve ces nuances.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — Dictionnaire des variantes, 凄",
+          "url": "https://dict.variants.moe.edu.tw/dictView.jsp?ID=54715&q=1",
+          "locator": "凄 qī : 寒也；⇒「淒」之異體"
+        },
+        {
+          "title": "Hàn Diǎn — 凄",
+          "url": "https://zdic.net/hans/%E5%87%84",
+          "locator": "凄 qī : 寒冷；凄凉或悲伤"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "准",
+      "simplified": "准",
+      "pinyinNumbered": "zhun3",
+      "state": "verified",
+      "definitionsFr": [
+        "autoriser ; permettre",
+        "approuver ; accorder",
+        "selon ; conformément à",
+        "déterminer ; fixer"
+      ],
+      "reason": "L’identité exacte 准/准 n’avait aucun français, tandis que CFDICT plaçait ces sens dans 準/准. Le Ministère de l’Éducation et CC-CEDICT attribuent explicitement à 准 les emplois d’autorisation, d’accord, de référence et de détermination ; ils sont rétablis sur cette seule identité.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 准",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=8133&la=0&powerMode=0",
+          "locator": "准 zhǔn : 允許；確定；依據；比照"
+        },
+        {
+          "title": "CC-CEDICT — source locale inchangée",
+          "url": "https://cc-cedict.org/wiki/",
+          "locator": "准 准 [zhun3] /to allow/to grant/in accordance with/in the light of/"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "凈",
+      "simplified": "净",
+      "pinyinNumbered": "jing4",
+      "state": "verified",
+      "definitionsFr": [
+        "variante graphique de 淨/净"
+      ],
+      "reason": "L’entrée exacte 凈/净 ne portait que le renvoi anglais de CC-CEDICT. Le Dictionnaire des variantes du Ministère de l’Éducation et Hàn Diǎn concordent pour la lecture jìng et le rattachement graphique à 淨/净 ; aucun sens autonome n’est ajouté à cette lecture.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — Dictionnaire des variantes, 淨/凈",
+          "url": "https://dict.variants.moe.edu.tw/dictView.jsp?ID=-24253&la=0",
+          "locator": "A02245-010 凈, jìng : 「凈」為「淨」之異體"
+        },
+        {
+          "title": "Hàn Diǎn — 凈",
+          "url": "https://www.zdic.net/hans/%E5%87%88",
+          "locator": "凈 jìng : 同“净”；异体字 淨"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    },
+    {
+      "traditional": "涼",
+      "simplified": "凉",
+      "pinyinNumbered": "liang4",
+      "state": "verified",
+      "definitionsFr": [
+        "laisser refroidir ; mettre à refroidir",
+        "aider ; assister (sens littéraire)"
+      ],
+      "reason": "La lecture liàng était correctement séparée dans les données mais restait sans français. Les deux sources distinguent l’emploi moderne « mettre à refroidir » et un emploi littéraire signifiant aider ou assister ; ils restent rattachés exclusivement à liàng.",
+      "references": [
+        {
+          "title": "Ministère de l’Éducation de Taïwan — 涼",
+          "url": "https://dict.revised.moe.edu.tw/dictView.jsp?ID=3670&la=0&powerMode=0",
+          "locator": "涼 liàng : 置物於通風處，以降低熱度；輔助、輔佐"
+        },
+        {
+          "title": "Hàn Diǎn — 涼",
+          "url": "https://zdic.net/hant/%E6%B6%BC",
+          "locator": "涼 liàng : 置物於通風處，以降低熱度；輔助、輔佐"
+        }
+      ],
+      "verifiedAt": "2026-08-11"
+    }
+  ]
+}

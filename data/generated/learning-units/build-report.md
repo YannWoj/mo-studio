@@ -2,9 +2,9 @@
 
 ## Provenance
 
-- Composition des caractères : `data/generated/character-composition/` (buildId `1f9331db742ad8aa076dc171b9706c8c74635404b384b724ecd424a75f2acfa4`)
-- Clés/radicaux : `data/generated/character-radicals/` (buildId `c37b6d73d04bfddec12ddf6062d006cdb5b9b9ef4e601144d19233d104e8f56a`)
-- Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `4087d1da0b6785bdddab19f24fd3577230172710a22b804005df9efb1efef813`)
+- Composition des caractères : `data/generated/character-composition/` (buildId `86feac239c0909404488d29cee294b63d32df419b2a5e8f213e6f80e3f49a8c3`)
+- Clés/radicaux : `data/generated/character-radicals/` (buildId `edc1301f17b6a7d7fdff2c322081e26154e466b67b5545f3ab7a99a767b208a6`)
+- Dictionnaire (pinyin, sens, mots) : `data/generated/dictionary/` (buildId `2b3ce95c16d4ed6f223fc3a9b02102136ba830f51aa1e2c2b26c5baa94b42b10`)
 - HSK 1 (pack personnel) : `hsk1.json` (racine du dépôt), SHA-256 `80b413a1b6a17aa8c306afb2b042171665ad3b4dcbd835e239be808862b93419`
 - Bibliothèque personnelle (`db.cards`/packs) : **absente** — aucun fichier à `data/personal/library-export.json`. Ce signal vaut honnêtement zéro pour tous les caractères plutôt que d'être deviné. Pour l'inclure : Réglages → Données → Exporter dans l'application, puis enregistrer le fichier téléchargé à ce chemin et relancer le build.
 

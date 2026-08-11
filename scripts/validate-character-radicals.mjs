@@ -28,6 +28,7 @@ async function filesBelow(directory, relative = "") {
 
 async function validateDeclaredHashes() {
    const manifest = JSON.parse(await readFile(path.join(generatedDirectory, "manifest.json"), "utf8"));
+   const report = JSON.parse(await readFile(path.join(generatedDirectory, "build-report.json"), "utf8"));
    if (manifest.format !== "mo-studio-character-radicals" || manifest.schemaVersion !== 1)
       throw new Error("Format ou version de schéma de manifeste invalide");
    if (!Array.isArray(manifest.radicals) || !manifest.radicals.length)
@@ -85,6 +86,30 @@ async function validateDeclaredHashes() {
       throw new Error("La somme des membres déclarés ne correspond pas à charactersCovered");
    if (manifest.radicals.length !== manifest.counts.radicalsWithDictionaryMembers)
       throw new Error("Le nombre de clés du manifeste ne correspond pas à radicalsWithDictionaryMembers");
+
+   const allFrench = report.frenchAttachment?.allDictionaryCharacters;
+   const navigationFrench = report.frenchAttachment?.radicalNavigationCharacters;
+   if (!allFrench || !navigationFrench)
+      throw new Error("Les métriques françaises séparées dictionnaire/navigation sont absentes");
+   if (allFrench.total !== manifest.counts.dictionaryCharactersTotal)
+      throw new Error("Le total français du dictionnaire ne correspond pas au manifeste");
+   if (navigationFrench.total !== manifest.counts.charactersCovered)
+      throw new Error("Le total français de la navigation ne correspond pas au manifeste");
+   if (
+      navigationFrench.withFrenchBefore +
+         navigationFrench.recoveredByExplicitSimplifiedTraditionalAttachment !==
+      navigationFrench.withFrenchAfter
+   ) throw new Error("Les récupérations françaises de la navigation ne s'équilibrent pas");
+   if (navigationFrench.withFrenchAfter + navigationFrench.remainingWithoutFrench !== navigationFrench.total)
+      throw new Error("Le reste sans français de la navigation ne s'équilibre pas");
+   if (
+      report.frenchAttachment.recoveredCharacters.length !==
+      navigationFrench.recoveredByExplicitSimplifiedTraditionalAttachment
+   ) throw new Error("La liste des caractères français récupérés dans les clés est incohérente");
+   if (
+      report.frenchAttachment.manyToOneCollisions.length !==
+      navigationFrench.manyToOneCollisionCharacters
+   ) throw new Error("La liste des collisions plusieurs-vers-un dans les clés est incohérente");
 
    const compositionManifest = JSON.parse(
       await readFile(path.join(compositionDirectory, "manifest.json"), "utf8"),
